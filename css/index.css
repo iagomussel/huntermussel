@@ -394,3 +394,8 @@
 #projeto h1{
 	text-align: center;
 }
+
+#send_message_btn{
+	width: 150px; 
+	height: 50px
+}
