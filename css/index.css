@@ -14,11 +14,11 @@
 }
 
 .claro{
-	background-color: rgb(240,242,241);
+	background-color: rgb(255, 255, 255);
 }
 
 .escuro{
-	background-color: #777;
+	background-color: #aac1dd;
 }
 
 /*---MENU---*/
@@ -177,7 +177,7 @@
 }
 
 #perfil-img{
-	background-image: url("https://ca.slack-edge.com/T1GR0M2TZ-U020QGJBP7U-b2f10433a02d-512");
+	background-image: url("https://huntermussel.com/img/iago.png");
 	padding: 0;
 	width: 20em;
 	height: 20em;
@@ -208,7 +208,7 @@
 }
 
 #portifolio .btnMais{
-	display: ;
+	display: none;
 }
 
 /*---HABILIDADE---*/
@@ -373,20 +373,6 @@
 	}
 }
 
-/*---PROJETO---*/
-/*
-.botaoVolta{
-	float: left;
-	padding: 0 10px;
-	font-size: 40px;
-	text-decoration: none;
-	cursor: pointer;
-}
-
-.botaoVolta img{
-	width: 80px;
-}
-*/
 
 .botaoVolta{
 	top: -15px;
