@@ -304,7 +304,7 @@
 			var message = $("#validationServer05").val();
 
 			var webhookUrl = 'https://discordapp.com/api/webhooks/1195934884275961927/iizBr7V6tyRgvIuHXayx6Fw7oQ-U7bPUV26F8g69Gh5n8yP3nWfg7TMeZ5fy2Hn2QUQ2';
-			var message = 'Thank you for reaching out! Your message has been successfully submitted. I\'ll get back to you as soon as possible. If you have any urgent matters, feel free to reach out to me directly via Whatsapp at +5521995775689 . Have a great day!'
+			var message_alert = 'Thank you for reaching out! Your message has been successfully submitted. I\'ll get back to you as soon as possible. If you have any urgent matters, feel free to reach out to me directly via Whatsapp at <a href="https://wa.me/+5521995775689">+5521995775689</a> . Have a great day!'
 
 			var data = {
 				content: `New message from ${name} (${email}):\n${message}`
@@ -317,7 +317,7 @@
 				contentType: 'application/json',
 				success: function () {
 
-					showStatusModal(message, 'alert-success')
+					showStatusModal(message_alert, 'alert-success')
 					$("#validationServer01").val('')
 					$("#validationServer03").val('')
 					$("#validationServer05").val('')
