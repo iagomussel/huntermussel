@@ -1,11 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Code, GitBranch, Cloud, Smartphone } from 'lucide-react';
-import { services } from '../data/services';
 import { useTranslation } from 'react-i18next';
 
 const Services = () => {
   const { t } = useTranslation();
+
+  const services = [
+    { id: 'web-dev', icon: 'code' },
+    { id: 'mobile-dev', icon: 'smartphone' },
+    { id: 'cloud', icon: 'cloud' },
+    { id: 'consulting', icon: 'git-branch' },
+  ];
 
   const getIcon = (iconName: string) => {
     const icons = {
@@ -35,6 +41,8 @@ const Services = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service, index) => {
               const Icon = getIcon(service.icon);
+              const features = t(`services.items.${service.id}.features`, { returnObjects: true }) as string[];
+              
               return (
                 <motion.div
                   key={service.id}
@@ -46,18 +54,17 @@ const Services = () => {
                   <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
                     {Icon && <Icon className="h-6 w-6 text-indigo-600" />}
                   </div>
-                  <h3 className="text-xl font-semibold mb-4">{t(`services.items.${service.id}.title`)}</h3>
-                  <p className="text-gray-600 mb-6">{t(`services.items.${service.id}.description`)}</p>
+                  <h3 className="text-xl font-semibold mb-4">
+                    {t(`services.items.${service.id}.title`)}
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    {t(`services.items.${service.id}.description`)}
+                  </p>
                   <ul className="space-y-3 text-gray-600">
-                    {service.id === 'web-dev' && [
-                      t('services.items.web-dev.features.0'),
-                      t('services.items.web-dev.features.1'),
-                      t('services.items.web-dev.features.2'),
-                      t('services.items.web-dev.features.3')
-                    ].map((item, i) => (
+                    {features.map((feature, i) => (
                       <li key={i} className="flex items-center">
                         <span className="w-2 h-2 bg-indigo-600 rounded-full mr-2"></span>
-                        {item}
+                        {feature}
                       </li>
                     ))}
                   </ul>
