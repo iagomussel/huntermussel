@@ -301,5 +301,46 @@
     "johnSmith": {
       "bio": "Desenvolvedor Backend Sênior especializado em arquiteturas escaláveis e APIs robustas."
     }
+  },
+  "plans": {
+    "title": "Planos de Suporte",
+    "subtitle": "Escolha o plano que melhor atende às suas necessidades",
+    "mostPopular": "Mais Vendido",
+    "hoursIncluded": "horas incluídas",
+    "subscribe": "Assinar",
+    "slaNote": "SLA 24/7 disponível para todos os planos (+$100/mês)",
+    "essential": {
+      "title": "Plano Essencial",
+      "description": "Indicado para pequenas empresas com baixa demanda de suporte",
+      "features": [
+        "Correções de bugs simples",
+        "Pequenas atualizações",
+        "Suporte técnico básico",
+        "$45/hora adicional"
+      ]
+    },
+    "professional": {
+      "title": "Plano Profissional",
+      "description": "Indicado para empresas em crescimento que demandam suporte contínuo",
+      "features": [
+        "Suporte técnico prioritário",
+        "Atualizações e implementações de funcionalidades menores",
+        "Monitoramento básico de sistemas",
+        "Relatório mensal detalhado",
+        "$45/hora adicional"
+      ]
+    },
+    "custom": {
+      "title": "Plano Empresarial",
+      "description": "Para empresas com demandas complexas e frequentes",
+      "features": [
+        "Solução totalmente personalizável",
+        "Atendimento prioritário 24/7",
+        "Infraestrutura e desenvolvimento",
+        "Relatórios e reuniões semanais",
+        "Equipe de suporte dedicada"
+      ]
+    },
+    "contactUs": "Fale Conosco"
   }
 }

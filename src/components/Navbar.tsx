@@ -25,6 +25,7 @@ const Navbar = () => {
             <Link to="/about" className="text-gray-700 hover:text-indigo-600">About</Link>
             <Link to="/services" className="text-gray-700 hover:text-indigo-600">Services</Link>
             <Link to="/portfolio" className="text-gray-700 hover:text-indigo-600">Portfolio</Link>
+            <Link to="/plans" className="text-gray-700 hover:text-indigo-600">Pricing</Link>
             <LanguageSwitcher />
             <Link to="/contact" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
               Contact
@@ -46,6 +47,7 @@ const Navbar = () => {
             <Link to="/about" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">About</Link>
             <Link to="/services" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Services</Link>
             <Link to="/portfolio" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Portfolio</Link>
+            <Link to="/plans" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Pricing</Link>
             <div className="px-3 py-2">
               <LanguageSwitcher />
             </div>

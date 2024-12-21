@@ -6,6 +6,7 @@ import About from './pages/About';
 import Services from './pages/Services';
 import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
+import PlansPage from './pages/Plans';
 import ErrorBoundary from './components/ErrorBoundary';
 import Loading from './components/Loading';
 
@@ -22,6 +23,7 @@ function App() {
               <Route path="/services" element={<Services />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/plans" element={<PlansPage />} />
             </Routes>
           </div>
         </Router>

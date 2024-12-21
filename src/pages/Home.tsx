@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Hero from '../components/Hero';
+import Plans from '../components/Plans';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Code2, Users, Trophy, Rocket } from 'lucide-react';
@@ -95,6 +96,10 @@ const Home = () => {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <Plans />
       </section>
 
       <section className="py-20 bg-indigo-600 text-white">

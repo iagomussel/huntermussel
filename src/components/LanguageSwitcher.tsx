@@ -15,7 +15,7 @@ const LanguageSwitcher = () => {
       onClick={toggleLanguage}
       className="text-gray-700 hover:text-indigo-600"
     >
-      {i18n.language === 'en' ? 'EN' : 'PT'}
+      {i18n.language === 'en' ? '🇺🇸' : '🇧🇷'}
     </button>
   );
 };
