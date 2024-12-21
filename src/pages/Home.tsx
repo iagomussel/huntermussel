@@ -10,11 +10,17 @@ const Home = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferredLanguage');
     const browserLanguage = navigator.language.split('-')[0];
-    if (['en', 'pt'].includes(browserLanguage)) {
-      i18n.changeLanguage(browserLanguage);
+    
+    if (savedLanguage) {
+      i18n.changeLanguage(savedLanguage);
+    } else if (browserLanguage === 'pt') {
+      i18n.changeLanguage('pt');
+      localStorage.setItem('preferredLanguage', 'pt');
     } else {
       i18n.changeLanguage('en');
+      localStorage.setItem('preferredLanguage', 'en');
     }
   }, []);
 

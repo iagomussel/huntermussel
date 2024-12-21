@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Logo from './Logo';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,11 +22,12 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-gray-700 hover:text-indigo-600">Home</Link>
-            <Link to="/sobre" className="text-gray-700 hover:text-indigo-600">Sobre</Link>
-            <Link to="/servicos" className="text-gray-700 hover:text-indigo-600">Serviços</Link>
-            <Link to="/portfolio" className="text-gray-700 hover:text-indigo-600">Portfólio</Link>
-            <Link to="/contato" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-              Contato
+            <Link to="/about" className="text-gray-700 hover:text-indigo-600">About</Link>
+            <Link to="/services" className="text-gray-700 hover:text-indigo-600">Services</Link>
+            <Link to="/portfolio" className="text-gray-700 hover:text-indigo-600">Portfolio</Link>
+            <LanguageSwitcher />
+            <Link to="/contact" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+              Contact
             </Link>
           </div>
 
@@ -41,10 +43,13 @@ const Navbar = () => {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link to="/" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Home</Link>
-            <Link to="/sobre" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Sobre</Link>
-            <Link to="/servicos" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Serviços</Link>
-            <Link to="/portfolio" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Portfólio</Link>
-            <Link to="/contato" className="block px-3 py-2 bg-indigo-600 text-white rounded-md">Contato</Link>
+            <Link to="/about" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">About</Link>
+            <Link to="/services" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Services</Link>
+            <Link to="/portfolio" className="block px-3 py-2 text-gray-700 hover:text-indigo-600">Portfolio</Link>
+            <div className="px-3 py-2">
+              <LanguageSwitcher />
+            </div>
+            <Link to="/contact" className="block px-3 py-2 bg-indigo-600 text-white rounded-md">Contact</Link>
           </div>
         </div>
       )}
