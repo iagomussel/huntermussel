@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const ContactForm = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,7 +14,7 @@ const ContactForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const whatsappMessage = `Nome: ${formData.name}%0AEmail: ${formData.email}%0ATelefone: ${formData.phone}%0AMensagem: ${formData.message}`;
-    window.open(`https://wa.me/5521995775689?text=${whatsappMessage}`, '_blank');
+    window.open(`https://wa.me/5521995775689?text=${whatsappMessage}`);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -26,7 +28,7 @@ const ContactForm = () => {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-          Nome
+          {t('contactForm.name')}
         </label>
         <input
           type="text"
@@ -41,7 +43,7 @@ const ContactForm = () => {
 
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
+          {t('contactForm.email')}
         </label>
         <input
           type="email"
@@ -56,7 +58,7 @@ const ContactForm = () => {
 
       <div>
         <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-          Telefone
+          {t('contactForm.phone')}
         </label>
         <input
           type="tel"
@@ -70,7 +72,7 @@ const ContactForm = () => {
 
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-          Mensagem
+          {t('contactForm.message')}
         </label>
         <textarea
           name="message"
@@ -87,7 +89,7 @@ const ContactForm = () => {
         type="submit"
         className="w-full flex justify-center items-center bg-indigo-600 py-3 px-4 text-white rounded-md hover:bg-indigo-700 transition-colors"
       >
-        Enviar Mensagem
+        {t('contactForm.submit')}
         <Send className="ml-2 h-5 w-5" />
       </button>
     </form>

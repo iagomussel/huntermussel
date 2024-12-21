@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface TeamMemberProps {
   name: string;
@@ -15,6 +16,8 @@ interface TeamMemberProps {
 }
 
 const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, bio, social }) => {
+  const { t } = useTranslation();
+
   return (
     <motion.div
       whileHover={{ y: -5 }}
@@ -28,7 +31,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, bio, social 
       <div className="p-6">
         <h3 className="text-xl font-semibold text-gray-900">{name}</h3>
         <p className="text-indigo-600 mb-4">{role}</p>
-        <p className="text-gray-600 mb-4">{bio}</p>
+        <p className="text-gray-600 mb-4">{t(bio)}</p>
         {social && (
           <div className="flex space-x-4">
             {social.github && (

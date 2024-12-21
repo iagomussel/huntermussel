@@ -4,16 +4,18 @@ import { ArrowRight } from 'lucide-react';
 import ProjectModal from './ProjectModal';
 import { sendProjectNotification } from '../utils/notifications';
 import type { ProjectData } from './ProjectModal';
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleProjectSubmit = async (data: ProjectData) => {
     const success = await sendProjectNotification(data);
     if (success) {
-      alert('Obrigado! Entraremos em contato em breve.');
+      alert(t('hero.thankYouMessage'));
     } else {
-      alert('Ocorreu um erro. Por favor, tente novamente ou entre em contato por telefone.');
+      alert(t('hero.errorMessage'));
     }
   };
 
@@ -22,7 +24,7 @@ const Hero = () => {
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <img
-          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80"
+          src="https://media.licdn.com/dms/image/v2/C4D03AQH8wFMt-MwNTQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1647061414600?e=1740009600&v=beta&t=EsbTcu_g03AdKJuL_etH6uRUAmEbLEOrCSQiSMD06RQ"
           alt="Background"
           className="w-full h-full object-cover"
         />
@@ -36,27 +38,27 @@ const Hero = () => {
           className="text-center"
         >
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Hunter Mussel
+            {t('hero.title')}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-              Excelência em Desenvolvimento
+              {t('hero.subtitle')}
             </span>
           </h1>
           <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
-            Mais de 18 anos de experiência e mais de 200 projetos entregues com sucesso
+            {t('hero.description')}
           </p>
           <div className="flex justify-center space-x-4">
             <button
               onClick={() => setIsModalOpen(true)}
               className="bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors flex items-center"
             >
-              Iniciar Projeto
+              {t('hero.startProject')}
               <ArrowRight className="ml-2 h-5 w-5" />
             </button>
             <a
               href="/portfolio"
               className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-colors"
             >
-              Ver Portfólio
+              {t('hero.viewPortfolio')}
             </a>
           </div>
         </motion.div>

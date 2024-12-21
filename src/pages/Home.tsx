@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Hero from '../components/Hero';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Code2, Users, Trophy, Rocket } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n'; // Ensure i18n is imported and initialized
 
 const Home = () => {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    const browserLanguage = navigator.language.split('-')[0];
+    if (['en', 'pt'].includes(browserLanguage)) {
+      i18n.changeLanguage(browserLanguage);
+    } else {
+      i18n.changeLanguage('en');
+    }
+  }, []);
+
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
   const stats = [
-    { icon: Code2, value: '200+', label: 'Projetos Entregues' },
-    { icon: Users, value: '150+', label: 'Clientes Satisfeitos' },
-    { icon: Trophy, value: '18+', label: 'Anos de Experiência' },
-    { icon: Rocket, value: '99%', label: 'Taxa de Sucesso' },
+    { icon: Code2, value: '200+', label: t('stats.projectsDelivered') },
+    { icon: Users, value: '150+', label: t('stats.satisfiedClients') },
+    { icon: Trophy, value: '18+', label: t('stats.yearsOfExperience') },
+    { icon: Rocket, value: '99%', label: t('stats.successRate') },
   ];
 
   return (
@@ -44,25 +57,25 @@ const Home = () => {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Por que escolher Professor Mussel?</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('whyChoose.title')}</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Combinamos vasta experiência técnica com uma abordagem personalizada para entregar soluções que impulsionam o crescimento do seu negócio
+              {t('whyChoose.description')}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                title: 'Expertise Comprovada',
-                description: 'Mais de 18 anos de experiência em desenvolvimento e mais de 200 projetos entregues com sucesso.',
+                title: t('whyChoose.items.expertise.title'),
+                description: t('whyChoose.items.expertise.description'),
               },
               {
-                title: 'Abordagem Personalizada',
-                description: 'Cada projeto é único e recebe atenção dedicada para atender às necessidades específicas do cliente.',
+                title: t('whyChoose.items.personalized.title'),
+                description: t('whyChoose.items.personalized.description'),
               },
               {
-                title: 'Suporte Contínuo',
-                description: 'Acompanhamento próximo e suporte dedicado durante todo o ciclo de desenvolvimento.',
+                title: t('whyChoose.items.support.title'),
+                description: t('whyChoose.items.support.description'),
               },
             ].map((item, index) => (
               <motion.div
@@ -80,12 +93,12 @@ const Home = () => {
 
       <section className="py-20 bg-indigo-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-8">Pronto para transformar sua ideia em realidade?</h2>
+          <h2 className="text-3xl font-bold mb-8">{t('cta.title')}</h2>
           <a
-            href="/contato"
+            href="/contact"
             className="inline-block bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
           >
-            Fale Conosco
+            {t('cta.button')}
           </a>
         </div>
       </section>

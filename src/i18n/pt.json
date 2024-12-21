@@ -1,0 +1,99 @@
+{
+  "stats": {
+    "projectsDelivered": "Projetos Entregues",
+    "satisfiedClients": "Clientes Satisfeitos",
+    "yearsOfExperience": "Anos de Experiência",
+    "successRate": "Taxa de Sucesso"
+  },
+  "whyChoose": {
+    "title": "Por que escolher Professor Mussel?",
+    "description": "Combinamos vasta experiência técnica com uma abordagem personalizada para entregar soluções que impulsionam o crescimento do seu negócio.",
+    "items": {
+      "expertise": {
+        "title": "Expertise Comprovada",
+        "description": "Mais de 18 anos de experiência em desenvolvimento e mais de 200 projetos entregues com sucesso."
+      },
+      "personalized": {
+        "title": "Abordagem Personalizada",
+        "description": "Cada projeto é único e recebe atenção dedicada para atender às necessidades específicas do cliente."
+      },
+      "support": {
+        "title": "Suporte Contínuo",
+        "description": "Acompanhamento próximo e suporte dedicado durante todo o ciclo de desenvolvimento."
+      }
+    }
+  },
+  "cta": {
+    "title": "Pronto para transformar sua ideia em realidade?",
+    "button": "Fale Conosco"
+  },
+  "services": {
+    "title": "Nossos Serviços",
+    "description": "Soluções completas em desenvolvimento de software e tecnologia",
+    "items": {
+      "web-dev": {
+        "title": "Desenvolvimento Web",
+        "description": "Aplicações web responsivas, Single Page Applications (SPA), Progressive Web Apps (PWA) e integrações com APIs RESTful.",
+        "features": [
+          "Aplicações web responsivas",
+          "Single Page Applications (SPA)",
+          "Progressive Web Apps (PWA)",
+          "Integrações com APIs RESTful"
+        ]
+      }
+    }
+  },
+  "portfolio": {
+    "title": "Nosso Portfólio",
+    "description": "Conheça alguns dos projetos que desenvolvemos para nossos clientes"
+  },
+  "about": {
+    "title": "Sobre Hunter Mussel",
+    "description": "Com mais de 18 anos de experiência em desenvolvimento de software, transformamos ideias em soluções digitais de sucesso.",
+    "values": {
+      "title": "Nossos Valores",
+      "description": "Princípios que guiam nossa jornada e definem nossa excelência",
+      "excellence": {
+        "title": "Excelência Técnica",
+        "description": "Comprometimento com as melhores práticas e tecnologias mais recentes."
+      },
+      "clientFocus": {
+        "title": "Foco no Cliente",
+        "description": "Atendimento personalizado e dedicação total aos objetivos do cliente."
+      },
+      "passion": {
+        "title": "Paixão",
+        "description": "Amor pelo desenvolvimento e pela criação de soluções inovadoras."
+      },
+      "innovation": {
+        "title": "Inovação",
+        "description": "Busca constante por soluções criativas e tecnologias emergentes."
+      }
+    },
+    "leadership": {
+      "title": "Liderança",
+      "description": "Conheça quem está por trás das soluções inovadoras"
+    }
+  },
+  "contactForm": {
+    "name": "Nome",
+    "email": "Email",
+    "phone": "Telefone",
+    "message": "Mensagem",
+    "submit": "Enviar Mensagem"
+  },
+  "hero": {
+    "title": "Hunter Mussel",
+    "subtitle": "Excelência em Desenvolvimento",
+    "description": "Mais de 18 anos de experiência e mais de 200 projetos entregues com sucesso",
+    "startProject": "Iniciar Projeto",
+    "viewPortfolio": "Ver Portfólio",
+    "thankYouMessage": "Obrigado! Entraremos em contato em breve.",
+    "errorMessage": "Ocorreu um erro. Por favor, tente novamente ou entre em contato por telefone."
+  },
+  "team": {
+    "iagoMussel": {
+      "bio": "Mais de 18 anos de experiência em desenvolvimento de software, com mais de 200 projetos entregues com sucesso."
+    }
+  }
+}
