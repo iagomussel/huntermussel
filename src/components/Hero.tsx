@@ -5,6 +5,8 @@ import ProjectModal from './ProjectModal';
 import { sendProjectNotification } from '../utils/notifications';
 import type { ProjectData } from './ProjectModal';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import heroImage from '../assets/images/hero.jpg';
 
 const Hero = () => {
   const { t } = useTranslation();
@@ -24,7 +26,7 @@ const Hero = () => {
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <img
-          src="https://media.licdn.com/dms/image/v2/C4D03AQH8wFMt-MwNTQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1647061414600?e=1740009600&v=beta&t=EsbTcu_g03AdKJuL_etH6uRUAmEbLEOrCSQiSMD06RQ"
+          src={heroImage}
           alt="Background"
           className="w-full h-full object-cover"
         />
@@ -47,13 +49,13 @@ const Hero = () => {
             {t('hero.description')}
           </p>
           <div className="flex justify-center space-x-4">
-            <button
-              onClick={() => setIsModalOpen(true)}
+            <Link
+              to="/contact"
               className="bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors flex items-center"
             >
               {t('hero.startProject')}
               <ArrowRight className="ml-2 h-5 w-5" />
-            </button>
+            </Link>
             <a
               href="/portfolio"
               className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-colors"
