@@ -7,29 +7,7 @@ export const team = [
     social: {
       linkedin: 'https://linkedin.com/iagomussel',
       github: 'https://github.com/iagomussel',
-      twitter: 'https://twitter.com'
-    }
-  },
-  {
-    name: 'Rodrigo Silva',
-    role: 'Frontend Developer',
-    image: 'https://example.com/jane.jpg',
-    bio: 'team.janeDoe.bio',
-    social: {
-      linkedin: 'https://linkedin.com/janedoe',
-      github: 'https://github.com/janedoe',
-      twitter: 'https://twitter.com/janedoe'
-    }
-  },
-  {
-    name: 'Carlos Eduardo',
-    role: 'Backend Senior Developer',
-    image: 'https://example.com/john.jpg',
-    bio: 'team.johnSmith.bio',
-    social: {
-      linkedin: 'https://linkedin.com/johnsmith',
-      github: 'https://github.com/johnsmith',
-      twitter: 'https://twitter.com/johnsmith'
+      twitter: 'https://x.com/iagomussel'
     }
   }
 ];

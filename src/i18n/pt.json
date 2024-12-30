@@ -294,12 +294,6 @@
   "team": {
     "iagoMussel": {
       "bio": "Mais de 18 anos de experiência em desenvolvimento de software, com mais de 200 projetos entregues com sucesso."
-    },
-    "janeDoe": {
-      "bio": "Desenvolvedora Frontend com vasta experiência em criar interfaces de usuário intuitivas e responsivas."
-    },
-    "johnSmith": {
-      "bio": "Desenvolvedor Backend Sênior especializado em arquiteturas escaláveis e APIs robustas."
     }
   },
   "plans": {

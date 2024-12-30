@@ -288,12 +288,6 @@
   "team": {
     "iagoMussel": {
       "bio": "Over 18 years of experience in software development, with more than 200 successfully delivered projects."
-    },
-    "janeDoe": {
-      "bio": "Frontend Developer with extensive experience in creating intuitive and responsive user interfaces."
-    },
-    "johnSmith": {
-      "bio": "Senior Backend Developer specializing in scalable architectures and robust APIs."
     }
   },
   "plans": {
