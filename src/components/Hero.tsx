@@ -1,76 +1,74 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import ProjectModal from './ProjectModal';
-import { sendProjectNotification } from '../utils/notifications';
-import type { ProjectData } from './ProjectModal';
-import { useTranslation } from 'react-i18next';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import heroImage from '../assets/images/hero.jpg';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { ArrowRight } from 'lucide-react';
 
 const Hero = () => {
-  const { t } = useTranslation();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleProjectSubmit = async (data: ProjectData) => {
-    const success = await sendProjectNotification(data);
-    if (success) {
-      alert(t('hero.thankYouMessage'));
-    } else {
-      alert(t('hero.errorMessage'));
-    }
-  };
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   return (
-    <div className="relative bg-gradient-to-r from-indigo-600 to-purple-600 h-screen flex items-center">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-black opacity-50"></div>
+    <div className="relative bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+          <svg
+            className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2"
+            fill="currentColor"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <polygon points="50,0 100,0 50,100 0,100" />
+          </svg>
+
+          <main className="pt-10 mx-auto max-w-7xl px-4 sm:pt-12 sm:px-6 md:pt-16 lg:pt-20 lg:px-8 xl:pt-28">
+            <div className="sm:text-center lg:text-left">
+              <motion.div
+                ref={ref}
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8 }}
+              >
+                <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                  <span className="block xl:inline">Professional</span>{' '}
+                  <span className="block text-indigo-600 xl:inline">Software Development</span>
+                </h1>
+                <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                  We specialize in developing high-quality software solutions tailored to your business needs, from web applications to mobile apps and enterprise systems.
+                </p>
+                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                  <div className="rounded-md shadow">
+                    <Link
+                      to="/contact"
+                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+                    >
+                      Get Started
+                    </Link>
+                  </div>
+                  <div className="mt-3 sm:mt-0 sm:ml-3">
+                    <Link
+                      to="/services"
+                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10"
+                    >
+                      Our Services <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </main>
+        </div>
+      </div>
+      <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
         <img
-          src={heroImage}
-          alt="Background"
-          className="w-full h-full object-cover"
+          className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
+          src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80"
+          alt="Team working on software development"
         />
       </div>
-      
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center"
-        >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            {t('hero.title')}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-              {t('hero.subtitle')}
-            </span>
-          </h1>
-          <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
-            {t('hero.description')}
-          </p>
-          <div className="flex justify-center space-x-4">
-            <Link
-              to="/contact"
-              className="bg-white text-indigo-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors flex items-center"
-            >
-              {t('hero.startProject')}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-            <a
-              href="/portfolio"
-              className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-colors"
-            >
-              {t('hero.viewPortfolio')}
-            </a>
-          </div>
-        </motion.div>
-      </div>
-
-      <ProjectModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleProjectSubmit}
-      />
     </div>
   );
 };

@@ -38,5 +38,29 @@
         "Infrastructure & development"
       ]
     }
+  },
+  "contactForm": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "submit": "Send Message",
+    "sending": "Sending...",
+    "sent": "Message Sent!",
+    "error": "An error occurred. Please try again."
+  },
+  "portfolio": {
+    "title": "Our Portfolio",
+    "description": "Explore our work and discover how we've helped businesses across various industries",
+    "categories": {
+      "all": "All Projects",
+      "web": "Web Applications",
+      "mobile": "Mobile Apps",
+      "cloud": "Cloud Solutions"
+    },
+    "cta": {
+      "title": "Ready to start your project?",
+      "button": "Get in touch"
+    }
   }
 }
