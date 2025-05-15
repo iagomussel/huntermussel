@@ -46,20 +46,20 @@ const BlogPost = () => {
   return (
     <div className="bg-gray-50 min-h-screen pt-24 pb-16">
       <Helmet>
-        <title>{post.title} | OdontoMaster Blog</title>
+        <title>{post.title} | Huntermussel Blog</title>
         <meta 
           name="description" 
           content={post.excerpt}
         />
         <meta name="keywords" content={post.tags.join(', ') + ', OdontoMaster, dental software'} />
-        <link rel="canonical" href={`https://odontomaster.com/blog/${post.slug}`} />
+        <link rel="canonical" href={`https://huntermussel.com/blog/${post.slug}`} />
         
         {/* Open Graph / Social Media Meta Tags */}
         <meta property="og:type" content="article" />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
         <meta property="og:image" content={post.featuredImage} />
-        <meta property="og:url" content={`https://odontomaster.com/blog/${post.slug}`} />
+        <meta property="og:url" content={`https://huntermussel.com/blog/${post.slug}`} />
         <meta property="article:published_time" content={post.date} />
         
         {/* Structured Data */}
