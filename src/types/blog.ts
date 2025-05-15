@@ -6,9 +6,9 @@ export interface BlogPost {
   content: string;
   featuredImage: string;
   author: string;
+  authorBio?: string;
+  authorImage?: string;
   date: string;
   tags: string[];
   readTime: number;
-  authorBio?: string;
-  authorImage?: string;
 } 

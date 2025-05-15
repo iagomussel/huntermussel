@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Clock, User, Search,  ArrowRight, Mail as MailIcon } from 'lucide-react';
-import { getAllBlogPosts } from '../data/blogData';
+import { getAllBlogPosts } from '../data';
 
 // Carregando posts do blog a partir dos dados reais
 const blogPosts = getAllBlogPosts();

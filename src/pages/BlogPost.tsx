@@ -5,7 +5,7 @@ import { Clock, User, Tag, ArrowLeft, ChevronRight, Mail } from 'lucide-react';
 import { BlogPost as BlogPostType } from '../types/blog';
 
 // Importando os dados reais de blog posts
-import { getBlogPostBySlug, getRelatedPosts } from '../data/blogData';
+import { getBlogPostBySlug, getRelatedPosts } from '../data';
 
 const BlogPost = () => {
   const params = useParams();
