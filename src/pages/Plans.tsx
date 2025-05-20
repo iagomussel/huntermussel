@@ -1,20 +1,7 @@
-import React from 'react';
 import Plans from '../components/Plans';
 
 const PlansPage = () => {
-  return (
-    <div className="pt-16">
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold">Support Plans</h1>
-            <p className="mt-4 text-xl">Choose the plan that best fits your needs</p>
-          </div>
-        </div>
-      </div>
-      <Plans />
-    </div>
-  );
+  return <Plans />;
 };
 
 export default PlansPage;

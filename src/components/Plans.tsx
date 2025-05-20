@@ -1,140 +1,116 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
+import { Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+
+interface Plan {
+  name: string;
+  price: string;
+  description: string;
+  features: string[];
+  isPopular?: boolean;
+}
 
 const Plans = () => {
-  const plans = [
+  const { t } = useTranslation();
+
+  const plans: Plan[] = [
     {
       name: 'Basic',
-      price: '$85',
-      period: '/hour',
-      description: 'For small projects with limited scope',
+      price: 'R$ 199/month',
+      description: 'Perfect for small practices',
       features: [
-        'Junior & Mid-level Developers',
-        'Standard Technical Support',
-        'Weekly Progress Updates',
-        'Dedicated Project Manager',
-        'Standard Documentation',
-        'Up to 160 Hours Per Project'
-      ],
-      highlighted: false
+        'Up to 2 dentists',
+        'Basic appointment scheduling',
+        'Patient records',
+        'Basic reports',
+        'Email support'
+      ]
     },
     {
-      name: 'Standard',
-      price: '$125',
-      period: '/hour',
-      description: 'For medium-sized business applications',
+      name: 'Professional',
+      price: 'R$ 399/month',
+      description: 'For growing practices',
       features: [
-        'Senior Developers & Specialists',
-        'Priority Technical Support',
-        'Bi-weekly Progress Meetings',
-        'Dedicated Senior Project Manager',
-        'Comprehensive Documentation',
-        'QA & Testing Included',
-        'Flexible Resource Allocation'
+        'Up to 5 dentists',
+        'Advanced scheduling',
+        'Complete patient management',
+        'Financial reports',
+        'Priority support',
+        'Online booking',
+        'SMS reminders'
       ],
-      highlighted: true
+      isPopular: true
     },
     {
       name: 'Enterprise',
-      price: '$150-200',
-      period: '/hour',
-      description: 'For large enterprise solutions',
+      price: 'Custom',
+      description: 'For large clinics',
       features: [
-        'Elite Development Team',
-        'Architecture Consulting',
-        '24/7 Premium Support',
-        'Weekly Executive Briefings',
-        'Custom SLA Agreement',
-        'Advanced Security Protocols',
-        'Ongoing Maintenance Options'
-      ],
-      highlighted: false
+        'Unlimited dentists',
+        'Custom features',
+        'API access',
+        'White-label option',
+        'Dedicated support',
+        'Custom integrations',
+        'Training sessions'
+      ]
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const childVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="text-center mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Flexible Hourly Rates for Every Need
+    <div className="py-12 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+            {t('plans.title')}
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            We offer transparent hourly pricing options based on project complexity and resource requirements.
+          <p className="mt-4 text-xl text-gray-600">
+            {t('plans.description')}
           </p>
-        </motion.div>
-      </div>
+        </div>
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-8"
-      >
-        {plans.map((plan, index) => (
-          <motion.div
-            key={index}
-            variants={childVariants}
-            className={`bg-white rounded-lg shadow-lg overflow-hidden ${
-              plan.highlighted
-                ? 'border-2 border-indigo-500 transform md:scale-105 z-10'
-                : 'border border-gray-200'
-            }`}
-          >
-            {plan.highlighted && (
-              <div className="bg-indigo-500 text-white text-center py-2">
-                <span className="font-semibold">Most Popular</span>
-              </div>
-            )}
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-              <p className="text-gray-600 mb-4">{plan.description}</p>
-              <div className="flex items-baseline">
-                <span className="text-4xl font-extrabold text-gray-900">{plan.price}</span>
-                <span className="text-gray-600 ml-2">{plan.period}</span>
-              </div>
-            </div>
-            <div className="p-6 space-y-4">
-              {plan.features.map((feature, featureIndex) => (
-                <div key={featureIndex} className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
-                  <span className="text-gray-700">{feature}</span>
+        <div className="mt-12 grid gap-8 lg:grid-cols-3">
+          {plans.map((plan) => (
+            <motion.div
+              key={plan.name}
+              whileHover={{ y: -5 }}
+              className={`bg-white rounded-lg shadow-lg overflow-hidden ${
+                plan.isPopular ? 'ring-2 ring-blue-500' : ''
+              }`}
+            >
+              {plan.isPopular && (
+                <div className="bg-blue-500 text-white text-center py-2 text-sm font-medium">
+                  Most Popular
                 </div>
-              ))}
-            </div>
-            <div className="p-6">
-              <a
-                href="/contact"
-                className="block w-full text-center bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors"
-              >
-                Get Started
-              </a>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+              )}
+              <div className="p-6">
+                <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
+                <p className="mt-4 text-gray-600">{plan.description}</p>
+                <p className="mt-8">
+                  <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
+                </p>
+                <ul className="mt-6 space-y-4">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start">
+                      <Check className="h-6 w-6 text-green-500 flex-shrink-0" />
+                      <span className="ml-3 text-gray-600">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  className={`mt-8 w-full py-3 px-4 rounded-lg font-medium ${
+                    plan.isPopular
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                  } transition-colors`}
+                >
+                  {t('plans.select')}
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
