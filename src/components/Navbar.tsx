@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,8 +12,8 @@ const Navbar = () => {
           <div className="flex">
             <Link to="/" className="flex items-center">
               <img
-                className="h-8 w-auto"
-                src="/logo.svg"
+                className="h-10 w-auto"
+                src="/assets/images/logo.svg"
                 alt="OdontoMaster"
               />
             </Link>
@@ -40,7 +39,6 @@ const Navbar = () => {
             >
               Contact
             </Link>
-            <LanguageSwitcher />
           </div>
 
           {/* Mobile Menu Button */}
@@ -84,9 +82,6 @@ const Navbar = () => {
             >
               Contact
             </Link>
-            <div className="px-3 py-2">
-              <LanguageSwitcher />
-            </div>
           </div>
         </div>
       )}

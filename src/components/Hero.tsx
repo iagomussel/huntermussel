@@ -20,17 +20,17 @@ const Hero = () => {
           className="max-w-3xl mx-auto text-center"
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Transform Your Dental Practice with OdontoMaster
+            Precision Software Development Solutions
           </h1>
           <p className="text-xl mb-8 text-blue-100">
-            The complete solution for modern dental practice management. Streamline operations, enhance patient care, and grow your business.
+            HunterMussel is a premier software house delivering innovative, high-quality software solutions for businesses. We transform ideas into powerful applications.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/produtos"
               className="inline-flex items-center justify-center px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
             >
-              Get Started
+              Our Products
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link

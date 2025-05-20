@@ -1,19 +1,19 @@
 import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
-import Plans from '../components/Plans';
+import Services from '../components/Plans';
 
 const Home = () => {
   return (
     <>
       <Helmet>
-        <title>OdontoMaster - Modern Dental Practice Management</title>
+        <title>HunterMussel - Professional Software Development</title>
         <meta
           name="description"
-          content="OdontoMaster is a comprehensive dental practice management solution that helps streamline operations and enhance patient care."
+          content="HunterMussel is a premier software house delivering innovative, high-quality software solutions for businesses across various industries."
         />
       </Helmet>
       <Hero />
-      <Plans />
+      <Services />
     </>
   );
 };

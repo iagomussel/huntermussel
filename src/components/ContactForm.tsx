@@ -1,5 +1,4 @@
 import { Send } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
@@ -10,7 +9,6 @@ interface FormData {
 }
 
 const ContactForm = () => {
-  const { t } = useTranslation();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -36,11 +34,11 @@ const ContactForm = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-2xl font-bold mb-6">{t('contact.title')}</h2>
+      <h2 className="text-2xl font-bold mb-6">Contact Us</h2>
       
       <div className="mb-4">
         <label htmlFor="name" className="block text-gray-700 mb-2">
-          {t('contact.name')}
+          Name
         </label>
         <input
           type="text"
@@ -54,7 +52,7 @@ const ContactForm = () => {
 
       <div className="mb-4">
         <label htmlFor="email" className="block text-gray-700 mb-2">
-          {t('contact.email')}
+          Email
         </label>
         <input
           type="email"
@@ -68,7 +66,7 @@ const ContactForm = () => {
 
       <div className="mb-4">
         <label htmlFor="message" className="block text-gray-700 mb-2">
-          {t('contact.message')}
+          Message
         </label>
         <textarea
           id="message"
@@ -85,7 +83,7 @@ const ContactForm = () => {
         className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
       >
         <Send className="w-4 h-4 mr-2" />
-        {t('contact.submit')}
+        Submit
       </button>
     </motion.form>
   );
