@@ -1,0 +1,5 @@
+# Redirect /blog to subdomain
+/blog https://blog.huntermussel.com 301
+
+# SPA Catch-all - this must be last
+/*    /index.html   200 

@@ -1,7 +1,7 @@
 [build]
-    command="vite build"
-    publish="/dist"
-    base="/"
+    command="npm run build"
+    publish="dist"
+    base="."
 
 # Redireciona /blog para o subdomínio
 [[redirects]]
@@ -12,5 +12,5 @@
 # Catch-all para SPA
 [[redirects]]
     from = "/*"
-    to = "index.html"
+    to = "/index.html"
     status = 200
