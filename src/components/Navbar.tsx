@@ -28,6 +28,12 @@ const Navbar = () => {
               Products
             </Link>
             <Link
+              to="/blog"
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Blog
+            </Link>
+            <Link
               to="/sobre"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
@@ -67,6 +73,13 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Products
+            </Link>
+            <Link
+              to="/blog"
+              className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Blog
             </Link>
             <Link
               to="/sobre"

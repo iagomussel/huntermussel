@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import BlogRedirect from './components/BlogRedirect';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
               <Route path="/produtos" element={<Products />} />
               <Route path="/sobre" element={<About />} />
               <Route path="/contato" element={<Contact />} />
+              <Route path="/blog" element={<BlogRedirect />} />
             </Routes>
             <Footer />
           </div>

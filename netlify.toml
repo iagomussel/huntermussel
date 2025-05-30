@@ -2,6 +2,14 @@
     command="vite build"
     publish="/dist"
     base="/"
+
+# Redireciona /blog para o subdomínio
+[[redirects]]
+    from = "/blog"
+    to = "https://blog.huntermussel.com"
+    status = 301
+
+# Catch-all para SPA
 [[redirects]]
     from = "/*"
     to = "index.html"

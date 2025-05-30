@@ -1,14 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 
-const SITE_URL = process.env.VITE_SITE_URL || 'https://odontomaster.com.br';
+const SITE_URL = process.env.VITE_SITE_URL || 'https://huntermussel.com';
 
 const routes = [
   '/',
   '/produtos',
   '/sobre',
   '/contato',
-  '/blog',
 ];
 
 const generateSitemap = () => {
