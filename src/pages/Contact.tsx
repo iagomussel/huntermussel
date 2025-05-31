@@ -155,8 +155,8 @@ const Contact = () => {
                           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                         >
                           <option value="odontomaster">OdontoMaster</option>
-                          <option value="petmaster">PetMaster (Coming Soon)</option>
-                          <option value="edumaster">EduMaster (Coming Soon)</option>
+                                          <option value="veterinary">Veterinary Management System</option>
+                <option value="educational">Educational Management Platform</option>
                           <option value="custom">Custom Development</option>
                         </select>
                       </div>
