@@ -1,4 +1,3 @@
-
 import { Helmet } from 'react-helmet-async';
 import Hero from '../components/Hero';
 import Services from '../components/Plans';
@@ -49,7 +48,7 @@ const Home = () => {
         <meta name="keywords" content="software development, web development, mobile apps, custom software, enterprise solutions, react development, node.js" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
+
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://huntermussel.com/" />
@@ -67,17 +66,17 @@ const Home = () => {
 
         {/* Canonical URL */}
         <link rel="canonical" href="https://huntermussel.com/" />
-        
+
         {/* Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
-      
+
       <main id="main-content">
         <Hero />
         <Services />
-        
+
         {/* Mobile Contact Flow Section */}
         <section className="py-12 sm:py-16 lg:py-20 bg-gray-50" aria-labelledby="contact-heading">
           <div className="container mx-auto px-4">
@@ -108,7 +107,7 @@ const Home = () => {
               Let's discuss your ideas and bring them to life
             </p>
             <Link
-              to="/contato"
+              to="/contact"
               className="inline-flex items-center px-6 sm:px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-sm sm:text-base"
               aria-label="Contact us to get started on your project"
             >
