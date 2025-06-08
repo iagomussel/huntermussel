@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { A11yProvider } from 'react-accessible-ui';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -10,30 +11,46 @@ import Plans from './pages/Plans';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Referrals from './pages/Referrals';
-import NewsletterPage from './pages/Newsletter';
+import Newsletter from './pages/Newsletter';
 import BlogRedirect from './components/BlogRedirect';
 import ErrorBoundary from './components/ErrorBoundary';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <HelmetProvider>
-      <ErrorBoundary>
-        <Router>
-          <div className="min-h-screen bg-gray-50 flex flex-col">
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/produtos" element={<Products />} />
-              <Route path="/sobre" element={<About />} />
-              <Route path="/contato" element={<Contact />} />
-              <Route path="/referrals" element={<Referrals />} />
-              <Route path="/newsletter" element={<NewsletterPage />} />
-              <Route path="/blog" element={<BlogRedirect />} />
-            </Routes>
-            <Footer />
-          </div>
-        </Router>
-      </ErrorBoundary>
+      <A11yProvider>
+        <ErrorBoundary>
+          <Router>
+            <div className="min-h-screen bg-gray-50">
+              <Navbar />
+              <main className="pt-0">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/sobre" element={<About />} />
+                  <Route path="/produtos" element={<Products />} />
+                  <Route path="/contato" element={<Contact />} />
+                  <Route path="/projetos" element={<Projects />} />
+                  <Route path="/planos" element={<Plans />} />
+                  <Route path="/newsletter" element={<Newsletter />} />
+                  <Route path="/admin/login" element={<Login />} />
+                  <Route 
+                    path="/admin/referrals" 
+                    element={
+                      <PrivateRoute>
+                        <Referrals />
+                      </PrivateRoute>
+                    } 
+                  />
+                  <Route path="/blog" element={<BlogRedirect />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </Router>
+        </ErrorBoundary>
+      </A11yProvider>
     </HelmetProvider>
   );
 }
