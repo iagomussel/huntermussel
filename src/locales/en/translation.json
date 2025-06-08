@@ -1,0 +1,66 @@
+{
+  "plans": {
+    "title": "Support Plans",
+    "subtitle": "Choose the plan that best fits your needs",
+    "mostPopular": "Most Popular",
+    "hoursIncluded": "hours included",
+    "subscribe": "Subscribe",
+    "slaNote": "24/7 SLA available for all plans (+$100/month)",
+    "essential": {
+      "title": "Essential Plan",
+      "description": "Perfect for small businesses with low support demands",
+      "features": [
+        "Simple bug fixes",
+        "Basic technical support",
+        "Small updates",
+        "$45/hour for additional hours"
+      ]
+    },
+    "professional": {
+      "title": "Professional Plan",
+      "description": "Ideal for growing businesses requiring continuous support",
+      "features": [
+        "Priority technical support",
+        "Minor feature implementations",
+        "Basic system monitoring",
+        "Monthly detailed report",
+        "$45/hour for additional hours"
+      ]
+    },
+    "custom": {
+      "title": "Custom Plan",
+      "description": "For businesses with complex and frequent demands",
+      "features": [
+        "Fully customizable",
+        "Dedicated support",
+        "24/7 priority service",
+        "Weekly progress meetings",
+        "Infrastructure & development"
+      ]
+    }
+  },
+  "contactForm": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "submit": "Send Message",
+    "sending": "Sending...",
+    "sent": "Message Sent!",
+    "error": "An error occurred. Please try again."
+  },
+  "portfolio": {
+    "title": "Our Portfolio",
+    "description": "Explore our work and discover how we've helped businesses across various industries",
+    "categories": {
+      "all": "All Projects",
+      "web": "Web Applications",
+      "mobile": "Mobile Apps",
+      "cloud": "Cloud Solutions"
+    },
+    "cta": {
+      "title": "Ready to start your project?",
+      "button": "Get in touch"
+    }
+  }
+}

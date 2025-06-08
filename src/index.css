@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-specific improvements */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  /* Touch-friendly interactive elements */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improved focus states for mobile */
+  .focus-visible:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  /* Better text rendering on mobile */
+  .mobile-text {
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Improve scroll performance on mobile */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better tap highlights */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

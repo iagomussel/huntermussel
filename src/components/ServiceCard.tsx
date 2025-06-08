@@ -1,23 +1,24 @@
 import React from 'react';
-import { Icon } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ServiceCardProps {
   title: string;
   description: string;
-  icon: Icon;
+  icon: LucideIcon;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon: IconComponent }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon: Icon }) => {
   return (
     <motion.div
-      whileHover={{ y: -5 }}
-      className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all"
+      className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300 }}
     >
-      <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-        <IconComponent className="h-6 w-6 text-indigo-600" />
+      <div className="flex items-center mb-4">
+        <Icon className="w-6 h-6 text-primary-600 mr-3" />
+        <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
       </div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-gray-600">{description}</p>
     </motion.div>
   );

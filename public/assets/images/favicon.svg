@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .target { stroke: #4B82F1; stroke-width: 2; fill: none; }
+    .dot { fill: #4B82F1; }
+  </style>
+
+  <!-- Background -->
+  <rect width="32" height="32" rx="8" fill="white"/>
+  
+  <!-- Target/Mira Icon -->
+  <g transform="translate(16, 16)">
+    <circle class="target" cx="0" cy="0" r="10"/>
+    <line x1="0" y1="-14" x2="0" y2="-10" stroke="#4B82F1" stroke-width="2"/>
+    <line x1="0" y1="10" x2="0" y2="14" stroke="#4B82F1" stroke-width="2"/>
+    <line x1="-14" y1="0" x2="-10" y2="0" stroke="#4B82F1" stroke-width="2"/>
+    <line x1="10" y1="0" x2="14" y2="0" stroke="#4B82F1" stroke-width="2"/>
+    <circle class="dot" cx="0" cy="0" r="3"/>
+  </g>
+</svg> 
