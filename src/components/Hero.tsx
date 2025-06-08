@@ -27,21 +27,29 @@ const Hero = () => {
           <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 text-blue-100 leading-relaxed px-4">
             We transform ideas into powerful digital solutions that drive business growth
           </p>
+          <div className="mb-6 sm:mb-8">
+            <div className="inline-block bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              🚀 30-Day MVP Guarantee
+            </div>
+          </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
             <Link
-              to="/contato"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold transition-colors inline-flex items-center justify-center text-sm sm:text-base"
+              to="/contact"
+              className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-lg font-bold transition-all inline-flex items-center justify-center text-sm sm:text-base shadow-xl transform hover:scale-105"
             >
-              Start Your Project
+              Get Free Strategy Call
               <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
             <Link
-              to="/sobre"
+              to="/free-tools"
               className="border-2 border-blue-300 text-blue-100 hover:bg-blue-300 hover:text-blue-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold transition-colors text-sm sm:text-base"
             >
-              Learn More
+              Try Free Tools
             </Link>
           </div>
+          <p className="text-blue-200 text-sm mt-4">
+            ⚡ Average response time: 2 hours | 🛡️ No commitment required
+          </p>
         </motion.div>
       </div>
     </section>
