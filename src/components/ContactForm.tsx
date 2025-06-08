@@ -1,199 +1,141 @@
-import React, { useState } from 'react';
-import { Send, Check } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { Send } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { sendContactForm, ContactFormData } from '../utils/notifications';
+import { useToast } from '../utils/useToast';
+import Toast from './Toast';
 
-const defaultMessages = {
-  name: 'Name',
-  email: 'Email',
-  phone: 'Phone',
-  message: 'Message',
-  submit: 'Send Message',
-  sending: 'Sending...',
-  sent: 'Message Sent!',
-  error: 'An error occurred. Please try again.',
-};
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
 
 const ContactForm = () => {
-  const { t } = useTranslation('translation', {
-    useSuspense: false,
-    fallback: defaultMessages
-  });
-
-  const getTranslation = (key: keyof typeof defaultMessages) => {
-    try {
-      return t(`contactForm.${key}`) || defaultMessages[key];
-    } catch {
-      return defaultMessages[key];
-    }
-  };
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    phone: '',
-    message: '',
+    message: ''
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast, showToast, hideToast } = useToast();
 
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-    });
-  };
-
-  const formatWhatsAppMessage = (data: typeof formData) => {
-    const message = Object.entries(data)
-      .map(([key, value]) => `${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}`)
-      .join('%0A');
-    return encodeURIComponent(message);
-  };
-
-  const openWhatsApp = (message: string) => {
-    const whatsappUrl = `https://wa.me/5521995775689?text=${message}`;
-    const windowRef = window.open(whatsappUrl, '_blank');
-    
-    if (!windowRef) {
-      throw new Error('Failed to open WhatsApp. Please check your popup blocker settings.');
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
     setIsSubmitting(true);
     
     try {
-      const formattedMessage = formatWhatsAppMessage(formData);
-      openWhatsApp(formattedMessage);
+      const contactData: ContactFormData = {
+        ...formData,
+        source: 'hero'
+      };
       
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setIsSuccess(true);
-      resetForm();
+      const result = await sendContactForm(contactData);
       
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 3000);
-    } catch (err) {
-      console.error('Contact form error:', err);
-      setError(
-        err instanceof Error 
-          ? err.message 
-          : getTranslation('error')
-      );
+      if (result.success) {
+        showToast(result.message, 'success');
+        // Reset form on success
+        setFormData({
+          name: '',
+          email: '',
+          message: ''
+        });
+      } else {
+        showToast(result.message, 'error');
+      }
+    } catch (error) {
+      showToast('Unexpected error. Please try again later.', 'error');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const inputClasses = "mt-1 block w-full rounded-lg border-gray-300 bg-gray-50 shadow-sm focus:border-indigo-500 focus:ring-indigo-500";
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg">
-          {error}
-        </div>
-      )}
-      
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-          {getTranslation('name')}
-        </label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          required
-          className={inputClasses}
-          onChange={handleChange}
-          value={formData.name}
-          disabled={isSubmitting}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          {getTranslation('email')}
-        </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          required
-          className={inputClasses}
-          onChange={handleChange}
-          value={formData.email}
-          disabled={isSubmitting}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-          {getTranslation('phone')}
-        </label>
-        <input
-          type="tel"
-          name="phone"
-          id="phone"
-          className={inputClasses}
-          onChange={handleChange}
-          value={formData.phone}
-          disabled={isSubmitting}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-          {getTranslation('message')}
-        </label>
-        <textarea
-          name="message"
-          id="message"
-          rows={4}
-          required
-          className={inputClasses}
-          onChange={handleChange}
-          value={formData.message}
-          disabled={isSubmitting}
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={`w-full flex justify-center items-center py-3 px-4 rounded-lg text-white transition-colors ${
-          isSuccess
-            ? 'bg-green-600 hover:bg-green-700'
-            : 'bg-indigo-600 hover:bg-indigo-700'
-        } disabled:opacity-50 disabled:cursor-not-allowed`}
+    <>
+      <Toast toast={toast} onClose={hideToast} />
+      <motion.form
+        onSubmit={handleSubmit}
+        className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        {isSubmitting ? (
-          <span className="animate-pulse">{getTranslation('sending')}</span>
-        ) : isSuccess ? (
-          <>
-            {getTranslation('sent')}
-            <Check className="ml-2 h-5 w-5" />
-          </>
-        ) : (
-          <>
-            {getTranslation('submit')}
-            <Send className="ml-2 h-5 w-5" />
-          </>
-        )}
-      </button>
-    </form>
+        <h2 className="text-2xl font-bold mb-6">Contact Us</h2>
+        
+        <div className="mb-4">
+          <label htmlFor="name" className="block text-gray-700 mb-2">
+            Name *
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={handleChange}
+            disabled={isSubmitting}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="email" className="block text-gray-700 mb-2">
+            Email *
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+            disabled={isSubmitting}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="message" className="block text-gray-700 mb-2">
+            Message *
+          </label>
+          <textarea
+            id="message"
+            value={formData.message}
+            onChange={handleChange}
+            rows={4}
+            disabled={isSubmitting}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            required
+            placeholder="Tell us about your project..."
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          {isSubmitting ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Sending...
+            </>
+          ) : (
+            <>
+              <Send className="w-4 h-4 mr-2" />
+              Submit
+            </>
+          )}
+        </button>
+      </motion.form>
+    </>
   );
 };
 

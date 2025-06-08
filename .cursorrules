@@ -1,0 +1,15 @@
+{
+  "formatOnSave": true,
+  "defaultFormatter": "prettier",
+  "tabSize": 2,
+  "insertSpaces": true,
+  "trimTrailingWhitespace": true,
+  "insertFinalNewline": true,
+  "rulers": [80, 100],
+  "wordWrap": "off",
+  "bracketPairColorization": true,
+  "guides": {
+    "indentation": true,
+    "bracketPairs": true
+  }
+}
