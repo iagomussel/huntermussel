@@ -4,7 +4,9 @@ import Services from '../components/Plans';
 import ContactForm from '../components/ContactForm';
 import MobileContactFlow from '../components/MobileContactFlow';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Users, Calendar, FileText, Calculator, Palette, Download } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const Home = () => {
   const structuredData = {
@@ -36,6 +38,11 @@ const Home = () => {
       }
     }
   };
+
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
   return (
     <>
@@ -114,6 +121,94 @@ const Home = () => {
               Get Started Today
               <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
+          </div>
+        </section>
+
+        {/* Free Tools Section */}
+        <section ref={ref} className="py-16 bg-green-50">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl font-bold mb-4">
+                🎁 Free Tools for Startups
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Get professional-grade tools at no cost. Perfect for planning your next project or improving your current workflow.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-4 gap-6 mb-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="bg-white p-6 rounded-lg shadow-lg text-center"
+              >
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Calculator className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Startup Cost Calculator</h3>
+                <p className="text-sm text-gray-600">Get accurate development cost estimates</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="bg-white p-6 rounded-lg shadow-lg text-center"
+              >
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">API Docs Generator</h3>
+                <p className="text-sm text-gray-600">Create professional documentation instantly</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="bg-white p-6 rounded-lg shadow-lg text-center"
+              >
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Palette className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Color Palette Generator</h3>
+                <p className="text-sm text-gray-600">Generate beautiful brand color schemes</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="bg-white p-6 rounded-lg shadow-lg text-center"
+              >
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Download className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Project Templates</h3>
+                <p className="text-sm text-gray-600">Download professional requirement docs</p>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-center"
+            >
+              <Link
+                to="/free-tools"
+                className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors"
+              >
+                Access Free Tools
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </motion.div>
           </div>
         </section>
       </main>

@@ -4,14 +4,15 @@ import { A11yProvider } from './components/A11yProvider';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import About from './pages/About';
 import Products from './pages/Products';
 import Projects from './pages/Projects';
 import Plans from './pages/Plans';
+import About from './pages/About';
 import Contact from './pages/Contact';
-import Login from './pages/Login';
-import Referrals from './pages/Referrals';
+import FreeTools from './pages/FreeTools';
 import Newsletter from './pages/Newsletter';
+import Referrals from './pages/Referrals';
+import Login from './pages/Login';
 import BlogRedirect from './components/BlogRedirect';
 import ErrorBoundary from './components/ErrorBoundary';
 import PrivateRoute from './components/PrivateRoute';
@@ -27,11 +28,13 @@ function App() {
               <main className="pt-0">
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/sobre" element={<About />} />
                   <Route path="/produtos" element={<Products />} />
-                  <Route path="/contact" element={<Contact />} />
                   <Route path="/projetos" element={<Projects />} />
                   <Route path="/planos" element={<Plans />} />
+                  <Route path="/sobre" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/contato" element={<Navigate to="/contact" replace />} />
+                  <Route path="/free-tools" element={<FreeTools />} />
                   <Route path="/newsletter" element={<Newsletter />} />
                   <Route path="/admin/login" element={<Login />} />
                   <Route 

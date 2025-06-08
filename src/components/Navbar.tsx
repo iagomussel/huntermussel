@@ -35,6 +35,12 @@ const Navbar = () => {
               Projects
             </Link>
             <Link
+              to="/free-tools"
+              className="text-green-600 hover:text-green-700 transition-colors font-medium text-sm lg:text-base"
+            >
+              Free Tools
+            </Link>
+            <Link
               to="/sobre"
               className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-sm lg:text-base"
             >
@@ -82,6 +88,13 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Projects
+            </Link>
+            <Link
+              to="/free-tools"
+              className="block px-3 py-3 text-green-600 hover:text-green-700 hover:bg-green-50 transition-colors font-medium rounded-lg"
+              onClick={() => setIsOpen(false)}
+            >
+              Free Tools ✨
             </Link>
             <Link
               to="/sobre"
