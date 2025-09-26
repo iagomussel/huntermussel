@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ArrowLeft, Phone, Mail, MessageSquare, Calculator, Send } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Phone, MessageSquare, Calculator, Send } from 'lucide-react';
 import { useToast } from '../utils/useToast';
 import Toast from './Toast';
 
@@ -76,9 +76,15 @@ const MobileContactFlow = () => {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    
+
     try {
-      const response = await fetch(process.env.VITE_N8N_WEBHOOK_URL || '', {
+      const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
+
+      if (!webhookUrl) {
+        throw new Error('Webhook URL not configured');
+      }
+
+      const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

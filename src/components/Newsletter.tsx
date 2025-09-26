@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Bell, BookOpen, Code } from 'lucide-react';
 import { useToast } from '../utils/useToast';
@@ -30,7 +30,7 @@ const Newsletter = () => {
     { id: 'industry-trends', label: 'Industry Trends', icon: Mail }
   ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -46,12 +46,18 @@ const Newsletter = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      const response = await fetch(process.env.VITE_N8N_WEBHOOK_URL || '', {
+      const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
+
+      if (!webhookUrl) {
+        throw new Error('Webhook URL not configured');
+      }
+
+      const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

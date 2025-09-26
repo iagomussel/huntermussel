@@ -1,14 +1,48 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Star, Zap, Smartphone, Brain, Cog } from 'lucide-react';
+import { Check, Star, Zap, Smartphone, Brain, Cog, Calculator, FileText } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import type { LucideIcon } from 'lucide-react';
+
+type CategoryId = 'platforms' | 'mobile' | 'automation' | 'ai';
+
+interface BaseProduct {
+  name: string;
+  description: string;
+  features: string[];
+  category: string;
+}
+
+interface SubscriptionProduct extends BaseProduct {
+  monthlyPrice: number;
+  yearlyPrice: number;
+  setup?: number;
+  popular?: boolean;
+}
+
+interface ProjectProduct extends BaseProduct {
+  price: string;
+  timeline?: string;
+}
+
+type Product = SubscriptionProduct | ProjectProduct;
+
+interface Category {
+  id: CategoryId;
+  name: string;
+  icon: LucideIcon;
+  products: Product[];
+}
+
+const isSubscriptionProduct = (product: Product): product is SubscriptionProduct =>
+  'monthlyPrice' in product && 'yearlyPrice' in product;
 
 const Plans = () => {
-  const [billingCycle, setBillingCycle] = useState('monthly');
-  const [selectedCategory, setSelectedCategory] = useState('platforms');
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryId>('platforms');
 
-  const platformProducts = [
+  const platformProducts: SubscriptionProduct[] = [
     {
       name: 'OdontoMaster Pro',
       description: 'Complete dental practice management',
@@ -66,7 +100,7 @@ const Plans = () => {
     }
   ];
 
-  const mobileApps = [
+  const mobileApps: ProjectProduct[] = [
     {
       name: 'Android App Development',
       description: 'Native Android applications',
@@ -120,7 +154,7 @@ const Plans = () => {
     }
   ];
 
-  const automationServices = [
+  const automationServices: ProjectProduct[] = [
     {
       name: 'Business Process Automation',
       description: 'Streamline your workflows',
@@ -174,7 +208,7 @@ const Plans = () => {
     }
   ];
 
-  const aiServices = [
+  const aiServices: ProjectProduct[] = [
     {
       name: 'AI Chatbot Development',
       description: 'Intelligent customer service bots',
@@ -228,14 +262,14 @@ const Plans = () => {
     }
   ];
 
-  const categories = [
+  const categories: Category[] = [
     { id: 'platforms', name: 'SaaS Platforms', icon: Cog, products: platformProducts },
     { id: 'mobile', name: 'Mobile Apps', icon: Smartphone, products: mobileApps },
     { id: 'automation', name: 'Automation', icon: Zap, products: automationServices },
     { id: 'ai', name: 'AI Solutions', icon: Brain, products: aiServices }
   ];
 
-  const selectedProducts = categories.find(cat => cat.id === selectedCategory)?.products || [];
+  const selectedProducts: Product[] = categories.find(cat => cat.id === selectedCategory)?.products || [];
 
   return (
     <>
@@ -323,10 +357,10 @@ const Plans = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                   className={`bg-white rounded-xl shadow-lg overflow-hidden relative ${
-                    product.popular ? 'ring-2 ring-blue-500' : ''
+                    isSubscriptionProduct(product) && product.popular ? 'ring-2 ring-blue-500' : ''
                   }`}
                 >
-                  {product.popular && (
+                  {isSubscriptionProduct(product) && product.popular && (
                     <div className="absolute top-0 right-0 bg-blue-500 text-white px-4 py-1 text-sm font-medium rounded-bl-lg">
                       <Star className="inline h-4 w-4 mr-1" />
                       Popular
@@ -345,7 +379,7 @@ const Plans = () => {
                     </div>
 
                     <div className="mb-6">
-                      {product.monthlyPrice ? (
+                      {isSubscriptionProduct(product) ? (
                         <>
                           <div className="text-4xl font-bold text-gray-900 mb-2">
                             ${billingCycle === 'monthly' ? product.monthlyPrice : Math.round(product.yearlyPrice / 12)}
@@ -381,12 +415,12 @@ const Plans = () => {
 
                     <button
                       className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-                        product.popular
+                        isSubscriptionProduct(product) && product.popular
                           ? 'bg-blue-600 text-white hover:bg-blue-700'
                           : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                       }`}
                     >
-                      {product.monthlyPrice ? 'Start Free Trial' : 'Get Quote'}
+                      {isSubscriptionProduct(product) ? 'Start Free Trial' : 'Get Quote'}
                     </button>
                   </div>
                 </motion.div>
