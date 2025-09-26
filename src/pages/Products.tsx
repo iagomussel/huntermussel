@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Users, Calendar, FileText } from 'lucide-react';
+import { ArrowRight, Users, Calendar, FileText, Shield, Calculator, Clock, CheckCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import type { LucideIcon } from 'lucide-react';
 
 const Products = () => {
   const { ref, inView } = useInView({
@@ -10,7 +11,41 @@ const Products = () => {
     triggerOnce: true,
   });
 
-  const features = [
+  const { ref: awsRef, inView: awsInView } = useInView({
+    threshold: 0.2,
+    triggerOnce: true,
+  });
+
+  const awsAuditHighlights: { icon: LucideIcon; title: string; description: string }[] = [
+    {
+      icon: Shield,
+      title: 'Security & Compliance Hardening',
+      description: 'Find IAM, VPC, and data protection gaps before they become incidents or audit findings.'
+    },
+    {
+      icon: Calculator,
+      title: 'Cost Optimization Roadmap',
+      description: 'Model savings opportunities across reserved instances, storage, and compute waste in hours—not weeks.'
+    },
+    {
+      icon: FileText,
+      title: 'Executive Reporting Pack',
+      description: 'Receive a board-ready briefing plus a detailed technical appendix for your engineering teams.'
+    },
+    {
+      icon: Clock,
+      title: '72-Hour Turnaround',
+      description: 'Kickoff to executive meeting in three business days guided by senior AWS architects.'
+    }
+  ];
+
+  const awsAuditStats = [
+    { stat: '30%', label: 'Average Immediate Savings Identified' },
+    { stat: '50+', label: 'Controls Reviewed per Engagement' },
+    { stat: '1', label: 'Executive Strategy Session Included' }
+  ];
+
+  const odontomasterFeatures = [
     {
       icon: Users,
       title: 'Patient Management',
@@ -31,8 +66,11 @@ const Products = () => {
   return (
     <>
       <Helmet>
-        <title>Products - Hunter Mussel</title>
-        <meta name="description" content="Explore our software product line. OdontoMaster: complete dental clinic management system and more innovative solutions." />
+        <title>Products - AWS Audit Accelerator & Custom Platforms | Hunter Mussel</title>
+        <meta
+          name="description"
+          content="Discover Hunter Mussel's flagship AWS Audit Accelerator along with industry-specific platforms like OdontoMaster. Secure AWS environments, reduce spend, and deploy tailored software products."
+        />
       </Helmet>
 
       <main className="flex-1">
@@ -46,13 +84,113 @@ const Products = () => {
               transition={{ duration: 0.8 }}
               className="max-w-3xl mx-auto text-center"
             >
-              <h1 className="text-4xl font-bold text-white mb-8">
-                Our Products
+              <h1 className="text-4xl font-bold text-white mb-6">
+                Flagship Products & Cloud Programs
               </h1>
-              <p className="text-xl text-blue-100 mb-12">
-                Innovative software solutions designed for your business needs
+              <p className="text-xl text-blue-100 mb-8">
+                From the AWS Audit Accelerator to vertical-specific platforms, Hunter Mussel delivers solutions that harden security, trim spend, and accelerate innovation.
               </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <a
+                  href="https://awsaudit.huntermussel.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-blue-50 transition-colors"
+                >
+                  Book the AWS Audit
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center justify-center border border-blue-100 text-blue-100 hover:bg-blue-500/20 px-6 py-3 rounded-lg font-semibold transition-colors"
+                >
+                  Talk About Custom Builds
+                </Link>
+              </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* AWS Audit Accelerator Section */}
+        <section ref={awsRef} className="py-20 bg-slate-900 text-white">
+          <div className="container mx-auto px-4">
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={awsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8 }}
+                className="space-y-6"
+              >
+                <span className="inline-flex items-center bg-blue-500/10 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide">
+                  AWS Audit Accelerator
+                </span>
+                <h2 className="text-3xl font-bold leading-tight">
+                  The fastest path to an executive-ready AWS risk, reliability, and cost assessment.
+                </h2>
+                <p className="text-blue-100 text-lg">
+                  In three business days we inspect 50+ controls across security, infrastructure, data, and spend. You leave with a prioritized remediation plan and a live executive workshop led by a senior cloud architect.
+                </p>
+                <ul className="space-y-3 text-blue-100">
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
+                    Comprehensive review mapped to AWS Well-Architected and CIS Benchmarks.
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
+                    Executive scorecards with quantified savings, risk level, and remediation effort.
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
+                    30-60-90 day roadmap plus optional implementation support from our engineering squad.
+                  </li>
+                </ul>
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <a
+                    href="https://awsaudit.huntermussel.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center bg-green-500 text-slate-900 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-green-400 transition-colors"
+                  >
+                    See Audit Packages
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center border border-blue-200 text-blue-100 hover:bg-blue-500/20 px-6 py-3 rounded-lg font-semibold transition-colors"
+                  >
+                    Request Enterprise Quote
+                  </Link>
+                </div>
+                <div className="grid sm:grid-cols-3 gap-4 pt-6">
+                  {awsAuditStats.map((item) => (
+                    <div key={item.label} className="bg-slate-800/60 border border-slate-700 rounded-xl px-4 py-5 text-center">
+                      <div className="text-2xl font-bold text-blue-200 mb-1">{item.stat}</div>
+                      <div className="text-xs uppercase tracking-wide text-blue-300">{item.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={awsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="grid sm:grid-cols-2 gap-6"
+              >
+                {awsAuditHighlights.map((highlight) => {
+                  const Icon = highlight.icon;
+                  return (
+                    <div key={highlight.title} className="bg-slate-800/60 border border-slate-700 rounded-xl p-6">
+                      <div className="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4">
+                        <Icon className="h-6 w-6 text-blue-200" />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-2">{highlight.title}</h3>
+                      <p className="text-blue-100 text-sm leading-relaxed">{highlight.description}</p>
+                    </div>
+                  );
+                })}
+              </motion.div>
+            </div>
           </div>
         </section>
 
@@ -105,7 +243,7 @@ const Products = () => {
                   <div className="space-y-6">
                     <h3 className="text-xl font-semibold">Key Features</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {features.map((feature, index) => {
+                      {odontomasterFeatures.map((feature, index) => {
                         const Icon = feature.icon;
                         return (
                           <motion.div
