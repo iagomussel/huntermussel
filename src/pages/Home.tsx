@@ -6,7 +6,7 @@ import ContactForm from '../components/ContactForm';
 import { lazy } from 'react';
 const MobileContactFlow = lazy(() => import('../components/MobileContactFlow'));
 import { Link } from 'react-router-dom';
-import { ArrowRight, Users, FileText, Calculator, Palette, Download, CheckCircle, Star, Zap, Shield, Clock, Award, TrendingUp } from 'lucide-react';
+import { ArrowRight, Users, Calendar, FileText, Calculator, Palette, Download, CheckCircle, Star, Zap, Shield, Clock, Award, TrendingUp } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
