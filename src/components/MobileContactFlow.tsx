@@ -36,30 +36,29 @@ const MobileContactFlow = () => {
   const { toast, showToast, hideToast } = useToast();
 
   const projectTypes = [
-    'Web Application',
-    'Mobile App',
-    'E-commerce Platform',
-    'Management System',
-    'API Development',
-    'Custom Software',
-    'Other'
+    'Auditoria completa da conta AWS',
+    'FinOps e otimização de custos',
+    'Implementação de recomendações do relatório',
+    'Modernização de workloads críticos',
+    'Automação / DevOps',
+    'Programa sob medida',
+    'Outro contexto'
   ];
 
   const budgetRanges = [
-    'Under $5,000',
-    '$5,000 - $15,000',
-    '$15,000 - $30,000',
-    '$30,000 - $50,000',
-    '$50,000+',
-    'Not sure yet'
+    'Até R$ 15 mil',
+    'R$ 15 mil - R$ 35 mil',
+    'R$ 35 mil - R$ 60 mil',
+    'Acima de R$ 60 mil',
+    'Ainda estamos estimando'
   ];
 
   const timelineOptions = [
-    'ASAP',
-    '1-2 months',
-    '3-6 months',
-    '6+ months',
-    'Flexible'
+    'Imediatamente',
+    'Próximas 2 semanas',
+    'Próximos 30 dias',
+    '60 dias ou mais',
+    'Ainda em definição'
   ];
 
   const nextStep = () => {
@@ -108,7 +107,7 @@ const MobileContactFlow = () => {
       });
 
       if (response.ok) {
-        showToast('Contact request submitted successfully!', 'success');
+        showToast('Recebemos sua solicitação! Em breve entraremos em contato.', 'success');
         setData({
           step: 1,
           contactType: '',
@@ -125,7 +124,7 @@ const MobileContactFlow = () => {
         throw new Error('Failed to submit');
       }
     } catch (error) {
-      showToast('Error submitting request. Please try again.', 'error');
+      showToast('Não foi possível enviar agora. Tente novamente.', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -142,7 +141,7 @@ const MobileContactFlow = () => {
       <div className="max-w-md mx-auto bg-white rounded-xl shadow-xl overflow-hidden min-h-[600px]">
         {/* Progress Bar */}
         <div className="bg-gray-200 h-2">
-          <div 
+          <div
             className="bg-blue-600 h-2 transition-all duration-300"
             style={{ width: `${getStepProgress()}%` }}
           />
@@ -150,9 +149,9 @@ const MobileContactFlow = () => {
 
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 text-center">
-          <h2 className="text-xl font-bold">Get In Touch</h2>
+          <h2 className="text-xl font-bold">Entre em contato</h2>
           <p className="text-blue-100 text-sm mt-1">
-            Step {data.step} of {data.contactType === 'quote' ? '5' : '3'}
+            Etapa {data.step} de {data.contactType === 'quote' ? '5' : '3'}
           </p>
         </div>
 
@@ -168,7 +167,7 @@ const MobileContactFlow = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <h3 className="text-lg font-semibold mb-4">How can we help you?</h3>
+                <h3 className="text-lg font-semibold mb-4">Como podemos ajudar sua operação AWS?</h3>
                 <div className="space-y-3">
                   <button
                     onClick={() => {
@@ -179,11 +178,11 @@ const MobileContactFlow = () => {
                   >
                     <Calculator className="w-6 h-6 text-blue-600 mr-3" />
                     <div>
-                      <div className="font-medium">Get a Quote</div>
-                      <div className="text-sm text-gray-500">For a new project</div>
+                      <div className="font-medium">Reservar auditoria AWS</div>
+                      <div className="text-sm text-gray-500">Diagnóstico completo em 72h</div>
                     </div>
                   </button>
-                  
+
                   <button
                     onClick={() => {
                       handleInputChange('contactType', 'support');
@@ -193,11 +192,11 @@ const MobileContactFlow = () => {
                   >
                     <Phone className="w-6 h-6 text-green-600 mr-3" />
                     <div>
-                      <div className="font-medium">Support Request</div>
-                      <div className="text-sm text-gray-500">For existing clients</div>
+                      <div className="font-medium">Suporte para clientes</div>
+                      <div className="text-sm text-gray-500">Acesso a squads ou FinOps</div>
                     </div>
                   </button>
-                  
+
                   <button
                     onClick={() => {
                       handleInputChange('contactType', 'general');
@@ -207,8 +206,8 @@ const MobileContactFlow = () => {
                   >
                     <MessageSquare className="w-6 h-6 text-purple-600 mr-3" />
                     <div>
-                      <div className="font-medium">General Inquiry</div>
-                      <div className="text-sm text-gray-500">Questions or partnerships</div>
+                      <div className="font-medium">Conversar com especialista</div>
+                      <div className="text-sm text-gray-500">Parcerias ou outras demandas</div>
                     </div>
                   </button>
                 </div>
@@ -224,7 +223,7 @@ const MobileContactFlow = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <h3 className="text-lg font-semibold mb-4">What type of project?</h3>
+                <h3 className="text-lg font-semibold mb-4">Qual é a prioridade principal?</h3>
                 <div className="space-y-2">
                   {projectTypes.map((type) => (
                     <button
@@ -244,7 +243,7 @@ const MobileContactFlow = () => {
                   className="flex items-center text-gray-600 hover:text-gray-800 mt-4"
                 >
                   <ArrowLeft className="w-4 h-4 mr-1" />
-                  Back
+                  Voltar
                 </button>
               </motion.div>
             )}
@@ -259,7 +258,7 @@ const MobileContactFlow = () => {
                 className="space-y-6"
               >
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Budget Range</h3>
+                  <h3 className="text-lg font-semibold mb-4">Faixa de investimento</h3>
                   <div className="space-y-2">
                     {budgetRanges.map((budget) => (
                       <button
@@ -278,7 +277,7 @@ const MobileContactFlow = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-4">Timeline</h3>
+                  <h3 className="text-lg font-semibold mb-4">Quando deseja iniciar?</h3>
                   <div className="space-y-2">
                     {timelineOptions.map((timeline) => (
                       <button
@@ -302,14 +301,14 @@ const MobileContactFlow = () => {
                     className="flex items-center text-gray-600 hover:text-gray-800"
                   >
                     <ArrowLeft className="w-4 h-4 mr-1" />
-                    Back
+                    Voltar
                   </button>
                   <button
                     onClick={nextStep}
                     disabled={!data.budget || !data.timeline}
                     className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
                   >
-                    Next
+                    Avançar
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </button>
                 </div>
@@ -325,44 +324,44 @@ const MobileContactFlow = () => {
                 exit={{ opacity: 0, x: -20 }}
                 className="space-y-4"
               >
-                <h3 className="text-lg font-semibold mb-4">Your Information</h3>
+                <h3 className="text-lg font-semibold mb-4">Seus dados</h3>
                 <div className="space-y-4">
                   <input
                     type="text"
-                    placeholder="Full Name *"
+                    placeholder="Nome completo *"
                     value={data.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
-                  
+
                   <input
                     type="email"
-                    placeholder="Email *"
+                    placeholder="E-mail corporativo *"
                     value={data.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
-                  
+
                   <input
                     type="tel"
-                    placeholder="Phone"
+                    placeholder="Telefone / WhatsApp"
                     value={data.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
-                  
+
                   <input
                     type="text"
-                    placeholder="Company"
+                    placeholder="Empresa"
                     value={data.company}
                     onChange={(e) => handleInputChange('company', e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
-                  
+
                   <textarea
-                    placeholder="Additional message..."
+                    placeholder="Compartilhe contexto adicional ou objetivos do board"
                     value={data.message}
                     onChange={(e) => handleInputChange('message', e.target.value)}
                     rows={3}
@@ -376,7 +375,7 @@ const MobileContactFlow = () => {
                     className="flex items-center text-gray-600 hover:text-gray-800"
                   >
                     <ArrowLeft className="w-4 h-4 mr-1" />
-                    Back
+                    Voltar
                   </button>
                   <button
                     onClick={handleSubmit}
@@ -389,11 +388,11 @@ const MobileContactFlow = () => {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Sending...
+                        Enviando...
                       </>
                     ) : (
                       <>
-                        Send
+                        Enviar
                         <Send className="w-4 h-4 ml-1" />
                       </>
                     )}
