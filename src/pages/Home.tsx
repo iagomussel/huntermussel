@@ -7,6 +7,7 @@ import { lazy } from 'react';
 const MobileContactFlow = lazy(() => import('../components/MobileContactFlow'));
 import { Link } from 'react-router-dom';
 import { ArrowRight, Users, Calendar, FileText, Calculator, Palette, Download, CheckCircle, Star, Zap, Shield, Clock, Award, TrendingUp } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -17,7 +18,7 @@ const Home = () => {
     "name": "Hunter Mussel",
     "url": "https://huntermussel.com",
     "logo": "https://huntermussel.com/assets/images/logo.svg",
-    "description": "Professional software development company delivering innovative, high-quality software solutions for businesses across various industries.",
+    "description": "Hunter Mussel delivers the AWS Audit Accelerator plus bespoke software development, cloud modernization, and automation services.",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "US"
@@ -31,17 +32,32 @@ const Home = () => {
       "https://github.com/huntermussel",
       "https://linkedin.com/company/huntermussel"
     ],
-    "offers": {
-      "@type": "Service",
-      "serviceType": "Software Development",
-      "provider": {
-        "@type": "Organization",
-        "name": "Hunter Mussel"
+    "offers": [
+      {
+        "@type": "Service",
+        "serviceType": "AWS Account Audit",
+        "provider": {
+          "@type": "Organization",
+          "name": "Hunter Mussel"
+        }
+      },
+      {
+        "@type": "Service",
+        "serviceType": "Custom Software Development",
+        "provider": {
+          "@type": "Organization",
+          "name": "Hunter Mussel"
+        }
       }
-    }
+    ]
   };
 
   const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+
+  const [auditRef, auditInView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
   });
@@ -61,31 +77,84 @@ const Home = () => {
     threshold: 0.2,
   });
 
+  const auditDeliverables: { icon: LucideIcon; title: string; description: string }[] = [
+    {
+      icon: Shield,
+      title: 'Security & Compliance Review',
+      description: 'Pinpoint misconfigurations across IAM, VPC, GuardDuty, Shield, and encryption policies before attackers or auditors do.'
+    },
+    {
+      icon: Calculator,
+      title: 'Cost & Efficiency Optimization',
+      description: 'Spot unused resources, right-size workloads, and model immediate savings opportunities across your AWS portfolio.'
+    },
+    {
+      icon: FileText,
+      title: 'Executive-Ready Reporting',
+      description: 'Receive a concise executive summary plus a detailed technical appendix your engineering team can action immediately.'
+    },
+    {
+      icon: Users,
+      title: 'Live Strategy Workshop',
+      description: 'Walk through findings with a senior AWS architect and align leadership on a 30-60-90 day modernization roadmap.'
+    }
+  ];
+
+  const auditProcess = [
+    {
+      title: 'Kickoff & Context',
+      description: 'We meet with your stakeholders, review your architecture goals, and collect the least privilege access needed for analysis.'
+    },
+    {
+      title: 'Deep AWS Analysis',
+      description: 'Automated and manual reviews across 45+ controls with Well-Architected and CIS Benchmarks guiding our assessment.'
+    },
+    {
+      title: 'Executive Debrief',
+      description: 'A 60-minute readout with leadership and engineering to prioritize remediation, savings, and modernization initiatives.'
+    }
+  ];
+
+  const auditOutcomes = [
+    { stat: '30%', label: 'Average Immediate Cost Savings' },
+    { stat: '50+', label: 'Actionable Security & Resilience Checks' },
+    { stat: '72h', label: 'Turnaround from Kickoff to Report' }
+  ];
+
   return (
     <>
       <Helmet>
-        <title>Hunter Mussel - Professional Software Development | Custom Web & Mobile Solutions</title>
+        <title>Hunter Mussel - AWS Account Audit Experts & Custom Software Delivery</title>
         <meta
           name="description"
-          content="Hunter Mussel is a premier software development company delivering innovative web applications, mobile apps, and enterprise solutions. Get a free quote today!"
+          content="Hunter Mussel delivers the AWS Audit Accelerator plus custom web, mobile, and data solutions. Secure your AWS account, cut cloud waste, and receive an executive-ready action plan led by senior architects."
         />
-        <meta name="keywords" content="software development, web development, mobile apps, custom software, enterprise solutions, react development, node.js" />
+        <meta
+          name="keywords"
+          content="aws account audit, aws security assessment, cloud cost optimization, aws well-architected review, devops consulting, custom software development"
+        />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://huntermussel.com/" />
-        <meta property="og:title" content="Hunter Mussel - Professional Software Development" />
-        <meta property="og:description" content="Transform your ideas into powerful digital solutions. Expert software development for web, mobile, and enterprise applications." />
+        <meta property="og:title" content="Hunter Mussel - AWS Account Audit Experts" />
+        <meta
+          property="og:description"
+          content="Book the AWS Audit Accelerator for a 72-hour review, executive briefing, and modernization roadmap. Backed by Hunter Mussel's senior cloud engineering team."
+        />
         <meta property="og:image" content="https://huntermussel.com/assets/images/hero.jpg" />
         <meta property="og:site_name" content="Hunter Mussel" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://huntermussel.com/" />
-        <meta name="twitter:title" content="Hunter Mussel - Professional Software Development" />
-        <meta name="twitter:description" content="Transform your ideas into powerful digital solutions. Expert software development for web, mobile, and enterprise applications." />
+        <meta name="twitter:title" content="Hunter Mussel - AWS Account Audit Experts" />
+        <meta
+          name="twitter:description"
+          content="Unlock AWS savings, security, and scalability with a guided audit and executive debrief from Hunter Mussel."
+        />
         <meta name="twitter:image" content="https://huntermussel.com/assets/images/hero.jpg" />
 
         {/* Canonical URL */}
@@ -99,6 +168,117 @@ const Home = () => {
 
       <main id="main-content">
         <Hero />
+
+        {/* AWS Audit Accelerator Section */}
+        <section ref={auditRef} className="py-20 bg-slate-900 text-white">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={auditInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8 }}
+              className="max-w-4xl mx-auto text-center mb-16"
+            >
+              <span className="inline-flex items-center bg-blue-500/10 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide mb-6">
+                Flagship Engagement
+              </span>
+              <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
+                AWS Audit Accelerator – Secure, Optimize, and Scale Your Cloud
+              </h2>
+              <p className="text-lg md:text-xl text-blue-100">
+                A 72-hour AWS account deep dive covering security, reliability, performance, and cost. You receive a prioritized remediation plan, executive-ready report, and a live briefing with a senior technical leader.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              {auditDeliverables.map((deliverable, index) => {
+                const Icon = deliverable.icon;
+                return (
+                  <motion.div
+                    key={deliverable.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={auditInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.7, delay: index * 0.1 }}
+                    className="bg-slate-800/60 border border-slate-700 rounded-xl p-6"
+                  >
+                    <div className="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4">
+                      <Icon className="h-6 w-6 text-blue-300" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">{deliverable.title}</h3>
+                    <p className="text-blue-100 text-sm leading-relaxed">{deliverable.description}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            <div className="grid lg:grid-cols-5 gap-8 items-stretch">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={auditInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8 }}
+                className="lg:col-span-2 bg-white/5 border border-slate-700 rounded-2xl p-8 backdrop-blur"
+              >
+                <h3 className="text-2xl font-semibold mb-4">What You Get</h3>
+                <ul className="space-y-4 text-blue-100 text-sm">
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
+                    45+ point inspection across IAM, networking, data protection, and disaster recovery.
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
+                    Cost efficiency diagnostics with savings scenarios grounded in AWS Well-Architected best practices.
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
+                    Executive-ready report with heat-map prioritization, quick wins, and 30-60-90 day roadmap.
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
+                    Live executive workshop with our lead cloud architect to align stakeholders on next steps.
+                  </li>
+                </ul>
+                <a
+                  href="https://awsaudit.huntermussel.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center justify-center px-6 py-3 rounded-lg bg-green-500 text-slate-900 font-semibold hover:bg-green-400 transition-colors"
+                >
+                  Schedule Your AWS Audit
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={auditInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="lg:col-span-3 bg-slate-800/60 border border-slate-700 rounded-2xl p-8"
+              >
+                <h3 className="text-2xl font-semibold mb-6">How the Audit Works</h3>
+                <div className="space-y-6">
+                  {auditProcess.map((step, index) => (
+                    <div key={step.title} className="flex gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-200 font-semibold">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-semibold mb-1">{step.title}</h4>
+                        <p className="text-sm text-blue-100 leading-relaxed">{step.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-8 grid sm:grid-cols-3 gap-4 text-center">
+                  {auditOutcomes.map((outcome) => (
+                    <div key={outcome.label} className="bg-slate-900/40 border border-slate-700 rounded-xl px-4 py-5">
+                      <div className="text-2xl font-bold text-blue-200 mb-1">{outcome.stat}</div>
+                      <div className="text-xs uppercase tracking-wide text-blue-300">{outcome.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
 
         {/* Social Proof & Stats Section */}
         <section ref={statsRef} className="py-12 bg-white border-b">
