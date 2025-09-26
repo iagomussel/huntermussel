@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Service {
   name: string;
@@ -7,50 +8,80 @@ interface Service {
   description: string;
   features: string[];
   isPopular?: boolean;
+  cta: {
+    label: string;
+    href: string;
+    external?: boolean;
+  };
 }
 
 const Services = () => {
   const services: Service[] = [
     {
-      name: 'Web Development',
-      price: 'From $5,000',
-      description: 'Custom web applications',
+      name: 'AWS Audit Accelerator',
+      price: 'R$ 12.900 fixo',
+      description: 'Auditoria completa da conta AWS + workshop executivo',
       features: [
-        'Responsive design',
-        'Frontend & backend development',
-        'API integration',
-        'Database development',
-        'Basic SEO optimization'
-      ]
-    },
-    {
-      name: 'Enterprise Solutions',
-      price: 'From $15,000',
-      description: 'Complete business systems',
-      features: [
-        'Custom business software',
-        'Process automation',
-        'Data analytics & reporting',
-        'Integration with existing systems',
-        'User training',
-        'Extended support',
-        'Regular updates'
+        'Revisão de 50+ controles de segurança, custos e confiabilidade',
+        'Relatório bilíngue com scorecards e heat maps',
+        'Debrief ao vivo com arquiteto AWS sênior',
+        'Roadmap 30-60-90 dias com responsáveis e esforço estimado',
+        'Suporte opcional para implementação acelerada'
       ],
-      isPopular: true
+      isPopular: true,
+      cta: {
+        label: 'Reservar auditoria AWS',
+        href: 'https://awsaudit.huntermussel.com',
+        external: true
+      }
     },
     {
-      name: 'Mobile Development',
-      price: 'From $8,000',
-      description: 'iOS & Android applications',
+      name: 'Cloud Modernization Sprint',
+      price: 'a partir de R$ 18.000',
+      description: 'Evolução de workloads críticos na AWS',
       features: [
-        'Native or cross-platform',
-        'UI/UX design',
-        'Backend API development',
-        'App Store submission',
-        'Performance optimization',
-        'Push notifications',
-        'Analytics integration'
-      ]
+        'Avaliação de arquitetura e governança',
+        'Blueprint de modernização orientado a produtos',
+        'Infra as Code e automações de CI/CD',
+        'Observabilidade e FinOps desde o dia zero',
+        'Treinamento e transição para o time interno'
+      ],
+      cta: {
+        label: 'Solicitar proposta',
+        href: '/contact'
+      }
+    },
+    {
+      name: 'Plataformas Personalizadas',
+      price: 'a partir de R$ 32.000',
+      description: 'Soluções sob medida para novas linhas de receita',
+      features: [
+        'Descoberta e desenho de produto conjunto',
+        'Equipe multidisciplinar dedicada',
+        'Integrações com sistemas legados e parceiros',
+        'Suporte a compliance (LGPD, PCI, HIPAA)',
+        'Runbook operacional e handover completo'
+      ],
+      cta: {
+        label: 'Discutir solução sob medida',
+        href: '/contact'
+      }
+    },
+    {
+      name: 'Mobile & Experience Factory',
+      price: 'a partir de R$ 22.000',
+      description: 'Apps iOS/Android e experiências omnichannel',
+      features: [
+        'UX research com foco em retenção',
+        'Desenvolvimento nativo ou cross-platform',
+        'Integração com APIs e sistemas internos',
+        'Publicação assistida nas lojas e ASO',
+        'Monitoramento, analytics e growth contínuo'
+      ],
+      cta: {
+        label: 'Conversar com especialista',
+        href: '/contact'
+      }
     }
   ];
 
@@ -59,10 +90,10 @@ const Services = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-            Our Services
+            Outras soluções Hunter Mussel
           </h2>
           <p className="mt-4 text-xl text-gray-600">
-            Professional software development solutions for your business
+            Engenheiros, designers e líderes de produto prontos para acelerar sua estratégia digital
           </p>
         </div>
 
@@ -94,15 +125,31 @@ const Services = () => {
                     </li>
                   ))}
                 </ul>
-                <button
-                  className={`mt-8 w-full py-3 px-4 rounded-lg font-medium ${
-                    service.isPopular
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                  } transition-colors`}
-                >
-                  Get Started
-                </button>
+                {service.cta.external ? (
+                  <a
+                    href={service.cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`mt-8 inline-flex w-full justify-center py-3 px-4 rounded-lg font-medium ${
+                      service.isPopular
+                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                    } transition-colors`}
+                  >
+                    {service.cta.label}
+                  </a>
+                ) : (
+                  <Link
+                    to={service.cta.href}
+                    className={`mt-8 inline-flex w-full justify-center py-3 px-4 rounded-lg font-medium ${
+                      service.isPopular
+                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                    } transition-colors`}
+                  >
+                    {service.cta.label}
+                  </Link>
+                )}
               </div>
             </motion.div>
           ))}
