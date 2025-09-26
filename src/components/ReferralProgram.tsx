@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Gift, Users, Share2, Copy, Check } from 'lucide-react';
 import { useToast } from '../utils/useToast';
@@ -30,7 +30,7 @@ const ReferralProgram = () => {
 
   const referralLink = `${window.location.origin}?ref=${btoa(formData.referrerEmail)}`;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -48,13 +48,19 @@ const ReferralProgram = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       // Send referral data to n8n webhook
-      const response = await fetch(process.env.VITE_N8N_WEBHOOK_URL || '', {
+      const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
+
+      if (!webhookUrl) {
+        throw new Error('Webhook URL not configured');
+      }
+
+      const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -12,6 +12,19 @@ interface Service {
 const Services = () => {
   const services: Service[] = [
     {
+      name: 'AWS Audit Accelerator',
+      price: 'Fixed $2,500',
+      description: '72-hour AWS account assessment + executive workshop',
+      features: [
+        '45+ point security, reliability, and cost review',
+        'Executive-ready scorecards and heat maps',
+        'Live debrief with senior AWS architect',
+        '30-60-90 day remediation roadmap',
+        'Optional implementation support add-ons'
+      ],
+      isPopular: true
+    },
+    {
       name: 'Web Development',
       price: 'From $5,000',
       description: 'Custom web applications',
@@ -35,8 +48,7 @@ const Services = () => {
         'User training',
         'Extended support',
         'Regular updates'
-      ],
-      isPopular: true
+      ]
     },
     {
       name: 'Mobile Development',
@@ -101,7 +113,7 @@ const Services = () => {
                       : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   } transition-colors`}
                 >
-                  Get Started
+                  {service.name === 'AWS Audit Accelerator' ? 'Book AWS Audit' : 'Get Started'}
                 </button>
               </div>
             </motion.div>

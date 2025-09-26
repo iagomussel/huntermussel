@@ -1,13 +1,21 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Calculator, Code, Palette, FileText, Smartphone, Zap, Brain, Download } from 'lucide-react';
+import { Calculator, Code, Palette, FileText, Download } from 'lucide-react';
+
+type ToolTab = 'calculator' | 'generator' | 'palette' | 'requirements';
 
 const FreeTools = () => {
-  const [activeTab, setActiveTab] = useState('calculator');
+  const [activeTab, setActiveTab] = useState<ToolTab>('calculator');
 
-  const tools = [
+  const tools: {
+    id: ToolTab;
+    name: string;
+    icon: typeof Calculator;
+    description: string;
+    component: JSX.Element;
+  }[] = [
     {
       id: 'calculator',
       name: 'Startup Cost Calculator',
@@ -125,27 +133,23 @@ const FreeTools = () => {
 
 // Startup Cost Calculator Component
 const StartupCalculator = () => {
-  const [formData, setFormData] = useState({
-    projectType: 'web',
-    complexity: 'medium',
-    features: [],
-    timeline: '3-6'
-  });
-  const [estimate, setEstimate] = useState(null);
-
   const projectTypes = {
     web: { base: 8000, name: 'Web Application' },
     mobile: { base: 12000, name: 'Mobile App' },
     enterprise: { base: 25000, name: 'Enterprise Solution' },
     ecommerce: { base: 15000, name: 'E-commerce Platform' }
-  };
+  } as const;
+
+  type ProjectType = keyof typeof projectTypes;
 
   const complexityMultipliers = {
     simple: 0.7,
     medium: 1.0,
     complex: 1.5,
     enterprise: 2.0
-  };
+  } as const;
+
+  type Complexity = keyof typeof complexityMultipliers;
 
   const featuresCosts = {
     auth: 2000,
@@ -155,7 +159,30 @@ const StartupCalculator = () => {
     chat: 4000,
     ai: 8000,
     automation: 5000
-  };
+  } as const;
+
+  type FeatureKey = keyof typeof featuresCosts;
+
+  interface CalculatorFormData {
+    projectType: ProjectType;
+    complexity: Complexity;
+    features: FeatureKey[];
+    timeline: string;
+  }
+
+  interface EstimateRange {
+    min: number;
+    max: number;
+    timeline: string;
+  }
+
+  const [formData, setFormData] = useState<CalculatorFormData>({
+    projectType: 'web',
+    complexity: 'medium',
+    features: [],
+    timeline: '3-6'
+  });
+  const [estimate, setEstimate] = useState<EstimateRange | null>(null);
 
   const calculateEstimate = () => {
     const basePrice = projectTypes[formData.projectType].base;
@@ -179,10 +206,10 @@ const StartupCalculator = () => {
             <label className="block text-sm font-medium mb-2">Project Type</label>
             <select
               value={formData.projectType}
-              onChange={(e) => setFormData({...formData, projectType: e.target.value})}
+              onChange={(e) => setFormData({...formData, projectType: e.target.value as ProjectType})}
               className="w-full p-3 border rounded-lg"
             >
-              {Object.entries(projectTypes).map(([key, value]) => (
+              {(Object.entries(projectTypes) as [ProjectType, typeof projectTypes[ProjectType]][]).map(([key, value]) => (
                 <option key={key} value={key}>{value.name}</option>
               ))}
             </select>
@@ -192,7 +219,7 @@ const StartupCalculator = () => {
             <label className="block text-sm font-medium mb-2">Complexity</label>
             <select
               value={formData.complexity}
-              onChange={(e) => setFormData({...formData, complexity: e.target.value})}
+              onChange={(e) => setFormData({...formData, complexity: e.target.value as Complexity})}
               className="w-full p-3 border rounded-lg"
             >
               <option value="simple">Simple (MVP)</option>
@@ -205,7 +232,7 @@ const StartupCalculator = () => {
           <div>
             <label className="block text-sm font-medium mb-2">Additional Features</label>
             <div className="space-y-2">
-              {Object.entries(featuresCosts).map(([key, cost]) => (
+              {(Object.entries(featuresCosts) as [FeatureKey, number][]).map(([key, cost]) => (
                 <label key={key} className="flex items-center">
                   <input
                     type="checkbox"
@@ -261,8 +288,26 @@ const StartupCalculator = () => {
 };
 
 // API Documentation Generator Component
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
+interface ApiEndpoint {
+  method: HttpMethod;
+  path: string;
+  description: string;
+  parameters: string[];
+  response: string;
+}
+
+interface ApiData {
+  name: string;
+  version: string;
+  description: string;
+  baseUrl: string;
+  endpoints: ApiEndpoint[];
+}
+
 const APIDocGenerator = () => {
-  const [apiData, setApiData] = useState({
+  const [apiData, setApiData] = useState<ApiData>({
     name: '',
     version: '1.0.0',
     description: '',
@@ -271,16 +316,16 @@ const APIDocGenerator = () => {
   });
 
   const addEndpoint = () => {
-    setApiData({
-      ...apiData,
-      endpoints: [...apiData.endpoints, {
+    setApiData(prev => ({
+      ...prev,
+      endpoints: [...prev.endpoints, {
         method: 'GET',
         path: '',
         description: '',
         parameters: [],
         response: ''
       }]
-    });
+    }));
   };
 
   const generateDocs = () => {
@@ -366,13 +411,18 @@ ${endpoint.response}
 };
 
 // Color Palette Generator Component
+interface PaletteColor {
+  name: string;
+  color: string;
+}
+
 const ColorPaletteGenerator = () => {
-  const [palette, setPalette] = useState([]);
+  const [palette, setPalette] = useState<PaletteColor[]>([]);
   const [baseColor, setBaseColor] = useState('#3B82F6');
 
   const generatePalette = () => {
     const hsl = hexToHsl(baseColor);
-    const newPalette = [
+    const newPalette: PaletteColor[] = [
       { name: 'Primary', color: baseColor },
       { name: 'Secondary', color: hslToHex((hsl.h + 30) % 360, hsl.s, hsl.l) },
       { name: 'Accent', color: hslToHex((hsl.h + 180) % 360, hsl.s, hsl.l) },
@@ -382,17 +432,20 @@ const ColorPaletteGenerator = () => {
     setPalette(newPalette);
   };
 
-  const hexToHsl = (hex) => {
+  const hexToHsl = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16) / 255;
     const g = parseInt(hex.slice(3, 5), 16) / 255;
     const b = parseInt(hex.slice(5, 7), 16) / 255;
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let h, s, l = (max + min) / 2;
+    let h = 0;
+    let s = 0;
+    const l = (max + min) / 2;
 
     if (max === min) {
-      h = s = 0;
+      h = 0;
+      s = 0;
     } else {
       const d = max - min;
       s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -407,12 +460,12 @@ const ColorPaletteGenerator = () => {
     return { h: h * 360, s: s * 100, l: l * 100 };
   };
 
-  const hslToHex = (h, s, l) => {
-    l /= 100;
-    const a = s * Math.min(l, 1 - l) / 100;
-    const f = n => {
+  const hslToHex = (h: number, s: number, l: number) => {
+    const normalizedL = l / 100;
+    const a = (s * Math.min(normalizedL, 1 - normalizedL)) / 100;
+    const f = (n: number) => {
       const k = (n + h / 30) % 12;
-      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      const color = normalizedL - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
       return Math.round(255 * color).toString(16).padStart(2, '0');
     };
     return `#${f(0)}${f(8)}${f(4)}`;
@@ -439,8 +492,8 @@ const ColorPaletteGenerator = () => {
 
       {palette.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          {palette.map((color, index) => (
-            <div key={index} className="text-center">
+          {palette.map((color) => (
+            <div key={`${color.name}-${color.color}`} className="text-center">
               <div
                 className="w-full h-24 rounded-lg mb-2 cursor-pointer"
                 style={{ backgroundColor: color.color }}
