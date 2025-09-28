@@ -24,10 +24,10 @@ const Newsletter = () => {
   const { toast, showToast, hideToast } = useToast();
 
   const interestOptions = [
-    { id: 'tech-insights', label: 'Technical Insights', icon: Code },
-    { id: 'company-updates', label: 'Company Updates', icon: Bell },
-    { id: 'case-studies', label: 'Case Studies', icon: BookOpen },
-    { id: 'industry-trends', label: 'Industry Trends', icon: Mail }
+    { id: 'tech-insights', label: 'Insights técnicos', icon: Code },
+    { id: 'company-updates', label: 'Novidades Hunter Mussel', icon: Bell },
+    { id: 'case-studies', label: 'Estudos de caso AWS', icon: BookOpen },
+    { id: 'industry-trends', label: 'Tendências e FinOps', icon: Mail }
   ];
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -71,7 +71,7 @@ const Newsletter = () => {
       });
 
       if (response.ok) {
-        showToast('Successfully subscribed to newsletter!', 'success');
+        showToast('Inscrição realizada! Você receberá nossos próximos conteúdos.', 'success');
         setFormData({
           email: '',
           name: '',
@@ -82,7 +82,7 @@ const Newsletter = () => {
         throw new Error('Failed to subscribe');
       }
     } catch (error) {
-      showToast('Error subscribing to newsletter. Please try again.', 'error');
+      showToast('Não foi possível inscrever agora. Tente novamente.', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -100,9 +100,9 @@ const Newsletter = () => {
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8 text-center">
           <Mail className="w-12 h-12 mx-auto mb-4" />
-          <h2 className="text-3xl font-bold mb-2">Stay Updated</h2>
+          <h2 className="text-3xl font-bold mb-2">Receba novidades sobre AWS</h2>
           <p className="text-blue-100">
-            Get the latest technical insights and company updates delivered to your inbox
+            Conteúdo prático sobre auditoria AWS, FinOps e cases brasileiros direto no seu e-mail
           </p>
         </div>
 
@@ -111,7 +111,7 @@ const Newsletter = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                Name *
+                Nome *
               </label>
               <input
                 type="text"
@@ -122,13 +122,13 @@ const Newsletter = () => {
                 required
                 disabled={isSubmitting}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
-                placeholder="Your full name"
+                placeholder="Como gostaria de ser chamado"
               />
             </div>
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email *
+                E-mail corporativo *
               </label>
               <input
                 type="email"
@@ -139,13 +139,13 @@ const Newsletter = () => {
                 required
                 disabled={isSubmitting}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
-                placeholder="your@email.com"
+                placeholder="voce@empresa.com"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Content Interests
+                Temas de interesse
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {interestOptions.map((option) => {
@@ -178,7 +178,7 @@ const Newsletter = () => {
 
             <div>
               <label htmlFor="frequency" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Frequency
+                Frequência desejada
               </label>
               <select
                 id="frequency"
@@ -188,8 +188,8 @@ const Newsletter = () => {
                 disabled={isSubmitting}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
               >
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
+                <option value="weekly">Resumo semanal</option>
+                <option value="monthly">Resumo mensal</option>
               </select>
             </div>
 
@@ -204,16 +204,16 @@ const Newsletter = () => {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Subscribing...
+                  Enviando...
                 </>
               ) : (
-                'Subscribe to Newsletter'
+                'Quero receber novidades'
               )}
             </button>
-            
+
             {formData.interests.length === 0 && (
               <p className="text-sm text-gray-500 text-center">
-                Please select at least one content interest
+                Selecione pelo menos um tema para receber conteúdos relevantes
               </p>
             )}
           </form>
@@ -221,13 +221,13 @@ const Newsletter = () => {
 
         {/* Benefits */}
         <div className="bg-gray-50 p-6 border-t">
-          <h3 className="font-semibold mb-3 text-center">What You'll Get</h3>
+          <h3 className="font-semibold mb-3 text-center">O que você vai receber</h3>
           <ul className="text-sm text-gray-600 space-y-2">
-            <li>• Latest technology trends and insights</li>
-            <li>• Behind-the-scenes company updates</li>
-            <li>• Detailed case studies from real projects</li>
-            <li>• Exclusive content and early access to resources</li>
-            <li>• No spam, unsubscribe anytime</li>
+            <li>• Alertas sobre riscos e savings identificados em auditorias AWS</li>
+            <li>• Cases reais com resultados para CFOs, CTOs e squads de plataforma</li>
+            <li>• Checklists de conformidade e governança para diretoria</li>
+            <li>• Convites prioritários para workshops e webinars exclusivos</li>
+            <li>• Zero spam, cancelamento a qualquer momento</li>
           </ul>
         </div>
       </motion.div>

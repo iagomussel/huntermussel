@@ -50,7 +50,7 @@ const ContactForm = () => {
         showToast(result.message, 'error');
       }
     } catch (error) {
-      showToast('Unexpected error. Please try again later.', 'error');
+      showToast('Erro inesperado. Tente novamente em instantes.', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -66,11 +66,11 @@ const ContactForm = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-2xl font-bold mb-6">Contact Us</h2>
-        
+        <h2 className="text-2xl font-bold mb-6">Fale com nosso time</h2>
+
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 mb-2">
-            Name *
+            Nome *
           </label>
           <input
             type="text"
@@ -80,12 +80,13 @@ const ContactForm = () => {
             disabled={isSubmitting}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
             required
+            placeholder="Seu nome completo"
           />
         </div>
 
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">
-            Email *
+            E-mail *
           </label>
           <input
             type="email"
@@ -95,12 +96,13 @@ const ContactForm = () => {
             disabled={isSubmitting}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
             required
+            placeholder="voce@empresa.com"
           />
         </div>
 
         <div className="mb-4">
           <label htmlFor="message" className="block text-gray-700 mb-2">
-            Message *
+            Mensagem *
           </label>
           <textarea
             id="message"
@@ -110,7 +112,7 @@ const ContactForm = () => {
             disabled={isSubmitting}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
             required
-            placeholder="Tell us about your project..."
+            placeholder="Conte em que podemos acelerar sua operação AWS..."
           />
         </div>
 
@@ -125,12 +127,12 @@ const ContactForm = () => {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Sending...
+              Enviando...
             </>
           ) : (
             <>
               <Send className="w-4 h-4 mr-2" />
-              Submit
+              Enviar mensagem
             </>
           )}
         </button>
