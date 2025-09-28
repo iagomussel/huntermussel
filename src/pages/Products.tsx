@@ -36,6 +36,7 @@ const Products = () => {
       icon: Clock,
       title: 'Entrega em 72 horas',
       description: 'Do kickoff à reunião executiva em três dias úteis com arquitetos AWS seniores liderando.'
+
     }
   ];
 
@@ -43,6 +44,7 @@ const Products = () => {
     { stat: '30%', label: 'Economia média identificada' },
     { stat: '50+', label: 'Controles avaliados por auditoria' },
     { stat: '1', label: 'Workshop estratégico incluso' }
+
   ];
 
   const odontomasterFeatures = [
@@ -70,6 +72,7 @@ const Products = () => {
         <meta
           name="description"
           content="Conheça o AWS Audit Accelerator e programas cloud da Hunter Mussel. Auditoria completa da conta AWS, plataformas verticais e modernização sob medida para seu negócio."
+
         />
       </Helmet>
 
@@ -89,6 +92,7 @@ const Products = () => {
               </h1>
               <p className="text-xl text-blue-100 mb-8">
                 Do AWS Audit Accelerator às plataformas personalizadas, a Hunter Mussel entrega soluções que blindam segurança, reduzem custos e habilitam novas receitas digitais.
+
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <a
@@ -98,6 +102,7 @@ const Products = () => {
                   className="inline-flex items-center justify-center bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-blue-50 transition-colors"
                 >
                   Reservar AWS Audit
+
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
                 <Link
@@ -105,6 +110,7 @@ const Products = () => {
                   className="inline-flex items-center justify-center border border-blue-100 text-blue-100 hover:bg-blue-500/20 px-6 py-3 rounded-lg font-semibold transition-colors"
                 >
                   Conversar sobre soluções sob medida
+
                 </Link>
               </div>
             </motion.div>
@@ -129,6 +135,7 @@ const Products = () => {
                 </h2>
                 <p className="text-blue-100 text-lg">
                   Em três dias úteis avaliamos 50+ controles de segurança, infraestrutura, dados e custos. Você sai com um plano de ação priorizado e um workshop executivo conduzido por arquiteto AWS sênior.
+
                 </p>
                 <ul className="space-y-3 text-blue-100">
                   <li className="flex items-start">
@@ -142,6 +149,7 @@ const Products = () => {
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
                     Roadmap 30-60-90 dias com apoio opcional da nossa engenharia para implementação acelerada.
+
                   </li>
                 </ul>
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -152,6 +160,7 @@ const Products = () => {
                     className="inline-flex items-center justify-center bg-green-500 text-slate-900 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-green-400 transition-colors"
                   >
                     Ver planos e agenda
+
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
                   <Link
@@ -159,6 +168,7 @@ const Products = () => {
                     className="inline-flex items-center justify-center border border-blue-200 text-blue-100 hover:bg-blue-500/20 px-6 py-3 rounded-lg font-semibold transition-colors"
                   >
                     Solicitar proposta enterprise
+
                   </Link>
                 </div>
                 <div className="grid sm:grid-cols-3 gap-4 pt-6">

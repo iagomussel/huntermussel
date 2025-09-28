@@ -22,6 +22,7 @@ import {
   Building2,
   Lightbulb
 } from 'lucide-react';
+
 import type { LucideIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -206,6 +207,7 @@ const Home = () => {
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'BR'
+
     },
     contactPoint: {
       '@type': 'ContactPoint',
@@ -251,6 +253,7 @@ const Home = () => {
         text: faq.answer
       }
     }))
+
   };
 
   const [auditRef, auditInView] = useInView({
@@ -261,6 +264,11 @@ const Home = () => {
   const [credibilityRef, credibilityInView] = useInView({
     triggerOnce: true,
     threshold: 0.2
+  });
+
+  const [auditRef, auditInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
   });
 
   const [statsRef, statsInView] = useInView({
@@ -293,6 +301,50 @@ const Home = () => {
     threshold: 0.2
   });
 
+  const auditDeliverables: { icon: LucideIcon; title: string; description: string }[] = [
+    {
+      icon: Shield,
+      title: 'Security & Compliance Review',
+      description: 'Pinpoint misconfigurations across IAM, VPC, GuardDuty, Shield, and encryption policies before attackers or auditors do.'
+    },
+    {
+      icon: Calculator,
+      title: 'Cost & Efficiency Optimization',
+      description: 'Spot unused resources, right-size workloads, and model immediate savings opportunities across your AWS portfolio.'
+    },
+    {
+      icon: FileText,
+      title: 'Executive-Ready Reporting',
+      description: 'Receive a concise executive summary plus a detailed technical appendix your engineering team can action immediately.'
+    },
+    {
+      icon: Users,
+      title: 'Live Strategy Workshop',
+      description: 'Walk through findings with a senior AWS architect and align leadership on a 30-60-90 day modernization roadmap.'
+    }
+  ];
+
+  const auditProcess = [
+    {
+      title: 'Kickoff & Context',
+      description: 'We meet with your stakeholders, review your architecture goals, and collect the least privilege access needed for analysis.'
+    },
+    {
+      title: 'Deep AWS Analysis',
+      description: 'Automated and manual reviews across 45+ controls with Well-Architected and CIS Benchmarks guiding our assessment.'
+    },
+    {
+      title: 'Executive Debrief',
+      description: 'A 60-minute readout with leadership and engineering to prioritize remediation, savings, and modernization initiatives.'
+    }
+  ];
+
+  const auditOutcomes = [
+    { stat: '30%', label: 'Average Immediate Cost Savings' },
+    { stat: '50+', label: 'Actionable Security & Resilience Checks' },
+    { stat: '72h', label: 'Turnaround from Kickoff to Report' }
+  ];
+
   return (
     <>
       <Helmet>
@@ -304,6 +356,7 @@ const Home = () => {
         <meta
           name="keywords"
           content="auditoria aws, aws well-architected, otimização de custos aws, segurança na nuvem, relatório executivo aws, finops"
+
         />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -314,6 +367,7 @@ const Home = () => {
         <meta
           property="og:description"
           content="Reserve o AWS Audit Accelerator: diagnóstico profundo, relatório executivo e workshop com arquiteto AWS para priorizar suas próximas iniciativas."
+
         />
         <meta property="og:image" content="https://huntermussel.com/assets/images/hero.jpg" />
         <meta property="og:site_name" content="Hunter Mussel" />
@@ -324,6 +378,7 @@ const Home = () => {
         <meta
           name="twitter:description"
           content="Auditoria AWS completa com savings, conformidade e workshop executivo liderado por especialista certificado."
+
         />
         <meta name="twitter:image" content="https://huntermussel.com/assets/images/hero.jpg" />
 
@@ -398,6 +453,7 @@ const Home = () => {
         </section>
 
         <section ref={auditRef} className="py-20 bg-slate-950 text-white">
+
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -417,6 +473,7 @@ const Home = () => {
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
               {auditDeliverables.map((deliverable, index) => {
                 const Icon = deliverable.icon;
                 return (
@@ -429,6 +486,7 @@ const Home = () => {
                   >
                     <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4">
                       <Icon className="h-6 w-6 text-emerald-200" />
+
                     </div>
                     <h3 className="text-xl font-semibold mb-3">{deliverable.title}</h3>
                     <p className="text-blue-100 text-sm leading-relaxed">{deliverable.description}</p>
@@ -436,7 +494,6 @@ const Home = () => {
                 );
               })}
             </div>
-
             <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="https://awsaudit.huntermussel.com"
@@ -485,11 +542,13 @@ const Home = () => {
                   </motion.div>
                 );
               })}
+
             </div>
           </div>
         </section>
 
         <section ref={statsRef} className="py-16 bg-white">
+
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

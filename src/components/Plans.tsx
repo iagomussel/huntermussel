@@ -21,6 +21,7 @@ const Services = () => {
       name: 'AWS Audit Accelerator',
       price: 'R$ 12.900 fixo',
       description: 'Auditoria completa da conta AWS + workshop executivo',
+
       features: [
         'Revisão de 50+ controles de segurança, custos e confiabilidade',
         'Relatório bilíngue com scorecards e heat maps',
@@ -66,6 +67,7 @@ const Services = () => {
         label: 'Discutir solução sob medida',
         href: '/contact'
       }
+
     },
     {
       name: 'Mobile & Experience Factory',
@@ -150,6 +152,7 @@ const Services = () => {
                     {service.cta.label}
                   </Link>
                 )}
+
               </div>
             </motion.div>
           ))}
