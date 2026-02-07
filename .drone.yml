@@ -1,0 +1,20 @@
+kind: pipeline
+type: exec
+name: local
+
+steps:
+  - name: install
+    commands:
+      - npm install
+
+  - name: test
+    commands:
+      - npm test
+
+  - name: build
+    commands:
+      - npm run build
+
+  - name: deploy
+    commands:
+      - npx wrangler pages deploy dist --project-name=huntermussel --branch=main
