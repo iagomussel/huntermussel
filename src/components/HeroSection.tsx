@@ -29,20 +29,20 @@ const HeroSection = () => {
           >
             <Terminal size={14} className="text-primary" />
             <span className="font-heading text-xs text-muted-foreground">
-              Gestão de Processos com IA & DevOps
+              Process Management with AI & DevOps
             </span>
           </motion.div>
 
           <h1 className="mb-6 font-heading text-4xl font-bold leading-tight tracking-tight md:text-6xl lg:text-7xl">
-            Transformamos processos
+            We transform processes
             <br />
-            com{" "}
-            <span className="gradient-text text-glow">Inteligência Artificial</span>
+            with{" "}
+            <span className="gradient-text text-glow">Artificial Intelligence</span>
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl font-body text-lg leading-relaxed text-muted-foreground md:text-xl">
-            Automatize, otimize e escale a gestão de processos da sua empresa
-            com IA, engenharia de software e práticas DevOps de ponta.
+            Automate, optimize, and scale your company's process management
+            with AI, software engineering, and cutting-edge DevOps practices.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -50,7 +50,7 @@ const HeroSection = () => {
               href="#contato"
               className="group inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3.5 font-heading text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)]"
             >
-              Iniciar Projeto
+              Start Project
               <ArrowRight
                 size={16}
                 className="transition-transform group-hover:translate-x-1"
@@ -60,7 +60,7 @@ const HeroSection = () => {
               href="#servicos"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-8 py-3.5 font-heading text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-card"
             >
-              Ver Serviços
+              View Services
             </a>
           </div>
         </motion.div>
@@ -79,9 +79,9 @@ const HeroSection = () => {
           </div>
           <pre className="font-heading text-xs leading-relaxed text-muted-foreground md:text-sm">
             <span className="text-primary">$</span> huntermussel ai --optimize-processes{"\n"}
-            <span className="text-muted-foreground/60">▸ Analisando fluxos...</span>{"\n"}
-            <span className="text-muted-foreground/60">▸ Aplicando modelos de IA...</span>{"\n"}
-            <span className="text-primary">✓</span> 3 processos otimizados com IA 🚀
+            <span className="text-muted-foreground/60">▸ Analyzing flows...</span>{"\n"}
+            <span className="text-muted-foreground/60">▸ Applying AI models...</span>{"\n"}
+            <span className="text-primary">✓</span> 3 processes optimized with AI 🚀
           </pre>
         </motion.div>
       </div>

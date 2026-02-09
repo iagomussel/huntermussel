@@ -3,12 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
-  { label: "Serviços", href: "#servicos" },
+  { label: "Services", href: "#servicos" },
   { label: "Cases", href: "#cases" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Tecnologias", href: "#tecnologias" },
+  { label: "About", href: "#sobre" },
+  { label: "Technologies", href: "#tecnologias" },
   { label: "Blog", href: "/blog" },
-  { label: "Contato", href: "#contato" },
+  { label: "Contact", href: "#contato" },
 ];
 
 const Navbar = () => {
@@ -42,7 +42,7 @@ const Navbar = () => {
             href="#contato"
             className="rounded-md border border-primary bg-primary/10 px-4 py-2 font-heading text-xs font-medium text-primary transition-all hover:bg-primary hover:text-primary-foreground box-glow"
           >
-            Fale Conosco
+            Contact Us
           </a>
         </div>
 
@@ -80,7 +80,7 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
                 className="mt-2 rounded-md border border-primary bg-primary/10 px-4 py-2 text-center font-heading text-xs font-medium text-primary"
               >
-                Fale Conosco
+                Contact Us
               </a>
             </div>
           </motion.div>

@@ -46,14 +46,14 @@ const ContactSection = () => {
             transition={{ duration: 0.6 }}
           >
             <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
-              // contato
+              // contact
             </span>
             <h2 className="mb-4 font-heading text-3xl font-bold tracking-tight md:text-4xl">
-              Vamos construir{" "}
-              <span className="gradient-text">juntos?</span>
+              Let's Build{" "}
+              <span className="gradient-text">Together?</span>
             </h2>
             <p className="mb-10 font-body text-base text-muted-foreground">
-              Conte-nos sobre seu projeto. Respondemos em até 24 horas.
+              Tell us about your project. We'll respond within 24 hours.
             </p>
           </motion.div>
 
@@ -67,7 +67,7 @@ const ContactSection = () => {
             <form className="space-y-5 text-left" onSubmit={handleSubmit}>
               {status === "success" && (
                 <p className="rounded-md border border-primary/30 bg-primary/10 px-4 py-2.5 font-body text-sm text-primary">
-                  Obrigado pelo contato! Mensagem enviada. Responderemos em breve.
+                  Thank you for contacting us! Message sent. We'll respond shortly.
                 </p>
               )}
               {status === "error" && errorMsg && (
@@ -78,11 +78,11 @@ const ContactSection = () => {
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                    Nome
+                    Name
                   </label>
                   <input
                     type="text"
-                    placeholder="Seu nome"
+                    placeholder="Your name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
@@ -96,7 +96,7 @@ const ContactSection = () => {
                   </label>
                   <input
                     type="email"
-                    placeholder="seu@email.com"
+                    placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -107,11 +107,11 @@ const ContactSection = () => {
               </div>
               <div>
                 <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                  Mensagem
+                  Message
                 </label>
                 <textarea
                   rows={4}
-                  placeholder="Descreva seu projeto..."
+                  placeholder="Describe your project..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
@@ -124,7 +124,7 @@ const ContactSection = () => {
                 disabled={status === "loading"}
                 className="group inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 font-heading text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)] disabled:opacity-60 disabled:pointer-events-none"
               >
-                {status === "loading" ? "Enviando..." : "Enviar Mensagem"}
+                {status === "loading" ? "Sending..." : "Send Message"}
                 <ArrowRight
                   size={16}
                   className="transition-transform group-hover:translate-x-1"
@@ -154,7 +154,7 @@ const ContactSection = () => {
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin size={14} className="text-primary" />
-              Brasil
+              Brazil
             </div>
           </motion.div>
         </div>

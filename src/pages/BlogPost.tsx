@@ -2,6 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github-dark.css";
 import { getPost } from "@/lib/blog";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -38,12 +40,12 @@ const BlogPost = () => {
             className="mb-8 inline-flex items-center gap-2 font-body text-sm text-muted-foreground transition-colors hover:text-primary"
           >
             <ArrowLeft size={16} />
-            Voltar ao blog
+            Back to blog
           </Link>
 
           {post.date && (
             <time className="block font-body text-sm text-muted-foreground">
-              {new Date(post.date).toLocaleDateString("pt-BR", {
+              {new Date(post.date).toLocaleDateString("en-US", {
                 day: "2-digit",
                 month: "long",
                 year: "numeric",
@@ -55,7 +57,7 @@ const BlogPost = () => {
           </h1>
 
           <div className="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
               {post.content}
             </ReactMarkdown>
           </div>

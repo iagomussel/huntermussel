@@ -1,15 +1,14 @@
 ---
-title: "Bem-vindo ao Blog"
-date: "2025-02-08"
-description: "Primeiro post do blog HunterMussel."
+title: "Fast Code, Weak Engineers"
+date: "2026-01-09"
+description: "The Risk of Becoming an AI-Dependent Developer"
+tags: ""
+categories: ""
+keywords: ""
+image: ""
 ---
 
-Conteúdo em **Markdown** é renderizado em React no build.
+This article is also a self-criticism.
 
-## Exemplo de seção
 
-- Lista item 1
-- Lista item 2
-- Lista item 3
 
-Novos posts são arquivos `.md` em `src/content/blog/`. No próximo build, eles entram automaticamente na listagem e nas rotas.

@@ -4,39 +4,39 @@ import { Brain, Workflow, GitBranch, Shield, Cloud, Bot } from "lucide-react";
 const services = [
   {
     icon: Brain,
-    title: "Gestão de Processos com IA",
+    title: "AI Process Management",
     description:
-      "Mapeamento, automação e otimização de processos empresariais utilizando inteligência artificial e machine learning.",
+      "Mapping, automation, and optimization of business processes using artificial intelligence and machine learning.",
   },
   {
     icon: Bot,
-    title: "Automação Inteligente",
+    title: "Intelligent Automation",
     description:
-      "Chatbots, RPA e agentes de IA que eliminam tarefas repetitivas e aceleram a tomada de decisão.",
+      "Chatbots, RPA, and AI agents that eliminate repetitive tasks and accelerate decision-making.",
   },
   {
     icon: Workflow,
     title: "Workflows & BPM",
     description:
-      "Desenho e implementação de fluxos de trabalho automatizados com monitoramento em tempo real.",
+      "Design and implementation of automated workflows with real-time monitoring.",
   },
   {
     icon: GitBranch,
     title: "CI/CD & DevOps",
     description:
-      "Pipelines automatizados com DroneCI, GitHub Actions, GitLab CI e Jenkins para entrega contínua.",
+      "Automated pipelines with DroneCI, GitHub Actions, GitLab CI, and Jenkins for continuous delivery.",
   },
   {
     icon: Shield,
-    title: "Segurança & Compliance",
+    title: "Security & Compliance",
     description:
-      "Auditorias de segurança, implementação de LGPD e proteção de dados sensíveis.",
+      "Security audits, LGPD/GDPR implementation, and sensitive data protection.",
   },
   {
     icon: Cloud,
-    title: "Infraestrutura Cloud & IA",
+    title: "Cloud Infrastructure & AI",
     description:
-      "Deploy de modelos de IA em produção com AWS, GCP e Azure. Escalabilidade sob demanda.",
+      "Deployment of AI models in production with AWS, GCP, and Azure. On-demand scalability.",
   },
 ];
 
@@ -48,13 +48,13 @@ const container = {
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: (i: number) => ({ opacity: 0, x: i % 2 === 0 ? -50 : 50 }),
+  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, damping: 20 } as const },
 };
 
 const ServicesSection = () => {
   return (
-    <section id="servicos" className="relative py-24">
+    <section id="servicos" className="relative py-24 overflow-hidden">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -64,10 +64,10 @@ const ServicesSection = () => {
           className="mb-16 text-center"
         >
           <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
-            // serviços
+            // services
           </span>
           <h2 className="font-heading text-3xl font-bold tracking-tight md:text-4xl">
-            O que fazemos
+            What We Do
           </h2>
         </motion.div>
 
@@ -75,12 +75,13 @@ const ServicesSection = () => {
           variants={container}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
-          {services.map((service) => (
+          {services.map((service, index) => (
             <motion.div
               key={service.title}
+              custom={index}
               variants={item}
               className="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30 hover:bg-card"
             >

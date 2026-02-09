@@ -122,12 +122,37 @@ def update_article(slug):
     path = path_for_slug(slug)
     if not path.exists():
         return flask.jsonify({"error": "Not found"}), 404
+    
+    # Read existing content to preserve fields not in payload
+    try:
+        raw_existing = path.read_text(encoding="utf-8")
+        existing_fm, _ = parse_frontmatter(raw_existing)
+    except Exception:
+        existing_fm = {}
+    
     data = flask.request.get_json() or {}
-    fm = data.get("frontmatter") or {}
+    new_fm = data.get("frontmatter") or {}
     body = data.get("body", "")
-    content = build_content(fm, body)
-    path.write_text(content, encoding="utf-8")
-    return flask.jsonify({"ok": True})
+    
+    # Merge: existing update with new
+    final_fm = existing_fm.copy()
+    final_fm.update(new_fm)
+    
+    # Check for rename
+    new_slug = data.get("slug")
+    target_path = path
+
+    if new_slug and new_slug != slug:
+        new_path = path_for_slug(new_slug)
+        if new_path.exists():
+            return flask.jsonify({"error": "Slug already exists"}), 409
+        path.unlink() # Delete old
+        target_path = new_path
+        
+    content = build_content(final_fm, body)
+    target_path.write_text(content, encoding="utf-8")
+    
+    return flask.jsonify({"ok": True, "slug": new_slug if (new_slug and new_slug != slug) else slug})
 
 
 @app.route("/api/articles/<slug>", methods=["DELETE"])

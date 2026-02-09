@@ -1,408 +1,973 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editor Blog | HunterMussel</title>
+  <title>HunterMussel Editor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     :root {
-      --bg: #fff;
-      --bg-sidebar: #f7f6f3;
-      --bg-hover: #f1f1ef;
-      --border: #e3e2e0;
-      --text: #37352f;
-      --text-muted: #6b6b6b;
-      --accent: #2383e2;
+      --bg: #0a0a0c;
+      --bg-sidebar: #0f0f12;
+      --bg-hover: #1a1a1f;
+      --border: #242429;
+      --text: #e0e0e6;
+      --text-muted: #94949e;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --font-ui: 'Inter', sans-serif;
+      --font-body: 'Merriweather', serif;
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+      outline: none;
+    }
+
     body {
       margin: 0;
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: var(--font-ui);
       background: var(--bg);
       color: var(--text);
+      display: flex;
       height: 100vh;
       overflow: hidden;
     }
-    .layout {
-      display: flex;
-      height: 100%;
-    }
+
+    /* Sidebar */
     .sidebar {
-      width: 260px;
-      min-width: 260px;
+      width: 300px;
       background: var(--bg-sidebar);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      flex-shrink: 0;
+      transition: width 0.3s;
     }
+
+    .sidebar.collapsed {
+      width: 0;
+      border: none;
+    }
+
     .sidebar-header {
-      padding: 12px 14px;
-      font-weight: 600;
-      font-size: 14px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid var(--border);
     }
-    .btn-new {
-      margin: 10px 12px;
-      padding: 8px 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 13px;
-      cursor: pointer;
-      color: var(--text);
-      text-align: left;
+
+    .brand {
+      font-weight: 700;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .btn-new:hover { background: var(--bg-hover); }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .btn-icon:hover {
+      background: var(--bg-hover);
+      color: var(--text);
+    }
+
     .article-list {
       flex: 1;
       overflow-y: auto;
-      padding: 4px 0;
+      padding: 10px;
     }
+
     .article-item {
-      padding: 6px 14px;
-      font-size: 14px;
+      display: block;
+      width: 100%;
+      padding: 12px 16px;
+      margin-bottom: 4px;
+      text-align: left;
+      background: none;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
       color: var(--text);
-      border-radius: 0;
-      text-align: left;
-      width: 100%;
-      border: none;
-      background: none;
+      transition: background 0.1s;
     }
-    .article-item:hover { background: var(--bg-hover); }
-    .article-item.active { background: var(--bg-hover); font-weight: 500; }
+
+    .article-item:hover {
+      background: var(--bg-hover);
+    }
+
+    .article-item.active {
+      background: var(--bg-hover);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+
+    .article-title {
+      font-size: 14px;
+      margin-bottom: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .article-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .btn-new {
+      margin: 16px;
+      padding: 10px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-new:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Main Area */
     .main {
       flex: 1;
       display: flex;
       flex-direction: column;
+      position: relative;
       min-width: 0;
-      overflow: hidden;
+      background: var(--bg);
     }
-    .toolbar {
-      padding: 8px 24px;
+
+    .topbar {
+      height: 60px;
       border-bottom: 1px solid var(--border);
       display: flex;
-      gap: 8px;
       align-items: center;
-      flex-wrap: wrap;
-    }
-    .toolbar button {
-      padding: 6px 12px;
-      font-size: 13px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
+      justify-content: space-between;
+      padding: 0 24px;
       background: var(--bg);
-      color: var(--text);
-      cursor: pointer;
     }
-    .toolbar button:hover { background: var(--bg-hover); }
-    .toolbar button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .toolbar button.primary:hover { filter: brightness(1.05); }
-    .editor-wrap {
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-badge {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+
+    .status-dot.saved {
+      background: var(--accent);
+    }
+
+    .status-dot.unsaved {
+      background: #f59e0b;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-action {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .btn-action:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-sidebar);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      color: var(--text);
+      background: var(--bg-hover);
+    }
+
+    /* Editor */
+    .editor-container {
       flex: 1;
       overflow-y: auto;
-      padding: 48px 24px 80px;
-      max-width: 720px;
-      margin: 0 auto;
-      width: 100%;
+      padding: 40px 20px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg);
     }
-    .editor-wrap input, .editor-wrap textarea {
-      font-family: inherit;
-      font-size: inherit;
+
+    .editor-width {
+      width: 100%;
+      max-width: 740px;
+    }
+
+    .input-title {
+      font-family: var(--font-body);
+      font-size: 42px;
+      font-weight: 700;
       width: 100%;
       border: none;
-      outline: none;
       background: transparent;
+      padding: 10px 0;
+      margin-bottom: 20px;
+      line-height: 1.2;
       color: var(--text);
     }
-    .editor-wrap input::placeholder, .editor-wrap textarea::placeholder {
-      color: #9b9a97;
+
+    .input-title::placeholder {
+      color: #4b4b4b;
     }
-    .field-title { font-size: 40px; font-weight: 700; margin-bottom: 8px; }
-    .field-meta { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; display: flex; gap: 16px; flex-wrap: wrap; }
-    .field-meta input { font-size: 14px; }
-    .field-body {
-      font-size: 16px;
+
+    .input-body {
+      font-family: var(--font-body);
+      font-size: 20px;
       line-height: 1.6;
-      min-height: 300px;
+      width: 100%;
+      min-height: 60vh;
+      border: none;
+      background: transparent;
       resize: none;
+      color: var(--text);
     }
-    .empty-state {
-      text-align: center;
+
+    .input-body::placeholder {
+      color: #4b4b4b;
+      font-style: italic;
+    }
+
+    /* Settings Panel */
+    .settings-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 340px;
+      background: var(--bg-sidebar);
+      border-left: 1px solid var(--border);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      color: var(--text);
+    }
+
+    .settings-panel.open {
+      transform: translateX(0);
+    }
+
+    .settings-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    .settings-content {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
       color: var(--text-muted);
-      padding: 48px 24px;
+      margin-bottom: 6px;
     }
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      padding: 12px 20px;
-      background: var(--text);
-      color: var(--bg);
-      border-radius: 6px;
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      border-radius: 4px;
+      font-family: var(--font-ui);
       font-size: 14px;
-      z-index: 1000;
-      animation: fadeIn 0.2s;
+      color: var(--text);
+      transition: border 0.2s;
     }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .help-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* AI Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: flex;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
       align-items: center;
       justify-content: center;
-      z-index: 500;
     }
+
     .modal {
-      background: var(--bg);
-      padding: 24px;
-      border-radius: 8px;
+      background: var(--bg-sidebar);
       width: 90%;
-      max-width: 400px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    }
-    .modal h3 { margin: 0 0 16px; font-size: 18px; }
-    .modal input, .modal textarea {
-      width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 12px;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 14px;
+      padding: 24px;
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--text);
     }
-    .modal textarea { min-height: 80px; resize: vertical; }
-    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
-    .modal-actions button { padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 14px; }
-    .modal-actions button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .loading { opacity: 0.6; pointer-events: none; }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #slashMenu {
+      background: var(--bg-sidebar) !important;
+      border: 1px solid var(--border) !important;
+      color: var(--text) !important;
+    }
+
+    .menu-item:hover {
+      background: var(--bg-hover) !important;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+    
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) var(--bg);
+    }
   </style>
 </head>
+
 <body>
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="sidebar-header">Blog</div>
-      <button type="button" class="btn-new" id="btnNew">+ Novo artigo</button>
-      <div class="article-list" id="articleList"></div>
-    </aside>
-    <main class="main">
-      <div class="toolbar">
-        <button type="button" class="primary" id="btnSave">Salvar</button>
-        <button type="button" id="btnAiGenerate">Gerar com IA</button>
-        <button type="button" id="btnAiImprove">Melhorar texto</button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <i data-lucide="feather" size="18"></i>
+        <span>HunterMussel</span>
       </div>
-      <div class="editor-wrap" id="editorWrap">
-        <div class="empty-state" id="emptyState">Selecione um artigo ou crie um novo.</div>
-        <div id="editorForm" style="display: none;">
-          <input type="text" class="field-title" id="fieldTitle" placeholder="Título">
-          <div class="field-meta">
-            <input type="text" id="fieldDate" placeholder="Data (YYYY-MM-DD)">
-            <input type="text" id="fieldDesc" placeholder="Descrição" style="flex:1; min-width: 200px;">
-          </div>
-          <textarea class="field-body" id="fieldBody" placeholder="Conteúdo em Markdown..."></textarea>
+      <button class="btn-icon" id="toggleSidebarBtn"><i data-lucide="chevrons-left"></i></button>
+    </div>
+    <div class="article-list" id="articleList">
+      <!-- Generated JS -->
+    </div>
+    <button class="btn-new" id="btnNew">
+      <i data-lucide="plus" size="16"></i>
+      Novo Artigo
+    </button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="btn-icon" id="openSidebarBtn" style="display:none;"><i data-lucide="menu"></i></button>
+        <div class="status-badge">
+          <div class="status-dot" id="statusDot"></div>
+          <span id="statusText">Pronto</span>
         </div>
       </div>
-    </main>
-  </div>
+      <div class="topbar-right">
+        <button class="btn-secondary btn-action" id="btnSettings" title="Configurações SEO & Meta">
+          <i data-lucide="settings" size="18"></i>
+        </button>
+        <button class="btn-secondary btn-action" id="btnAiToolbar" title="Ferramentas IA">
+          <i data-lucide="sparkles" size="18"></i>
+        </button>
+        <button class="btn-action" id="btnSave">
+          Publicar / Salvar
+        </button>
+      </div>
+    </div>
 
-  <div id="modalNew" class="modal-overlay" style="display: none;">
+    <div class="editor-container" id="editorContainer">
+      <div class="editor-width">
+        <textarea rows="1" class="input-title" id="editorTitle" placeholder="Título"></textarea>
+        <textarea class="input-body" id="editorBody" placeholder="Conte sua história..."></textarea>
+      </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-header">
+        <span>Configurações do Artigo</span>
+        <button class="btn-icon" id="closeSettingsBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="settings-content">
+        <div class="form-group">
+          <label class="form-label">Slug URL</label>
+          <input type="text" class="form-input" id="metaSlug" placeholder="meu-artigo-incrivel">
+          <div class="help-text">Identificador único na URL.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-input" id="metaStatus">
+            <option value="draft">Rascunho</option>
+            <option value="published">Publicado</option>
+            <option value="scheduled">Agendado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data de Publicação</label>
+          <input type="date" class="form-input" id="metaDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Descrição SEO</label>
+          <textarea class="form-textarea" id="metaDescription"
+            placeholder="Resumo curto para motores de busca..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tags</label>
+          <input type="text" class="form-input" id="metaTags" placeholder="tecnologia, ai, devops">
+          <div class="help-text">Separadas por vírgula.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Categorias</label>
+          <input type="text" class="form-input" id="metaCategories" placeholder="Artigos, Tutoriais">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Palavras-chave</label>
+          <input type="text" class="form-input" id="metaKeywords" placeholder="seo, google, ranking">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Caminho da Imagem de Capa</label>
+          <input type="text" class="form-input" id="metaImage" placeholder="/images/cover.jpg">
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- AI Modal -->
+  <div class="modal-overlay" id="aiModal">
     <div class="modal">
-      <h3>Novo artigo</h3>
-      <input type="text" id="newTitle" placeholder="Título">
-      <div class="modal-actions">
-        <button type="button" id="modalCancel">Cancelar</button>
-        <button type="button" class="primary" id="modalCreate">Criar</button>
+      <h3 style="margin-top:0; margin-bottom:16px;">Assistente IA</h3>
+      <textarea class="form-textarea" id="aiPrompt" style="height:120px; margin-bottom:16px;"
+        placeholder="O que você quer que eu escreva ou melhore?"></textarea>
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button class="btn-secondary btn-action" id="closeAiBtn">Cancelar</button>
+        <button class="btn-action" id="runAiGenerate">Gerar Texto</button>
+        <button class="btn-action" id="runAiImprove" style="background:#242424;">Refinar Texto</button>
       </div>
     </div>
   </div>
 
-  <div id="modalAi" class="modal-overlay" style="display: none;">
-    <div class="modal">
-      <h3 id="modalAiTitle">Gerar com IA</h3>
-      <textarea id="modalAiPrompt" placeholder="Ex: Escreva um post sobre boas práticas de DevOps em 2025"></textarea>
-      <div class="modal-actions">
-        <button type="button" id="modalAiCancel">Cancelar</button>
-        <button type="button" class="primary" id="modalAiRun">Gerar</button>
-      </div>
-    </div>
-  </div>
+  <div class="toast" id="toast">Alterações salvas</div>
 
   <script>
-    const API = '';
+    lucide.createIcons();
+
+    const API_BASE = '/api';
     let articles = [];
     let currentSlug = null;
-    let dirty = false;
+    let isDirty = false;
 
-    function toast(msg) {
-      const el = document.createElement('div');
-      el.className = 'toast';
-      el.textContent = msg;
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 3000);
+    // Elements
+    const els = {
+      sidebar: document.getElementById('sidebar'),
+      articleList: document.getElementById('articleList'),
+      title: document.getElementById('editorTitle'),
+      body: document.getElementById('editorBody'),
+      settingsPanel: document.getElementById('settingsPanel'),
+      statusDot: document.getElementById('statusDot'),
+      statusText: document.getElementById('statusText'),
+
+      // Meta inputs
+      metaSlug: document.getElementById('metaSlug'),
+      metaStatus: document.getElementById('metaStatus'),
+      metaDate: document.getElementById('metaDate'),
+      metaDesc: document.getElementById('metaDescription'),
+      metaTags: document.getElementById('metaTags'),
+      metaCategories: document.getElementById('metaCategories'),
+      metaKeywords: document.getElementById('metaKeywords'),
+      metaImage: document.getElementById('metaImage'),
+    };
+
+    // Auto-resize textareas
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
+    }
+    els.title.addEventListener('input', () => { autoResize(els.title); setDirty(true); });
+    els.body.addEventListener('input', () => { autoResize(els.body); setDirty(true); });
+
+    // Resize on window resize
+    window.addEventListener('resize', () => {
+      autoResize(els.title);
+      autoResize(els.body);
+    });
+
+    // Mark dirty
+    function setDirty(val) {
+      isDirty = val;
+      els.statusDot.className = val ? 'status-dot unsaved' : 'status-dot saved';
+      els.statusText.textContent = val ? 'Não salvo' : 'Salvo';
     }
 
-    async function fetchArticles() {
-      const r = await fetch(API + '/api/articles');
+    // Sidebar Toggle
+    document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
+      els.sidebar.classList.add('collapsed');
+      document.getElementById('openSidebarBtn').style.display = 'block';
+    });
+    document.getElementById('openSidebarBtn').addEventListener('click', () => {
+      els.sidebar.classList.remove('collapsed');
+      document.getElementById('openSidebarBtn').style.display = 'none';
+    });
+
+    // Settings Toggle
+    document.getElementById('btnSettings').addEventListener('click', () => {
+      els.settingsPanel.classList.toggle('open');
+    });
+    document.getElementById('closeSettingsBtn').addEventListener('click', () => {
+      els.settingsPanel.classList.remove('open');
+    });
+
+    // Fetch Articles
+    async function loadArticles() {
+      const r = await fetch(API_BASE + '/articles');
       articles = await r.json();
-      renderList();
+      renderArticles();
     }
 
-    function renderList() {
-      const list = document.getElementById('articleList');
-      list.innerHTML = articles.map(a => `
-        <button type="button" class="article-item ${a.slug === currentSlug ? 'active' : ''}" data-slug="${a.slug}">
-          ${escapeHtml(a.title || a.slug)}
-        </button>
-      `).join('');
-      list.querySelectorAll('.article-item').forEach(btn => {
-        btn.addEventListener('click', () => selectArticle(btn.dataset.slug));
+    function renderArticles() {
+      els.articleList.innerHTML = '';
+      articles.forEach(a => {
+        const btn = document.createElement('button');
+        btn.className = `article-item ${a.slug === currentSlug ? 'active' : ''}`;
+        btn.innerHTML = `
+          <div class="article-title">${a.title || 'Sem título'}</div>
+          <div class="article-meta">
+            <span>${formatDate(a.date)}</span>
+          </div>
+        `;
+        btn.onclick = () => openArticle(a.slug);
+        els.articleList.appendChild(btn);
       });
     }
 
-    function escapeHtml(s) {
-      const div = document.createElement('div');
-      div.textContent = s;
-      return div.innerHTML;
-    }
+    // Open Article
+    async function openArticle(slug) {
+      if (isDirty && !confirm('Discard changes?')) return;
 
-    async function selectArticle(slug) {
-      if (dirty && currentSlug && !confirm('Há alterações não salvas. Descartar?')) return;
       currentSlug = slug;
-      dirty = false;
-      renderList();
-      const r = await fetch(API + `/api/articles/${slug}`);
-      if (!r.ok) { toast('Erro ao carregar'); return; }
+      // Load full data
+      const r = await fetch(`${API_BASE}/articles/${slug}`);
+      if (!r.ok) return alert('Failed to load');
       const data = await r.json();
-      document.getElementById('emptyState').style.display = 'none';
-      document.getElementById('editorForm').style.display = 'block';
-      document.getElementById('fieldTitle').value = data.frontmatter?.title ?? '';
-      document.getElementById('fieldDate').value = data.frontmatter?.date ?? '';
-      document.getElementById('fieldDesc').value = data.frontmatter?.description ?? '';
-      document.getElementById('fieldBody').value = data.body ?? '';
+      const fm = data.frontmatter || {};
+
+      els.title.value = fm.title || '';
+      els.body.value = data.body || '';
+
+      // Meta fields
+      els.metaSlug.value = data.slug;
+      els.metaStatus.value = fm.status || 'published';
+      els.metaDate.value = fm.date || '';
+      els.metaDesc.value = fm.description || '';
+      els.metaTags.value = fm.tags || '';
+      els.metaCategories.value = fm.categories || '';
+      els.metaKeywords.value = fm.keywords || '';
+      els.metaImage.value = fm.image || '';
+
+      autoResize(els.title);
+      autoResize(els.body);
+      setDirty(false);
+      renderArticles(); // Update active state
     }
 
-    function showEmpty() {
-      currentSlug = null;
-      dirty = false;
-      document.getElementById('emptyState').style.display = 'block';
-      document.getElementById('editorForm').style.display = 'none';
-      document.getElementById('editorForm').querySelectorAll('input, textarea').forEach(f => f.value = '');
-      renderList();
-    }
+    // Create New
+    document.getElementById('btnNew').addEventListener('click', async () => {
+      if (isDirty && !confirm('Discard changes?')) return;
+      const title = prompt('Título do artigo:');
+      if (!title) return;
 
-    async function save() {
-      if (!currentSlug) return;
-      const payload = {
-        frontmatter: {
-          title: document.getElementById('fieldTitle').value.trim() || 'Sem título',
-          date: document.getElementById('fieldDate').value.trim(),
-          description: document.getElementById('fieldDesc').value.trim(),
-        },
-        body: document.getElementById('fieldBody').value,
-      };
-      const r = await fetch(API + `/api/articles/${currentSlug}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!r.ok) { toast('Erro ao salvar'); return; }
-      dirty = false;
-      toast('Salvo.');
-      fetchArticles();
-    }
-
-    document.getElementById('btnSave').addEventListener('click', save);
-
-    document.getElementById('fieldTitle').addEventListener('input', () => dirty = true);
-    document.getElementById('fieldDate').addEventListener('input', () => dirty = true);
-    document.getElementById('fieldDesc').addEventListener('input', () => dirty = true);
-    document.getElementById('fieldBody').addEventListener('input', () => dirty = true);
-
-    document.getElementById('btnNew').addEventListener('click', () => {
-      document.getElementById('modalNew').style.display = 'flex';
-      document.getElementById('newTitle').value = '';
-      document.getElementById('newTitle').focus();
-    });
-    document.getElementById('modalCancel').addEventListener('click', () => {
-      document.getElementById('modalNew').style.display = 'none';
-    });
-    document.getElementById('modalCreate').addEventListener('click', async () => {
-      const title = document.getElementById('newTitle').value.trim() || 'Novo artigo';
-      document.getElementById('modalNew').style.display = 'none';
-      const r = await fetch(API + '/api/articles', {
+      const r = await fetch(API_BASE + '/articles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, body: '' }),
+        body: JSON.stringify({ title, date: new Date().toISOString().split('T')[0] })
       });
-      if (!r.ok) { toast('Erro ao criar'); return; }
       const data = await r.json();
-      await fetchArticles();
-      selectArticle(data.slug);
-      toast('Artigo criado.');
+      await loadArticles();
+      openArticle(data.slug);
     });
 
-    document.getElementById('btnAiGenerate').addEventListener('click', () => {
-      document.getElementById('modalAiTitle').textContent = 'Gerar com IA';
-      document.getElementById('modalAiPrompt').placeholder = 'Ex: Escreva um post sobre boas práticas de DevOps em 2025';
-      document.getElementById('modalAiPrompt').value = '';
-      document.getElementById('modalAi').style.display = 'flex';
-      window._aiMode = 'generate';
-    });
-    document.getElementById('btnAiImprove').addEventListener('click', () => {
-      document.getElementById('modalAiTitle').textContent = 'Melhorar texto';
-      document.getElementById('modalAiPrompt').placeholder = 'Instrução (opcional). Ex: Deixe mais formal.';
-      document.getElementById('modalAiPrompt').value = '';
-      document.getElementById('modalAi').style.display = 'flex';
-      window._aiMode = 'improve';
-    });
-    document.getElementById('modalAiCancel').addEventListener('click', () => {
-      document.getElementById('modalAi').style.display = 'none';
-    });
-    document.getElementById('modalAiRun').addEventListener('click', async () => {
-      const wrap = document.getElementById('editorWrap');
-      wrap.classList.add('loading');
-      try {
-        if (window._aiMode === 'generate') {
-          const prompt = document.getElementById('modalAiPrompt').value.trim();
-          if (!prompt) { toast('Digite um prompt'); return; }
-          const r = await fetch(API + '/api/ai/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt }),
-          });
-          const j = await r.json();
-          if (j.error) { toast(j.error); return; }
-          document.getElementById('fieldBody').value = (document.getElementById('fieldBody').value + '\n\n' + j.text).trim();
-          dirty = true;
-        } else {
-          const text = document.getElementById('fieldBody').value.trim();
-          if (!text) { toast('Não há texto para melhorar'); return; }
-          const instruction = document.getElementById('modalAiPrompt').value.trim() || 'Melhore o texto mantendo o tom. Retorne só o texto em Markdown.';
-          const r = await fetch(API + '/api/ai/improve', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text, instruction }),
-          });
-          const j = await r.json();
-          if (j.error) { toast(j.error); return; }
-          document.getElementById('fieldBody').value = j.text;
-          dirty = true;
+    // Save
+    async function save() {
+      if (!currentSlug) return;
+
+      const payload = {
+        slug: els.metaSlug.value,
+        frontmatter: {
+          title: els.title.value,
+          date: els.metaDate.value,
+          description: els.metaDesc.value,
+          tags: els.metaTags.value,
+          categories: els.metaCategories.value,
+          keywords: els.metaKeywords.value,
+          image: els.metaImage.value,
+          status: els.metaStatus.value,
+        },
+        body: els.body.value
+      };
+
+      const r = await fetch(`${API_BASE}/articles/${currentSlug}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (r.ok) {
+        setDirty(false);
+        showToast('Artigo salvo com sucesso!');
+        // Update currentSlug if changed
+        const res = await r.json();
+        if (res.slug && res.slug !== currentSlug) {
+          currentSlug = res.slug;
         }
-        document.getElementById('modalAi').style.display = 'none';
-        toast('Concluído.');
-      } finally {
-        wrap.classList.remove('loading');
+        loadArticles(); // Update title in list if changed
+      } else {
+        const j = await r.json();
+        showToast('Erro: ' + (j.error || 'Falha ao salvar'));
+      }
+    }
+    document.getElementById('btnSave').addEventListener('click', save);
+
+    // Keyboard shortcut for save
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        save();
       }
     });
 
-    window.addEventListener('beforeunload', (e) => { if (dirty) e.preventDefault(); });
+    // AI Tools
+    const aiModal = document.getElementById('aiModal');
+    document.getElementById('btnAiToolbar').addEventListener('click', () => {
+      aiModal.style.display = 'flex';
+      document.getElementById('aiPrompt').focus();
+    });
+    document.getElementById('closeAiBtn').addEventListener('click', () => {
+      aiModal.style.display = 'none';
+    });
 
-    fetchArticles();
+    async function callAI(endpoint) {
+      const prompt = document.getElementById('aiPrompt').value;
+      if (!prompt) return;
+
+      const btn = endpoint.includes('generate') ? document.getElementById('runAiGenerate') : document.getElementById('runAiImprove');
+      const originalText = btn.textContent;
+      btn.textContent = 'Processando...';
+
+      try {
+        const body = endpoint.includes('generate')
+          ? { prompt }
+          : { text: els.body.value, instruction: prompt };
+
+        const r = await fetch(`${API_BASE}/ai/${endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+
+        const data = await r.json();
+        if (data.text) {
+          if (endpoint.includes('generate')) {
+            els.body.value += '\n\n' + data.text;
+          } else {
+            els.body.value = data.text;
+          }
+          autoResize(els.body);
+          setDirty(true);
+          aiModal.style.display = 'none';
+        }
+      } catch (e) {
+        alert('Erro AI: ' + e);
+      } finally {
+        btn.textContent = originalText;
+      }
+    }
+
+    document.getElementById('runAiGenerate').addEventListener('click', () => callAI('generate'));
+    document.getElementById('runAiImprove').addEventListener('click', () => callAI('improve'));
+
+    // Utilities
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      try {
+        return new Date(dateStr).toLocaleDateString('pt-BR');
+      } catch { return dateStr; }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // --- Formatting & Shortcuts ---
+
+    // Slash Menu
+    const slashMenu = document.createElement('div');
+    slashMenu.id = 'slashMenu';
+    slashMenu.style.cssText = `
+      position: absolute;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      width: 200px;
+      display: none;
+      z-index: 1000;
+      overflow: hidden;
+    `;
+
+    const menuItems = [
+      { label: 'H1 Título 1', icon: 'heading-1', insert: '# ' },
+      { label: 'H2 Título 2', icon: 'heading-2', insert: '## ' },
+      { label: 'H3 Título 3', icon: 'heading-3', insert: '### ' },
+      { label: 'Lista', icon: 'list', insert: '- ' },
+      { label: 'Citação', icon: 'quote', insert: '> ' },
+      { label: 'Código', icon: 'code', insert: '```\n\n```', offset: -4 },
+      { label: 'Imagem', icon: 'image', insert: '![Alt](url)', offset: -1 },
+      { label: 'Separador', icon: 'minus', insert: '---\n' },
+    ];
+
+    slashMenu.innerHTML = menuItems.map((item, i) => `
+      <div class="menu-item" data-idx="${i}" style="padding: 8px 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text);">
+        <i data-lucide="${item.icon}" size="14"></i> ${item.label}
+      </div>
+    `).join('');
+    document.body.appendChild(slashMenu);
+
+    // Re-render icons in menu
+    lucide.createIcons({ root: slashMenu });
+
+    // Menu Item Hover
+    slashMenu.querySelectorAll('.menu-item').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        slashMenu.querySelectorAll('.menu-item').forEach(e => e.style.background = 'transparent');
+        el.style.background = 'var(--bg-hover)';
+      });
+      el.addEventListener('click', () => {
+        insertText(menuItems[el.dataset.idx]);
+        hideSlashMenu();
+      });
+    });
+
+    els.body.addEventListener('input', (e) => {
+      const val = els.body.value;
+      const selStart = els.body.selectionStart;
+
+      // Detect "/" at beginning of line or after newline
+      const lastChar = val.slice(selStart - 1, selStart);
+      if (lastChar === '/') {
+        // pattern: newline + / or start + /
+        const before = val.slice(0, selStart - 1);
+        if (before.length === 0 || before.endsWith('\n')) {
+          showSlashMenu();
+        }
+      } else {
+        hideSlashMenu();
+      }
+      autoResize(els.body);
+      setDirty(true);
+    });
+
+    function showSlashMenu() {
+      // Very basic positioning: roughly center or near cursor would be better but requires complex calc in textarea
+      // For simplicity, fixed position near top of editor or where cursor "might" be (complex without rich text)
+      // We will anchor it to the editor container for now.
+      const rect = els.body.getBoundingClientRect();
+      slashMenu.style.top = (rect.top + 80) + 'px';
+      slashMenu.style.left = (rect.left + 20) + 'px';
+      slashMenu.style.display = 'block';
+    }
+
+    function hideSlashMenu() {
+      slashMenu.style.display = 'none';
+    }
+
+    function insertText(item) {
+      const textarea = els.body;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+
+      // Remove the slash
+      const pre = text.substring(0, start - 1);
+      const post = text.substring(end);
+
+      textarea.value = pre + item.insert + post;
+
+      // Move cursor
+      const newPos = pre.length + item.insert.length + (item.offset || 0);
+      textarea.selectionStart = textarea.selectionEnd = newPos;
+      textarea.focus();
+
+      autoResize(textarea);
+      setDirty(true);
+    }
+
+    // Shortcuts (Ctrl+B, Ctrl+I) - Markdown wrappers
+    document.addEventListener('keydown', (e) => {
+      if (!e.ctrlKey && !e.metaKey) return;
+
+      const key = e.key.toLowerCase();
+      if (key === 'b') { e.preventDefault(); wrapSelection('**', '**'); }
+      if (key === 'i') { e.preventDefault(); wrapSelection('*', '*'); }
+      if (key === 'k') { e.preventDefault(); wrapSelection('[', '](url)'); }
+    });
+
+    function wrapSelection(before, after) {
+      const textarea = els.body;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      const sel = text.substring(start, end);
+
+      textarea.value = text.substring(0, start) + before + sel + after + text.substring(end);
+      textarea.selectionStart = start + before.length;
+      textarea.selectionEnd = end + before.length;
+
+      autoResize(textarea);
+      setDirty(true);
+    }
+
+    // Init
+    loadArticles();
   </script>
 </body>
+
 </html>

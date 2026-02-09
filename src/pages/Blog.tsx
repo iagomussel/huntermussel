@@ -13,7 +13,7 @@ const Blog = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Blog | HunterMussel</title>
-        <meta name="description" content="Artigos sobre gestão de processos, IA e DevOps." />
+        <meta name="description" content="Articles on process management, AI, and DevOps." />
       </Helmet>
       <Navbar />
       <main className="container px-6 pt-28 pb-24">
@@ -30,7 +30,7 @@ const Blog = () => {
             Blog
           </h1>
           <p className="mt-4 font-body text-muted-foreground">
-            Conteúdo em Markdown, renderizado em React no build.
+            Articles on process management, AI, and DevOps.
           </p>
 
           <ul className="mt-12 space-y-6">
@@ -45,7 +45,7 @@ const Blog = () => {
                   </h2>
                   {post.date && (
                     <time className="mt-1 block font-body text-xs text-muted-foreground">
-                      {new Date(post.date).toLocaleDateString("pt-BR", {
+                      {new Date(post.date).toLocaleDateString("en-US", {
                         day: "2-digit",
                         month: "long",
                         year: "numeric",
@@ -58,7 +58,7 @@ const Blog = () => {
                     </p>
                   )}
                   <span className="mt-3 inline-flex items-center gap-1 font-heading text-xs text-primary">
-                    Ler mais
+                    Read more
                     <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                   </span>
                 </Link>

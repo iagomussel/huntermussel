@@ -22,30 +22,34 @@ const TechSection = () => {
             // stack
           </span>
           <h2 className="font-heading text-3xl font-bold tracking-tight md:text-4xl">
-            Tecnologias que dominamos
+            Technologies We Master
           </h2>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-3"
-        >
-          {techs.map((tech, i) => (
-            <motion.span
-              key={tech}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.04 }}
-              className="rounded-md border border-border bg-card/50 px-4 py-2 font-heading text-xs text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
+        <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+          <div className="flex w-full overflow-hidden">
+            <motion.div
+              initial={{ x: 0 }}
+              animate={{ x: "-50%" }}
+              transition={{
+                duration: 30,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              className="flex flex-nowrap gap-8 py-4"
+              style={{ width: "max-content" }}
             >
-              {tech}
-            </motion.span>
-          ))}
-        </motion.div>
+              {[...techs, ...techs, ...techs, ...techs].map((tech, i) => (
+                <span
+                  key={`${tech}-${i}`}
+                  className="whitespace-nowrap rounded-md border border-border bg-card/50 px-6 py-3 font-heading text-sm text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
+                >
+                  {tech}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );

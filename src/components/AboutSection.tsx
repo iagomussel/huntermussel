@@ -13,22 +13,22 @@ const AboutSection = () => {
             transition={{ duration: 0.6 }}
           >
             <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
-              // sobre
+              // about
             </span>
             <h2 className="mb-6 font-heading text-3xl font-bold tracking-tight md:text-4xl">
-              Gestão de processos
+              Process management
               <br />
-              <span className="gradient-text">potencializada por IA</span>
+              <span className="gradient-text">empowered by AI</span>
             </h2>
             <p className="mb-6 font-body text-base leading-relaxed text-muted-foreground">
-              A HunterMussel nasceu da paixão por resolver problemas complexos
-              com tecnologia e inteligência artificial. Combinamos IA, automação
-              e práticas DevOps para transformar processos empresariais em
-              operações inteligentes e escaláveis.
+              HunterMussel was born from a passion for solving complex problems
+              with technology and artificial intelligence. We combine AI, automation,
+              and DevOps practices to transform business processes into
+              intelligent and scalable operations.
             </p>
             <p className="font-body text-base leading-relaxed text-muted-foreground">
-              Nossa missão é eliminar ineficiências com IA — automatizando
-              decisões, otimizando fluxos e entregando resultados mensuráveis.
+              Our mission is to eliminate inefficiencies with AI — automating
+              decisions, optimizing flows, and delivering measurable results.
             </p>
           </motion.div>
 
@@ -46,14 +46,14 @@ const AboutSection = () => {
               <div>
                 <h3 className="font-heading text-lg font-bold">Iago Mussel</h3>
                 <p className="font-body text-sm text-primary">
-                  CEO & Fundador
+                  CEO & Founder
                 </p>
               </div>
             </div>
             <p className="mb-6 font-body text-sm leading-relaxed text-muted-foreground">
-              Engenheiro de software com experiência em inteligência artificial,
-              arquiteturas distribuídas e cultura DevOps. Apaixonado por aplicar
-              IA na gestão de processos e construir times de alta performance.
+              Software engineer with experience in artificial intelligence,
+              distributed architectures, and DevOps culture. Passionate about applying
+              AI in process management and building high-performance teams.
             </p>
             <div className="flex gap-3">
               <a
