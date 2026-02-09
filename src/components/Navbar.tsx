@@ -7,6 +7,7 @@ const navItems = [
   { label: "Cases", href: "#cases" },
   { label: "Sobre", href: "#sobre" },
   { label: "Tecnologias", href: "#tecnologias" },
+  { label: "Blog", href: "/blog" },
   { label: "Contato", href: "#contato" },
 ];
 
@@ -21,7 +22,7 @@ const Navbar = () => {
       className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl"
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#" className="font-heading text-xl font-bold tracking-tight">
+        <a href="/" className="font-heading text-xl font-bold tracking-tight">
           <span className="gradient-text">Hunter</span>
           <span className="text-foreground">Mussel</span>
         </a>

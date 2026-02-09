@@ -103,6 +103,28 @@ const CasesSection = () => {
             </motion.article>
           ))}
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 border-t border-border pt-12 text-center"
+        >
+          <p className="mb-6 font-heading text-xs uppercase tracking-widest text-muted-foreground">
+            Clientes satisfeitos
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            <a
+              href="https://amparoeaconchego.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body text-sm text-muted-foreground transition-colors hover:text-primary"
+            >
+              amparoeaconchego.com
+            </a>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

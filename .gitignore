@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .env
 *.env
+
+# Blog editor (local)
+tools/blog-editor/.venv
