@@ -10,17 +10,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     hmr: {
       overlay: false,
-    },
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:5000",
-        changeOrigin: true,
-      },
-      "/images/blog": {
-        target: "http://127.0.0.1:5000",
-        changeOrigin: true,
-      },
-    },
+    }
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

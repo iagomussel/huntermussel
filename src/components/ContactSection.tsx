@@ -21,7 +21,8 @@ const ContactSection = () => {
       });
       const data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || "Falha ao enviar.");
+        const msg = data.details ? `${data.error} (${data.details})` : (data.error || "Falha ao enviar.");
+        setErrorMsg(msg);
         setStatus("error");
         return;
       }

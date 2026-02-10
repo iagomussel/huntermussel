@@ -23,6 +23,10 @@ export async function onRequestOptions() {
 export async function onRequest(context) {
   const { request } = context;
 
+  if (request.method === "OPTIONS") {
+    return onRequestOptions();
+  }
+
   if (request.method !== "POST") {
     return json({ error: "Method not allowed" }, 405);
   }
@@ -41,25 +45,38 @@ export async function onRequest(context) {
 
   const telegramApiKey = context.env.TELEGRAM_API_KEY;
   const telegramChatId = context.env.TELEGRAM_CHAT_ID;
+
   if (!telegramApiKey || !telegramChatId) {
+    console.error("Missing Telegram configuration");
     return json({ error: "Serviço não configurado." }, 500);
   }
 
-  const text = `Nome: ${name.trim()}\nEmail: ${email.trim()}\nMensagem: ${message.trim()}`;
-  const url = `https://api.telegram.org/bot${telegramApiKey}/sendMessage`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: telegramChatId,
-      text,
-    }),
-  });
+  const text = `📬 Novo Contato\n\nNome: ${name.trim()}\nEmail: ${email.trim()}\nMensagem: ${message.trim()}`;
+  
+  try {
+    const url = `https://api.telegram.org/bot${telegramApiKey}/sendMessage`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: telegramChatId,
+        text,
+      }),
+    });
 
-  if (!response.ok) {
-    const err = await response.text();
-    return json({ error: "Falha ao enviar. Tente novamente." }, 502);
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error("Telegram API Error:", result);
+      return json({ 
+        error: "Falha ao enviar para o Telegram.",
+        details: result.description 
+      }, 502);
+    }
+
+    return json({ success: true });
+  } catch (error) {
+    console.error("Fetch Error:", error);
+    return json({ error: "Erro interno ao processar envio." }, 500);
   }
-
-  return json({ success: true });
 }
