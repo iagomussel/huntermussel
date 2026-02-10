@@ -1,8 +1,3 @@
-/*
-POST /api/contact – Formulário de CONTATO (Vamos construir juntos?).
-Sends message to Telegram channel.
-*/
-
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -20,16 +15,9 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: { ...CORS, "Access-Control-Max-Age": "86400" } });
 }
 
-export async function onRequest(context) {
+export async function onRequestPost(context) {
   const { request } = context;
 
-  if (request.method === "OPTIONS") {
-    return onRequestOptions();
-  }
-
-  if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, 405);
-  }
 
   let body;
   try {
@@ -52,7 +40,7 @@ export async function onRequest(context) {
   }
 
   const text = `📬 Novo Contato\n\nNome: ${name.trim()}\nEmail: ${email.trim()}\nMensagem: ${message.trim()}`;
-  
+
   try {
     const url = `https://api.telegram.org/bot${telegramApiKey}/sendMessage`;
     const response = await fetch(url, {
@@ -68,9 +56,9 @@ export async function onRequest(context) {
 
     if (!response.ok) {
       console.error("Telegram API Error:", result);
-      return json({ 
+      return json({
         error: "Falha ao enviar para o Telegram.",
-        details: result.description 
+        details: result.description
       }, 502);
     }
 
