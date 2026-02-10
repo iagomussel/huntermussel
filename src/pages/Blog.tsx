@@ -42,7 +42,7 @@ const Blog = () => {
                   className="group block overflow-hidden rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
                 >
                   {post.image && (
-                    <div className="aspect-video w-full overflow-hidden border-b border-border">
+                    <div className="aspect-[9/16] sm:aspect-square md:aspect-video w-full overflow-hidden border-b border-border text-center bg-muted/20">
                       <ResponsiveImage
                         src={post.image}
                         alt={post.title}
