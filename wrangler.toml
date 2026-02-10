@@ -1,5 +1,4 @@
 name = "huntermussel"
 pages_build_output_dir = "dist"
-
-[vars]
-# Add environment variables here if needed
+compatibility_date = "2025-02-01"
+compatibility_flags = ["nodejs_compat"]

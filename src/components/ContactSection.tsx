@@ -5,33 +5,50 @@ import { ArrowRight, Mail, MapPin, MessageCircle } from "lucide-react";
 const ContactSection = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Contact form: Starting submission...");
     setStatus("loading");
     setErrorMsg("");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, phone, message }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        const msg = data.details ? `${data.error} (${data.details})` : (data.error || "Falha ao enviar.");
-        setErrorMsg(msg);
+
+      const contentType = res.headers.get("content-type");
+      let data;
+      if (contentType && contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        console.error("Contact form: Received non-JSON response:", text);
+        setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
         setStatus("error");
         return;
       }
+
+      if (!res.ok) {
+        console.error("Contact form: API Error:", data);
+        setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
+        setStatus("error");
+        return;
+      }
+      console.log("Contact form: Success!");
       setStatus("success");
       setName("");
       setEmail("");
+      setPhone("");
       setMessage("");
-    } catch {
-      setErrorMsg("Erro de conexão. Tente novamente.");
+    } catch (err) {
+      console.error("Contact form: Connection error:", err);
+      setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
       setStatus("error");
     }
   };
@@ -77,17 +94,21 @@ const ContactSection = () => {
                 </p>
               )}
               <div className="grid gap-5 sm:grid-cols-2">
-                <div>
+                <div className="sm:col-span-2">
                   <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
                     Name
                   </label>
                   <input
                     type="text"
+                    id="name"
+                    name="name"
                     placeholder="Your name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
                     disabled={status === "loading"}
+                    autoComplete="name"
+                    data-lpignore="true"
                     className="w-full rounded-md border border-border bg-muted/30 px-4 py-2.5 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 disabled:opacity-60"
                   />
                 </div>
@@ -97,11 +118,32 @@ const ContactSection = () => {
                   </label>
                   <input
                     type="email"
+                    id="email"
+                    name="email"
                     placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     disabled={status === "loading"}
+                    autoComplete="email"
+                    data-lpignore="true"
+                    className="w-full rounded-md border border-border bg-muted/30 px-4 py-2.5 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 disabled:opacity-60"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
+                    Phone (Optional)
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+55 (00) 00000-0000"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    disabled={status === "loading"}
+                    autoComplete="tel"
+                    data-lpignore="true"
                     className="w-full rounded-md border border-border bg-muted/30 px-4 py-2.5 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 disabled:opacity-60"
                   />
                 </div>
@@ -112,11 +154,14 @@ const ContactSection = () => {
                 </label>
                 <textarea
                   rows={4}
+                  id="message"
+                  name="message"
                   placeholder="Describe your project..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
                   disabled={status === "loading"}
+                  data-lpignore="true"
                   className="w-full resize-none rounded-md border border-border bg-muted/30 px-4 py-2.5 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 disabled:opacity-60"
                 />
               </div>
