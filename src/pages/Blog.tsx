@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import ResponsiveImage from "@/components/ResponsiveImage";
 
 const Blog = () => {
   const posts = getPosts();
@@ -38,29 +39,45 @@ const Blog = () => {
               <li key={post.slug}>
                 <Link
                   to={`/blog/${post.slug}`}
-                  className="group block rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30 hover:bg-card"
+                  className="group block overflow-hidden rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
                 >
-                  <h2 className="font-heading text-lg font-semibold text-foreground group-hover:text-primary">
-                    {post.title}
-                  </h2>
-                  {post.date && (
-                    <time className="mt-1 block font-body text-xs text-muted-foreground">
-                      {new Date(post.date).toLocaleDateString("en-US", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </time>
+                  {post.image && (
+                    <div className="aspect-video w-full overflow-hidden border-b border-border">
+                      <ResponsiveImage
+                        src={post.image}
+                        alt={post.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
                   )}
-                  {post.description && (
-                    <p className="mt-2 font-body text-sm text-muted-foreground">
-                      {post.description}
-                    </p>
-                  )}
-                  <span className="mt-3 inline-flex items-center gap-1 font-heading text-xs text-primary">
-                    Read more
-                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                  </span>
+                  <div className="p-6">
+                    <h2 className="font-heading text-lg font-semibold text-foreground group-hover:text-primary">
+                      {post.title}
+                    </h2>
+                    {post.subtitle && (
+                      <p className="mt-1 font-body text-sm text-muted-foreground/80 italic">
+                        {post.subtitle}
+                      </p>
+                    )}
+                    {post.date && (
+                      <time className="mt-2 block font-body text-xs text-muted-foreground">
+                        {new Date(post.date).toLocaleDateString("en-US", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </time>
+                    )}
+                    {post.description && (
+                      <p className="mt-3 font-body text-sm text-muted-foreground">
+                        {post.description}
+                      </p>
+                    )}
+                    <span className="mt-4 inline-flex items-center gap-1 font-heading text-xs text-primary">
+                      Read more
+                      <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
                 </Link>
               </li>
             ))}

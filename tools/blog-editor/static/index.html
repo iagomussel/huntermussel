@@ -1,973 +1,237 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HunterMussel Editor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    :root {
-      --bg: #0a0a0c;
-      --bg-sidebar: #0f0f12;
-      --bg-hover: #1a1a1f;
-      --border: #242429;
-      --text: #e0e0e6;
-      --text-muted: #94949e;
-      --accent: #10b981;
-      --accent-hover: #059669;
-      --font-ui: 'Inter', sans-serif;
-      --font-body: 'Merriweather', serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      outline: none;
-    }
-
-    body {
-      margin: 0;
-      font-family: var(--font-ui);
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 300px;
-      background: var(--bg-sidebar);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      transition: width 0.3s;
-    }
-
-    .sidebar.collapsed {
-      width: 0;
-      border: none;
-    }
-
-    .sidebar-header {
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .brand {
-      font-weight: 700;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-icon {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      padding: 4px;
-      border-radius: 4px;
-    }
-
-    .btn-icon:hover {
-      background: var(--bg-hover);
-      color: var(--text);
-    }
-
-    .article-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-    }
-
-    .article-item {
-      display: block;
-      width: 100%;
-      padding: 12px 16px;
-      margin-bottom: 4px;
-      text-align: left;
-      background: none;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      color: var(--text);
-      transition: background 0.1s;
-    }
-
-    .article-item:hover {
-      background: var(--bg-hover);
-    }
-
-    .article-item.active {
-      background: var(--bg-hover);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--border);
-      font-weight: 600;
-    }
-
-    .article-title {
-      font-size: 14px;
-      margin-bottom: 4px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .article-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .btn-new {
-      margin: 16px;
-      padding: 10px;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .btn-new:hover {
-      background: var(--accent-hover);
-    }
-
-    /* Scrollbars */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--text-muted);
-    }
-
-    /* Main Area */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      min-width: 0;
-      background: var(--bg);
-    }
-
-    .topbar {
-      height: 60px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      background: var(--bg);
-    }
-
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .status-badge {
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--border);
-      transition: background 0.3s;
-    }
-
-    .status-dot.saved {
-      background: var(--accent);
-    }
-
-    .status-dot.unsaved {
-      background: #f59e0b;
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn-action {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background 0.2s;
-    }
-
-    .btn-action:hover {
-      background: var(--accent-hover);
-    }
-
-    .btn-secondary {
-      background: var(--bg-sidebar);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      color: var(--text);
-      background: var(--bg-hover);
-    }
-
-    /* Editor */
-    .editor-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 40px 20px 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: var(--bg);
-    }
-
-    .editor-width {
-      width: 100%;
-      max-width: 740px;
-    }
-
-    .input-title {
-      font-family: var(--font-body);
-      font-size: 42px;
-      font-weight: 700;
-      width: 100%;
-      border: none;
-      background: transparent;
-      padding: 10px 0;
-      margin-bottom: 20px;
-      line-height: 1.2;
-      color: var(--text);
-    }
-
-    .input-title::placeholder {
-      color: #4b4b4b;
-    }
-
-    .input-body {
-      font-family: var(--font-body);
-      font-size: 20px;
-      line-height: 1.6;
-      width: 100%;
-      min-height: 60vh;
-      border: none;
-      background: transparent;
-      resize: none;
-      color: var(--text);
-    }
-
-    .input-body::placeholder {
-      color: #4b4b4b;
-      font-style: italic;
-    }
-
-    /* Settings Panel */
-    .settings-panel {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 340px;
-      background: var(--bg-sidebar);
-      border-left: 1px solid var(--border);
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      color: var(--text);
-    }
-
-    .settings-panel.open {
-      transform: translateX(0);
-    }
-
-    .settings-header {
-      padding: 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 600;
-    }
-
-    .settings-content {
-      padding: 20px;
-      overflow-y: auto;
-      flex: 1;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .form-input,
-    .form-textarea {
-      width: 100%;
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      border-radius: 4px;
-      font-family: var(--font-ui);
-      font-size: 14px;
-      color: var(--text);
-      transition: border 0.2s;
-    }
-
-    .form-input:focus,
-    .form-textarea:focus {
-      border-color: var(--accent);
-    }
-
-    .form-textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .help-text {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* AI Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal {
-      background: var(--bg-sidebar);
-      width: 90%;
-      max-width: 500px;
-      border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--border);
-      padding: 24px;
-      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      color: var(--text);
-    }
-
-    @keyframes slideUp {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
-
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--accent);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      z-index: 200;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    #slashMenu {
-      background: var(--bg-sidebar) !important;
-      border: 1px solid var(--border) !important;
-      color: var(--text) !important;
-    }
-
-    .menu-item:hover {
-      background: var(--bg-hover) !important;
-    }
-
-    /* Scrollbars */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--text-muted);
-    }
+    :root { --bg: #0a0a0c; --sb: #0f0f12; --h: #1a1a1f; --br: #242429; --tx: #e0e0e6; --mu: #94949e; --ac: #10b981; --ac-h: #059669; }
+    * { box-sizing: border-box; outline: none; }
+    body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tx); display: flex; height: 100vh; overflow: hidden; }
     
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) var(--bg);
-    }
+    .sidebar { width: 300px; background: var(--sb); border-right: 1px solid var(--br); display: flex; flex-direction: column; flex-shrink: 0; transition: width 0.3s; }
+    .sidebar.collapsed { width: 0; border: none; overflow: hidden; }
+    .sb-head { padding: 20px; font-weight: 700; border-bottom: 1px solid var(--br); display: flex; justify-content: space-between; align-items: center; }
+    .art-list { flex: 1; overflow-y: auto; padding: 10px; }
+    .art-btn { display: block; width: 100%; padding: 12px; margin-bottom: 4px; text-align: left; background: none; border: none; border-radius: 6px; cursor: pointer; color: var(--tx); font-size: 13px; }
+    .art-btn:hover { background: var(--h); }
+    .art-btn.active { background: var(--h); border: 1px solid var(--br); font-weight: 600; }
+    .btn-new { margin: 16px; padding: 12px; background: var(--ac); color: #fff; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
+    .topbar { height: 60px; border-bottom: 1px solid var(--br); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+    .status { font-size: 12px; color: var(--mu); display: flex; align-items: center; gap: 8px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #333; transition: 0.3s; }
+    .dot.saved { background: var(--ac); }
+    .dot.saving { background: #f59e0b; animation: pulse 1s infinite; }
+    .dot.error { background: #ef4444; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+    .ed-container { flex: 1; overflow-y: auto; padding: 40px 20px 100px; display: flex; flex-direction: column; align-items: center; }
+    .ed-w { width: 100%; max-width: 740px; }
+    .in-t { font-family: 'Merriweather', serif; font-size: 42px; font-weight: 700; width: 100%; border: none; background: transparent; color: var(--tx); resize: none; overflow: hidden; margin-bottom: 8px; }
+    .in-s { font-size: 20px; width: 100%; border: none; background: transparent; color: var(--mu); resize: none; overflow: hidden; margin-bottom: 24px; }
+    .in-b { font-family: 'Merriweather', serif; font-size: 18px; line-height: 1.7; width: 100%; min-height: 60vh; border: none; background: transparent; color: var(--tx); resize: none; outline: none; }
+
+    .panel { position: absolute; top: 0; right: 0; bottom: 0; width: 340px; background: var(--sb); border-left: 1px solid var(--br); transform: translateX(100%); transition: transform 0.3s; z-index: 10; display: flex; flex-direction: column; }
+    .panel.open { transform: translateX(0); }
+    .f-group { margin-bottom: 20px; }
+    .f-label { display: block; font-size: 11px; color: var(--mu); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+    .f-in { width: 100%; padding: 10px; border: 1px solid var(--br); background: var(--bg); border-radius: 6px; color: var(--tx); font-size: 13px; }
+    .cover-box { width: 100%; height: 160px; background: var(--bg); border: 1px dashed var(--br); border-radius: 8px; margin-top: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; }
+    .cover-box img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .modal-ov { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .modal { background: var(--sb); width: 90%; max-width: 600px; border-radius: 12px; border: 1px solid var(--br); padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+    .btn-ai { background: var(--h); border: 1px solid var(--br); color: var(--tx); padding: 10px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+    .btn-ai:hover { border-color: var(--ac); background: var(--bg); }
+    .btn-act { background: var(--ac); color: #fff; border: none; padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-icon { background: none; border: none; color: var(--mu); cursor: pointer; padding: 8px; border-radius: 4px; display: inline-flex; align-items: center; }
+    .btn-icon:hover { color: #fff; background: var(--h); }
+    
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ac); color: #fff; padding: 10px 20px; border-radius: 30px; font-size: 13px; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 200; }
+    .toast.show { opacity: 1; }
+    #slashMenu { position: absolute; background: var(--sb); border: 1px solid var(--br); border-radius: 8px; width: 220px; display: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; }
+    .m-item { padding: 10px 14px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 10px; color: var(--tx); }
+    .m-item:hover { background: var(--h); }
   </style>
 </head>
-
 <body>
-
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="brand">
-        <i data-lucide="feather" size="18"></i>
-        <span>HunterMussel</span>
-      </div>
-      <button class="btn-icon" id="toggleSidebarBtn"><i data-lucide="chevrons-left"></i></button>
-    </div>
-    <div class="article-list" id="articleList">
-      <!-- Generated JS -->
-    </div>
-    <button class="btn-new" id="btnNew">
-      <i data-lucide="plus" size="16"></i>
-      Novo Artigo
-    </button>
+    <div class="sb-head">HunterMussel <button class="btn-icon" onclick="toggleSidebar()"><i data-lucide="chevrons-left" size="16"></i></button></div>
+    <div class="art-list" id="artList"></div>
+    <button class="btn-new" onclick="createNew()"><i data-lucide="plus"></i> New Article</button>
   </aside>
-
-  <!-- Main Content -->
   <main class="main">
     <div class="topbar">
-      <div class="topbar-left">
-        <button class="btn-icon" id="openSidebarBtn" style="display:none;"><i data-lucide="menu"></i></button>
-        <div class="status-badge">
-          <div class="status-dot" id="statusDot"></div>
-          <span id="statusText">Pronto</span>
-        </div>
+      <div class="status">
+        <button class="btn-icon" id="openSb" style="display:none;" onclick="toggleSidebar()"><i data-lucide="menu" size="18"></i></button>
+        <div class="dot" id="dot"></div> <span id="stTxt">Ready</span>
       </div>
-      <div class="topbar-right">
-        <button class="btn-secondary btn-action" id="btnSettings" title="Configurações SEO & Meta">
-          <i data-lucide="settings" size="18"></i>
-        </button>
-        <button class="btn-secondary btn-action" id="btnAiToolbar" title="Ferramentas IA">
-          <i data-lucide="sparkles" size="18"></i>
-        </button>
-        <button class="btn-action" id="btnSave">
-          Publicar / Salvar
-        </button>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-icon" onclick="openConf()"><i data-lucide="brain"></i></button>
+        <button class="btn-icon" onclick="togglePanel()"><i data-lucide="settings"></i></button>
+        <button class="btn-icon" onclick="openAi()"><i data-lucide="sparkles"></i></button>
+        <button class="btn-act" onclick="manualSave()">Save</button>
       </div>
     </div>
-
-    <div class="editor-container" id="editorContainer">
-      <div class="editor-width">
-        <textarea rows="1" class="input-title" id="editorTitle" placeholder="Título"></textarea>
-        <textarea class="input-body" id="editorBody" placeholder="Conte sua história..."></textarea>
+    <div class="ed-container">
+      <div class="ed-w">
+        <textarea id="edT" class="in-t" rows="1" placeholder="Post Title"></textarea>
+        <textarea id="edS" class="in-s" rows="1" placeholder="Subtitle or summary..."></textarea>
+        <textarea id="edB" class="in-b" placeholder="Write something... Use '/' for blocks"></textarea>
       </div>
     </div>
-
-    <!-- Settings Panel -->
-    <div class="settings-panel" id="settingsPanel">
-      <div class="settings-header">
-        <span>Configurações do Artigo</span>
-        <button class="btn-icon" id="closeSettingsBtn"><i data-lucide="x"></i></button>
-      </div>
-      <div class="settings-content">
-        <div class="form-group">
-          <label class="form-label">Slug URL</label>
-          <input type="text" class="form-input" id="metaSlug" placeholder="meu-artigo-incrivel">
-          <div class="help-text">Identificador único na URL.</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Status</label>
-          <select class="form-input" id="metaStatus">
-            <option value="draft">Rascunho</option>
-            <option value="published">Publicado</option>
-            <option value="scheduled">Agendado</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Data de Publicação</label>
-          <input type="date" class="form-input" id="metaDate">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Descrição SEO</label>
-          <textarea class="form-textarea" id="metaDescription"
-            placeholder="Resumo curto para motores de busca..."></textarea>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tags</label>
-          <input type="text" class="form-input" id="metaTags" placeholder="tecnologia, ai, devops">
-          <div class="help-text">Separadas por vírgula.</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Categorias</label>
-          <input type="text" class="form-input" id="metaCategories" placeholder="Artigos, Tutoriais">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Palavras-chave</label>
-          <input type="text" class="form-input" id="metaKeywords" placeholder="seo, google, ranking">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Caminho da Imagem de Capa</label>
-          <input type="text" class="form-input" id="metaImage" placeholder="/images/cover.jpg">
-        </div>
+    <div class="panel" id="panel">
+      <div style="padding:20px; border-bottom:1px solid var(--br); display:flex; justify-content:space-between; align-items:center;"><strong>Settings</strong><button onclick="togglePanel()" class="btn-icon">x</button></div>
+      <div style="padding:20px; overflow-y:auto; flex:1;">
+        <div class="f-group"><label class="f-label">Cover Image</label><div class="cover-box" onclick="document.getElementById('cIn').click()"><span id="cHin">Click to Upload</span><img id="cImg" style="display:none;"></div><input type="file" id="cIn" style="display:none;"><input id="metaImg" class="f-in" style="margin-top:8px;" placeholder="/images/blog/..."></div>
+        <div class="f-group"><label class="f-label">URL Slug</label><input id="metaSlug" class="f-in"></div>
+        <div class="f-group"><label class="f-label">Date</label><input id="metaDate" type="date" class="f-in"></div>
+        <div class="f-group"><label class="f-label">SEO Description</label><textarea id="metaDesc" class="f-in" style="height:80px;"></textarea></div>
+        <div class="f-group"><label class="f-label">Tags</label><input id="metaTags" class="f-in" placeholder="tech, ai..."></div>
+        <div class="f-group"><label class="f-label">Status</label><select id="metaStatus" class="f-in"><option value="published">Published</option><option value="draft">Draft</option></select></div>
       </div>
     </div>
-
   </main>
 
-  <!-- AI Modal -->
-  <div class="modal-overlay" id="aiModal">
-    <div class="modal">
-      <h3 style="margin-top:0; margin-bottom:16px;">Assistente IA</h3>
-      <textarea class="form-textarea" id="aiPrompt" style="height:120px; margin-bottom:16px;"
-        placeholder="O que você quer que eu escreva ou melhore?"></textarea>
-      <div style="display:flex; justify-content:flex-end; gap:8px;">
-        <button class="btn-secondary btn-action" id="closeAiBtn">Cancelar</button>
-        <button class="btn-action" id="runAiGenerate">Gerar Texto</button>
-        <button class="btn-action" id="runAiImprove" style="background:#242424;">Refinar Texto</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast">Alterações salvas</div>
+  <div class="modal-ov" id="aiMdl"><div class="modal"><h3>AI Assistant</h3><p id="selHint" style="font-size:11px;color:var(--ac);display:none;margin-bottom:8px;">Selection active!</p><textarea class="f-in" id="aiPmt" style="height:100px;" placeholder="Prompt..."></textarea><div class="ai-grid"><button class="btn-ai" onclick="runAi('improve')"><i data-lucide="zap"></i> Improve</button><button class="btn-ai" onclick="runAi('extend')"><i data-lucide="maximize-2"></i> Extend</button><button class="btn-ai" onclick="runAi('simplify')"><i data-lucide="minus-circle"></i> Simplify</button><button class="btn-ai" onclick="runAi('tone')"><i data-lucide="message-square"></i> Tone</button><button class="btn-ai" onclick="runAi('facts')"><i data-lucide="search"></i> Facts</button><button class="btn-ai" onclick="runAi('continue')"><i data-lucide="chevrons-right"></i> Continue</button></div><div style="display:flex;justify-content:flex-end;margin-top:20px;gap:8px;"><button class="btn-sec btn-act" onclick="closeAi()">Cancel</button><button class="btn-act" onclick="runAi('custom')">Run</button></div></div></div>
+  <div class="modal-ov" id="cfMdl"><div class="modal"><h3>AI Config</h3><div class="f-group"><label class="f-label">Active Model</label><select id="cfMod" class="f-in"></select><label class="f-label">API Key</label><input id="cfKey" type="password" class="f-in"><button class="btn-act" style="width:100%;" onclick="saveConf()">Save & Use</button></div><div style="border-top:1px solid var(--br);padding-top:16px;"><h4>Providers</h4><div id="pvList" style="max-height:120px;overflow-y:auto;border:1px solid var(--br);border-radius:6px;margin-bottom:8px;"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;"><input id="pN" class="f-in" placeholder="Name"><input id="pM" class="f-in" placeholder="model"></div><button class="btn-sec btn-act" style="width:100%;" onclick="addProv()">Add Provider</button></div><button class="btn-sec btn-act" style="width:100%;margin-top:16px;" onclick="closeConf()">Close</button></div></div>
+  <div class="toast" id="toast">Saved!</div>
+  <div id="slashMenu"></div>
 
   <script>
     lucide.createIcons();
+    const API = '/api';
+    let cur = null, timer = null, manSlug = false;
+    const tI = document.getElementById('edT'), sI = document.getElementById('edS'), bI = document.getElementById('edB'), slI = document.getElementById('metaSlug'), dtI = document.getElementById('metaDate'), stI = document.getElementById('metaStatus'), dsI = document.getElementById('metaDesc'), tgI = document.getElementById('metaTags'), imI = document.getElementById('metaImg');
 
-    const API_BASE = '/api';
-    let articles = [];
-    let currentSlug = null;
-    let isDirty = false;
+    function setSt(s, t) { document.getElementById('dot').className = 'dot ' + s; document.getElementById('stTxt').textContent = t || s; }
+    function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.className='toast show'; setTimeout(()=>t.className='toast', 2000); }
+    function slugify(t) { return t.toString().toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[-\s_]+/g, '-').replace(/^-+|-+$/g, ''); }
+    function resize(e) { e.style.height = 'auto'; e.style.height = e.scrollHeight + 'px'; }
 
-    // Elements
-    const els = {
-      sidebar: document.getElementById('sidebar'),
-      articleList: document.getElementById('articleList'),
-      title: document.getElementById('editorTitle'),
-      body: document.getElementById('editorBody'),
-      settingsPanel: document.getElementById('settingsPanel'),
-      statusDot: document.getElementById('statusDot'),
-      statusText: document.getElementById('statusText'),
+    let aiConf = { active: 'anthropic/claude-3-haiku-20240307', key: '', list: [{ n: 'Claude 3 Haiku', m: 'anthropic/claude-3-haiku-20240307' }, { n: 'Claude 3.5 Sonnet', m: 'anthropic/claude-3-5-sonnet-20240620' }, { n: 'GPT-4o', m: 'openai/gpt-4o' }] };
+    function loadConf() { const s = localStorage.getItem('blog_ai_v3'); if (s) aiConf = JSON.parse(s); renderConf(); }
+    function saveConf() { aiConf.active = document.getElementById('cfMod').value; aiConf.key = document.getElementById('cfKey').value; localStorage.setItem('blog_ai_v3', JSON.stringify(aiConf)); renderConf(); showToast('Config Saved!'); }
+    function renderConf() {
+      document.getElementById('cfKey').value = aiConf.key || '';
+      document.getElementById('cfMod').innerHTML = aiConf.list.map(p => `<option value="${p.m}" ${p.m === aiConf.active ? 'selected' : ''}>${p.n}</option>`).join('');
+      document.getElementById('pvList').innerHTML = aiConf.list.map((p, i) => `<div style="display:flex;justify-content:space-between;padding:6px;font-size:11px;border-bottom:1px solid var(--br);"><span>${p.n}</span><button class="btn-icon" onclick="delProv(${i})"><i data-lucide="trash-2" size="12"></i></button></div>`).join('');
+      lucide.createIcons({ root: document.getElementById('pvList') });
+    }
+    window.addProv = () => { const n = document.getElementById('pN').value, m = document.getElementById('pM').value; if(n && m) { aiConf.list.push({n, m}); saveConf(); document.getElementById('pN').value=''; document.getElementById('pM').value=''; } };
+    window.delProv = (i) => { aiConf.list.splice(i, 1); saveConf(); };
 
-      // Meta inputs
-      metaSlug: document.getElementById('metaSlug'),
-      metaStatus: document.getElementById('metaStatus'),
-      metaDate: document.getElementById('metaDate'),
-      metaDesc: document.getElementById('metaDescription'),
-      metaTags: document.getElementById('metaTags'),
-      metaCategories: document.getElementById('metaCategories'),
-      metaKeywords: document.getElementById('metaKeywords'),
-      metaImage: document.getElementById('metaImage'),
+    async function loadList() {
+      const r = await fetch(API + '/articles'); const d = await r.json();
+      document.getElementById('artList').innerHTML = d.map(a => `<button class="art-btn ${a.slug === cur ? 'active' : ''}" onclick="openArt('${a.slug}')">${a.title}</button>`).join('');
+    }
+    window.openArt = async (slug) => {
+      cur = slug; const r = await fetch(`${API}/articles/${encodeURIComponent(slug)}`);
+      const d = await r.json(); const fm = d.frontmatter;
+      tI.value = fm.title || ''; sI.value = fm.subtitle || ''; bI.value = d.body || '';
+      slI.value = d.slug; dtI.value = fm.date || ''; stI.value = fm.status || 'published'; dsI.value = fm.description || ''; tgI.value = fm.tags || ''; imI.value = fm.image || '';
+      if(fm.image) { document.getElementById('cImg').src = fm.image; document.getElementById('cImg').style.display='block'; document.getElementById('cHin').style.display='none'; }
+      else { document.getElementById('cImg').style.display='none'; document.getElementById('cHin').style.display='block'; }
+      resize(tI); resize(sI); resize(bI); setSt('saved', 'Ready'); manSlug = false; loadList();
     };
 
-    // Auto-resize textareas
-    function autoResize(el) {
-      el.style.height = 'auto';
-      el.style.height = el.scrollHeight + 'px';
-    }
-    els.title.addEventListener('input', () => { autoResize(els.title); setDirty(true); });
-    els.body.addEventListener('input', () => { autoResize(els.body); setDirty(true); });
-
-    // Resize on window resize
-    window.addEventListener('resize', () => {
-      autoResize(els.title);
-      autoResize(els.body);
-    });
-
-    // Mark dirty
-    function setDirty(val) {
-      isDirty = val;
-      els.statusDot.className = val ? 'status-dot unsaved' : 'status-dot saved';
-      els.statusText.textContent = val ? 'Não salvo' : 'Salvo';
-    }
-
-    // Sidebar Toggle
-    document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
-      els.sidebar.classList.add('collapsed');
-      document.getElementById('openSidebarBtn').style.display = 'block';
-    });
-    document.getElementById('openSidebarBtn').addEventListener('click', () => {
-      els.sidebar.classList.remove('collapsed');
-      document.getElementById('openSidebarBtn').style.display = 'none';
-    });
-
-    // Settings Toggle
-    document.getElementById('btnSettings').addEventListener('click', () => {
-      els.settingsPanel.classList.toggle('open');
-    });
-    document.getElementById('closeSettingsBtn').addEventListener('click', () => {
-      els.settingsPanel.classList.remove('open');
-    });
-
-    // Fetch Articles
-    async function loadArticles() {
-      const r = await fetch(API_BASE + '/articles');
-      articles = await r.json();
-      renderArticles();
-    }
-
-    function renderArticles() {
-      els.articleList.innerHTML = '';
-      articles.forEach(a => {
-        const btn = document.createElement('button');
-        btn.className = `article-item ${a.slug === currentSlug ? 'active' : ''}`;
-        btn.innerHTML = `
-          <div class="article-title">${a.title || 'Sem título'}</div>
-          <div class="article-meta">
-            <span>${formatDate(a.date)}</span>
-          </div>
-        `;
-        btn.onclick = () => openArticle(a.slug);
-        els.articleList.appendChild(btn);
-      });
-    }
-
-    // Open Article
-    async function openArticle(slug) {
-      if (isDirty && !confirm('Discard changes?')) return;
-
-      currentSlug = slug;
-      // Load full data
-      const r = await fetch(`${API_BASE}/articles/${slug}`);
-      if (!r.ok) return alert('Failed to load');
-      const data = await r.json();
-      const fm = data.frontmatter || {};
-
-      els.title.value = fm.title || '';
-      els.body.value = data.body || '';
-
-      // Meta fields
-      els.metaSlug.value = data.slug;
-      els.metaStatus.value = fm.status || 'published';
-      els.metaDate.value = fm.date || '';
-      els.metaDesc.value = fm.description || '';
-      els.metaTags.value = fm.tags || '';
-      els.metaCategories.value = fm.categories || '';
-      els.metaKeywords.value = fm.keywords || '';
-      els.metaImage.value = fm.image || '';
-
-      autoResize(els.title);
-      autoResize(els.body);
-      setDirty(false);
-      renderArticles(); // Update active state
-    }
-
-    // Create New
-    document.getElementById('btnNew').addEventListener('click', async () => {
-      if (isDirty && !confirm('Discard changes?')) return;
-      const title = prompt('Título do artigo:');
-      if (!title) return;
-
-      const r = await fetch(API_BASE + '/articles', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, date: new Date().toISOString().split('T')[0] })
-      });
-      const data = await r.json();
-      await loadArticles();
-      openArticle(data.slug);
-    });
-
-    // Save
-    async function save() {
-      if (!currentSlug) return;
-
+    async function save(auto = false) {
+      if (!cur) return;
+      setSt('saving', 'Saving...');
       const payload = {
-        slug: els.metaSlug.value,
-        frontmatter: {
-          title: els.title.value,
-          date: els.metaDate.value,
-          description: els.metaDesc.value,
-          tags: els.metaTags.value,
-          categories: els.metaCategories.value,
-          keywords: els.metaKeywords.value,
-          image: els.metaImage.value,
-          status: els.metaStatus.value,
-        },
-        body: els.body.value
+        slug: slI.value,
+        frontmatter: { title: tI.value, subtitle: sI.value, date: dtI.value, status: stI.value, description: dsI.value, tags: tgI.value, image: imI.value },
+        body: bI.value
       };
-
-      const r = await fetch(`${API_BASE}/articles/${currentSlug}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (r.ok) {
-        setDirty(false);
-        showToast('Artigo salvo com sucesso!');
-        // Update currentSlug if changed
-        const res = await r.json();
-        if (res.slug && res.slug !== currentSlug) {
-          currentSlug = res.slug;
-        }
-        loadArticles(); // Update title in list if changed
-      } else {
-        const j = await r.json();
-        showToast('Erro: ' + (j.error || 'Falha ao salvar'));
-      }
-    }
-    document.getElementById('btnSave').addEventListener('click', save);
-
-    // Keyboard shortcut for save
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        save();
-      }
-    });
-
-    // AI Tools
-    const aiModal = document.getElementById('aiModal');
-    document.getElementById('btnAiToolbar').addEventListener('click', () => {
-      aiModal.style.display = 'flex';
-      document.getElementById('aiPrompt').focus();
-    });
-    document.getElementById('closeAiBtn').addEventListener('click', () => {
-      aiModal.style.display = 'none';
-    });
-
-    async function callAI(endpoint) {
-      const prompt = document.getElementById('aiPrompt').value;
-      if (!prompt) return;
-
-      const btn = endpoint.includes('generate') ? document.getElementById('runAiGenerate') : document.getElementById('runAiImprove');
-      const originalText = btn.textContent;
-      btn.textContent = 'Processando...';
-
       try {
-        const body = endpoint.includes('generate')
-          ? { prompt }
-          : { text: els.body.value, instruction: prompt };
+        const r = await fetch(`${API}/articles/${encodeURIComponent(cur)}`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+        const d = await r.json();
+        if (r.ok) { setSt('saved', 'Saved'); if(!auto) showToast('Saved!'); if(d.slug && d.slug !== cur) cur = d.slug; loadList(); }
+        else { setSt('error', 'Error'); alert(d.error); }
+      } catch (e) { setSt('error', 'Offline'); }
+    }
+    function trigger() { setSt('saving', 'Unsaved Changes'); if(timer) clearTimeout(timer); timer = setTimeout(() => save(true), 2000); }
+    window.manualSave = () => { if(timer) clearTimeout(timer); save(false); };
 
-        const r = await fetch(`${API_BASE}/ai/${endpoint}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
+    tI.oninput = () => { if(!manSlug) slI.value = slugify(tI.value); resize(tI); trigger(); };
+    sI.oninput = () => { resize(sI); trigger(); };
+    slI.oninput = () => { manSlug = true; trigger(); };
+    dtI.onchange = trigger; stI.onchange = trigger; dsI.oninput = trigger; tgI.oninput = trigger;
 
-        const data = await r.json();
-        if (data.text) {
-          if (endpoint.includes('generate')) {
-            els.body.value += '\n\n' + data.text;
-          } else {
-            els.body.value = data.text;
-          }
-          autoResize(els.body);
-          setDirty(true);
-          aiModal.style.display = 'none';
+    bI.oninput = () => {
+      resize(bI); trigger();
+      const v = bI.value, s = bI.selectionStart;
+      if (v.slice(s - 1, s) === '/') {
+        const b = v.slice(0, s - 1);
+        if (b.length === 0 || b.endsWith('\n')) {
+          const rect = bI.getBoundingClientRect();
+          const sm = document.getElementById('slashMenu');
+          sm.style.top = (rect.top + 50) + 'px'; sm.style.left = (rect.left + 20) + 'px'; sm.style.display = 'block';
         }
-      } catch (e) {
-        alert('Erro AI: ' + e);
-      } finally {
-        btn.textContent = originalText;
-      }
-    }
+      } else { document.getElementById('slashMenu').style.display = 'none'; }
+    };
 
-    document.getElementById('runAiGenerate').addEventListener('click', () => callAI('generate'));
-    document.getElementById('runAiImprove').addEventListener('click', () => callAI('improve'));
+    window.createNew = async () => {
+      const t = prompt('Title:'); if(!t) return;
+      const r = await fetch(API + '/articles', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({title: t}) });
+      const d = await r.json(); if(d.slug) openArt(d.slug);
+    };
 
-    // Utilities
-    function formatDate(dateStr) {
-      if (!dateStr) return '';
+    window.runAi = async (act) => {
+      const sel = bI.value.substring(bI.selectionStart, bI.selectionEnd);
+      setSt('saving', 'AI Thinking...');
       try {
-        return new Date(dateStr).toLocaleDateString('pt-BR');
-      } catch { return dateStr; }
-    }
+        const r = await fetch(API + '/ai/improve', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ text: sel || bI.value, context: bI.value, instruction: act + ' ' + document.getElementById('aiPmt').value, model: aiConf.active, api_key: aiConf.key }) });
+        const d = await r.json();
+        if(d.text) { 
+          if(sel) bI.value = bI.value.substring(0, bI.selectionStart) + d.text + bI.value.substring(bI.selectionEnd);
+          else if(act === 'continue') bI.value += "\n\n" + d.text;
+          else bI.value = d.text;
+          resize(bI); trigger(); closeAi(); 
+        }
+      } catch (e) { alert('AI Error'); setSt('error'); }
+    };
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
-    }
+    window.openAi = () => { const sel = bI.value.substring(bI.selectionStart, bI.selectionEnd); document.getElementById('selHint').style.display = sel ? 'block' : 'none'; document.getElementById('aiMdl').style.display='flex'; };
+    window.closeAi = () => { document.getElementById('aiMdl').style.display='none'; document.getElementById('aiPmt').value=''; };
+    window.openConf = () => document.getElementById('cfMdl').style.display='flex';
+    window.closeConf = () => document.getElementById('cfMdl').style.display='none';
+    window.togglePanel = () => document.getElementById('panel').classList.toggle('open');
+    window.toggleSidebar = () => { document.getElementById('sidebar').classList.toggle('collapsed'); document.getElementById('openSb').style.display = document.getElementById('sidebar').classList.contains('collapsed') ? 'block' : 'none'; };
 
-    // --- Formatting & Shortcuts ---
+    document.getElementById('cIn').onchange = async (e) => {
+      const fd = new FormData(); fd.append('file', e.target.files[0]);
+      const r = await fetch(API + '/upload', { method: 'POST', body: fd });
+      const d = await r.json(); if (d.url) { imI.value = d.url; document.getElementById('cImg').src = d.url + '?t=' + Date.now(); document.getElementById('cImg').style.display='block'; document.getElementById('cHin').style.display='none'; trigger(); }
+    };
+
+    document.addEventListener('keydown', (e) => { if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); manualSave(); } });
 
     // Slash Menu
-    const slashMenu = document.createElement('div');
-    slashMenu.id = 'slashMenu';
-    slashMenu.style.cssText = `
-      position: absolute;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      width: 200px;
-      display: none;
-      z-index: 1000;
-      overflow: hidden;
-    `;
-
-    const menuItems = [
-      { label: 'H1 Título 1', icon: 'heading-1', insert: '# ' },
-      { label: 'H2 Título 2', icon: 'heading-2', insert: '## ' },
-      { label: 'H3 Título 3', icon: 'heading-3', insert: '### ' },
-      { label: 'Lista', icon: 'list', insert: '- ' },
-      { label: 'Citação', icon: 'quote', insert: '> ' },
-      { label: 'Código', icon: 'code', insert: '```\n\n```', offset: -4 },
-      { label: 'Imagem', icon: 'image', insert: '![Alt](url)', offset: -1 },
-      { label: 'Separador', icon: 'minus', insert: '---\n' },
+    const items = [
+      { l: 'Heading 1', i: 'heading-1', t: '# ' }, { l: 'Heading 2', i: 'heading-2', t: '## ' }, { l: 'Heading 3', i: 'heading-3', t: '### ' },
+      { l: 'Bullet List', i: 'list', t: '- ' }, { l: 'Numbered List', i: 'list-ordered', t: '1. ' },
+      { l: 'Quote', i: 'quote', t: '> ' }, { l: 'Code Block', i: 'code', t: '```\n\n```', o: -4 },
+      { l: 'Callout', i: 'alert-circle', t: '> [!IMPORTANT]\n> ' },
+      { l: 'YouTube', i: 'video', t: '[![] (https://img.youtube.com/vi/ID/0.jpg)](https://www.youtube.com/watch?v=ID)' },
+      { l: 'Table', i: 'table', t: '| Col | Col |\n| --- | --- |\n| Val | Val |' },
+      { l: 'Link', i: 'link', t: '[Text](url)' }, { l: 'Separator', i: 'minus', t: '\n---\n' }
     ];
+    document.getElementById('slashMenu').innerHTML = items.map((it, i) => `<div class="m-item" onclick="insertBlock(${i})"><i data-lucide="${it.i}" size="14"></i> ${it.l}</div>`).join('');
+    window.insertBlock = (idx) => {
+      const it = items[idx], s = bI.selectionStart, v = bI.value;
+      bI.value = v.substring(0, s - 1) + it.t + v.substring(bI.selectionEnd);
+      bI.selectionStart = bI.selectionEnd = s - 1 + it.t.length + (it.o || 0);
+      bI.focus(); resize(bI); trigger(); document.getElementById('slashMenu').style.display = 'none';
+    };
 
-    slashMenu.innerHTML = menuItems.map((item, i) => `
-      <div class="menu-item" data-idx="${i}" style="padding: 8px 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text);">
-        <i data-lucide="${item.icon}" size="14"></i> ${item.label}
-      </div>
-    `).join('');
-    document.body.appendChild(slashMenu);
-
-    // Re-render icons in menu
-    lucide.createIcons({ root: slashMenu });
-
-    // Menu Item Hover
-    slashMenu.querySelectorAll('.menu-item').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        slashMenu.querySelectorAll('.menu-item').forEach(e => e.style.background = 'transparent');
-        el.style.background = 'var(--bg-hover)';
-      });
-      el.addEventListener('click', () => {
-        insertText(menuItems[el.dataset.idx]);
-        hideSlashMenu();
-      });
-    });
-
-    els.body.addEventListener('input', (e) => {
-      const val = els.body.value;
-      const selStart = els.body.selectionStart;
-
-      // Detect "/" at beginning of line or after newline
-      const lastChar = val.slice(selStart - 1, selStart);
-      if (lastChar === '/') {
-        // pattern: newline + / or start + /
-        const before = val.slice(0, selStart - 1);
-        if (before.length === 0 || before.endsWith('\n')) {
-          showSlashMenu();
-        }
-      } else {
-        hideSlashMenu();
-      }
-      autoResize(els.body);
-      setDirty(true);
-    });
-
-    function showSlashMenu() {
-      // Very basic positioning: roughly center or near cursor would be better but requires complex calc in textarea
-      // For simplicity, fixed position near top of editor or where cursor "might" be (complex without rich text)
-      // We will anchor it to the editor container for now.
-      const rect = els.body.getBoundingClientRect();
-      slashMenu.style.top = (rect.top + 80) + 'px';
-      slashMenu.style.left = (rect.left + 20) + 'px';
-      slashMenu.style.display = 'block';
-    }
-
-    function hideSlashMenu() {
-      slashMenu.style.display = 'none';
-    }
-
-    function insertText(item) {
-      const textarea = els.body;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const text = textarea.value;
-
-      // Remove the slash
-      const pre = text.substring(0, start - 1);
-      const post = text.substring(end);
-
-      textarea.value = pre + item.insert + post;
-
-      // Move cursor
-      const newPos = pre.length + item.insert.length + (item.offset || 0);
-      textarea.selectionStart = textarea.selectionEnd = newPos;
-      textarea.focus();
-
-      autoResize(textarea);
-      setDirty(true);
-    }
-
-    // Shortcuts (Ctrl+B, Ctrl+I) - Markdown wrappers
-    document.addEventListener('keydown', (e) => {
-      if (!e.ctrlKey && !e.metaKey) return;
-
-      const key = e.key.toLowerCase();
-      if (key === 'b') { e.preventDefault(); wrapSelection('**', '**'); }
-      if (key === 'i') { e.preventDefault(); wrapSelection('*', '*'); }
-      if (key === 'k') { e.preventDefault(); wrapSelection('[', '](url)'); }
-    });
-
-    function wrapSelection(before, after) {
-      const textarea = els.body;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const text = textarea.value;
-      const sel = text.substring(start, end);
-
-      textarea.value = text.substring(0, start) + before + sel + after + text.substring(end);
-      textarea.selectionStart = start + before.length;
-      textarea.selectionEnd = end + before.length;
-
-      autoResize(textarea);
-      setDirty(true);
-    }
-
-    // Init
-    loadArticles();
+    window.onload = () => { loadList(); loadConf(); lucide.createIcons(); };
   </script>
 </body>
-
 </html>

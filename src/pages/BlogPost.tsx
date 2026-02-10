@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import NotFound from "./NotFound";
+import ResponsiveImage from "@/components/ResponsiveImage";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -55,6 +56,22 @@ const BlogPost = () => {
           <h1 className="mt-2 font-heading text-3xl font-bold tracking-tight md:text-4xl">
             {post.title}
           </h1>
+
+          {post.subtitle && (
+            <p className="mt-4 font-body text-xl text-muted-foreground italic">
+              {post.subtitle}
+            </p>
+          )}
+
+          {post.image && (
+            <div className="mt-8 overflow-hidden rounded-xl border border-border">
+              <ResponsiveImage
+                src={post.image}
+                alt={post.title}
+                className="aspect-video w-full object-cover"
+              />
+            </div>
+          )}
 
           <div className="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
