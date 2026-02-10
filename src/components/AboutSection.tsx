@@ -3,7 +3,7 @@ import { Linkedin, Github, Mail } from "lucide-react";
 
 const AboutSection = () => {
   return (
-    <section id="sobre" className="relative border-t border-border py-24">
+    <section id="about" className="relative border-t border-border py-24">
       <div className="container px-6">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           <motion.div

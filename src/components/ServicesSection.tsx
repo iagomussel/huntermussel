@@ -54,7 +54,7 @@ const item = {
 
 const ServicesSection = () => {
   return (
-    <section id="servicos" className="relative py-24 overflow-hidden">
+    <section id="services" className="relative py-24 overflow-hidden">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

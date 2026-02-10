@@ -2,7 +2,7 @@
 title: "Fast Code, Weak Engineers"
 date: "2026-01-09"
 description: "The Risk of Becoming an AI-Dependent Developer"
-tags: "IA, Coding, Cursor, Tailwind, antigravit, openclaw, moltbot,clawd"
+tags: "AI, Coding, Cursor, Tailwind, antigravit, openclaw, moltbot,clawd"
 categories: ""
 keywords: ""
 image: "/images/blog/1770693788_image_1.webp"

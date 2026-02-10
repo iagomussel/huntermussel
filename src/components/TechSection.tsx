@@ -9,7 +9,7 @@ const techs = [
 
 const TechSection = () => {
   return (
-    <section id="tecnologias" className="relative border-t border-border py-24">
+    <section id="technologies" className="relative border-t border-border py-24">
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

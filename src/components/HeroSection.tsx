@@ -47,7 +47,7 @@ const HeroSection = () => {
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href="#contato"
+              href="#contact"
               className="group inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3.5 font-heading text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)]"
             >
               Start Project
@@ -57,7 +57,7 @@ const HeroSection = () => {
               />
             </a>
             <a
-              href="#servicos"
+              href="#services"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-8 py-3.5 font-heading text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-card"
             >
               View Services

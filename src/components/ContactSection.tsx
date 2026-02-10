@@ -54,7 +54,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contato" className="relative border-t border-border py-24">
+    <section id="contact" className="relative border-t border-border py-24">
       <div className="container px-6">
         <div className="mx-auto max-w-2xl text-center">
           <motion.div
@@ -188,8 +188,8 @@ const ContactSection = () => {
           >
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Mail size={14} className="text-primary" />
-              <a href="mailto:contato@huntermussel.com" className="hover:text-primary transition-colors">
-                contato@huntermussel.com
+              <a href="mailto:contact@huntermussel.com" className="hover:text-primary transition-colors">
+                contact@huntermussel.com
               </a>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
