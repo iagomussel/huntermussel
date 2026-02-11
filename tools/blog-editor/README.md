@@ -27,7 +27,32 @@ cp .env.example .env
 
 ## Uso
 
+### Desenvolvimento (API + UI)
+
 Na pasta `tools/blog-editor`, com o venv ativado:
+
+```bash
+python app.py
+```
+
+Em outro terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Acesse: **http://127.0.0.1:5173** (Vite)
+
+### Build (UI servida pelo Flask)
+
+```bash
+cd frontend
+npm run build
+```
+
+Depois:
 
 ```bash
 python app.py

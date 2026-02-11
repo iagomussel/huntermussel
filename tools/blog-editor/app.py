@@ -35,6 +35,18 @@ UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
 DEFAULT_MODEL = os.environ.get("BLOG_AI_MODEL", "anthropic/claude-3-haiku-20240307")
 
+def resolve_index_path(static_root: Path) -> Path | None:
+    dist_index = static_root / "dist" / "index.html"
+    if dist_index.exists():
+        return dist_index
+
+    legacy_index = static_root / "index.html"
+    if legacy_index.exists():
+        return legacy_index
+
+    return None
+
+
 
 def slugify(text: str) -> str:
     text = text.lower().strip()
@@ -75,7 +87,17 @@ def build_md(fm: dict, body: str) -> str:
 
 @app.route("/")
 def index():
-    return flask.send_from_directory(app.static_folder, "index.html")
+    static_root = Path(app.static_folder)
+    index_path = resolve_index_path(static_root)
+    if not index_path:
+        return "Index file not found", 404
+    return flask.send_from_directory(index_path.parent, index_path.name)
+
+@app.route("/assets/<path:filename>")
+def assets(filename):
+    assets_dir = Path(app.static_folder) / "dist" / "assets"
+    return flask.send_from_directory(assets_dir, filename)
+
 
 
 @app.route("/api/articles", methods=["GET"])
