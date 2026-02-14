@@ -65,7 +65,7 @@ export default function App() {
   const [hasSelection, setHasSelection] = useState(false);
   const [manualSlug, setManualSlug] = useState(false);
   const [aiConfig, setAiConfig] = useState<AiConfig>(() => {
-    const stored = localStorage.getItem("blog_ai_v3");
+    const stored = localStorage.getItem("blog_ai_v4");
     if (stored) {
       try {
         return JSON.parse(stored) as AiConfig;
@@ -97,7 +97,7 @@ export default function App() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("blog_ai_v3");
+    const stored = localStorage.getItem("blog_ai_v4");
     if (stored) {
       try {
         setAiConfig(JSON.parse(stored));
@@ -109,7 +109,7 @@ export default function App() {
 
   const persistAiConfig = (next: AiConfig) => {
     setAiConfig(next);
-    localStorage.setItem("blog_ai_v3", JSON.stringify(next));
+    localStorage.setItem("blog_ai_v4", JSON.stringify(next));
   };
 
   const setStatusState = (state: StatusState, text: string) => {
@@ -267,6 +267,35 @@ export default function App() {
       ? editor.blocksToMarkdownLossy(selection.blocks)
       : "";
     const contextMarkdown = editor.blocksToMarkdownLossy(editor.document);
+
+    if (action === "humanize") {
+      const payload = {
+        text: selectionActive ? selectionMarkdown : contextMarkdown,
+        style: "natural",
+      };
+      setStatusState("saving", "Humanizando...");
+      const res = await fetch(`${API_BASE}/ai/humanize`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.text) {
+        setStatusState("error", data?.error || "Erro ao humanizar");
+        return;
+      }
+      if (selectionActive) {
+        editor.pasteMarkdown(data.text);
+      } else {
+        const blocks = editor.tryParseMarkdownToBlocks(data.text);
+        editor.replaceBlocks(editor.document, blocks);
+      }
+      setStatusState("saved", "Humanizado");
+      setAiOpen(false);
+      scheduleSave();
+      return;
+    }
+
     const payload = {
       text: selectionActive ? selectionMarkdown : contextMarkdown,
       context: contextMarkdown,
@@ -528,6 +557,7 @@ export default function App() {
               <button onClick={() => runAi("simplify")}>Simplify</button>
               <button onClick={() => runAi("tone")}>Tone</button>
               <button onClick={() => runAi("facts")}>Facts</button>
+              <button onClick={() => runAi("humanize")}>Humanize</button>
               <button onClick={() => runAi("continue")}>Continue</button>
             </div>
             <div className="field">

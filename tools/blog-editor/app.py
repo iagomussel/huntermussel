@@ -5,6 +5,7 @@ Restored full FFmpeg variant pipeline and atomic saving.
 
 import os
 import re
+import requests
 import subprocess
 import logging
 from pathlib import Path
@@ -34,6 +35,34 @@ CONTENT_DIR.mkdir(parents=True, exist_ok=True)
 UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
 DEFAULT_MODEL = os.environ.get("BLOG_AI_MODEL", "anthropic/claude-3-haiku-20240307")
+
+
+OLLAMA_URL = "http://localhost:11434/api/generate"
+HUMANIZER_MODEL = os.environ.get("HUMANIZER_MODEL", "phi3:7b")
+
+def rewrite_text_stream(text: str, style: str = "natural") -> str:
+    prompt = f"Reescreva de forma {style}:\n\n{text}"
+
+    payload = {
+        "model": HUMANIZER_MODEL,
+        "prompt": prompt,
+        "stream": True,
+        "temperature": 0.8,
+    }
+
+    with requests.post(OLLAMA_URL, json=payload, stream=True) as response:
+        response.raise_for_status()
+        full_text = ""
+
+        for line in response.iter_lines():
+            if line:
+                data = json.loads(line)
+                if "response" in data:
+                    full_text += data["response"]
+                if data.get("done"):
+                    break
+
+    return full_text.strip()
 
 def resolve_index_path(static_root: Path) -> Path | None:
     dist_index = static_root / "dist" / "index.html"
@@ -252,6 +281,18 @@ def upload():
     temp.unlink()
     logger.info(f"Variants generated for {base}")
     return jsonify({"url": f"/images/blog/{main_webp}"})
+
+
+@app.route("/api/ai/humanize", methods=["POST"])
+def humanize():
+    data = request.get_json() or {}
+    try:
+        text_in = data.get("text", "")
+        style = data.get("style", "natural")
+        out = rewrite_text_stream(text_in, style=style)
+        return jsonify({"text": out})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/api/ai/improve", methods=["POST"])

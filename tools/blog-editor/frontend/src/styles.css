@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap");
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
   font-family: "Space Grotesk", sans-serif;
   color: #1f2933;
   background: #f3f0ea;
@@ -15,6 +15,16 @@
   --accent-strong: #0b5d57;
   --accent-soft: #d2edea;
   --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  --bg-dark: #0b0f14;
+  --panel-dark: #121821;
+  --panel-strong-dark: #0f151d;
+  --ink-dark: #e5e7eb;
+  --muted-dark: #94a3b8;
+  --border-dark: #243142;
+  --accent-dark: #34d399;
+  --accent-strong-dark: #10b981;
+  --accent-soft-dark: rgba(52, 211, 153, 0.16);
+  --shadow-dark: 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 
 * {
@@ -394,5 +404,83 @@ select {
 
   .panel {
     width: 100%;
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    background: var(--bg-dark);
+    color: var(--ink-dark);
+  }
+  body {
+    background: radial-gradient(circle at top left, #0b0f14, #0a0f16 45%, #06090d 100%);
+  }
+  .sidebar {
+    background: var(--panel-dark);
+    border-right-color: var(--border-dark);
+  }
+  .article-item {
+    background: var(--panel-strong-dark);
+  }
+  .article-item.active {
+    border-color: var(--accent-dark);
+    box-shadow: var(--shadow-dark);
+  }
+  .topbar {
+    border-bottom-color: var(--border-dark);
+    background: rgba(8, 12, 18, 0.75);
+  }
+  .status {
+    color: var(--muted-dark);
+  }
+  .primary-button {
+    background: var(--accent-dark);
+  }
+  .primary-button:hover {
+    background: var(--accent-strong-dark);
+  }
+  .ghost-button,
+  .icon-button {
+    border-color: var(--border-dark);
+    color: var(--ink-dark);
+    background: transparent;
+  }
+  .editor-header,
+  .blocknote-wrapper,
+  .panel,
+  .modal {
+    background: var(--panel-dark);
+    box-shadow: var(--shadow-dark);
+  }
+  .title-input,
+  .subtitle-input {
+    color: var(--ink-dark);
+  }
+  .panel-header {
+    border-bottom-color: var(--border-dark);
+  }
+  .text-input,
+  .text-area,
+  select {
+    background: #0f151d;
+    border-color: var(--border-dark);
+    color: var(--ink-dark);
+  }
+  .cover-box {
+    background: #0f151d;
+    border-color: var(--border-dark);
+  }
+  .modal-backdrop {
+    background: rgba(3, 6, 10, 0.75);
+  }
+  .pill {
+    background: var(--accent-soft-dark);
+    color: var(--accent-dark);
+  }
+  .ai-grid button {
+    background: #0f151d;
+    border-color: var(--border-dark);
+    color: var(--ink-dark);
   }
 }
