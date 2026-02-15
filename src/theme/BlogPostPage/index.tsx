@@ -6,12 +6,14 @@ import {
   HtmlClassNameProvider,
   ThemeClassNames,
 } from "@docusaurus/theme-common";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import { BlogPostProvider } from "@docusaurus/plugin-content-blog/client";
 import BlogPostPageMetadata from "@theme/BlogPostPage/Metadata";
 import BlogPostPageStructuredData from "@theme/BlogPostPage/StructuredData";
 import Footer from "../../components/Footer";
 import ResponsiveImage from "../../components/ResponsiveImage";
 import DisqusComments from "../../components/DisqusComments";
+import BlogShareSection from "../../components/BlogShareSection";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -46,6 +48,7 @@ type Props = {
 };
 
 export default function BlogPostPage(props: Props): ReactNode {
+  const { siteConfig } = useDocusaurusContext();
   const BlogPostContent = props.content as unknown as (
     props: unknown,
   ) => ReactNode;
@@ -53,6 +56,9 @@ export default function BlogPostPage(props: Props): ReactNode {
   const subtitle = metadata.frontMatter?.subtitle;
   const image = metadata.frontMatter?.image;
   const tags = metadata.tags ?? [];
+  const siteUrl = siteConfig.url.replace(/\/+$/, "");
+  const postPath = metadata.permalink ?? "/blog";
+  const shareUrl = `${siteUrl}${postPath}`;
 
   return (
     <BlogPostProvider content={props.content} isBlogPostPage>
@@ -128,6 +134,8 @@ export default function BlogPostPage(props: Props): ReactNode {
                 <div className="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none">
                   <BlogPostContent />
                 </div>
+
+                <BlogShareSection title={metadata.title} url={shareUrl} />
 
                 <DisqusComments
                   identifier={metadata.permalink ?? metadata.title}

@@ -74,10 +74,7 @@ export default function DisqusComments({ identifier, title }: Props) {
       <h2 className="font-heading text-2xl font-semibold tracking-tight">
         Comments
       </h2>
-      <p className="mt-2 font-body text-sm text-muted-foreground">
-        Feedback and discussion powered by Disqus.
-      </p>
-      <div className="mt-6 rounded-lg border border-border bg-card/40 p-4">
+      <div className="mt-4 rounded-lg border border-border bg-card/40 p-4">
         <div id="disqus_thread" />
       </div>
     </section>
