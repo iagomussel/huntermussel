@@ -31,14 +31,21 @@ const BlogPost = () => {
   const title = `${post.title} | ${SITE_NAME}`;
   const description = post.description || DEFAULT_DESCRIPTION;
   const canonical = `${SITE_URL}/blog/${post.slug}`;
-  const image = post.image ? toAbsoluteUrl(post.image) : toAbsoluteUrl("/placeholder.svg");
+  const image = post.image
+    ? toAbsoluteUrl(post.image)
+    : toAbsoluteUrl("/placeholder.svg");
   const publishedDate = post.date;
   const parsedPostDate = post.date ? new Date(post.date) : null;
   const publishedIso =
     parsedPostDate && !Number.isNaN(parsedPostDate.getTime())
       ? parsedPostDate.toISOString()
       : undefined;
-  const keywords = buildKeywords(post.tags, post.keywords, post.title, post.subtitle);
+  const keywords = buildKeywords(
+    post.tags,
+    post.keywords,
+    post.title,
+    post.subtitle,
+  );
   const articleJsonLd = createBlogPostingJsonLd({
     title: post.title,
     description,
@@ -65,7 +72,9 @@ const BlogPost = () => {
         <meta property="og:url" content={canonical} />
         <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:image" content={image} />
-        {publishedIso && <meta property="article:published_time" content={publishedIso} />}
+        {publishedIso && (
+          <meta property="article:published_time" content={publishedIso} />
+        )}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
@@ -73,7 +82,10 @@ const BlogPost = () => {
         <meta name="twitter:image" content={image} />
 
         {articleJsonLd && (
-          <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+          />
         )}
       </Helmet>
       <Navbar />
@@ -122,7 +134,10 @@ const BlogPost = () => {
           )}
 
           <div className="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeHighlight]}
+            >
               {post.content}
             </ReactMarkdown>
           </div>

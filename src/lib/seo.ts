@@ -83,14 +83,25 @@ export function createOrganizationJsonLd(): JsonLdObject {
       jobTitle: "CEO & Founder",
     },
     areaServed: "Worldwide",
-    knowsAbout: ["Artificial Intelligence", "Process Management", "DevOps", "Automation", "Machine Learning"],
-    serviceType: ["AI Process Management", "Intelligent Automation", "CI/CD & DevOps", "Cloud Infrastructure"],
+    knowsAbout: [
+      "Artificial Intelligence",
+      "Process Management",
+      "DevOps",
+      "Automation",
+      "Machine Learning",
+    ],
+    serviceType: [
+      "AI Process Management",
+      "Intelligent Automation",
+      "CI/CD & DevOps",
+      "Cloud Infrastructure",
+    ],
   };
 }
 
 interface BlogPostingInput {
   title: string;
-  description: string;
+  description?: string;
   canonicalUrl: string;
   imageUrl: string;
   authorName: string;
@@ -99,18 +110,22 @@ interface BlogPostingInput {
   modifiedDate?: string;
 }
 
-export function createBlogPostingJsonLd(input: BlogPostingInput): JsonLdObject | null {
-  if (!input.title || !input.description) return null;
-  if (!isHttpsUrl(input.canonicalUrl) || !isHttpsUrl(input.imageUrl)) return null;
+export function createBlogPostingJsonLd(
+  input: BlogPostingInput,
+): JsonLdObject | null {
+  if (!input.title) return null;
+  if (!isHttpsUrl(input.canonicalUrl) || !isHttpsUrl(input.imageUrl))
+    return null;
 
   const published = toIsoDateTime(input.publishedDate);
   const modified = toIsoDateTime(input.modifiedDate) ?? published;
+  const description = input.description?.trim() || input.title;
 
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: input.title,
-    description: input.description,
+    description,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": input.canonicalUrl,

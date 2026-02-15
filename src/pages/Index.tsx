@@ -43,9 +43,12 @@ const Index = () => {
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
 
-        <script type="application/ld+json">
-          {JSON.stringify(organizationJsonLd)}
-        </script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
       </Helmet>
 
       <div className="min-h-screen bg-background">
