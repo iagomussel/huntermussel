@@ -28,3 +28,7 @@ build
 
 # Blog editor (local)
 tools/blog-editor/.venv
+
+# Docusaurus/Wrangler generated files
+.docusaurus/
+.wrangler/
