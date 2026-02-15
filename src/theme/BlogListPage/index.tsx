@@ -13,6 +13,10 @@ type BlogListItem = {
       permalink: string;
       date?: string;
       description?: string;
+      tags?: Array<{
+        label: string;
+        permalink: string;
+      }>;
       frontMatter?: {
         image?: string;
         subtitle?: string;
@@ -63,6 +67,7 @@ export default function BlogListPage(props: Props): ReactNode {
                 const image = meta.frontMatter?.image;
                 const subtitle = meta.frontMatter?.subtitle;
                 const descriptionText = meta.description || "";
+                const tags = meta.tags ?? [];
 
                 return (
                   <li key={meta.permalink}>
@@ -101,6 +106,18 @@ export default function BlogListPage(props: Props): ReactNode {
                           <p className="mt-3 font-body text-sm text-muted-foreground">
                             {descriptionText}
                           </p>
+                        )}
+                        {tags.length > 0 && (
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {tags.slice(0, 4).map((tag) => (
+                              <span
+                                key={tag.permalink}
+                                className="rounded-full border border-border bg-muted/30 px-2.5 py-1 font-heading text-[10px] uppercase tracking-wider text-muted-foreground"
+                              >
+                                {tag.label}
+                              </span>
+                            ))}
+                          </div>
                         )}
                         <span className="mt-4 inline-flex items-center gap-1 font-heading text-xs text-primary">
                           Read more

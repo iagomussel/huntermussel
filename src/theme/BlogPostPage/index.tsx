@@ -19,6 +19,10 @@ type PostContent = {
     title: string;
     description?: string;
     date?: string;
+    tags?: Array<{
+      label: string;
+      permalink: string;
+    }>;
     frontMatter?: {
       subtitle?: string;
       image?: string;
@@ -46,6 +50,7 @@ export default function BlogPostPage(props: Props): ReactNode {
   const metadata = props.content.metadata;
   const subtitle = metadata.frontMatter?.subtitle;
   const image = metadata.frontMatter?.image;
+  const tags = metadata.tags ?? [];
 
   return (
     <BlogPostProvider content={props.content} isBlogPostPage>
@@ -92,6 +97,20 @@ export default function BlogPostPage(props: Props): ReactNode {
                   <p className="mt-4 font-body text-xl text-muted-foreground italic">
                     {subtitle}
                   </p>
+                )}
+
+                {tags.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <Link
+                        key={tag.permalink}
+                        to={tag.permalink}
+                        className="rounded-full border border-border bg-muted/30 px-2.5 py-1 font-heading text-[10px] uppercase tracking-wider text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                      >
+                        {tag.label}
+                      </Link>
+                    ))}
+                  </div>
                 )}
 
                 {image && (
