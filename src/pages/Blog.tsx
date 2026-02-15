@@ -6,15 +6,47 @@ import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import ResponsiveImage from "@/components/ResponsiveImage";
+import {
+  DEFAULT_OG_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  buildKeywords,
+} from "@/lib/seo";
 
 const Blog = () => {
   const posts = getPosts();
+  const title = `Blog | ${SITE_NAME}`;
+  const description = "Articles on process management, AI, automation, and DevOps.";
+  const canonical = `${SITE_URL}/blog`;
+  const keywords = buildKeywords(
+    "blog",
+    "engineering blog",
+    "AI",
+    "DevOps",
+    "automation",
+    posts.map((post) => post.title),
+  );
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Blog | HunterMussel</title>
-        <meta name="description" content="Articles on process management, AI, and DevOps." />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta name="robots" content="index,follow,max-image-preview:large" />
+        <link rel="canonical" href={canonical} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:image" content={DEFAULT_OG_IMAGE} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={DEFAULT_OG_IMAGE} />
       </Helmet>
       <Navbar />
       <main className="container px-6 pt-28 pb-24">

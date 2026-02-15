@@ -2,8 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://huntermussel.com/</loc>
-    <lastmod>2025-06-01</lastmod>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://huntermussel.com/blog</loc>
+    <lastmod>2026-02-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://huntermussel.com/blog/fast-code-weak-engeneers</loc>
+    <lastmod>2026-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://huntermussel.com/blog/how-to-build-a-backendless-blog</loc>
+    <lastmod>2026-02-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://huntermussel.com/blog/pm2-lean-alternative-kubernetes</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://huntermussel.com/blog/structured-data-react-google-rich-results</loc>
+    <lastmod>2026-02-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
