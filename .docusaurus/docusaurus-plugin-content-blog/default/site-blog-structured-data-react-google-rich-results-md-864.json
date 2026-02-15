@@ -41,7 +41,7 @@
       "permalink": "/blog/tags/schema-org"
     }
   ],
-  "readingTime": 2.82,
+  "readingTime": 3.25,
   "hasTruncateMarker": false,
   "authors": [],
   "frontMatter": {
@@ -65,7 +65,7 @@
       "schema.org article",
       "docusaurus headTags"
     ],
-    "image": "/placeholder.svg",
+    "image": "/images/blog/rich-content-google-search.webp",
     "subtitle": "A practical process for implementing and validating schema markup",
     "status": "published"
   },

@@ -17,7 +17,7 @@ keywords:
   - google rich results test
   - schema.org article
   - docusaurus headTags
-image: "/placeholder.svg"
+image: "/images/blog/rich-content-google-search.webp"
 subtitle: "A practical process for implementing and validating schema markup"
 status: "published"
 ---
@@ -34,6 +34,8 @@ status: "published"
 ## What Is Structured Data?
 
 In 2026, search engines do far more than index words on a page. They identify entities, infer intent, and combine signals across web, video, and AI-generated summaries. Plain HTML is great for layout, but it is not designed to describe what your content *is*.
+
+<img src="/images/blog/rich-content-google-search_16x9_med.webp" srcSet="/images/blog/rich-content-google-search_16x9_thumb.webp 320w, /images/blog/rich-content-google-search_16x9_low.webp 640w, /images/blog/rich-content-google-search_16x9_med.webp 1280w, /images/blog/rich-content-google-search_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="Structured Data in React: From Markup to Google Rich Results" className="aspect-video w-full object-cover" loading="lazy" />
 
 Structured data is the layer that makes that meaning explicit. Instead of guessing, crawlers can read specific fields and map them to known schema types.
 
@@ -147,3 +149,7 @@ This keeps your markup consistent, easier to audit, and less likely to drift as 
 ## Conclusion
 
 In 2026, structured data is less of an “SEO extra” and more of a baseline technical signal. In React, JSON-LD is quick to implement, easy to validate, and most effective when treated as part of your publishing workflow.
+
+---
+
+_I work with teams building production systems and developer tooling. If this topic resonates, you can find more of my work at https://huntermussel.com._

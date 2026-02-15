@@ -17,6 +17,7 @@ keywords:
   - pm2 cluster mode
   - lean devops
 categories: "DevOps"
+image: "/images/blog/pm2-cluster-diagram.webp"
 subtitle: "Professional production control without orchestration overhead"
 status: "published"
 ---
@@ -50,6 +51,8 @@ pm2 start app.js -i max
 ```
 
 That is it.
+
+<img src="/images/blog/pm2-cluster-diagram_16x9_med.webp" srcSet="/images/blog/pm2-cluster-diagram_16x9_thumb.webp 320w, /images/blog/pm2-cluster-diagram_16x9_low.webp 640w, /images/blog/pm2-cluster-diagram_16x9_med.webp 1280w, /images/blog/pm2-cluster-diagram_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="PM2 cluster mode compared to single-core pods" className="aspect-video w-full object-cover" loading="lazy" />
 
 PM2 handles:
 - Built-in load balancing
@@ -126,3 +129,7 @@ PM2 gives you professional-grade production control with minimal operational sur
 
 Lean. Scalable. Reliable.
 Now deploy.
+
+---
+
+_I work with teams building production systems and developer tooling. If this topic resonates, you can find more of my work at https://huntermussel.com._

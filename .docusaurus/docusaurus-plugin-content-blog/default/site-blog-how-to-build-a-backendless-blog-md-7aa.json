@@ -2,10 +2,10 @@
   "permalink": "/blog/how-to-build-a-backendless-blog",
   "source": "@site/blog/how-to-build-a-backendless-blog.md",
   "title": "How to build a backendless Blog",
-  "description": "",
+  "description": "Build a backendless blog with React, markdown, and Cloudflare Pages for fast and low-cost publishing.",
   "date": "2026-02-09T00:00:00.000Z",
   "tags": [],
-  "readingTime": 4.3,
+  "readingTime": 4.42,
   "hasTruncateMarker": false,
   "authors": [],
   "frontMatter": {
@@ -13,8 +13,15 @@
     "date": "2026-02-09",
     "status": "published",
     "subtitle": "",
-    "description": "",
+    "description": "Build a backendless blog with React, markdown, and Cloudflare Pages for fast and low-cost publishing.",
     "tags": [],
+    "keywords": [
+      "backendless blog",
+      "react markdown blog",
+      "cloudflare pages blog",
+      "static blog architecture",
+      "vite blog tutorial"
+    ],
     "image": "/images/blog/1770685010_image_3.webp"
   },
   "unlisted": false,

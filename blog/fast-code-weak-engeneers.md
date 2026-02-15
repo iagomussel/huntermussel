@@ -12,6 +12,12 @@ tags:
   - moltbot
   - clawd
 categories: ""
+keywords:
+  - ai coding assistants
+  - software engineering
+  - developer productivity
+  - ai dependency in programming
+  - coding quality
 image: "/images/blog/1770693788_image_1.webp"
 subtitle: "The Risk of Becoming an AI-Dependent Developer"
 status: "published"
@@ -75,5 +81,6 @@ And history shows something simple: a smooth sea never made a skilled sailor.
 
 If we want stronger engineers and stronger systems, we must be willing to face rough waters again.
 
+---
 
-I work with teams building production systems and developer tooling. If this topic resonates, you can find more of my work at https://huntermussel.com.
+_I work with teams building production systems and developer tooling. If this topic resonates, you can find more of my work at https://huntermussel.com._

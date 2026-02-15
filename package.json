@@ -8,6 +8,7 @@
     "build": "docusaurus build",
     "serve": "docusaurus serve",
     "clear": "docusaurus clear",
+    "images:blog": "node tools/generate-blog-image-variants.mjs",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",

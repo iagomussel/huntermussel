@@ -3,8 +3,14 @@ title: "How to build a backendless Blog"
 date: "2026-02-09"
 status: "published"
 subtitle: ""
-description: ""
+description: "Build a backendless blog with React, markdown, and Cloudflare Pages for fast and low-cost publishing."
 tags: []
+keywords:
+  - backendless blog
+  - react markdown blog
+  - cloudflare pages blog
+  - static blog architecture
+  - vite blog tutorial
 image: "/images/blog/1770685010_image_3.webp"
 ---
 
@@ -247,3 +253,7 @@ Configure your Vite config to optimize for static generation. Cloudflare Pages w
 ## Conclusion
 
 You now have a fully functional, fast, and free blog running on React and Cloudflare Pages. No backend, no database, no monthly fees. Just pure static content served globally at the edge. Your blog will load in milliseconds anywhere in the world, and you can update it by simply pushing to GitHub.
+
+---
+
+_I work with teams building production systems and developer tooling. If this topic resonates, you can find more of my work at https://huntermussel.com._

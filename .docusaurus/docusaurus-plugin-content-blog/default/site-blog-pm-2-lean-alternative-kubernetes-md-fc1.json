@@ -41,7 +41,7 @@
       "permalink": "/blog/tags/process-management"
     }
   ],
-  "readingTime": 1.85,
+  "readingTime": 2.25,
   "hasTruncateMarker": false,
   "authors": [],
   "frontMatter": {
@@ -65,6 +65,7 @@
       "lean devops"
     ],
     "categories": "DevOps",
+    "image": "/images/blog/pm2-cluster-diagram.webp",
     "subtitle": "Professional production control without orchestration overhead",
     "status": "published"
   },
