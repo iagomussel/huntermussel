@@ -23,8 +23,15 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         <a href="/" className="font-heading text-xl font-bold tracking-tight">
-          <span className="gradient-text">Hunter</span>
-          <span className="text-foreground">Mussel</span>
+          <span className="inline-flex items-center gap-2">
+            <img
+              src="/img/logo.svg"
+              alt="HunterMussel Target Logo"
+              className="h-8 w-8"
+            />
+            <span className="gradient-text">Hunter</span>
+            <span className="text-foreground">Mussel</span>
+          </span>
         </a>
 
         {/* Desktop */}

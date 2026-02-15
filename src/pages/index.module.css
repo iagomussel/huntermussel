@@ -1,0 +1,40 @@
+.hero {
+  min-height: calc(100vh - 64px);
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0, 130, 255, 0.2), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0, 200, 180, 0.15), transparent 35%),
+    #0a0f1c;
+}
+
+.container {
+  width: min(860px, 92vw);
+  text-align: center;
+  color: #f3f6ff;
+}
+
+.kicker {
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8db7ff;
+  font-size: 0.82rem;
+  margin-bottom: 0.8rem;
+}
+
+.title {
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.subtitle {
+  margin: 1.25rem auto 0;
+  max-width: 65ch;
+  font-size: 1.05rem;
+  color: #cdd7ef;
+}
+
+.actions {
+  margin-top: 2rem;
+}

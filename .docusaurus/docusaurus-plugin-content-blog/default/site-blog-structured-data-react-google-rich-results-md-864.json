@@ -1,0 +1,77 @@
+{
+  "permalink": "/blog/structured-data-react-google-rich-results",
+  "source": "@site/blog/structured-data-react-google-rich-results.md",
+  "title": "Structured Data in React: From Markup to Google Rich Results",
+  "description": "Learn what structured data is, how to add JSON-LD to a React app, validate it with Google tools, and apply global schema with Docusaurus.",
+  "date": "2026-02-15T00:00:00.000Z",
+  "tags": [
+    {
+      "inline": true,
+      "label": "SEO",
+      "permalink": "/blog/tags/seo"
+    },
+    {
+      "inline": true,
+      "label": "Structured Data",
+      "permalink": "/blog/tags/structured-data"
+    },
+    {
+      "inline": true,
+      "label": "JSON-LD",
+      "permalink": "/blog/tags/json-ld"
+    },
+    {
+      "inline": true,
+      "label": "React",
+      "permalink": "/blog/tags/react"
+    },
+    {
+      "inline": true,
+      "label": "Docusaurus",
+      "permalink": "/blog/tags/docusaurus"
+    },
+    {
+      "inline": true,
+      "label": "Google Rich Results",
+      "permalink": "/blog/tags/google-rich-results"
+    },
+    {
+      "inline": true,
+      "label": "Schema.org",
+      "permalink": "/blog/tags/schema-org"
+    }
+  ],
+  "readingTime": 2.82,
+  "hasTruncateMarker": false,
+  "authors": [],
+  "frontMatter": {
+    "title": "Structured Data in React: From Markup to Google Rich Results",
+    "date": "2026-02-15",
+    "description": "Learn what structured data is, how to add JSON-LD to a React app, validate it with Google tools, and apply global schema with Docusaurus.",
+    "tags": [
+      "SEO",
+      "Structured Data",
+      "JSON-LD",
+      "React",
+      "Docusaurus",
+      "Google Rich Results",
+      "Schema.org"
+    ],
+    "categories": "SEO",
+    "keywords": [
+      "structured data react",
+      "json-ld tutorial",
+      "google rich results test",
+      "schema.org article",
+      "docusaurus headTags"
+    ],
+    "image": "/placeholder.svg",
+    "subtitle": "A practical process for implementing and validating schema markup",
+    "status": "published"
+  },
+  "unlisted": false,
+  "nextItem": {
+    "title": "PM2: The Lean Alternative to Kubernetes for Scalable Production Apps",
+    "permalink": "/blog/pm2-lean-alternative-kubernetes"
+  }
+}

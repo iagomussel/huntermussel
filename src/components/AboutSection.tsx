@@ -22,9 +22,9 @@ const AboutSection = () => {
             </h2>
             <p className="mb-6 font-body text-base leading-relaxed text-muted-foreground">
               HunterMussel was born from a passion for solving complex problems
-              with technology and artificial intelligence. We combine AI, automation,
-              and DevOps practices to transform business processes into
-              intelligent and scalable operations.
+              with technology and artificial intelligence. We combine AI,
+              automation, and DevOps practices to transform business processes
+              into intelligent and scalable operations.
             </p>
             <p className="font-body text-base leading-relaxed text-muted-foreground">
               Our mission is to eliminate inefficiencies with AI — automating
@@ -45,25 +45,28 @@ const AboutSection = () => {
               </div>
               <div>
                 <h3 className="font-heading text-lg font-bold">Iago Mussel</h3>
-                <p className="font-body text-sm text-primary">
-                  CEO & Founder
-                </p>
+                <p className="font-body text-sm text-primary">CEO & Founder</p>
               </div>
             </div>
             <p className="mb-6 font-body text-sm leading-relaxed text-muted-foreground">
               Software engineer with experience in artificial intelligence,
-              distributed architectures, and DevOps culture. Passionate about applying
-              AI in process management and building high-performance teams.
+              distributed architectures, and DevOps culture. Passionate about
+              applying AI in process management and building high-performance
+              teams.
             </p>
             <div className="flex gap-3">
               <a
-                href="#"
+                href="https://www.linkedin.com/in/iago-mussel/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-md border border-border p-2.5 text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
               >
                 <Linkedin size={16} />
               </a>
               <a
-                href="#"
+                href="https://github.com/iagomussel"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-md border border-border p-2.5 text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
               >
                 <Github size={16} />

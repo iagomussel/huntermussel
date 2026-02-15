@@ -1,4 +1,4 @@
 name = "huntermussel"
-pages_build_output_dir = "dist"
+pages_build_output_dir = "build"
 compatibility_date = "2025-02-01"
 compatibility_flags = ["nodejs_compat"]

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Terminal, ArrowRight } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "../assets/hero-bg.jpg";
 
 const HeroSection = () => {
   return (
@@ -37,12 +37,14 @@ const HeroSection = () => {
             We transform processes
             <br />
             with{" "}
-            <span className="gradient-text text-glow">Artificial Intelligence</span>
+            <span className="gradient-text text-glow">
+              Artificial Intelligence
+            </span>
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl font-body text-lg leading-relaxed text-muted-foreground md:text-xl">
-            Automate, optimize, and scale your company's process management
-            with AI, software engineering, and cutting-edge DevOps practices.
+            Automate, optimize, and scale your company's process management with
+            AI, software engineering, and cutting-edge DevOps practices.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -78,10 +80,18 @@ const HeroSection = () => {
             <div className="h-3 w-3 rounded-full bg-primary/60" />
           </div>
           <pre className="font-heading text-xs leading-relaxed text-muted-foreground md:text-sm">
-            <span className="text-primary">$</span> huntermussel ai --optimize-processes{"\n"}
-            <span className="text-muted-foreground/60">▸ Analyzing flows...</span>{"\n"}
-            <span className="text-muted-foreground/60">▸ Applying AI models...</span>{"\n"}
-            <span className="text-primary">✓</span> 3 processes optimized with AI 🚀
+            <span className="text-primary">$</span> huntermussel ai
+            --optimize-processes{"\n"}
+            <span className="text-muted-foreground/60">
+              ▸ Analyzing flows...
+            </span>
+            {"\n"}
+            <span className="text-muted-foreground/60">
+              ▸ Applying AI models...
+            </span>
+            {"\n"}
+            <span className="text-primary">✓</span> 3 processes optimized with
+            AI 🚀
           </pre>
         </motion.div>
       </div>
