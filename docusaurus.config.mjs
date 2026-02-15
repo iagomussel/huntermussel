@@ -14,6 +14,13 @@ const config = {
   organizationName: "huntermussel",
   projectName: "huntermussel",
   trailingSlash: false,
+  customFields: {
+    disqus: {
+      shortname: "huntermussel",
+      siteUrl: "https://huntermussel.com",
+      language: "en_US",
+    },
+  },
 
   onBrokenLinks: "throw",
   onBrokenAnchors: "ignore",

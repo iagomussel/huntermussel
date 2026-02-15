@@ -11,6 +11,7 @@ import BlogPostPageMetadata from "@theme/BlogPostPage/Metadata";
 import BlogPostPageStructuredData from "@theme/BlogPostPage/StructuredData";
 import Footer from "../../components/Footer";
 import ResponsiveImage from "../../components/ResponsiveImage";
+import DisqusComments from "../../components/DisqusComments";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -19,6 +20,7 @@ type PostContent = {
     title: string;
     description?: string;
     date?: string;
+    permalink?: string;
     tags?: Array<{
       label: string;
       permalink: string;
@@ -126,6 +128,11 @@ export default function BlogPostPage(props: Props): ReactNode {
                 <div className="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none">
                   <BlogPostContent />
                 </div>
+
+                <DisqusComments
+                  identifier={metadata.permalink ?? metadata.title}
+                  title={metadata.title}
+                />
 
                 {(metadata.nextItem || metadata.prevItem) && (
                   <section className="mt-16 border-t border-border pt-10">

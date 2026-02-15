@@ -1,5 +1,11 @@
 import { motion } from "framer-motion";
-import { Truck, GraduationCap, Globe, Users, CalendarCheck } from "lucide-react";
+import {
+  Truck,
+  GraduationCap,
+  Globe,
+  Users,
+  CalendarCheck,
+} from "lucide-react";
 
 const cases = [
   {
@@ -48,12 +54,20 @@ const container = {
 
 const item = {
   hidden: (i: number) => ({ opacity: 0, y: 20, x: i % 2 === 0 ? -50 : 50 }),
-  show: { opacity: 1, y: 0, x: 0, transition: { type: "spring", stiffness: 50, damping: 20 } as const },
+  show: {
+    opacity: 1,
+    y: 0,
+    x: 0,
+    transition: { type: "spring", stiffness: 50, damping: 20 } as const,
+  },
 };
 
 const CasesSection = () => {
   return (
-    <section id="cases" className="relative border-t border-border py-24 overflow-hidden">
+    <section
+      id="cases"
+      className="relative border-t border-border py-24 overflow-hidden"
+    >
       <div className="container px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -69,7 +83,8 @@ const CasesSection = () => {
             Projects We've <span className="gradient-text">Delivered</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl font-body text-base text-muted-foreground">
-            Real solutions built with AI, automation, and cutting-edge engineering.
+            Real solutions built with AI, automation, and cutting-edge
+            engineering.
           </p>
         </motion.div>
 
@@ -112,9 +127,6 @@ const CasesSection = () => {
           transition={{ duration: 0.6 }}
           className="mt-16 border-t border-border pt-12 text-center"
         >
-          <p className="mb-6 font-heading text-xs uppercase tracking-widest text-muted-foreground">
-            Satisfied Clients
-          </p>
           <div className="flex flex-wrap items-center justify-center gap-6">
             <a
               href="https://amparoeaconchego.com"
