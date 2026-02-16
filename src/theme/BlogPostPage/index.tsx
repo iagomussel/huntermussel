@@ -126,7 +126,7 @@ export default function BlogPostPage(props: Props): ReactNode {
                     <ResponsiveImage
                       src={image}
                       alt={metadata.title}
-                      className="aspect-video w-full object-cover"
+                      className="w-full h-auto object-contain md:aspect-video md:object-cover"
                     />
                   </div>
                 )}

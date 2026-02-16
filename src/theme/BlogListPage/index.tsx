@@ -76,11 +76,11 @@ export default function BlogListPage(props: Props): ReactNode {
                       className="group block overflow-hidden rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
                     >
                       {image && (
-                        <div className="aspect-[9/16] sm:aspect-square md:aspect-video w-full overflow-hidden border-b border-border text-center bg-muted/20">
+                        <div className="w-full border-b border-border text-center bg-muted/20 md:aspect-video md:overflow-hidden">
                           <ResponsiveImage
                             src={image}
                             alt={meta.title}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="w-full h-auto object-contain md:h-full md:object-cover transition-transform duration-500 md:group-hover:scale-105"
                           />
                         </div>
                       )}

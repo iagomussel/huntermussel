@@ -35,7 +35,7 @@ status: "published"
 
 In 2026, search engines do far more than index words on a page. They identify entities, infer intent, and combine signals across web, video, and AI-generated summaries. Plain HTML is great for layout, but it is not designed to describe what your content *is*.
 
-<img src="/images/blog/rich-content-google-search_16x9_med.webp" srcSet="/images/blog/rich-content-google-search_16x9_thumb.webp 320w, /images/blog/rich-content-google-search_16x9_low.webp 640w, /images/blog/rich-content-google-search_16x9_med.webp 1280w, /images/blog/rich-content-google-search_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="Structured Data in React: From Markup to Google Rich Results" className="aspect-video w-full object-cover" loading="lazy" />
+<img src="/images/blog/rich-content-google-search_16x9_med.webp" srcSet="/images/blog/rich-content-google-search_16x9_thumb.webp 320w, /images/blog/rich-content-google-search_16x9_low.webp 640w, /images/blog/rich-content-google-search_16x9_med.webp 1280w, /images/blog/rich-content-google-search_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="Structured Data in React: From Markup to Google Rich Results" className="w-full h-auto object-contain md:aspect-video md:object-cover" loading="lazy" />
 
 Structured data is the layer that makes that meaning explicit. Instead of guessing, crawlers can read specific fields and map them to known schema types.
 

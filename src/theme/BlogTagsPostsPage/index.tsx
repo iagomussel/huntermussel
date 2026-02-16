@@ -49,7 +49,9 @@ export default function BlogTagsPostsPage({
 }: Props): ReactNode {
   const title = `${tag.label} | ${listMetadata.blogTitle || "HunterMussel Blog"}`;
   const description =
-    tag.description || listMetadata.blogDescription || `Articles tagged with ${tag.label}.`;
+    tag.description ||
+    listMetadata.blogDescription ||
+    `Articles tagged with ${tag.label}.`;
 
   return (
     <Layout title={title} description={description}>
@@ -68,7 +70,9 @@ export default function BlogTagsPostsPage({
               {tag.label}
             </h1>
             {tag.description && (
-              <p className="mt-4 font-body text-muted-foreground">{tag.description}</p>
+              <p className="mt-4 font-body text-muted-foreground">
+                {tag.description}
+              </p>
             )}
             <div className="mt-4">
               <Link
@@ -94,11 +98,11 @@ export default function BlogTagsPostsPage({
                       className="group block overflow-hidden rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
                     >
                       {image && (
-                        <div className="aspect-[9/16] sm:aspect-square md:aspect-video w-full overflow-hidden border-b border-border text-center bg-muted/20">
+                        <div className="w-full border-b border-border text-center bg-muted/20 md:aspect-video md:overflow-hidden">
                           <ResponsiveImage
                             src={image}
                             alt={meta.title}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="w-full h-auto object-contain md:h-full md:object-cover transition-transform duration-500 md:group-hover:scale-105"
                           />
                         </div>
                       )}
