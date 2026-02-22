@@ -2,7 +2,7 @@ export async function GET() {
   const body = `User-agent: *
 Allow: /
 
-Sitemap: https://huntermussel.com/tools/sitemap.xml
+Sitemap: https://huntermussel.com/sitemap-index.xml
 `;
 
   return new Response(body, {
