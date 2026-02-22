@@ -44,6 +44,9 @@ const config = {
           path: "services",
           routeBasePath: "services",
           sidebarPath: "./sidebarsServices.mjs",
+          showLastUpdateAuthor: false,
+          showLastUpdateTime: false,
+          breadcrumbs: false,
         },
         blog: {
           routeBasePath: "blog",
@@ -77,6 +80,7 @@ const config = {
         path: "cases",
         routeBasePath: "cases",
         sidebarPath: "./sidebarsCases.mjs",
+        breadcrumbs: false,
       },
     ],
     [
