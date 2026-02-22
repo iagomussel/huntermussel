@@ -117,6 +117,13 @@ const config = {
   headTags: [
     {
       tagName: "script",
+      attributes: {
+        async: "true",
+        src: "https://www.googletagmanager.com/gtag/js?id=G-NENC1CBCTS",
+      },
+    },
+    {
+      tagName: "script",
       attributes: { type: "application/ld+json" },
       innerHTML: JSON.stringify({
         "@context": "https://schema.org",
