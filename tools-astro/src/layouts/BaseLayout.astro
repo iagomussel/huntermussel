@@ -3,12 +3,64 @@ interface Props {
   title: string;
   description: string;
   canonicalPath?: string;
+  ogImage?: string;
+  robots?: string;
+  schemaType?: "WebPage" | "WebApplication";
 }
 
 import "../styles/site.css";
 
-const { title, description, canonicalPath = "/" } = Astro.props;
+const {
+  title,
+  description,
+  canonicalPath = "/",
+  ogImage = "https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp",
+  robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+  schemaType = canonicalPath === "/tools/" ? "WebPage" : "WebApplication",
+} = Astro.props;
 const canonicalUrl = `https://huntermussel.com${canonicalPath}`;
+const pathParts = canonicalPath.split("/").filter(Boolean);
+const breadcrumbItems = [
+  { name: "Home", item: "https://huntermussel.com/" },
+  { name: "Tools", item: "https://huntermussel.com/tools/" },
+];
+if (canonicalPath !== "/tools/" && pathParts.length > 1) {
+  breadcrumbItems.push({ name: title, item: canonicalUrl });
+}
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: breadcrumbItems.map((entry, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: entry.name,
+    item: entry.item,
+  })),
+};
+const pageSchema =
+  schemaType === "WebApplication"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: title,
+        description,
+        url: canonicalUrl,
+        applicationCategory: "DeveloperApplication",
+        operatingSystem: "Web",
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: title,
+        description,
+        url: canonicalUrl,
+        isPartOf: {
+          "@type": "WebSite",
+          name: "HunterMussel Tools",
+          url: "https://huntermussel.com/tools/",
+        },
+      };
 ---
 
 <!doctype html>
@@ -17,23 +69,28 @@ const canonicalUrl = `https://huntermussel.com${canonicalPath}`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <meta name="googlebot" content={robots} />
+    <meta name="theme-color" content="#1d4ed8" />
+    <meta name="application-name" content="HunterMussel Tools" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="HunterMussel Tools" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta
-      property="og:image"
-      content="https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp"
-    />
+    <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta
-      name="twitter:image"
-      content="https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp"
-    />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:site" content="@huntermussel" />
+    <meta name="twitter:creator" content="@huntermussel" />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" type="application/xml" href="https://huntermussel.com/tools/sitemap.xml" />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   </head>
   <body>
     <slot />
