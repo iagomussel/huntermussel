@@ -220,3 +220,114 @@ button.secondary {
     grid-template-columns: 1fr;
   }
 }
+
+.word-root {
+  min-height: 100vh;
+  background: #d3d3d6;
+}
+
+.word-toolbar-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #f8f8f9;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.word-menu-row {
+  height: 37px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.word-menu-btn {
+  border: 0;
+  background: transparent;
+  color: #222;
+  font-size: 14px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.word-tools-row {
+  min-height: 43px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 8px;
+  overflow-x: auto;
+}
+
+.word-icon-btn,
+.word-select-btn {
+  border: 0;
+  background: transparent;
+  color: #333;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.word-select-btn {
+  font-size: 13px;
+  padding: 0 8px;
+  gap: 6px;
+}
+
+.word-icon-btn:hover,
+.word-select-btn:hover,
+.word-menu-btn:hover {
+  background: #e7e7ea;
+}
+
+.word-divider {
+  width: 1px;
+  height: 20px;
+  background: #c9ccd1;
+  margin: 0 6px;
+}
+
+.word-editor-bg {
+  padding: 30px 12px 72px;
+}
+
+.word-editor-shell {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.word-paper {
+  width: 100%;
+  max-width: 952px;
+  min-height: 860px;
+  margin: 0 auto;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #d4d7dc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.word-paper-inner {
+  padding: 76px 62px 80px;
+}
+
+.word-paper h1,
+.word-paper .heading-one {
+  font-size: 50px;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .word-paper-inner {
+    padding: 40px 20px 60px;
+  }
+}
