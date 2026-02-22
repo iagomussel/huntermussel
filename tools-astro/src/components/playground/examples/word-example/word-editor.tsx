@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { load as loadYaml, dump as dumpYaml } from "js-yaml";
 import YooptaEditor, {
   createYooptaEditor,
+  Blocks,
 } from "@yoopta/editor";
 
 import { WORD_PLUGINS } from "./plugins";
@@ -26,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, Code2 } from "lucide-react";
+import { Copy, Check, Code2, Download } from "lucide-react";
 import { YooptaSlashCommandMenu } from "../full-setup/new-yoo-components/yoopta-slash-command-menu";
 import { withEmoji } from "@yoopta/emoji";
 
@@ -36,30 +37,23 @@ const EDITOR_STYLES = {
 };
 
 const METADATA_STORAGE_KEY = "yoopta-word-example-metadata";
-const DEFAULT_METADATA = `title: "Fast Code, Weak Engineers"
-date: "2026-01-09"
-authors:
-  - iago-mussel
-description: "The Risk of Becoming an AI-Dependent Developer"
-tags:
-  - AI
-  - Coding
-  - Cursor
-  - Tailwind
-  - antigravit
-  - openclaw
-  - moltbot
-  - clawd
-categories: ""
-keywords:
-  - ai coding assistants
-  - software engineering
-  - developer productivity
-  - ai dependency in programming
-  - coding quality
-image: "/images/blog/cover.webp"
-subtitle: "The Risk of Becoming an AI-Dependent Developer"
-status: "published"`;
+const DEFAULT_METADATA = ``;
+const EMPTY_METADATA = "";
+const EMPTY_DOCUMENT_VALUE = {
+  "block-1": {
+    id: "block-1",
+    type: "Paragraph",
+    value: [
+      {
+        id: "element-1",
+        type: "paragraph",
+        children: [{ text: "" }],
+        props: { nodeType: "block" },
+      },
+    ],
+    meta: { order: 0, depth: 0 },
+  },
+};
 
 type MetadataModel = {
   title: string;
@@ -75,22 +69,16 @@ type MetadataModel = {
 };
 
 const DEFAULT_METADATA_MODEL: MetadataModel = {
-  title: "Fast Code, Weak Engineers",
-  date: "2026-01-09",
-  authors: ["iago-mussel"],
-  description: "The Risk of Becoming an AI-Dependent Developer",
-  tags: ["AI", "Coding", "Cursor", "Tailwind", "antigravit", "openclaw", "moltbot", "clawd"],
+  title: "",
+  date: "",
+  authors: [],
+  description: "",
+  tags: [],
   categories: "",
-  keywords: [
-    "ai coding assistants",
-    "software engineering",
-    "developer productivity",
-    "ai dependency in programming",
-    "coding quality",
-  ],
-  image: "/images/blog/cover.webp",
-  subtitle: "The Risk of Becoming an AI-Dependent Developer",
-  status: "published",
+  keywords: [],
+  image: "",
+  subtitle: "",
+  status: "",
 };
 
 // Using type assertion as the content value includes text marks (bold, italic, etc.)
@@ -367,6 +355,11 @@ export const WordEditor = () => {
   const [metadataForm, setMetadataForm] = useState<MetadataModel>(DEFAULT_METADATA_MODEL);
   const [metadataMode, setMetadataMode] = useState<"form" | "raw">("form");
   const [metadataError, setMetadataError] = useState<string>("");
+  const [metadataVisible, setMetadataVisible] = useState(false);
+  const LIST_BLOCK_TYPES = useMemo(
+    () => new Set(["BulletedList", "NumberedList", "TodoList"]),
+    [],
+  );
 
   const editor = useMemo(() => {
     return withEmoji(withMentions(
@@ -419,6 +412,42 @@ export const WordEditor = () => {
       }
     }
   }, [editor]);
+
+  useEffect(() => {
+    const container = containerBoxRef.current;
+    if (!container) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      if (metadataMode === "raw") return;
+
+      let block: any = null;
+      try {
+        block = Blocks.getBlock(editor, { at: editor.path.current });
+      } catch {
+        return;
+      }
+
+      if (!block || !LIST_BLOCK_TYPES.has(block.type)) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const currentDepth = Number(block.meta?.depth || 0);
+      if (event.shiftKey) {
+        editor.updateBlock(block.id, {
+          meta: { ...block.meta, depth: Math.max(0, currentDepth - 1) },
+        });
+      } else {
+        editor.updateBlock(block.id, {
+          meta: { ...block.meta, depth: currentDepth + 1 },
+        });
+      }
+    };
+
+    container.addEventListener("keydown", onKeyDown, true);
+    return () => container.removeEventListener("keydown", onKeyDown, true);
+  }, [editor, metadataMode, LIST_BLOCK_TYPES]);
 
   const normalizeFrontmatter = useCallback((raw: string) => {
     const cleaned = raw
@@ -531,28 +560,76 @@ export const WordEditor = () => {
     window.print();
   }, []);
 
+  const handleNewDocument = useCallback(() => {
+    editor.setEditorValue(EMPTY_DOCUMENT_VALUE as any);
+    localStorage.setItem("yoopta-word-example", JSON.stringify(EMPTY_DOCUMENT_VALUE));
+
+    setMetadata(EMPTY_METADATA);
+    localStorage.setItem(METADATA_STORAGE_KEY, EMPTY_METADATA);
+    setMetadataForm({
+      title: "",
+      date: "",
+      authors: [],
+      description: "",
+      tags: [],
+      categories: "",
+      keywords: [],
+      image: "",
+      subtitle: "",
+      status: "",
+    });
+    setMetadataError("");
+  }, [editor]);
+
   const handleCopy = useCallback(async () => {
     await navigator.clipboard.writeText(exportContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }, [exportContent]);
 
+  const handleDownload = useCallback(() => {
+    const format = exportFormat.toLowerCase();
+    const ext =
+      format === "markdown" ? "md" : format === "text" ? "txt" : format === "json" ? "json" : "html";
+    const mime =
+      format === "markdown"
+        ? "text/markdown;charset=utf-8"
+        : format === "text"
+          ? "text/plain;charset=utf-8"
+          : format === "json"
+            ? "application/json;charset=utf-8"
+            : "text/html;charset=utf-8";
+
+    const blob = new Blob([exportContent], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `document-export.${ext}`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, [exportContent, exportFormat]);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Toolbar */}
-      <div className="word-print-hide-toolbar">
+      <div className="word-print-hide-toolbar word-toolbar-fixed-shell">
         <WordToolbar
           editor={editor}
+          onNewDocument={handleNewDocument}
           onExport={handleExport}
           onPrint={handlePrint}
           onImportMetadata={handleMetadataChange}
+          metadataVisible={metadataVisible}
+          onToggleMetadata={() => setMetadataVisible((prev) => !prev)}
         />
       </div>
 
       {/* Editor Area */}
-      <div className="flex-1 bg-neutral-100 dark:bg-neutral-900 overflow-auto">
+      <div className="flex-1 bg-neutral-100 dark:bg-neutral-900 overflow-auto word-editor-offset">
         <div className="max-w-5xl mx-auto py-8 px-4">
-          <div className="word-metadata-panel word-print-hide-toolbar">
+          <div className={`word-metadata-panel word-print-hide-toolbar ${metadataVisible ? "" : "word-metadata-hidden"}`}>
             <div className="word-metadata-header">
               <p className="word-metadata-label">Document Metadata</p>
               <div className="word-metadata-tabs">
@@ -734,7 +811,7 @@ export const WordEditor = () => {
 
       {/* Export Dialog */}
       <Dialog modal open={exportDialogOpen} onOpenChange={setExportDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[80vh]">
+        <DialogContent className="max-w-3xl max-h-[80vh] word-export-dialog">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               Export as {exportFormat}
@@ -747,24 +824,35 @@ export const WordEditor = () => {
                 {exportContent}
               </pre>
             </ScrollArea>
-            <Button
-              size="sm"
-              variant="outline"
-              className="absolute top-2 right-4"
-              onClick={handleCopy}
-            >
-              {copied ? (
-                <>
-                  <Check className="w-4 h-4 mr-1" />
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4 mr-1" />
-                  Copy
-                </>
-              )}
-            </Button>
+            <div className="absolute top-2 right-4 flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="secondary"
+                className="border border-neutral-700 bg-neutral-800 text-neutral-100 hover:bg-neutral-700"
+                onClick={handleDownload}
+              >
+                <Download className="w-4 h-4 mr-1" />
+                Download
+              </Button>
+              <Button
+                size="sm"
+                variant="secondary"
+                className="border border-neutral-700 bg-neutral-800 text-neutral-100 hover:bg-neutral-700"
+                onClick={handleCopy}
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-4 h-4 mr-1" />
+                    Copied!
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 mr-1" />
+                    Copy
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

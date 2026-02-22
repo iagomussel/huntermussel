@@ -6,6 +6,11 @@
 
 :root {
   color-scheme: dark;
+  --z-toolbar: 120;
+  --z-dropdown: 170;
+  --z-popper: 180;
+  --z-overlay: 220;
+  --z-modal: 230;
   --background: hsl(220 20% 4%);
   --foreground: hsl(210 40% 98%);
   --muted: hsl(220 14% 10%);
@@ -64,7 +69,46 @@ h6,
 }
 
 [data-radix-popper-content-wrapper] {
-  z-index: 70 !important;
+  z-index: var(--z-popper) !important;
+}
+
+[data-radix-portal] > [data-state="open"] {
+  z-index: var(--z-overlay) !important;
+}
+
+[data-radix-portal] > [role="dialog"][data-state="open"] {
+  z-index: var(--z-modal) !important;
+}
+
+.word-export-dialog {
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+}
+
+/* Yoopta UI internals (slash/action menus, pickers) */
+:root,
+.dark,
+[data-theme="dark"],
+[data-yoopta-theme="dark"] {
+  --yoopta-ui-z-dropdown: var(--z-dropdown);
+  --yoopta-ui-z-overlay: var(--z-overlay);
+  --yoopta-ui-z-modal: var(--z-modal);
+  --yoopta-ui-action-menu-z-index: var(--z-dropdown);
+  --yoopta-ui-highlight-color-picker-z-index: var(--z-dropdown);
+}
+
+.word-toolbar-fixed-shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-toolbar);
+}
+
+.word-editor-offset {
+  padding-top: 106px;
 }
 
 /* Toolbar shell */
@@ -102,6 +146,10 @@ h6,
   border-radius: 12px;
   background: hsl(220 18% 7% / 0.92);
   padding: 0.9rem;
+}
+
+.word-metadata-hidden {
+  display: none;
 }
 
 .word-metadata-header {
@@ -215,6 +263,24 @@ h6,
 /* Improve editor text readability */
 [data-slate-editor="true"] {
   color: hsl(210 40% 98%);
+}
+
+[data-slate-editor="true"] code {
+  background: hsl(220 13% 20%);
+  color: hsl(0 82% 66%);
+  border: 1px solid hsl(220 14% 24%);
+  border-radius: 6px;
+  padding: 0.08rem 0.34rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.92em;
+}
+
+[data-slate-editor="true"] pre code {
+  background: transparent;
+  color: inherit;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
 }
 
 [data-slate-editor="true"] ::selection {

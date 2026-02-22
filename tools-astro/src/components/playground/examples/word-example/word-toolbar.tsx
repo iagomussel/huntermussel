@@ -49,6 +49,7 @@ import {
   Mail,
   Printer,
   Sparkles,
+  PanelTop,
 } from "lucide-react";
 import { html, markdown, plainText } from "@yoopta/exports";
 import { Button } from "@/components/ui/button";
@@ -133,13 +134,24 @@ const TEXT_COLORS = [
 ];
 
 interface WordToolbarProps {
+  onNewDocument: () => void;
   onExport: (format: "html" | "markdown" | "text" | "json") => void;
   onPrint: () => void;
   onImportMetadata: (metadata: string) => void;
+  metadataVisible: boolean;
+  onToggleMetadata: () => void;
   editor: any;
 }
 
-export const WordToolbar = ({ editor, onExport, onPrint, onImportMetadata }: WordToolbarProps) => {
+export const WordToolbar = ({
+  editor,
+  onNewDocument,
+  onExport,
+  onPrint,
+  onImportMetadata,
+  metadataVisible,
+  onToggleMetadata,
+}: WordToolbarProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const openFileInputRef = useRef<HTMLInputElement>(null);
   const [linkUrl, setLinkUrl] = useState("");
@@ -266,11 +278,21 @@ export const WordToolbar = ({ editor, onExport, onPrint, onImportMetadata }: Wor
   };
 
   const increaseIndent = () => {
-    Blocks.increaseBlockDepth(editor, {});
+    const block = getCurrentBlock();
+    if (!block) return;
+    const currentDepth = Number(block.meta?.depth || 0);
+    editor.updateBlock(block.id, {
+      meta: { ...block.meta, depth: currentDepth + 1 },
+    });
   };
 
   const decreaseIndent = () => {
-    Blocks.decreaseBlockDepth(editor, {});
+    const block = getCurrentBlock();
+    if (!block) return;
+    const currentDepth = Number(block.meta?.depth || 0);
+    editor.updateBlock(block.id, {
+      meta: { ...block.meta, depth: Math.max(0, currentDepth - 1) },
+    });
   };
 
   // Media insertion
@@ -401,6 +423,11 @@ export const WordToolbar = ({ editor, onExport, onPrint, onImportMetadata }: Wor
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
+            <DropdownMenuItem onClick={onNewDocument}>
+              <FileText className="w-4 h-4 mr-2" />
+              New
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleOpenFile}>
               <FolderOpen className="w-4 h-4 mr-2" />
               Open...
@@ -550,6 +577,16 @@ export const WordToolbar = ({ editor, onExport, onPrint, onImportMetadata }: Wor
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          className={cn("h-7 px-2 text-sm", metadataVisible && "bg-neutral-200 dark:bg-neutral-700")}
+          onClick={onToggleMetadata}
+        >
+          <PanelTop className="w-4 h-4 mr-1.5" />
+          Metadata
+        </Button>
       </div>
 
       {/* Main Toolbar */}
