@@ -138,7 +138,7 @@ const ContactSection = () => {
                     type="tel"
                     id="phone"
                     name="phone"
-                    placeholder="+55 (00) 00000-0000"
+                    placeholder="+1 (555) 000-0000"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     disabled={status === "loading"}
@@ -195,12 +195,12 @@ const ContactSection = () => {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MessageCircle size={14} className="text-primary" />
               <a href="https://wa.me/5521995775689" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
-                +55 (21) 99577-5689
+                WhatsApp
               </a>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin size={14} className="text-primary" />
-              Brazil
+              Americas (GMT-3)
             </div>
           </motion.div>
         </div>

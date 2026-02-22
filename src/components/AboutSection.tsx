@@ -26,6 +26,10 @@ const AboutSection = () => {
               automation, and DevOps practices to transform business processes
               into intelligent and scalable operations.
             </p>
+            <p className="mb-6 font-body text-base leading-relaxed text-muted-foreground">
+              Operating from the Americas (GMT-3), we collaborate in real-time
+              with global teams to deliver high-impact solutions.
+            </p>
             <p className="font-body text-base leading-relaxed text-muted-foreground">
               Our mission is to eliminate inefficiencies with AI — automating
               decisions, optimizing flows, and delivering measurable results.
@@ -72,7 +76,7 @@ const AboutSection = () => {
                 <Github size={16} />
               </a>
               <a
-                href="mailto:contato@huntermussel.com"
+                href="mailto:contact@huntermussel.com"
                 className="rounded-md border border-border p-2.5 text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
               >
                 <Mail size={16} />
