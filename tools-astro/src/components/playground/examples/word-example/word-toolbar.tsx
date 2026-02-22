@@ -31,6 +31,7 @@ import {
   Image,
   Video,
   FileIcon,
+  FolderOpen,
   Link,
   ChevronDown,
   Plus,
@@ -49,6 +50,7 @@ import {
   Printer,
   Sparkles,
 } from "lucide-react";
+import { html, markdown, plainText } from "@yoopta/exports";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -133,11 +135,13 @@ const TEXT_COLORS = [
 interface WordToolbarProps {
   onExport: (format: "html" | "markdown" | "text" | "json") => void;
   onPrint: () => void;
+  onImportMetadata: (metadata: string) => void;
   editor: any;
 }
 
-export const WordToolbar = ({ editor, onExport, onPrint }: WordToolbarProps) => {
+export const WordToolbar = ({ editor, onExport, onPrint, onImportMetadata }: WordToolbarProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const openFileInputRef = useRef<HTMLInputElement>(null);
   const [linkUrl, setLinkUrl] = useState("");
   const [linkOpen, setLinkOpen] = useState(false);
 
@@ -270,14 +274,63 @@ export const WordToolbar = ({ editor, onExport, onPrint }: WordToolbarProps) => 
   };
 
   // Media insertion
+  const handleOpenFile = () => {
+    openFileInputRef.current?.click();
+  };
+
+  const onOpenFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const content = await file.text();
+      const ext = file.name.split(".").pop()?.toLowerCase() || "";
+      const mime = (file.type || "").toLowerCase();
+
+      let nextValue: any;
+
+      if (ext === "md" || ext === "markdown") {
+        const frontmatterMatch = content.match(/^\s*---\s*\n([\s\S]*?)\n---\s*\n?/);
+        const markdownContent = frontmatterMatch ? content.slice(frontmatterMatch[0].length) : content;
+
+        if (frontmatterMatch?.[1]) {
+          onImportMetadata(frontmatterMatch[1].trim());
+        }
+
+        nextValue = markdown.deserialize(editor, markdownContent);
+      } else if (ext === "html" || ext === "htm" || mime.includes("html")) {
+        nextValue = html.deserialize(editor, content);
+      } else {
+        nextValue = plainText.deserialize(editor, content);
+      }
+
+      editor.setEditorValue(nextValue);
+      localStorage.setItem("yoopta-word-example", JSON.stringify(nextValue));
+    } catch (error) {
+      console.error("Failed to open file:", error);
+      alert("Could not open this file. Supported formats: .md, .html, .txt");
+    } finally {
+      e.target.value = "";
+    }
+  };
+
   const handleImageUpload = () => {
     fileInputRef.current?.click();
   };
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const fileToDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = () => reject(reader.error ?? new Error("Failed to read image file"));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const src = URL.createObjectURL(file);
+      const src = await fileToDataUrl(file);
 
       Blocks.insertBlock(editor, "Image", {
         focus: true,
@@ -348,6 +401,11 @@ export const WordToolbar = ({ editor, onExport, onPrint }: WordToolbarProps) => 
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
+            <DropdownMenuItem onClick={handleOpenFile}>
+              <FolderOpen className="w-4 h-4 mr-2" />
+              Open...
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <Download className="w-4 h-4 mr-2" />
@@ -785,6 +843,14 @@ export const WordToolbar = ({ editor, onExport, onPrint }: WordToolbarProps) => 
         </ToolbarButton>
 
         {/* Hidden file input */}
+        <input
+          ref={openFileInputRef}
+          type="file"
+          accept=".md,.markdown,.html,.htm,.txt,text/markdown,text/html,text/plain"
+          onChange={onOpenFileChange}
+          className="hidden"
+        />
+
         <input
           ref={fileInputRef}
           type="file"

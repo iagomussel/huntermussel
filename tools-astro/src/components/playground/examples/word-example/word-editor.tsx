@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { load as loadYaml, dump as dumpYaml } from "js-yaml";
 import YooptaEditor, {
   createYooptaEditor,
 } from "@yoopta/editor";
@@ -32,6 +33,64 @@ import { withEmoji } from "@yoopta/emoji";
 const EDITOR_STYLES = {
   width: "100%",
   paddingBottom: 100,
+};
+
+const METADATA_STORAGE_KEY = "yoopta-word-example-metadata";
+const DEFAULT_METADATA = `title: "Fast Code, Weak Engineers"
+date: "2026-01-09"
+authors:
+  - iago-mussel
+description: "The Risk of Becoming an AI-Dependent Developer"
+tags:
+  - AI
+  - Coding
+  - Cursor
+  - Tailwind
+  - antigravit
+  - openclaw
+  - moltbot
+  - clawd
+categories: ""
+keywords:
+  - ai coding assistants
+  - software engineering
+  - developer productivity
+  - ai dependency in programming
+  - coding quality
+image: "/images/blog/cover.webp"
+subtitle: "The Risk of Becoming an AI-Dependent Developer"
+status: "published"`;
+
+type MetadataModel = {
+  title: string;
+  date: string;
+  authors: string[];
+  description: string;
+  tags: string[];
+  categories: string;
+  keywords: string[];
+  image: string;
+  subtitle: string;
+  status: string;
+};
+
+const DEFAULT_METADATA_MODEL: MetadataModel = {
+  title: "Fast Code, Weak Engineers",
+  date: "2026-01-09",
+  authors: ["iago-mussel"],
+  description: "The Risk of Becoming an AI-Dependent Developer",
+  tags: ["AI", "Coding", "Cursor", "Tailwind", "antigravit", "openclaw", "moltbot", "clawd"],
+  categories: "",
+  keywords: [
+    "ai coding assistants",
+    "software engineering",
+    "developer productivity",
+    "ai dependency in programming",
+    "coding quality",
+  ],
+  image: "/images/blog/cover.webp",
+  subtitle: "The Risk of Becoming an AI-Dependent Developer",
+  status: "published",
 };
 
 // Using type assertion as the content value includes text marks (bold, italic, etc.)
@@ -304,6 +363,10 @@ export const WordEditor = () => {
   const [exportContent, setExportContent] = useState("");
   const [exportFormat, setExportFormat] = useState<string>("");
   const [copied, setCopied] = useState(false);
+  const [metadata, setMetadata] = useState(DEFAULT_METADATA);
+  const [metadataForm, setMetadataForm] = useState<MetadataModel>(DEFAULT_METADATA_MODEL);
+  const [metadataMode, setMetadataMode] = useState<"form" | "raw">("form");
+  const [metadataError, setMetadataError] = useState<string>("");
 
   const editor = useMemo(() => {
     return withEmoji(withMentions(
@@ -322,7 +385,48 @@ export const WordEditor = () => {
     const localStorageValue = localStorage.getItem("yoopta-word-example");
     const data = localStorageValue ? JSON.parse(localStorageValue) : INITIAL_VALUE;
     editor.setEditorValue(data);
+
+    const metadataValue = localStorage.getItem(METADATA_STORAGE_KEY);
+    if (metadataValue) {
+      setMetadata(metadataValue);
+      try {
+        const parsed = loadYaml(metadataValue) as Record<string, unknown> | undefined;
+        const toList = (value: unknown): string[] => {
+          if (Array.isArray(value)) return value.map((v) => String(v)).filter(Boolean);
+          if (typeof value === "string") {
+            return value
+              .split(/[\n,]/g)
+              .map((v) => v.trim())
+              .filter(Boolean);
+          }
+          return [];
+        };
+
+        setMetadataForm({
+          title: String(parsed?.title ?? ""),
+          date: String(parsed?.date ?? ""),
+          authors: toList(parsed?.authors),
+          description: String(parsed?.description ?? ""),
+          tags: toList(parsed?.tags),
+          categories: String(parsed?.categories ?? ""),
+          keywords: toList(parsed?.keywords),
+          image: String(parsed?.image ?? ""),
+          subtitle: String(parsed?.subtitle ?? ""),
+          status: String(parsed?.status ?? ""),
+        });
+      } catch {
+        setMetadataError("Could not parse stored YAML metadata. You can fix it in Raw YAML mode.");
+      }
+    }
   }, [editor]);
+
+  const normalizeFrontmatter = useCallback((raw: string) => {
+    const cleaned = raw
+      .replace(/^\s*---\s*\n?/, "")
+      .replace(/\n?---\s*$/, "")
+      .trim();
+    return cleaned;
+  }, []);
 
   const renderBlock = useCallback(({ children, blockId }: { children: ReactNode; blockId: string }) => {
     return (
@@ -343,6 +447,10 @@ export const WordEditor = () => {
           break;
         case "markdown":
           content = editor.getMarkdown(value);
+          if (metadata.trim()) {
+            const frontmatter = normalizeFrontmatter(metadata);
+            content = `---\n${frontmatter}\n---\n\n${content}`;
+          }
           break;
         case "text":
           content = editor.getPlainText(value);
@@ -356,8 +464,68 @@ export const WordEditor = () => {
       setExportFormat(format.toUpperCase());
       setExportDialogOpen(true);
     },
-    [editor]
+    [editor, metadata, normalizeFrontmatter]
   );
+
+  const handleMetadataChange = useCallback((value: string) => {
+    setMetadata(value);
+    localStorage.setItem(METADATA_STORAGE_KEY, value);
+
+    try {
+      const parsed = loadYaml(value) as Record<string, unknown> | undefined;
+      const toList = (input: unknown): string[] => {
+        if (Array.isArray(input)) return input.map((v) => String(v)).filter(Boolean);
+        if (typeof input === "string") {
+          return input
+            .split(/[\n,]/g)
+            .map((v) => v.trim())
+            .filter(Boolean);
+        }
+        return [];
+      };
+
+      setMetadataForm({
+        title: String(parsed?.title ?? ""),
+        date: String(parsed?.date ?? ""),
+        authors: toList(parsed?.authors),
+        description: String(parsed?.description ?? ""),
+        tags: toList(parsed?.tags),
+        categories: String(parsed?.categories ?? ""),
+        keywords: toList(parsed?.keywords),
+        image: String(parsed?.image ?? ""),
+        subtitle: String(parsed?.subtitle ?? ""),
+        status: String(parsed?.status ?? ""),
+      });
+      setMetadataError("");
+    } catch {
+      setMetadataError("Invalid YAML metadata. Raw mode stays editable, but export may be wrong until fixed.");
+    }
+  }, []);
+
+  const handleMetadataFormChange = useCallback((field: keyof MetadataModel, value: string | string[]) => {
+    const next = { ...metadataForm, [field]: value } as MetadataModel;
+    setMetadataForm(next);
+
+    const raw = dumpYaml(
+      {
+        title: next.title,
+        date: next.date,
+        authors: next.authors,
+        description: next.description,
+        tags: next.tags,
+        categories: next.categories,
+        keywords: next.keywords,
+        image: next.image,
+        subtitle: next.subtitle,
+        status: next.status,
+      },
+      { lineWidth: -1, noRefs: true },
+    ).trim();
+
+    setMetadata(raw);
+    localStorage.setItem(METADATA_STORAGE_KEY, raw);
+    setMetadataError("");
+  }, [metadataForm]);
 
   const handlePrint = useCallback(() => {
     window.print();
@@ -372,11 +540,145 @@ export const WordEditor = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Toolbar */}
-      <WordToolbar editor={editor} onExport={handleExport} onPrint={handlePrint} />
+      <div className="word-print-hide-toolbar">
+        <WordToolbar
+          editor={editor}
+          onExport={handleExport}
+          onPrint={handlePrint}
+          onImportMetadata={handleMetadataChange}
+        />
+      </div>
 
       {/* Editor Area */}
       <div className="flex-1 bg-neutral-100 dark:bg-neutral-900 overflow-auto">
         <div className="max-w-5xl mx-auto py-8 px-4">
+          <div className="word-metadata-panel word-print-hide-toolbar">
+            <div className="word-metadata-header">
+              <p className="word-metadata-label">Document Metadata</p>
+              <div className="word-metadata-tabs">
+                <button
+                  type="button"
+                  className={`word-meta-tab ${metadataMode === "form" ? "is-active" : ""}`}
+                  onClick={() => setMetadataMode("form")}
+                >
+                  Form
+                </button>
+                <button
+                  type="button"
+                  className={`word-meta-tab ${metadataMode === "raw" ? "is-active" : ""}`}
+                  onClick={() => setMetadataMode("raw")}
+                >
+                  Raw YAML
+                </button>
+              </div>
+            </div>
+
+            {metadataMode === "form" ? (
+              <div className="word-meta-grid">
+                <label className="word-meta-field">
+                  <span>Title</span>
+                  <input
+                    value={metadataForm.title}
+                    onChange={(e) => handleMetadataFormChange("title", e.target.value)}
+                    placeholder="Post title"
+                  />
+                </label>
+                <label className="word-meta-field">
+                  <span>Date</span>
+                  <input
+                    value={metadataForm.date}
+                    onChange={(e) => handleMetadataFormChange("date", e.target.value)}
+                    placeholder="YYYY-MM-DD"
+                  />
+                </label>
+                <label className="word-meta-field word-meta-field-full">
+                  <span>Description</span>
+                  <textarea
+                    value={metadataForm.description}
+                    onChange={(e) => handleMetadataFormChange("description", e.target.value)}
+                    rows={2}
+                  />
+                </label>
+                <label className="word-meta-field word-meta-field-full">
+                  <span>Subtitle</span>
+                  <input
+                    value={metadataForm.subtitle}
+                    onChange={(e) => handleMetadataFormChange("subtitle", e.target.value)}
+                  />
+                </label>
+                <label className="word-meta-field">
+                  <span>Authors (comma-separated)</span>
+                  <input
+                    value={metadataForm.authors.join(", ")}
+                    onChange={(e) =>
+                      handleMetadataFormChange(
+                        "authors",
+                        e.target.value.split(",").map((v) => v.trim()).filter(Boolean),
+                      )
+                    }
+                  />
+                </label>
+                <label className="word-meta-field">
+                  <span>Status</span>
+                  <input
+                    value={metadataForm.status}
+                    onChange={(e) => handleMetadataFormChange("status", e.target.value)}
+                    placeholder="published"
+                  />
+                </label>
+                <label className="word-meta-field word-meta-field-full">
+                  <span>Tags (comma-separated)</span>
+                  <input
+                    value={metadataForm.tags.join(", ")}
+                    onChange={(e) =>
+                      handleMetadataFormChange(
+                        "tags",
+                        e.target.value.split(",").map((v) => v.trim()).filter(Boolean),
+                      )
+                    }
+                  />
+                </label>
+                <label className="word-meta-field word-meta-field-full">
+                  <span>Keywords (comma-separated)</span>
+                  <input
+                    value={metadataForm.keywords.join(", ")}
+                    onChange={(e) =>
+                      handleMetadataFormChange(
+                        "keywords",
+                        e.target.value.split(",").map((v) => v.trim()).filter(Boolean),
+                      )
+                    }
+                  />
+                </label>
+                <label className="word-meta-field word-meta-field-full">
+                  <span>Image</span>
+                  <input
+                    value={metadataForm.image}
+                    onChange={(e) => handleMetadataFormChange("image", e.target.value)}
+                    placeholder="/images/blog/cover.webp"
+                  />
+                </label>
+                <label className="word-meta-field word-meta-field-full">
+                  <span>Categories</span>
+                  <input
+                    value={metadataForm.categories}
+                    onChange={(e) => handleMetadataFormChange("categories", e.target.value)}
+                  />
+                </label>
+              </div>
+            ) : (
+              <textarea
+                id="doc-metadata"
+                className="word-metadata-input"
+                value={metadata}
+                onChange={(e) => handleMetadataChange(e.target.value)}
+                spellCheck={false}
+              />
+            )}
+
+            {metadataError && <p className="word-metadata-error">{metadataError}</p>}
+          </div>
+
           {/* Paper-like container */}
           <div
             ref={containerBoxRef}
@@ -401,7 +703,7 @@ export const WordEditor = () => {
           </div>
 
           {/* Footer Info */}
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center word-print-hide-footer">
             <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-3">
               Built with Yoopta Editor - A powerful rich-text editor
             </p>
