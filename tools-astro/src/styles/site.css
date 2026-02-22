@@ -1,0 +1,222 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-1: #f1f5ff;
+  --bg-2: #f8fafc;
+  --text-1: #0f172a;
+  --text-2: #334155;
+  --line: #dbeafe;
+  --primary: #1d4ed8;
+  --primary-soft: #dbeafe;
+  --card: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  color: var(--text-1);
+  background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+}
+
+a {
+  color: inherit;
+}
+
+.page {
+  min-height: 100vh;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem 4rem;
+}
+
+.hero {
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0.5rem 0 0.75rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+}
+
+.lead {
+  margin: 0;
+  max-width: 65ch;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.card h2,
+.card h3 {
+  margin: 0;
+}
+
+.pill {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: #1e293b;
+  background: var(--primary-soft);
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  margin-top: 0.5rem;
+}
+
+.tool-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1rem;
+}
+
+.stack {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+input[type="number"],
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+}
+
+textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+button {
+  border: 1px solid #1e40af;
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  font: inherit;
+  font-weight: 700;
+  color: #eff6ff;
+  background: #1d4ed8;
+  cursor: pointer;
+}
+
+button.secondary {
+  color: #1e3a8a;
+  background: #eff6ff;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.result {
+  border: 1px dashed #93c5fd;
+  border-radius: 12px;
+  padding: 0.85rem;
+  background: #f8fbff;
+}
+
+.result strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-top: 0.15rem;
+}
+
+.article {
+  margin-top: 1.4rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.article h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+}
+
+.article p,
+.article li {
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+.article ul {
+  margin: 0.2rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.checklist {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.check {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  background: #fff;
+}
+
+.check input {
+  margin-top: 0.2rem;
+}
+
+.small {
+  font-size: 0.82rem;
+  color: #475569;
+}
+
+.mono {
+  font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.84rem;
+  word-break: break-all;
+}
+
+@media (max-width: 860px) {
+  .tool-layout {
+    grid-template-columns: 1fr;
+  }
+}

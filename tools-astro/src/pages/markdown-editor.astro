@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import YooptaMarkdownEditor from "../components/YooptaMarkdownEditor";
+---
+
+<BaseLayout
+  title="Markdown Editor (Yoopta) | HunterMussel Tools"
+  description="Client-side markdown editor experience powered by Yoopta."
+  canonicalPath="/tools/markdown-editor/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / editor</p>
+      <h1>Markdown Editor (Yoopta)</h1>
+      <p class="lead">
+        Full Yoopta setup inspired by the Word playground style: advanced
+        plugins, editor tools, and multi-format serialization.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+    </section>
+
+    <section class="card">
+      <YooptaMarkdownEditor client:load />
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Provides a near full-featured Yoopta editor with headings, lists, todo
+          lists, code blocks, blockquotes, callouts, tables, toolbar, action
+          menu, and link tool.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why It Matters</h2>
+        <p>
+          It gives Word-like authoring ergonomics while preserving portability
+          through markdown, HTML, and plain text export formats.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Use slash/action menu and toolbar for block-level editing.</li>
+          <li>Load sample content to inspect plugin behavior.</li>
+          <li>Copy markdown, HTML, or plain text outputs as needed.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,91 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Pipeline Simulator | HunterMussel Tools"
+  description="Simulate CI/CD pipeline runtime and failure rates with stage-level probabilities."
+  canonicalPath="/tools/pipeline-simulator/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / simulation</p>
+      <h1>Pipeline Simulator</h1>
+      <p class="lead">
+        Model your pipeline by stage duration and failure probability to estimate
+        expected success rate and average runtime.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+    </section>
+
+    <section class="card stack">
+      <p class="small">Use one stage per line: <code>name,duration_minutes,failure_percent</code></p>
+      <textarea id="pipelineStages">build,8,3
+test,14,8
+security-scan,6,5
+deploy,5,2</textarea>
+      <label class="label" for="pipelineRuns">Simulation runs</label>
+      <input id="pipelineRuns" type="number" min="100" step="100" value="5000" />
+      <button id="runPipelineSimBtn" type="button">Run simulation</button>
+      <pre id="pipelineOut" class="mono"></pre>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function parseStages(raw) {
+    return raw
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        const [name, duration, failure] = line.split(",").map((v) => v.trim());
+        return {
+          name,
+          duration: Number(duration || 0),
+          failure: Number(failure || 0) / 100,
+        };
+      });
+  }
+
+  $("runPipelineSimBtn").addEventListener("click", () => {
+    try {
+      const stages = parseStages(($("pipelineStages")).value || "");
+      const runs = Math.max(100, Number(($("pipelineRuns")).value || 1000));
+      if (!stages.length) throw new Error("No valid stages found.");
+
+      let success = 0;
+      let totalMinutes = 0;
+
+      for (let i = 0; i < runs; i += 1) {
+        let runMinutes = 0;
+        let failed = false;
+        for (const stage of stages) {
+          runMinutes += stage.duration;
+          if (Math.random() < stage.failure) {
+            failed = true;
+            break;
+          }
+        }
+        if (!failed) success += 1;
+        totalMinutes += runMinutes;
+      }
+
+      const successRate = (success / runs) * 100;
+      const avgMinutes = totalMinutes / runs;
+      const dailyCapacity = Math.floor((24 * 60) / avgMinutes);
+
+      $("pipelineOut").textContent = [
+        `Runs: ${runs}`,
+        `Success rate: ${successRate.toFixed(2)}%`,
+        `Failure rate: ${(100 - successRate).toFixed(2)}%`,
+        `Average runtime: ${avgMinutes.toFixed(2)} minutes`,
+        `Approx max runs/day per worker: ${dailyCapacity}`,
+      ].join("\n");
+    } catch (error) {
+      $("pipelineOut").textContent = `Simulation failed:\n${String(error)}`;
+    }
+  });
+</script>

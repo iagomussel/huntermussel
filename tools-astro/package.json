@@ -1,0 +1,35 @@
+{
+  "name": "huntermussel-tools-astro",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@yoopta/action-menu-list": "^4.9.9",
+    "@yoopta/blockquote": "^4.9.9",
+    "@yoopta/callout": "^4.9.9",
+    "@yoopta/code": "^4.9.9",
+    "@yoopta/divider": "^4.9.9",
+    "@yoopta/editor": "^4.9.9",
+    "@yoopta/exports": "^4.9.9",
+    "@yoopta/headings": "^4.9.9",
+    "@yoopta/link-tool": "^4.9.9",
+    "@yoopta/lists": "^4.9.9",
+    "@yoopta/marks": "^4.9.9",
+    "@yoopta/paragraph": "^4.9.9",
+    "@yoopta/table": "^4.9.9",
+    "@yoopta/toolbar": "^4.9.9",
+    "astro": "^5.2.3",
+    "crypto-js": "^4.2.0",
+    "js-yaml": "^4.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "slate": "^0.102.0",
+    "slate-react": "^0.102.0"
+  }
+}

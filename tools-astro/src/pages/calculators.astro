@@ -1,0 +1,133 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Utility Calculators | HunterMussel Tools"
+  description="Time, bytes, and infra cost calculators for quick engineering estimates."
+  canonicalPath="/tools/calculators/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / calculators</p>
+      <h1>Utility Calculators</h1>
+      <p class="lead">
+        Fast operational estimates for delivery planning, sizing, and monthly
+        infrastructure forecasting.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+    </section>
+
+    <section class="tool-grid">
+      <article class="card stack">
+        <h2>Time Converter</h2>
+        <div>
+          <label class="label" for="hoursInput">Hours</label>
+          <input id="hoursInput" type="number" min="0" step="0.5" value="24" />
+        </div>
+        <button id="timeCalcBtn" type="button">Convert</button>
+        <div class="result">
+          <pre id="timeOutput" class="small"></pre>
+        </div>
+      </article>
+
+      <article class="card stack">
+        <h2>Bytes Converter</h2>
+        <div>
+          <label class="label" for="bytesInput">Bytes</label>
+          <input id="bytesInput" type="number" min="0" step="1" value="1048576" />
+        </div>
+        <button id="bytesCalcBtn" type="button">Convert</button>
+        <div class="result">
+          <pre id="bytesOutput" class="small"></pre>
+        </div>
+      </article>
+
+      <article class="card stack">
+        <h2>Infra Cost Estimator</h2>
+        <div>
+          <label class="label" for="instanceCount">Instances</label>
+          <input id="instanceCount" type="number" min="0" value="3" />
+        </div>
+        <div>
+          <label class="label" for="instanceHourly">Cost per instance/hour (USD)</label>
+          <input id="instanceHourly" type="number" min="0" step="0.001" value="0.12" />
+        </div>
+        <div>
+          <label class="label" for="storageMonthly">Storage/month (USD)</label>
+          <input id="storageMonthly" type="number" min="0" step="1" value="50" />
+        </div>
+        <button id="infraCalcBtn" type="button">Estimate monthly cost</button>
+        <div class="result">
+          <pre id="infraOutput" class="small"></pre>
+        </div>
+      </article>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Provides three common engineering calculators: time conversion, byte
+          unit conversion, and monthly infrastructure cost estimation.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why It Matters</h2>
+        <p>
+          Teams repeatedly need rough but consistent numbers for planning and
+          prioritization. Standardized calculators reduce estimate drift.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Use time conversion for scheduling and SLA communication.</li>
+          <li>Use bytes conversion for storage and transfer planning.</li>
+          <li>Use infra estimator for quick pre-budget checks.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  $("timeCalcBtn").addEventListener("click", () => {
+    const hours = Number(($("hoursInput")).value || 0);
+    const days = hours / 24;
+    const minutes = hours * 60;
+    $("timeOutput").textContent = [
+      `Hours: ${hours.toFixed(2)}`,
+      `Days: ${days.toFixed(2)}`,
+      `Minutes: ${minutes.toFixed(0)}`,
+    ].join("\n");
+  });
+
+  $("bytesCalcBtn").addEventListener("click", () => {
+    const bytes = Number(($("bytesInput")).value || 0);
+    const kb = bytes / 1024;
+    const mb = kb / 1024;
+    const gb = mb / 1024;
+    $("bytesOutput").textContent = [
+      `Bytes: ${bytes.toFixed(0)}`,
+      `KB: ${kb.toFixed(2)}`,
+      `MB: ${mb.toFixed(2)}`,
+      `GB: ${gb.toFixed(4)}`,
+    ].join("\n");
+  });
+
+  $("infraCalcBtn").addEventListener("click", () => {
+    const count = Number(($("instanceCount")).value || 0);
+    const hourly = Number(($("instanceHourly")).value || 0);
+    const storage = Number(($("storageMonthly")).value || 0);
+    const monthlyCompute = count * hourly * 24 * 30;
+    const monthlyTotal = monthlyCompute + storage;
+    $("infraOutput").textContent = [
+      `Compute/month: $${monthlyCompute.toFixed(2)}`,
+      `Storage/month: $${storage.toFixed(2)}`,
+      `Total/month: $${monthlyTotal.toFixed(2)}`,
+    ].join("\n");
+  });
+</script>

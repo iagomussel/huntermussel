@@ -1,6 +1,8 @@
 ---
 title: "Fast Code, Weak Engineers"
 date: "2026-01-09"
+authors:
+  - iago-mussel
 description: "The Risk of Becoming an AI-Dependent Developer"
 tags:
   - AI
@@ -32,6 +34,8 @@ I'm not against the use of AI, I use it all the time myself (including in this a
 Indeed, there are many tasks in which these models help us and make our lives easier, as demonstrated by empirical research that evaluated AI coding assistants in real software projects. A recent GitHub Copilot study, covering 15 different development tasks, found significant time savings (up to 50%) in repetitive tasks and simplistic coding, but sharp performance drops in complex tasks with multiple files and in proprietary contexts. Precisely the areas that require high-level reasoning and architectural thinking. [Copilot Paper](https://arxiv.org/pdf/2406.17910)
 
 I've heard about how to get rich with GPT, or how someone built a fully autonomous AI agent developer that works 24/7 for free forever, or even "this is the model that will fully replace humans." However, there are two things I'm sure of: I've never coded so fast before, and I've never produced worse code than I do now.
+
+<!-- truncate -->
 
 Okay, but if those tools are so good and can improve my time by avoiding the need to spend hours reading documentation, forums, and testing ways to do things, then why is my code getting worse?
 

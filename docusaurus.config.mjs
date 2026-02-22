@@ -59,7 +59,7 @@ const config = {
         sitemap: {
           changefreq: "weekly",
           priority: 0.5,
-          ignorePatterns: ["/tags/**"],
+          ignorePatterns: ["/blog/tags/**", "/blog/archive"],
         },
       }),
     ],
@@ -68,7 +68,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      image: "img/og-default.svg",
+      image: "images/blog/rich-content-google-search_16x9_high.webp",
       navbar: {
         title: "Hunter Mussel",
         logo: {

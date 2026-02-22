@@ -1,6 +1,8 @@
 ---
 title: "How to build a backendless Blog"
 date: "2026-02-09"
+authors:
+  - iago-mussel
 status: "published"
 subtitle: ""
 description: "Build a backendless blog with React, markdown, and Cloudflare Pages for fast and low-cost publishing."
@@ -21,6 +23,8 @@ image: "/images/blog/1770685010_image_3.webp"
 Building a blog has always been a challenge. Traditional platforms like WordPress promised to make it easier, but they came with significant infrastructure costs and complexity. Now you can build a professional blog completely free if you have basic coding skills.
 
 Building a blog no longer requires complex backend infrastructure. With modern tools like React and Cloudflare Pages, you can create a fast, infinitely scalable blog that costs almost nothing to run. In this tutorial, we’ll walk through building a markdown-based blog using React and deploying it to Cloudflare Pages.
+
+<!-- truncate -->
 
 ### Why Build Your Own?
 

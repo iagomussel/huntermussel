@@ -1,0 +1,81 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Estimators | HunterMussel Tools"
+  description="Estimate cloud cost and infrastructure sizing for planning and budgeting."
+  canonicalPath="/tools/estimators/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / estimators</p>
+      <h1>Estimators</h1>
+      <p class="lead">
+        Fast estimators for cloud monthly spend and infrastructure sizing under
+        expected user load.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+    </section>
+
+    <section class="tool-grid">
+      <article class="card stack">
+        <h2>Cloud Cost Estimator</h2>
+        <label class="label" for="estInstances">Instances</label>
+        <input id="estInstances" type="number" min="0" value="4" />
+        <label class="label" for="estHourly">Cost per instance/hour (USD)</label>
+        <input id="estHourly" type="number" min="0" step="0.001" value="0.12" />
+        <label class="label" for="estStorage">Storage/month (USD)</label>
+        <input id="estStorage" type="number" min="0" step="1" value="80" />
+        <label class="label" for="estData">Data transfer/month (USD)</label>
+        <input id="estData" type="number" min="0" step="1" value="120" />
+        <button id="runCloudEstBtn" type="button">Estimate cloud cost</button>
+        <pre id="cloudEstOut" class="small"></pre>
+      </article>
+
+      <article class="card stack">
+        <h2>Infra Sizing Estimator</h2>
+        <label class="label" for="estRps">Peak requests per second</label>
+        <input id="estRps" type="number" min="0" value="250" />
+        <label class="label" for="estReqPerNode">Req/s capacity per node</label>
+        <input id="estReqPerNode" type="number" min="1" value="80" />
+        <label class="label" for="estHaFactor">HA overhead factor</label>
+        <input id="estHaFactor" type="number" min="1" step="0.1" value="1.3" />
+        <button id="runSizingBtn" type="button">Estimate sizing</button>
+        <pre id="sizingOut" class="small"></pre>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  $("runCloudEstBtn").addEventListener("click", () => {
+    const instances = Number(($("estInstances")).value || 0);
+    const hourly = Number(($("estHourly")).value || 0);
+    const storage = Number(($("estStorage")).value || 0);
+    const data = Number(($("estData")).value || 0);
+    const compute = instances * hourly * 24 * 30;
+    const total = compute + storage + data;
+    $("cloudEstOut").textContent = [
+      `Compute: $${compute.toFixed(2)}/month`,
+      `Storage: $${storage.toFixed(2)}/month`,
+      `Data transfer: $${data.toFixed(2)}/month`,
+      `Total: $${total.toFixed(2)}/month`,
+    ].join("\n");
+  });
+
+  $("runSizingBtn").addEventListener("click", () => {
+    const rps = Number(($("estRps")).value || 0);
+    const perNode = Number(($("estReqPerNode")).value || 1);
+    const ha = Number(($("estHaFactor")).value || 1);
+    const rawNodes = rps / perNode;
+    const recommended = Math.ceil(rawNodes * ha);
+    $("sizingOut").textContent = [
+      `Raw nodes required: ${rawNodes.toFixed(2)}`,
+      `HA-adjusted nodes: ${recommended}`,
+      `Recommendation: deploy ${recommended} nodes for peak load.`,
+    ].join("\n");
+  });
+</script>

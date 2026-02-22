@@ -9,7 +9,7 @@ import ContactSection from "../components/ContactSection";
 import Footer from "../components/Footer";
 
 const Home = () => {
-  const title = "HunterMussel | AI Process Management & DevOps";
+  const title = "AI Process Management & DevOps";
   const description =
     "Automate and optimize your company's process management with Artificial Intelligence, intelligent automation, and DevOps.";
 
@@ -23,14 +23,14 @@ const Home = () => {
         <meta property="og:site_name" content="HunterMussel" />
         <meta
           property="og:image"
-          content="https://huntermussel.com/img/og-default.svg"
+          content="https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp"
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta
           name="twitter:image"
-          content="https://huntermussel.com/img/og-default.svg"
+          content="https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp"
         />
       </Head>
 

@@ -1,6 +1,8 @@
 ---
 title: "Structured Data in React: From Markup to Google Rich Results"
 date: "2026-02-15"
+authors:
+  - iago-mussel
 description: "Learn what structured data is, how to add JSON-LD to a React app, validate it with Google tools, and apply global schema with Docusaurus."
 tags:
   - SEO
@@ -61,6 +63,8 @@ Example:
 ```
 
 This script does not affect the UI, but it gives search engines a clean, machine-readable summary of the page.
+
+<!-- truncate -->
 
 ## Structured Data in Action
 

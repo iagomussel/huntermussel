@@ -1,6 +1,8 @@
 ---
 title: "PM2: The Lean Alternative to Kubernetes for Scalable Production Apps"
 date: "2026-02-14"
+authors:
+  - iago-mussel
 description: "PM2 is a lean, production-grade alternative to Kubernetes for many Node.js workloads, offering monitoring, clustering, zero-downtime reloads, and automatic recovery without orchestration overhead."
 tags:
   - PM2
@@ -28,6 +30,8 @@ If you need a professional, production-grade solution that is simple to implemen
 PM2 (Process Manager 2) is an open-source production process manager built specifically for Node.js environments. It focuses on performance, scalability, and operational reliability, without infrastructure overhead.
 
 Here is why it still matters.
+
+<!-- truncate -->
 
 ## 1. Advanced Monitoring Without External Stack
 
