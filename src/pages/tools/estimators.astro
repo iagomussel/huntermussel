@@ -1,0 +1,224 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import estimatorsScript from "@/scripts/estimators.js?url";
+import "@/styles/estimators.css";
+---
+
+<BaseLayout
+  title="Infra & Cost Estimator | HunterMussel Tools"
+  description="Simple estimator with architecture recommendation, scenario comparison, assumptions, and all-in monthly cost range."
+  canonicalPath="/tools/estimators/"
+>
+  <main class="page estimator-page">
+    <section class="hero estimator-hero">
+      <h1>Infra & Cost Estimator</h1>
+      <p class="lead">Answer 3 questions. Get a recommendation, a realistic monthly range, and an action plan.</p>
+      <div class="quick-glance" aria-live="polite">
+        <span class="glance-chip" id="chipWorkload"></span>
+        <span class="glance-chip" id="chipStack"></span>
+        <span class="glance-chip" id="chipMau"></span>
+        <span class="glance-chip" id="chipPeak"></span>
+        <span class="glance-chip" id="chipData"></span>
+        <span class="glance-chip" id="chipPriority"></span>
+      </div>
+    </section>
+
+    <section class="estimator-layout">
+      <div class="estimator-main">
+        <article class="card section-card">
+          <h2><span class="step-badge">Step 1</span> What are you building?</h2>
+          <p class="section-sub">Pick one. This only sets realistic defaults and can be adjusted later.</p>
+          <div id="workloadCards" class="workload-grid"></div>
+        </article>
+
+        <article class="card section-card">
+          <h2><span class="step-badge">Step 2</span> What is the usage size?</h2>
+          <div class="control-stack">
+            <label class="field">
+              <span>
+                Monthly active users (MAU)
+                <button
+                  type="button"
+                  class="help"
+                  aria-label="MAU help"
+                  title="MAU = unique people in a month. It is not number of pageviews."
+                >
+                  ?
+                </button>
+              </span>
+              <input id="mauRange" type="range" min="500" max="1000000" step="500" value="20000" />
+              <input id="mauInput" type="number" min="500" max="5000000" step="500" value="20000" />
+              <small>Example: 2,000 (MVP), 20,000 (growing), 200,000 (traction).</small>
+            </label>
+
+            <div class="field">
+              <span>
+                Peak usage concentration
+                <button
+                  type="button"
+                  class="help"
+                  aria-label="Peak help"
+                  title="Peak means the worst moment. Example: campaign, business hours, event launch."
+                >
+                  ?
+                </button>
+              </span>
+              <div class="segmented" id="peakButtons" role="group" aria-label="Peak concentration">
+                <button type="button" data-value="low" class="is-active">Low</button>
+                <button type="button" data-value="medium">Medium</button>
+                <button type="button" data-value="high">High</button>
+              </div>
+              <small>High means around 10x more users in a short window.</small>
+            </div>
+
+            <div class="field">
+              <span>
+                Data transferred
+                <button
+                  type="button"
+                  class="help"
+                  aria-label="Data help"
+                  title="Data usually costs more than compute. If you serve images or videos, this can dominate your bill."
+                >
+                  ?
+                </button>
+              </span>
+              <div class="segmented" id="dataButtons" role="group" aria-label="Data transferred">
+                <button type="button" data-value="light" class="is-active">Light</button>
+                <button type="button" data-value="normal">Normal</button>
+                <button type="button" data-value="heavy">Heavy</button>
+              </div>
+              <small>Heavy = frequent upload/download and larger files.</small>
+            </div>
+          </div>
+
+          <div class="scenario-row">
+            <span class="scenario-label">Simulate scenarios:</span>
+            <div class="actions">
+              <button id="scenarioConservative" type="button" class="preset-btn">Conservative</button>
+              <button id="scenarioRealistic" type="button" class="preset-btn">Realistic</button>
+              <button id="scenarioAggressive" type="button" class="preset-btn">Aggressive</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card section-card">
+          <h2><span class="step-badge">Step 3</span> What matters most?</h2>
+          <div class="segmented" id="priorityButtons" role="group" aria-label="Priority">
+            <button type="button" data-value="cost" class="is-active">Lower cost</button>
+            <button type="button" data-value="latency">Lower global latency</button>
+            <button type="button" data-value="ops">Simpler operations</button>
+          </div>
+          <p class="section-sub">You choose the priority. Recommendation changes based on this.</p>
+        </article>
+
+        <article class="card section-card">
+          <h2><span class="step-badge">Compare</span> Scenarios</h2>
+          <p class="section-sub">Always compare 2-3 architectures before deciding.</p>
+          <div id="scenarioCards" class="scenario-cards"></div>
+          <div id="freePath" class="free-path" hidden></div>
+        </article>
+
+        <details class="card assumptions-card">
+          <summary>Edit assumptions</summary>
+          <div class="assumptions-grid">
+            <label class="field">
+              <span>Requests per user / month</span>
+              <input id="assumeReqPerUser" type="number" min="10" step="10" value="180" />
+            </label>
+
+            <label class="field">
+              <span>Cache hit ratio (%)</span>
+              <input id="assumeCacheHit" type="number" min="0" max="95" step="1" value="60" />
+            </label>
+
+            <label class="field">
+              <span>Avg request duration multiplier</span>
+              <input id="assumeDurationMult" type="number" min="0.5" max="3" step="0.1" value="1" />
+            </label>
+
+            <label class="field">
+              <span>Storage growth (GB/month)</span>
+              <input id="assumeStorageGrowth" type="number" min="1" step="1" value="12" />
+            </label>
+
+            <label class="field">
+              <span>Deploys per month</span>
+              <input id="assumeDeploys" type="number" min="1" step="1" value="24" />
+            </label>
+
+            <label class="field">
+              <span>Logging level</span>
+              <select id="assumeLogsLevel">
+                <option value="basic" selected>Basic</option>
+                <option value="standard">Standard</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+          </div>
+        </details>
+      </div>
+
+      <aside class="result-panel card" id="resultPanel">
+        <h2><span class="step-badge step-badge-result">Result</span> Recommendation + plan</h2>
+
+        <section class="result-block">
+          <h3>Recommendation</h3>
+          <p id="recommendationMain" class="result-main"></p>
+          <p id="recommendationReason" class="small"></p>
+          <p id="bestFit" class="small muted"></p>
+        </section>
+
+        <section class="result-block">
+          <h3>Estimated monthly total (all-in)</h3>
+          <p id="costRange" class="result-main"></p>
+          <p class="small">Includes run costs, monitoring, CI/CD, baseline storage, domain/secrets.</p>
+          <p id="almostFree" class="small almost-free" hidden></p>
+        </section>
+
+        <section class="result-block">
+          <h3>Biggest cost drivers</h3>
+          <ul id="costDrivers" class="driver-list visual"></ul>
+        </section>
+
+        <section class="result-block">
+          <h3>Risk flags</h3>
+          <ul id="riskFlags" class="driver-list stacked"></ul>
+        </section>
+
+        <section class="result-block">
+          <h3>Next best steps</h3>
+          <ul id="nextSteps" class="driver-list stacked"></ul>
+        </section>
+
+        <details class="technical-details">
+          <summary>View technical details</summary>
+          <div class="details-content">
+            <h4>Estimated traffic</h4>
+            <pre id="trafficDetails" class="small mono"></pre>
+
+            <h4>Sizing blueprint (selected scenario)</h4>
+            <pre id="blueprintDetails" class="small mono"></pre>
+
+            <h4>Proposed architecture</h4>
+            <pre id="archDetails" class="small mono"></pre>
+
+            <h4>Cost breakdown (selected scenario)</h4>
+            <pre id="costDetails" class="small mono"></pre>
+
+            <h4>Sensitivity</h4>
+            <pre id="sensitivityDetails" class="small mono"></pre>
+
+            <h4>Decision rules and thresholds</h4>
+            <pre id="decisionRules" class="small mono"></pre>
+
+            <h4>Assumptions</h4>
+            <pre id="assumptionsDetails" class="small mono"></pre>
+          </div>
+        </details>
+      </aside>
+    </section>
+  </main>
+</BaseLayout>
+
+<script type="module" src={estimatorsScript}></script>
