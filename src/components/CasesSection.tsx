@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Link from "@docusaurus/Link";
 import {
   Truck,
   GraduationCap,
@@ -11,6 +12,7 @@ const cases = [
   {
     icon: Truck,
     title: "Delivery App",
+    slug: "delivery-app",
     category: "Automation & Logistics",
     description:
       "AI-powered delivery app for route optimization, demand forecasting, and real-time automated order management.",
@@ -18,6 +20,7 @@ const cases = [
   {
     icon: GraduationCap,
     title: "AI-Powered LMS",
+    slug: "ai-powered-lms",
     category: "Education & AI",
     description:
       "Learning platform with AI adaptive paths, automatic grading, and student performance analytics.",
@@ -25,6 +28,7 @@ const cases = [
   {
     icon: Globe,
     title: "Corporate Website",
+    slug: "corporate-website",
     category: "Digital Presence",
     description:
       "Corporate website with advanced SEO, headless CMS, and intelligent customer service chatbot integration.",
@@ -32,6 +36,7 @@ const cases = [
   {
     icon: Users,
     title: "Smart CRM",
+    slug: "smart-crm",
     category: "Management & Sales",
     description:
       "CRM with AI lead scoring, follow-up automation, and predictive dashboards for sales teams.",
@@ -39,6 +44,7 @@ const cases = [
   {
     icon: CalendarCheck,
     title: "Scheduling App",
+    slug: "scheduling-app",
     category: "Productivity",
     description:
       "Intelligent scheduling system with AI for time optimization, automatic reminders, and availability management.",
@@ -100,22 +106,24 @@ const CasesSection = () => {
               key={c.title}
               custom={index}
               variants={item}
-              className="group relative overflow-hidden rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30 hover:bg-card"
+              className="group relative overflow-hidden rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
             >
-              <div className="mb-4 flex items-center justify-between">
-                <div className="inline-flex rounded-md border border-border bg-muted/50 p-3 text-primary transition-all group-hover:border-glow group-hover:box-glow">
-                  <c.icon size={22} />
+              <Link to={`/cases/${c.slug}`} className="block p-6 text-current no-underline hover:no-underline">
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="inline-flex rounded-md border border-border bg-muted/50 p-3 text-primary transition-all group-hover:border-glow group-hover:box-glow">
+                    <c.icon size={22} />
+                  </div>
+                  <span className="rounded-full border border-border bg-muted/30 px-3 py-1 font-heading text-[10px] uppercase tracking-wider text-muted-foreground">
+                    {c.category}
+                  </span>
                 </div>
-                <span className="rounded-full border border-border bg-muted/30 px-3 py-1 font-heading text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {c.category}
-                </span>
-              </div>
-              <h3 className="mb-2 font-heading text-base font-semibold">
-                {c.title}
-              </h3>
-              <p className="font-body text-sm leading-relaxed text-muted-foreground">
-                {c.description}
-              </p>
+                <h3 className="mb-2 font-heading text-base font-semibold">
+                  {c.title}
+                </h3>
+                <p className="font-body text-sm leading-relaxed text-muted-foreground">
+                  {c.description}
+                </p>
+              </Link>
             </motion.article>
           ))}
         </motion.div>

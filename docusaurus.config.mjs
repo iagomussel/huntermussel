@@ -40,7 +40,11 @@ const config = {
       "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: false,
+        docs: {
+          path: "services",
+          routeBasePath: "services",
+          sidebarPath: "./sidebarsServices.mjs",
+        },
         blog: {
           routeBasePath: "blog",
           blogTitle: "HunterMussel Blog",
@@ -66,6 +70,15 @@ const config = {
   ],
 
   plugins: [
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "cases",
+        path: "cases",
+        routeBasePath: "cases",
+        sidebarPath: "./sidebarsCases.mjs",
+      },
+    ],
     [
       "@docusaurus/plugin-client-redirects",
       {
