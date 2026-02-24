@@ -3,7 +3,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 
 const ROOT = process.cwd();
-const BLOG_DIR = path.join(ROOT, "static", "images", "blog");
+const BLOG_DIR = path.join(ROOT, "public", "images", "blog");
 
 const RATIOS = {
   "16x9": 16 / 9,
