@@ -82,6 +82,23 @@ export type DiffStats = {
   truncated: boolean;
 };
 
+export type DiffShareState = {
+  collapseUnchanged?: boolean;
+  contextLines?: number;
+  ignoreWhitespace?: boolean;
+  languageMode?: DiffLanguageMode;
+  modified?: string;
+  modifiedName?: string;
+  original?: string;
+  originalName?: string;
+  viewMode?: DiffViewMode;
+  wrapLines?: boolean;
+};
+
+export const SHAREABLE_TEXT_LIMIT = 4000;
+export const LARGE_DIFF_CHARACTER_LIMIT = 300000;
+export const LARGE_DIFF_LINE_LIMIT = 20000;
+
 export const LANGUAGE_OPTIONS: Array<{ value: DiffLanguageMode; label: string }> = [
   { value: "auto", label: "Auto" },
   { value: "plaintext", label: "Plain text" },
@@ -244,15 +261,13 @@ export function createPatchText(options: {
   original: string;
   originalName: string;
 }) {
-  const timestamp = new Date().toISOString();
-
   return createTwoFilesPatch(
     options.originalName || "original.txt",
     options.modifiedName || "modified.txt",
     options.original,
     options.modified,
-    timestamp,
-    timestamp,
+    undefined,
+    undefined,
     {
       context: options.contextLines,
       ignoreWhitespace: options.ignoreWhitespace,
@@ -269,4 +284,94 @@ export function downloadTextFile(filename: string, content: string) {
   link.download = filename;
   link.click();
   URL.revokeObjectURL(url);
+}
+
+export function readShareState(): DiffShareState {
+  if (typeof window === "undefined") {
+    return {};
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const hash = new URLSearchParams(window.location.hash.startsWith("#") ? window.location.hash.slice(1) : "");
+
+  return {
+    collapseUnchanged: params.get("collapse") === "1" ? true : params.get("collapse") === "0" ? false : undefined,
+    contextLines: params.get("ctx") ? Number(params.get("ctx")) || 3 : undefined,
+    ignoreWhitespace: params.get("ws") === "1" ? true : params.get("ws") === "0" ? false : undefined,
+    languageMode: params.get("lang") as DiffLanguageMode | null ?? undefined,
+    modified: decodeHashText(hash.get("modified")),
+    modifiedName: params.get("modifiedName") ?? undefined,
+    original: decodeHashText(hash.get("original")),
+    originalName: params.get("originalName") ?? undefined,
+    viewMode: params.get("view") as DiffViewMode | null ?? undefined,
+    wrapLines: params.get("wrap") === "1" ? true : params.get("wrap") === "0" ? false : undefined,
+  };
+}
+
+export function createShareUrl(state: DiffShareState) {
+  if (typeof window === "undefined") {
+    return { copiedText: false, url: "" };
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set("view", state.viewMode ?? "split");
+  url.searchParams.set("lang", state.languageMode ?? "auto");
+  url.searchParams.set("ws", state.ignoreWhitespace ? "1" : "0");
+  url.searchParams.set("wrap", state.wrapLines ? "1" : "0");
+  url.searchParams.set("collapse", state.collapseUnchanged ? "1" : "0");
+  url.searchParams.set("ctx", String(state.contextLines ?? 3));
+
+  if (state.originalName) {
+    url.searchParams.set("originalName", state.originalName);
+  } else {
+    url.searchParams.delete("originalName");
+  }
+
+  if (state.modifiedName) {
+    url.searchParams.set("modifiedName", state.modifiedName);
+  } else {
+    url.searchParams.delete("modifiedName");
+  }
+
+  const combinedLength = (state.original?.length ?? 0) + (state.modified?.length ?? 0);
+  if (combinedLength > SHAREABLE_TEXT_LIMIT) {
+    url.hash = "";
+    return { copiedText: false, url: url.toString() };
+  }
+
+  const hash = new URLSearchParams();
+  if (state.original) {
+    hash.set("original", encodeHashText(state.original));
+  }
+  if (state.modified) {
+    hash.set("modified", encodeHashText(state.modified));
+  }
+
+  url.hash = hash.toString();
+  return { copiedText: true, url: url.toString() };
+}
+
+function encodeHashText(text: string) {
+  const bytes = new TextEncoder().encode(text);
+  let binary = "";
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+
+  return btoa(binary);
+}
+
+function decodeHashText(value: string | null) {
+  if (!value) {
+    return undefined;
+  }
+
+  try {
+    const binary = atob(value);
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  } catch {
+    return undefined;
+  }
 }

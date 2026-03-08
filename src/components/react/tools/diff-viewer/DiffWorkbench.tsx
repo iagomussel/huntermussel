@@ -27,11 +27,16 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import {
   DIFF_SAMPLE,
   LANGUAGE_OPTIONS,
+  LARGE_DIFF_CHARACTER_LIMIT,
+  LARGE_DIFF_LINE_LIMIT,
+  SHAREABLE_TEXT_LIMIT,
   buildStats,
+  createShareUrl,
   countLines,
   createPatchText,
   detectLanguage,
   downloadTextFile,
+  readShareState,
   type DiffLanguageMode,
   type DiffViewMode,
 } from "./utils";
@@ -91,18 +96,23 @@ function useMediaQuery(query: string) {
 
 export default function DiffWorkbench() {
   const preferences = readPreferences();
+  const sharedState = readShareState();
   const isCompact = useMediaQuery("(max-width: 960px)");
 
-  const [original, setOriginal] = useState("");
-  const [modified, setModified] = useState("");
-  const [originalName, setOriginalName] = useState("original.json");
-  const [modifiedName, setModifiedName] = useState("modified.json");
-  const [viewMode, setViewMode] = useState<DiffViewMode>(preferences.viewMode ?? "split");
-  const [languageMode, setLanguageMode] = useState<DiffLanguageMode>(preferences.languageMode ?? "auto");
-  const [ignoreWhitespace, setIgnoreWhitespace] = useState(preferences.ignoreWhitespace ?? false);
-  const [collapseUnchanged, setCollapseUnchanged] = useState(preferences.collapseUnchanged ?? true);
-  const [wrapLines, setWrapLines] = useState(preferences.wrapLines ?? false);
-  const [contextLines, setContextLines] = useState(preferences.contextLines ?? 3);
+  const [original, setOriginal] = useState(sharedState.original ?? "");
+  const [modified, setModified] = useState(sharedState.modified ?? "");
+  const [originalName, setOriginalName] = useState(sharedState.originalName ?? "original.json");
+  const [modifiedName, setModifiedName] = useState(sharedState.modifiedName ?? "modified.json");
+  const [viewMode, setViewMode] = useState<DiffViewMode>(sharedState.viewMode ?? preferences.viewMode ?? "split");
+  const [languageMode, setLanguageMode] = useState<DiffLanguageMode>(
+    sharedState.languageMode ?? preferences.languageMode ?? "auto",
+  );
+  const [ignoreWhitespace, setIgnoreWhitespace] = useState(sharedState.ignoreWhitespace ?? preferences.ignoreWhitespace ?? false);
+  const [collapseUnchanged, setCollapseUnchanged] = useState(
+    sharedState.collapseUnchanged ?? preferences.collapseUnchanged ?? true,
+  );
+  const [wrapLines, setWrapLines] = useState(sharedState.wrapLines ?? preferences.wrapLines ?? false);
+  const [contextLines, setContextLines] = useState(sharedState.contextLines ?? preferences.contextLines ?? 3);
   const [inspectorOpen, setInspectorOpen] = useState(preferences.inspectorOpen ?? true);
   const [desktopLayout, setDesktopLayout] = useState<Layout>(preferences.desktopLayout ?? DESKTOP_LAYOUT);
   const [compactLayout, setCompactLayout] = useState<Layout>(preferences.compactLayout ?? COMPACT_LAYOUT);
@@ -133,15 +143,22 @@ export default function DiffWorkbench() {
   const originalLines = countLines(original);
   const modifiedLines = countLines(modified);
   const effectiveViewMode = isCompact ? "unified" : viewMode;
-  const patchText = createPatchText({
-    contextLines,
-    ignoreWhitespace,
-    modified,
-    modifiedName,
-    original,
-    originalName,
-  });
-  const patchPreview = patchText.split("\n").slice(0, 18).join("\n");
+  const isLargeDiff =
+    original.length + modified.length > LARGE_DIFF_CHARACTER_LIMIT ||
+    originalLines + modifiedLines > LARGE_DIFF_LINE_LIMIT;
+  const patchText = isLargeDiff
+    ? `--- ${originalName || "original.txt"}\n+++ ${modifiedName || "modified.txt"}\n# Large diff preview disabled. Use copy or download to generate the full patch on demand.`
+    : createPatchText({
+        contextLines,
+        ignoreWhitespace,
+        modified,
+        modifiedName,
+        original,
+        originalName,
+      });
+  const patchPreview = isLargeDiff
+    ? patchText.split("\n").slice(0, 10).join("\n")
+    : patchText.split("\n").slice(0, 18).join("\n");
 
   useEffect(() => {
     let cancelled = false;
@@ -298,8 +315,17 @@ export default function DiffWorkbench() {
   }
 
   async function handleCopyPatch() {
+    const fullPatch = createPatchText({
+      contextLines,
+      ignoreWhitespace,
+      modified,
+      modifiedName,
+      original,
+      originalName,
+    });
+
     try {
-      await navigator.clipboard.writeText(patchText);
+      await navigator.clipboard.writeText(fullPatch);
       setNotice("Patch copied", "success");
     } catch {
       setNotice("Clipboard unavailable", "warning");
@@ -307,8 +333,42 @@ export default function DiffWorkbench() {
   }
 
   function handleDownloadPatch() {
-    downloadTextFile("changes.diff", patchText);
+    const fullPatch = createPatchText({
+      contextLines,
+      ignoreWhitespace,
+      modified,
+      modifiedName,
+      original,
+      originalName,
+    });
+
+    downloadTextFile("changes.diff", fullPatch);
     setNotice("Patch downloaded", "success");
+  }
+
+  async function handleCopyShareLink() {
+    const share = createShareUrl({
+      collapseUnchanged,
+      contextLines,
+      ignoreWhitespace,
+      languageMode,
+      modified,
+      modifiedName,
+      original,
+      originalName,
+      viewMode,
+      wrapLines,
+    });
+
+    try {
+      await navigator.clipboard.writeText(share.url);
+      setNotice(
+        share.copiedText ? "Share link copied" : `Settings link copied; text exceeds ${SHAREABLE_TEXT_LIMIT} chars`,
+        share.copiedText ? "success" : "warning",
+      );
+    } catch {
+      setNotice("Clipboard unavailable", "warning");
+    }
   }
 
   function handleLoadSample() {
@@ -518,6 +578,10 @@ export default function DiffWorkbench() {
               <Download size={14} />
               Download
             </button>
+            <button type="button" className="hm-diff-action hm-diff-action--primary" onClick={handleCopyShareLink}>
+              <Copy size={14} />
+              Share link
+            </button>
           </div>
         </div>
 
@@ -562,7 +626,9 @@ export default function DiffWorkbench() {
             <span className="hm-diff-stat">{stats.unchanged} unchanged</span>
             <span className="hm-diff-stat">Mode: {resolvedLanguage}</span>
             <span className="hm-diff-stat">Diffs: {changeCount}</span>
+            {sharedState.original || sharedState.modified ? <span className="hm-diff-stat">URL restored</span> : null}
             {isCompact ? <span className="hm-diff-stat hm-diff-stat--warning">compact inline review</span> : null}
+            {isLargeDiff ? <span className="hm-diff-stat hm-diff-stat--warning">large diff safeguards on</span> : null}
             {stats.truncated ? <span className="hm-diff-stat hm-diff-stat--warning">summary capped</span> : null}
           </div>
         </div>
@@ -570,9 +636,8 @@ export default function DiffWorkbench() {
         <div className="hm-diff-layout">
           <ResizablePanelGroup
             key={isCompact ? "compact" : "desktop"}
-            direction={isCompact ? "vertical" : "horizontal"}
-            autoSaveId={undefined}
-            onLayout={(layout) => {
+            orientation={isCompact ? "vertical" : "horizontal"}
+            onLayoutChanged={(layout) => {
               if (isCompact) {
                 setCompactLayout(layout);
                 return;
@@ -629,7 +694,7 @@ export default function DiffWorkbench() {
                         glyphMargin: false,
                         hideUnchangedRegions: {
                           contextLineCount: contextLines,
-                          enabled: collapseUnchanged && effectiveViewMode === "unified",
+                          enabled: collapseUnchanged && effectiveViewMode === "unified" && !isLargeDiff,
                           minimumLineCount: 2,
                           revealLineCount: Math.max(1, contextLines),
                         },
@@ -644,7 +709,7 @@ export default function DiffWorkbench() {
                         renderGutterMenu: false,
                         renderIndicators: true,
                         renderMarginRevertIcon: false,
-                        renderOverviewRuler: true,
+                        renderOverviewRuler: !isLargeDiff,
                         renderSideBySide: effectiveViewMode === "split",
                         renderSideBySideInlineBreakpoint: 960,
                         roundedSelection: true,
@@ -716,11 +781,15 @@ export default function DiffWorkbench() {
                     </article>
                     <article>
                       <span>Patch</span>
-                      <strong>{patchText.split("\n").length} lines</strong>
+                      <strong>{isLargeDiff ? "on demand" : `${patchText.split("\n").length} lines`}</strong>
                     </article>
                     <article>
                       <span>View</span>
                       <strong>{effectiveViewMode}</strong>
+                    </article>
+                    <article>
+                      <span>Guard</span>
+                      <strong>{isLargeDiff ? "large" : "normal"}</strong>
                     </article>
                   </div>
                 </div>
@@ -753,7 +822,7 @@ export default function DiffWorkbench() {
                 <div className="hm-diff-inspectorSection">
                   <div className="hm-diff-inspectorSection__header">
                     <strong>Patch preview</strong>
-                    <span>{stats.changed ? "unified diff" : "no changes"}</span>
+                    <span>{isLargeDiff ? "preview trimmed for large diff" : stats.changed ? "unified diff" : "no changes"}</span>
                   </div>
                   <pre className="hm-diff-patchPreview">{patchPreview}</pre>
                 </div>
