@@ -36,8 +36,38 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <strong id="linterStatus">Waiting input</strong>
           <span id="linterHint" class="small">Pick linter and run checks.</span>
         </div>
-        <pre id="linterOut" class="mono"></pre>
+        <div class="result">
+          Output
+          <pre id="linterOut" class="mono"></pre>
+        </div>
       </aside>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Runs lightweight lint checks in the browser: JSON and YAML syntax
+          validation, JavaScript syntax parsing via <code>Function()</code>, and
+          Markdown quality heuristics (heading, line length, tabs, links).
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why It Matters</h2>
+        <p>
+          Catch syntax errors before committing or deploying. Especially useful
+          for config files (YAML, JSON) where a stray comma or bad indent breaks
+          the whole pipeline.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Select the linter type matching your content.</li>
+          <li>Paste the content to check into the input area.</li>
+          <li>Click <strong>Run linter</strong> — errors and warnings appear in the output.</li>
+        </ul>
+      </article>
     </section>
   </main>
 </BaseLayout>

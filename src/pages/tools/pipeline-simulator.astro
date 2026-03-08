@@ -18,16 +18,58 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <a class="back-link" href="/tools/">Back to tools index</a>
     </section>
 
-    <section class="card stack">
-      <p class="small">Use one stage per line: <code>name,duration_minutes,failure_percent</code></p>
-      <textarea id="pipelineStages">build,8,3
+    <section class="tool-layout">
+      <article class="card stack">
+        <p class="small">One stage per line: <code>name,duration_minutes,failure_percent</code></p>
+        <div>
+          <label class="label" for="pipelineStages">Pipeline stages</label>
+          <textarea id="pipelineStages">build,8,3
 test,14,8
 security-scan,6,5
 deploy,5,2</textarea>
-      <label class="label" for="pipelineRuns">Simulation runs</label>
-      <input id="pipelineRuns" type="number" min="100" step="100" value="5000" />
-      <button id="runPipelineSimBtn" type="button">Run simulation</button>
-      <pre id="pipelineOut" class="mono"></pre>
+        </div>
+        <div>
+          <label class="label" for="pipelineRuns">Simulation runs</label>
+          <input id="pipelineRuns" type="number" min="100" step="100" value="5000" />
+        </div>
+        <div class="actions">
+          <button id="runPipelineSimBtn" type="button">Run simulation</button>
+        </div>
+      </article>
+
+      <aside class="card stack">
+        <div class="result">
+          Results
+          <pre id="pipelineOut" class="mono"></pre>
+        </div>
+      </aside>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Runs a Monte Carlo simulation across your pipeline stages. Each run
+          rolls a random failure check per stage based on your failure percentage,
+          accumulating duration until a stage fails or the pipeline succeeds.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why It Matters</h2>
+        <p>
+          Even small per-stage failure rates compound across a multi-stage pipeline.
+          This tool makes that math visible so you can prioritize reliability
+          improvements where they have the most impact.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Enter each stage as <code>name,minutes,failure%</code> on its own line.</li>
+          <li>Set the number of simulation runs (5000+ for stable results).</li>
+          <li>Click <strong>Run simulation</strong> to see success rate and avg runtime.</li>
+        </ul>
+      </article>
     </section>
   </main>
 </BaseLayout>

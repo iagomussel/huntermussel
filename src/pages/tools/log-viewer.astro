@@ -48,6 +48,33 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         </div>
       </aside>
     </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Splits raw log input line-by-line, detects severity levels (INFO, WARN,
+          ERROR, DEBUG, TRACE), and filters by level and keyword — producing a
+          live summary count and matched log view.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why It Matters</h2>
+        <p>
+          Fast log triage without a full observability stack. Useful for local
+          runs, paste-in logs from CI, or quick incident scans during on-call.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Paste raw log lines into the input.</li>
+          <li>Select a level filter or leave ALL to scan everything.</li>
+          <li>Add a keyword to narrow results (e.g. <code>timeout</code>, <code>db</code>).</li>
+          <li>Click <strong>Analyze logs</strong> to see summary and matched lines.</li>
+        </ul>
+      </article>
+    </section>
   </main>
 </BaseLayout>
 

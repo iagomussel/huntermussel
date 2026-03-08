@@ -52,6 +52,33 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         </div>
       </aside>
     </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Three validators in one: YAML syntax check via js-yaml, OpenAPI
+          structural validation (required fields, paths), and Terraform lint
+          rules (required blocks, version pins, credential detection).
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why It Matters</h2>
+        <p>
+          Malformed configs are a top cause of failed deployments. Catching
+          structural issues before pushing to CI saves pipeline time and reduces
+          on-call incidents.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Select the validator matching your content type.</li>
+          <li>Paste YAML, OpenAPI spec (JSON or YAML), or Terraform HCL.</li>
+          <li>Click <strong>Run validation</strong> — findings list below.</li>
+        </ul>
+      </article>
+    </section>
   </main>
 </BaseLayout>
 

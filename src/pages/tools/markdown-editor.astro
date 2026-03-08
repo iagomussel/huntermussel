@@ -32,6 +32,13 @@ const canonicalUrl = "https://huntermussel.com/tools/markdown-editor/";
     <title>{title}</title>
   </head>
   <body class="dark">
-    <WordEditor client:load />
+    <div style="position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:1rem;padding:0.5rem 1rem;background:rgba(10,12,18,0.85);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.07);">
+      <a href="/tools/" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;color:hsl(145,80%,50%);text-decoration:none;letter-spacing:0.05em;">← tools</a>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.3);">|</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.5);">Markdown Editor</span>
+    </div>
+    <div style="padding-top:40px;">
+      <WordEditor client:load />
+    </div>
   </body>
 </html>
