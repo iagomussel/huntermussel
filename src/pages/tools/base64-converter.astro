@@ -3,165 +3,560 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-  title="Base64 Converter + Repair | HunterMussel Tools"
-  description="Convert, validate, and repair Base64/Base64URL payloads fully client-side."
+  title="Base64 Encoder / Decoder | HunterMussel Tools"
+  description="Encode and decode Base64 from text or files. Supports Standard, URL-safe, and MIME variants with image preview and file download — fully in-browser."
   canonicalPath="/tools/base64-converter/"
 >
   <main class="page">
     <section class="hero">
       <p class="eyebrow">tool / encoding</p>
-      <h1>Base64 Converter + Repair</h1>
+      <h1>Base64 Encoder / Decoder</h1>
       <p class="lead">
-        This tool normalizes payloads, fixes padding, validates decode, and
-        returns a canonical Base64 output.
+        Encode text or files to Base64, or decode Base64 back to text, images,
+        or downloadable files. Supports Standard, URL-safe, and MIME variants.
+        Nothing leaves your browser.
       </p>
-      <a class="back-link" href="/tools/">Back to tools index</a>
+      <a class="back-link" href="/tools/">← Back to tools</a>
     </section>
 
-    <section class="tool-layout">
-      <article class="card stack">
-        <div>
-          <label class="label" for="b64Input">Input</label>
-          <textarea id="b64Input" placeholder="Paste plain text, Base64, Base64URL, or data URI..."></textarea>
+    <!-- Mode tabs -->
+    <div class="b64-modes">
+      <button class="b64-mode-btn is-active" data-mode="encode" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Encode → Base64
+      </button>
+      <button class="b64-mode-btn" data-mode="decode" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Decode ← Base64
+      </button>
+    </div>
+
+    <!-- Main tool -->
+    <div class="b64-layout">
+
+      <!-- Left: Input -->
+      <div class="card stack b64-panel">
+        <div class="b64-panel-head">Input</div>
+
+        <!-- Source tabs -->
+        <div class="b64-src-tabs">
+          <button class="b64-src-btn is-active" data-src="text" type="button">Text</button>
+          <button class="b64-src-btn" data-src="file" type="button">File</button>
         </div>
-        <label class="check">
-          <input id="returnUtf8" type="checkbox" />
-          <span>Try UTF-8 decode preview</span>
-        </label>
+
+        <!-- Text input -->
+        <div id="textInputWrap">
+          <textarea
+            id="b64TextInput"
+            spellcheck="false"
+            placeholder="Paste text or Base64 string here..."
+          ></textarea>
+        </div>
+
+        <!-- File input -->
+        <div id="fileInputWrap" style="display:none">
+          <label class="b64-file-drop" id="fileDropZone">
+            <input id="b64FileInput" type="file" style="display:none" />
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="b64-file-label">Drop a file or <span class="b64-file-link">browse</span></span>
+            <span id="b64FileName" class="small"></span>
+          </label>
+        </div>
+
+        <!-- Options -->
+        <div class="b64-opts">
+          <div>
+            <label class="label" for="b64Variant">Variant</label>
+            <select id="b64Variant">
+              <option value="standard" selected>Standard (RFC 4648)</option>
+              <option value="urlsafe">URL-safe (RFC 4648 §5)</option>
+              <option value="mime">MIME (76-char line wraps)</option>
+            </select>
+          </div>
+          <div id="charsetWrap">
+            <label class="label" for="b64Charset">Charset (decode)</label>
+            <select id="b64Charset">
+              <option value="utf-8" selected>UTF-8</option>
+              <option value="ascii">ASCII (latin1)</option>
+              <option value="windows-1252">Windows-1252</option>
+              <option value="iso-8859-1">ISO-8859-1</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Actions -->
         <div class="actions">
-          <button id="encodeBtn" type="button">Encode text</button>
-          <button id="decodeBtn" type="button">Decode Base64</button>
-          <button id="repairBtn" type="button">Repair Base64</button>
-          <button id="copyOutBtn" class="secondary" type="button">Copy output</button>
+          <button id="b64ConvertBtn" type="button">Encode</button>
+          <button id="b64ClearBtn" type="button" class="secondary">Clear</button>
         </div>
-      </article>
+      </div>
 
-      <aside class="card stack">
-        <div class="result">
-          Status
-          <strong id="b64Status">Waiting input</strong>
-          <span id="b64Hint" class="small">Choose encode, decode, or repair.</span>
-        </div>
-        <div class="result">
+      <!-- Right: Output -->
+      <div class="card stack b64-panel">
+        <div class="b64-panel-head">
           Output
-          <pre id="b64Output" class="mono"></pre>
+          <div class="actions" style="margin:0">
+            <button id="b64CopyBtn" type="button" class="secondary">Copy</button>
+            <button id="b64DownloadBtn" type="button" class="secondary">Download</button>
+          </div>
         </div>
-        <div class="result">
-          Details
-          <pre id="b64Meta" class="small"></pre>
+
+        <!-- Image preview (shown when decoded content is an image) -->
+        <div id="b64ImagePreview" style="display:none" class="b64-preview">
+          <img id="b64PreviewImg" alt="Decoded image preview" />
         </div>
-      </aside>
-    </section>
+
+        <textarea
+          id="b64Output"
+          class="b64-output-ta"
+          readonly
+          spellcheck="false"
+          placeholder="Output appears here..."
+        ></textarea>
+
+        <!-- Stats -->
+        <div id="b64Stats" class="result" style="display:none">
+          <pre id="b64StatsContent" class="small"></pre>
+        </div>
+      </div>
+
+    </div>
 
     <section class="article">
       <article class="card">
-        <h2>What It Does</h2>
+        <h2>Encode vs Decode</h2>
         <p>
-          The repair flow applies three core steps: normalize noisy input,
-          correct padding/invalid characters, and validate by decoding and
-          re-encoding to canonical Base64.
+          <strong>Encode</strong> converts raw text or a binary file into a Base64
+          string safe for transport in JSON, URLs, or email.
+          <strong>Decode</strong> reverses that — recovering the original text,
+          image, or binary file from a Base64 payload.
         </p>
       </article>
       <article class="card">
-        <h2>Why It Matters</h2>
-        <p>
-          Integration failures often come from malformed Base64 payloads:
-          URL-safe variants, missing padding, hidden whitespace, or broken data
-          URIs. This tool removes that friction quickly.
-        </p>
+        <h2>Variants</h2>
+        <ul>
+          <li><strong>Standard</strong> — uses <code>+</code> and <code>/</code>, padded with <code>=</code>. Default for most APIs and data URIs.</li>
+          <li><strong>URL-safe</strong> — replaces <code>+→-</code> and <code>/→_</code>, no padding. Safe for query strings and JWT tokens.</li>
+          <li><strong>MIME</strong> — inserts a line break every 76 characters. Required by email (RFC 2045) and some legacy systems.</li>
+        </ul>
       </article>
       <article class="card">
         <h2>How To Use</h2>
         <ul>
-          <li>Paste payload in the input field.</li>
-          <li>Use <code>Repair Base64</code> for broken inputs.</li>
-          <li>Use <code>Encode text</code> for plain text conversion.</li>
-          <li>Use <code>Decode Base64</code> to read decoded text/bytes.</li>
+          <li>Select <strong>Encode</strong> or <strong>Decode</strong> mode at the top.</li>
+          <li>Choose <strong>Text</strong> for strings or <strong>File</strong} for binary files.</li>
+          <li>Pick a variant and (for decode) a charset.</li>
+          <li>Click <strong>Encode / Decode</strong> — output renders instantly.</li>
+          <li>Copy to clipboard or download the result.</li>
         </ul>
       </article>
     </section>
   </main>
 </BaseLayout>
 
+<style>
+  /* ── Mode tabs ── */
+  .b64-modes {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .b64-mode-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    background: var(--muted);
+    color: var(--text-2);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .b64-mode-btn.is-active {
+    background: var(--primary);
+    border-color: hsl(145 80% 40%);
+    color: var(--primary-foreground);
+    box-shadow: 0 0 16px hsl(145 80% 50% / 0.25);
+  }
+
+  .b64-mode-btn:not(.is-active):hover {
+    border-color: hsl(145 80% 50% / 0.3);
+    color: var(--text-1);
+  }
+
+  /* ── Layout ── */
+  .b64-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  @media (max-width: 760px) {
+    .b64-layout { grid-template-columns: 1fr; }
+  }
+
+  .b64-panel {
+    min-height: 360px;
+  }
+
+  .b64-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--line);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-2);
+  }
+
+  /* ── Source tabs ── */
+  .b64-src-tabs {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .b64-src-btn {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-2);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .b64-src-btn.is-active {
+    background: var(--primary-soft);
+    border-color: hsl(145 80% 50% / 0.3);
+    color: var(--primary);
+    box-shadow: none;
+  }
+
+  /* ── File drop zone ── */
+  .b64-file-drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    border: 2px dashed hsl(145 80% 50% / 0.25);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    text-align: center;
+    color: var(--text-2);
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .b64-file-drop:hover, .b64-file-drop.drag-over {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+  }
+
+  .b64-file-label {
+    font-size: 0.875rem;
+    color: var(--text-1);
+    font-weight: 600;
+  }
+
+  .b64-file-link {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+
+  /* ── Options ── */
+  .b64-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  /* ── Output textarea ── */
+  .b64-output-ta {
+    flex: 1;
+    min-height: 140px;
+    resize: vertical;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.8rem !important;
+    background: var(--muted) !important;
+    color: var(--primary) !important;
+    word-break: break-all;
+  }
+
+  /* ── Image preview ── */
+  .b64-preview {
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: var(--muted);
+    text-align: center;
+    padding: 0.5rem;
+  }
+
+  .b64-preview img {
+    max-width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    border-radius: 0.25rem;
+  }
+</style>
+
 <script type="module">
   import { repairBase64 } from "@/lib/base64Repair";
 
   const $ = (id) => document.getElementById(id);
 
-  const toUtf8Base64 = (text) => {
-    const bytes = new TextEncoder().encode(text);
-    let bin = "";
-    bytes.forEach((b) => {
-      bin += String.fromCharCode(b);
-    });
-    return btoa(bin);
-  };
+  let mode = "encode";       // "encode" | "decode"
+  let src  = "text";         // "text"   | "file"
+  let fileBytes = null;      // ArrayBuffer when file is loaded
+  let fileName  = "";
 
-  const fromUtf8Base64 = (value) => {
-    const repaired = repairBase64(value);
-    if (!repaired.ok) throw new Error(repaired.error || "Invalid base64");
-    const bytes = repaired.bytes || new Uint8Array();
-    return new TextDecoder().decode(bytes);
-  };
-
-  function setOutput(status, hint, output, meta = "") {
-    $("b64Status").textContent = status;
-    $("b64Hint").textContent = hint;
-    $("b64Output").textContent = output || "";
-    $("b64Meta").textContent = meta;
+  // ── Variant helpers ──────────────────────────────────────
+  function applyVariant(b64, variant) {
+    if (variant === "urlsafe") return b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+    if (variant === "mime")    return b64.match(/.{1,76}/g).join("\r\n");
+    return b64;
   }
 
-  $("encodeBtn").addEventListener("click", () => {
-    const input = $("b64Input").value || "";
-    const out = toUtf8Base64(input);
-    setOutput("Encoded", "Text encoded to Base64.", out);
-  });
+  function normalizeVariant(b64) {
+    // Strip MIME line breaks, convert URL-safe chars back to standard
+    return b64.replace(/[\r\n\s]/g, "").replace(/-/g, "+").replace(/_/g, "/");
+  }
 
-  $("decodeBtn").addEventListener("click", () => {
-    const input = $("b64Input").value || "";
-    try {
-      const out = fromUtf8Base64(input);
-      setOutput("Decoded", "Base64 decoded as UTF-8.", out);
-    } catch (e) {
-      setOutput("Decode failed", "Input could not be decoded.", "", String(e));
+  function formatSize(n) {
+    if (n < 1024) return `${n} B`;
+    if (n < 1048576) return `${(n / 1024).toFixed(1)} KB`;
+    return `${(n / 1048576).toFixed(2)} MB`;
+  }
+
+  // ── Encode ──────────────────────────────────────────────
+  function encode() {
+    const variant = $("b64Variant").value;
+    let b64;
+
+    if (src === "file") {
+      if (!fileBytes) { showStats("No file loaded."); return; }
+      const bytes = new Uint8Array(fileBytes);
+      let bin = "";
+      bytes.forEach(b => bin += String.fromCharCode(b));
+      b64 = btoa(bin);
+      showStats(`File: ${fileName}\nOriginal: ${formatSize(fileBytes.byteLength)}\nEncoded: ${formatSize(b64.length)} · ratio ×${(b64.length / fileBytes.byteLength).toFixed(2)}`);
+    } else {
+      const text = $("b64TextInput").value || "";
+      if (!text) { showStats("No input."); return; }
+      const bytes = new TextEncoder().encode(text);
+      let bin = "";
+      bytes.forEach(b => bin += String.fromCharCode(b));
+      b64 = btoa(bin);
+      showStats(`Input: ${formatSize(bytes.length)}\nEncoded: ${formatSize(b64.length)} · ratio ×${(b64.length / bytes.length).toFixed(2)}`);
     }
+
+    $("b64Output").value = applyVariant(b64, variant);
+    $("b64ImagePreview").style.display = "none";
+  }
+
+  // ── Decode ──────────────────────────────────────────────
+  function decode() {
+    const raw = (src === "file" ? "" : $("b64TextInput").value) || "";
+    const charset = $("b64Charset").value;
+
+    if (!raw.trim()) { showStats("No input."); return; }
+
+    // Strip data URI prefix if present
+    let dataUriMime = "";
+    let stripped = raw.trim();
+    const dataUriMatch = stripped.match(/^data:([^;]+);base64,(.+)$/s);
+    if (dataUriMatch) {
+      dataUriMime = dataUriMatch[1];
+      stripped = dataUriMatch[2];
+    }
+
+    try {
+      const normalized = normalizeVariant(stripped);
+      // Pad if needed
+      const padded = normalized + "=".repeat((4 - normalized.length % 4) % 4);
+      const binary = atob(padded);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+
+      // Detect image
+      const mime = dataUriMime || detectMime(bytes);
+      if (mime && mime.startsWith("image/")) {
+        const blob = new Blob([bytes], { type: mime });
+        const url = URL.createObjectURL(blob);
+        $("b64PreviewImg").src = url;
+        $("b64ImagePreview").style.display = "";
+        $("b64Output").value = `[Image: ${mime} — ${formatSize(bytes.length)}]\nUse Download to save the file.`;
+        showStats(`MIME: ${mime}\nDecoded: ${formatSize(bytes.length)}\nEncoded input: ${formatSize(raw.length)}`);
+        return;
+      }
+
+      $("b64ImagePreview").style.display = "none";
+
+      // Try text decode
+      try {
+        const text = new TextDecoder(charset, { fatal: true }).decode(bytes);
+        $("b64Output").value = text;
+        showStats(`Decoded: ${formatSize(bytes.length)}\nEncoded input: ${formatSize(raw.length)}\nCharset: ${charset}`);
+      } catch {
+        $("b64Output").value = `[Binary data — ${formatSize(bytes.length)}]\nNot valid ${charset} text. Use Download to save the file.`;
+        showStats(`Decoded: ${formatSize(bytes.length)} (binary)\nEncoded input: ${formatSize(raw.length)}`);
+        // Store bytes for download
+        window.__b64DecodedBytes = bytes;
+        window.__b64DecodedMime = mime || "application/octet-stream";
+      }
+    } catch (err) {
+      $("b64Output").value = "";
+      showStats(`Error: ${String(err)}`);
+    }
+  }
+
+  function detectMime(bytes) {
+    if (bytes[0] === 0xFF && bytes[1] === 0xD8) return "image/jpeg";
+    if (bytes[0] === 0x89 && bytes[1] === 0x50) return "image/png";
+    if (bytes[0] === 0x47 && bytes[1] === 0x49) return "image/gif";
+    if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[8] === 0x57) return "image/webp";
+    if (bytes[0] === 0x25 && bytes[1] === 0x50) return "application/pdf";
+    return "";
+  }
+
+  function showStats(text) {
+    $("b64Stats").style.display = "";
+    $("b64StatsContent").textContent = text;
+  }
+
+  // ── Mode toggle ──────────────────────────────────────────
+  document.querySelectorAll(".b64-mode-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      mode = btn.dataset.mode;
+      document.querySelectorAll(".b64-mode-btn").forEach(b => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      $("b64ConvertBtn").textContent = mode === "encode" ? "Encode" : "Decode";
+      $("b64TextInput").placeholder = mode === "encode"
+        ? "Paste text to encode..."
+        : "Paste Base64 string to decode...";
+      // charset only useful when decoding
+      $("charsetWrap").style.display = mode === "decode" ? "" : "none";
+    });
   });
 
-  $("repairBtn").addEventListener("click", () => {
-    const input = $("b64Input").value || "";
-    const withUtf8 = $("returnUtf8").checked;
-    const result = repairBase64(input, { returnUtf8Text: withUtf8 });
+  // ── Source tabs ──────────────────────────────────────────
+  document.querySelectorAll(".b64-src-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      src = btn.dataset.src;
+      document.querySelectorAll(".b64-src-btn").forEach(b => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      $("textInputWrap").style.display = src === "text" ? "" : "none";
+      $("fileInputWrap").style.display = src === "file" ? "" : "none";
+    });
+  });
 
-    if (!result.ok) {
-      setOutput(
-        "Repair failed",
-        "Could not repair payload.",
-        "",
-        `error=${result.error || "unknown"}\nwarnings=\n- ${result.warnings.join("\n- ")}`
-      );
+  // ── File handling ────────────────────────────────────────
+  const dropZone = $("fileDropZone");
+
+  dropZone.addEventListener("click", () => $("b64FileInput").click());
+
+  $("b64FileInput").addEventListener("change", (e) => {
+    loadFile(e.target.files[0]);
+  });
+
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+  });
+
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+    if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]);
+  });
+
+  function loadFile(file) {
+    if (!file) return;
+    fileName = file.name;
+    $("b64FileName").textContent = `${file.name} (${formatSize(file.size)})`;
+    const reader = new FileReader();
+    reader.onload = (e) => { fileBytes = e.target.result; };
+    reader.readAsArrayBuffer(file);
+  }
+
+  // ── Convert button ───────────────────────────────────────
+  $("b64ConvertBtn").addEventListener("click", () => {
+    window.__b64DecodedBytes = null;
+    if (mode === "encode") encode();
+    else decode();
+  });
+
+  // ── Copy ─────────────────────────────────────────────────
+  $("b64CopyBtn").addEventListener("click", async () => {
+    const out = $("b64Output").value || "";
+    if (!out) return;
+    await navigator.clipboard.writeText(out);
+    const btn = $("b64CopyBtn");
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = "Copy"; }, 1500);
+  });
+
+  // ── Download ─────────────────────────────────────────────
+  $("b64DownloadBtn").addEventListener("click", () => {
+    // If we have decoded binary bytes, download those
+    if (window.__b64DecodedBytes) {
+      const blob = new Blob([window.__b64DecodedBytes], { type: window.__b64DecodedMime || "application/octet-stream" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "decoded-file";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
       return;
     }
-
-    const lines = [
-      `variant=${result.variant}`,
-      `bytes=${result.bytes?.length || 0}`,
-      `dataUriPrefix=${result.dataUriPrefix || "none"}`,
-      `warnings=\n- ${result.warnings.join("\n- ")}`,
-    ];
-    if (result.textUtf8) lines.push(`utf8Preview=${result.textUtf8.slice(0, 240)}`);
-
-    setOutput(
-      "Repaired",
-      "Canonical Base64 generated.",
-      result.repaired,
-      lines.join("\n")
-    );
+    // If image preview is showing, download the image
+    const img = $("b64PreviewImg");
+    if ($("b64ImagePreview").style.display !== "none" && img.src) {
+      const a = document.createElement("a");
+      a.href = img.src;
+      a.download = "decoded-image";
+      a.click();
+      return;
+    }
+    // Otherwise download the output text
+    const out = $("b64Output").value || "";
+    if (!out) return;
+    const isEncoded = mode === "encode";
+    const blob = new Blob([out], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = isEncoded ? "encoded.b64" : "decoded.txt";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   });
 
-  $("copyOutBtn").addEventListener("click", async () => {
-    const output = $("b64Output").textContent || "";
-    if (!output) return;
-    await navigator.clipboard.writeText(output);
-    $("b64Hint").textContent = "Output copied to clipboard.";
+  // ── Clear ─────────────────────────────────────────────────
+  $("b64ClearBtn").addEventListener("click", () => {
+    $("b64TextInput").value = "";
+    $("b64Output").value = "";
+    $("b64Stats").style.display = "none";
+    $("b64ImagePreview").style.display = "none";
+    $("b64FileName").textContent = "";
+    fileBytes = null;
+    window.__b64DecodedBytes = null;
   });
+
+  // Init: hide charset until decode mode
+  $("charsetWrap").style.display = "none";
 </script>
