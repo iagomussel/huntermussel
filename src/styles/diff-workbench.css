@@ -1,0 +1,568 @@
+.hm-diff-workbench {
+  position: relative;
+}
+
+.hm-diff-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(110, 138, 168, 0.18);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(circle at top left, rgba(26, 235, 106, 0.08), transparent 24rem),
+    linear-gradient(180deg, rgba(14, 20, 29, 0.98), rgba(8, 12, 18, 0.98));
+  box-shadow:
+    0 20px 80px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.hm-diff-toolbar,
+.hm-diff-meta,
+.hm-diff-editorHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+}
+
+.hm-diff-toolbar {
+  border-bottom: 1px solid rgba(110, 138, 168, 0.12);
+  background: rgba(7, 11, 16, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.hm-diff-toolbar__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hm-diff-toolbar__group--actions {
+  justify-content: flex-end;
+}
+
+.hm-diff-toggle {
+  display: inline-flex;
+  overflow: hidden;
+  border: 1px solid rgba(110, 138, 168, 0.18);
+  border-radius: 999px;
+  background: rgba(12, 17, 24, 0.92);
+}
+
+.hm-diff-toggle button,
+.hm-diff-action,
+.hm-diff-miniAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid transparent;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+}
+
+.hm-diff-toggle button,
+.hm-diff-action {
+  border-radius: 999px;
+  padding: 0.58rem 0.82rem;
+}
+
+.hm-diff-miniAction {
+  border-radius: 999px;
+  padding: 0.42rem 0.7rem;
+  background: rgba(12, 17, 24, 0.92);
+  border-color: rgba(110, 138, 168, 0.18);
+  color: #c7d5e3;
+}
+
+.hm-diff-toggle button {
+  border-radius: 0;
+  background: transparent;
+  color: #91a3b8;
+}
+
+.hm-diff-toggle button + button {
+  border-left: 1px solid rgba(110, 138, 168, 0.14);
+}
+
+.hm-diff-toggle button.is-active {
+  background: rgba(26, 235, 106, 0.14);
+  color: #e8fff1;
+}
+
+.hm-diff-action {
+  background: rgba(12, 17, 24, 0.92);
+  border-color: rgba(110, 138, 168, 0.18);
+  color: #d8e4f0;
+}
+
+.hm-diff-action--primary {
+  background: rgba(26, 235, 106, 0.12);
+  border-color: rgba(26, 235, 106, 0.24);
+  color: #d5ffe4;
+}
+
+.hm-diff-toggle button:hover,
+.hm-diff-action:hover,
+.hm-diff-miniAction:hover,
+.hm-diff-checkbox:hover,
+.hm-diff-control select:hover,
+.hm-diff-control input:hover,
+.hm-diff-file input:hover {
+  border-color: rgba(26, 235, 106, 0.25);
+}
+
+.hm-diff-toggle button:hover,
+.hm-diff-action:hover,
+.hm-diff-miniAction:hover {
+  transform: translateY(-1px);
+}
+
+.hm-diff-control,
+.hm-diff-checkbox,
+.hm-diff-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.5rem;
+  border-radius: 999px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.74rem;
+  color: #a7b6c7;
+}
+
+.hm-diff-control span,
+.hm-diff-file__label,
+.hm-diff-file__meta,
+.hm-diff-checkbox {
+  white-space: nowrap;
+}
+
+.hm-diff-control select,
+.hm-diff-control input,
+.hm-diff-file input {
+  height: 2.5rem;
+  border: 1px solid rgba(110, 138, 168, 0.18);
+  border-radius: 999px;
+  background: rgba(12, 17, 24, 0.92);
+  color: #e4edf6;
+  padding: 0 0.9rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  transition:
+    border-color 140ms ease,
+    background-color 140ms ease;
+}
+
+.hm-diff-control select:focus,
+.hm-diff-control input:focus,
+.hm-diff-file input:focus {
+  outline: none;
+  border-color: rgba(26, 235, 106, 0.35);
+  background: rgba(17, 24, 33, 0.96);
+}
+
+.hm-diff-control--compact input {
+  width: 4.5rem;
+  text-align: center;
+}
+
+.hm-diff-checkbox {
+  padding: 0 0.2rem;
+}
+
+.hm-diff-checkbox input {
+  accent-color: #1aeb6a;
+}
+
+.hm-diff-meta {
+  border-bottom: 1px solid rgba(110, 138, 168, 0.12);
+}
+
+.hm-diff-file {
+  flex: 1 1 18rem;
+  gap: 0.7rem;
+}
+
+.hm-diff-file input {
+  flex: 1;
+  min-width: 0;
+}
+
+.hm-diff-file__label {
+  color: #fca5a5;
+  font-weight: 700;
+}
+
+.hm-diff-file__label--modified {
+  color: #86efac;
+}
+
+.hm-diff-file__meta {
+  color: #7f93aa;
+}
+
+.hm-diff-summary {
+  display: flex;
+  flex: 1 1 18rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.74rem;
+}
+
+.hm-diff-badge,
+.hm-diff-stat,
+.hm-diff-flash {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(110, 138, 168, 0.16);
+  background: rgba(12, 17, 24, 0.92);
+}
+
+.hm-diff-badge.is-clean {
+  color: #d1fae5;
+  border-color: rgba(52, 211, 153, 0.25);
+  background: rgba(10, 58, 42, 0.42);
+}
+
+.hm-diff-badge.is-changed {
+  color: #dbeafe;
+  border-color: rgba(96, 165, 250, 0.28);
+  background: rgba(22, 49, 89, 0.45);
+}
+
+.hm-diff-stat {
+  color: #9db0c5;
+}
+
+.hm-diff-stat--add {
+  color: #86efac;
+}
+
+.hm-diff-stat--remove {
+  color: #fda4af;
+}
+
+.hm-diff-stat--warning,
+.hm-diff-flash--warning {
+  color: #fde68a;
+}
+
+.hm-diff-layout {
+  min-height: 44rem;
+}
+
+.hm-resizable-group {
+  display: flex;
+  min-height: 44rem;
+  width: 100%;
+}
+
+.hm-resizable-group[data-orientation="vertical"] {
+  flex-direction: column;
+}
+
+.hm-resizable-handle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(110, 138, 168, 0.14);
+  transition: background-color 140ms ease;
+}
+
+.hm-resizable-group[data-orientation="horizontal"] > .hm-resizable-handle {
+  width: 1px;
+  min-width: 1px;
+  cursor: col-resize;
+}
+
+.hm-resizable-group[data-orientation="vertical"] > .hm-resizable-handle {
+  height: 1px;
+  min-height: 1px;
+  width: 100%;
+  cursor: row-resize;
+}
+
+.hm-resizable-handle:hover,
+.hm-resizable-handle[data-resize-handle-active] {
+  background: rgba(26, 235, 106, 0.28);
+}
+
+.hm-resizable-handle__grip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.95rem;
+  height: 2.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 138, 168, 0.2);
+  background: rgba(13, 18, 25, 0.98);
+  color: #8fa4ba;
+}
+
+.hm-resizable-group[data-orientation="vertical"] .hm-resizable-handle__grip {
+  width: 2.6rem;
+  height: 0.95rem;
+}
+
+.hm-resizable-group[data-orientation="vertical"] .hm-resizable-handle__icon {
+  transform: rotate(90deg);
+}
+
+.hm-diff-editorFrame,
+.hm-diff-inspector {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 44rem;
+}
+
+.hm-diff-inspector {
+  background:
+    linear-gradient(180deg, rgba(8, 12, 18, 0.98), rgba(10, 14, 20, 0.96)),
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.08), transparent 18rem);
+}
+
+.hm-diff-inspector.is-collapsed {
+  display: none;
+}
+
+.hm-diff-inspectorSection {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(110, 138, 168, 0.12);
+}
+
+.hm-diff-inspectorSection:last-child {
+  border-bottom: none;
+  flex: 1;
+}
+
+.hm-diff-inspectorSection__header,
+.hm-diff-headerTools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.hm-diff-inspectorSection__header strong {
+  display: block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #edf6ff;
+}
+
+.hm-diff-inspectorSection__header span,
+.hm-diff-editorHeader span {
+  color: #93a6bc;
+  font-size: 0.95rem;
+}
+
+.hm-diff-editorHeader {
+  border-bottom: 1px solid rgba(110, 138, 168, 0.12);
+}
+
+.hm-diff-editorHeader strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #edf6ff;
+}
+
+.hm-diff-flash {
+  color: #dce6f3;
+}
+
+.hm-diff-flash--success {
+  color: #d1fae5;
+  border-color: rgba(52, 211, 153, 0.25);
+  background: rgba(10, 58, 42, 0.42);
+}
+
+.hm-diff-editorBody {
+  flex: 1;
+  min-height: 0;
+}
+
+.hm-diff-editorBody > div,
+.hm-diff-editorBody section {
+  height: 100%;
+  min-height: 0;
+}
+
+.hm-diff-statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.65rem 0.95rem;
+  border-top: 1px solid rgba(110, 138, 168, 0.12);
+  background: rgba(6, 10, 16, 0.92);
+  color: #7d91a7;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+}
+
+.hm-diff-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+.hm-diff-nav .hm-diff-miniAction {
+  justify-content: center;
+}
+
+.hm-diff-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.hm-diff-kpis article {
+  padding: 0.85rem;
+  border: 1px solid rgba(110, 138, 168, 0.14);
+  border-radius: 0.95rem;
+  background: rgba(12, 17, 24, 0.86);
+}
+
+.hm-diff-kpis span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #89a0b6;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+}
+
+.hm-diff-kpis strong {
+  color: #eef7ff;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1rem;
+}
+
+.hm-diff-fileList {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0.9rem 0 0;
+}
+
+.hm-diff-fileList div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.hm-diff-fileList dt {
+  color: #7f93aa;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hm-diff-fileList dd {
+  margin: 0;
+  color: #dde7f2;
+  font-size: 0.92rem;
+  word-break: break-word;
+}
+
+.hm-diff-patchPreview {
+  margin: 0.9rem 0 0;
+  padding: 0.95rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(110, 138, 168, 0.14);
+  background: rgba(12, 17, 24, 0.88);
+  color: #c7d5e3;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow: auto;
+}
+
+.hm-diff-loading {
+  display: grid;
+  min-height: 44rem;
+  place-items: center;
+  color: #7f93aa;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.86rem;
+  background:
+    linear-gradient(180deg, rgba(8, 12, 18, 0.94), rgba(9, 14, 20, 0.98)),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2rem,
+      rgba(110, 138, 168, 0.06) 2rem,
+      rgba(110, 138, 168, 0.06) calc(2rem + 1px)
+    );
+}
+
+@media (max-width: 960px) {
+  .hm-diff-layout,
+  .hm-resizable-group,
+  .hm-diff-editorFrame,
+  .hm-diff-inspector,
+  .hm-diff-loading {
+    min-height: 38rem;
+  }
+
+  .hm-diff-nav {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .hm-diff-toolbar,
+  .hm-diff-meta,
+  .hm-diff-editorHeader {
+    padding: 0.9rem;
+  }
+
+  .hm-diff-summary {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .hm-diff-toolbar__group--actions,
+  .hm-diff-headerTools {
+    justify-content: flex-start;
+  }
+
+  .hm-diff-file,
+  .hm-diff-summary {
+    flex-basis: 100%;
+  }
+
+  .hm-diff-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .hm-diff-editorHeader span,
+  .hm-diff-inspectorSection__header span {
+    display: block;
+    line-height: 1.5;
+  }
+}
