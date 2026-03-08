@@ -5,12 +5,8 @@ import {
   FileJson,
   Image,
   FileText,
-  Calculator,
   ChartBar,
   ScrollText,
-  Code,
-  GitBranch,
-  CheckSquare,
 } from "lucide-react";
 
 const tools = [
@@ -50,13 +46,6 @@ const tools = [
     description: "Live Markdown editor with preview, export, and formatting shortcuts.",
   },
   {
-    icon: Calculator,
-    title: "Calculators",
-    slug: "calculators",
-    category: "math",
-    description: "Engineering and business calculators for quick on-the-fly computations.",
-  },
-  {
     icon: ChartBar,
     title: "Estimators",
     slug: "estimators",
@@ -69,27 +58,6 @@ const tools = [
     slug: "log-viewer",
     category: "devops",
     description: "Parse, filter, and inspect structured log files directly in the browser.",
-  },
-  {
-    icon: Code,
-    title: "Online Linters",
-    slug: "online-linters",
-    category: "code quality",
-    description: "Lint JavaScript, TypeScript, CSS, and more without leaving the browser.",
-  },
-  {
-    icon: GitBranch,
-    title: "Pipeline Simulator",
-    slug: "pipeline-simulator",
-    category: "devops",
-    description: "Simulate and visualize CI/CD pipeline flows and dependencies.",
-  },
-  {
-    icon: CheckSquare,
-    title: "Validators",
-    slug: "validators",
-    category: "validation",
-    description: "Validate URLs, emails, regex patterns, YAML, and more.",
   },
 ];
 
