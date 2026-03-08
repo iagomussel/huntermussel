@@ -1,0 +1,304 @@
+---
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="Developer Tools">
+  <div class="tools-page">
+    <!-- Hero -->
+    <div class="tools-hero">
+      <div class="tools-container">
+        <span class="tools-eyebrow">// tools</span>
+        <h1 class="tools-title">Free Developer Tools</h1>
+        <p class="tools-lead">
+          Client-side utilities for encoding, hashing, imaging, and more.
+          No account, no uploads, no tracking — everything runs in your browser.
+        </p>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="tools-container tools-grid-wrap">
+      <div class="tools-grid">
+
+        <a href="/tools/base64-converter" class="tool-card">
+          <span class="tool-cat">// encoding</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Base64 Converter</h2>
+          <p class="tool-desc">Convert, validate, and repair Base64/Base64URL payloads fully client-side.</p>
+        </a>
+
+        <a href="/tools/hash-generator" class="tool-card">
+          <span class="tool-cat">// hashing</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/>
+              <line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Hash Generator</h2>
+          <p class="tool-desc">Generate and verify MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.</p>
+        </a>
+
+        <a href="/tools/json-formatter" class="tool-card">
+          <span class="tool-cat">// json</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">JSON Formatter</h2>
+          <p class="tool-desc">Format, validate, and minify JSON payloads with syntax highlighting.</p>
+        </a>
+
+        <a href="/tools/image-optimizer" class="tool-card tool-card--new">
+          <span class="tool-cat">// imaging</span>
+          <span class="tool-badge">new</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Image Optimizer</h2>
+          <p class="tool-desc">Convert images to WebP in-browser. Adjust quality, resize, batch download.</p>
+        </a>
+
+        <a href="/tools/markdown-editor" class="tool-card">
+          <span class="tool-cat">// writing</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Markdown Editor</h2>
+          <p class="tool-desc">Live Markdown editor with preview, export, and formatting shortcuts.</p>
+        </a>
+
+        <a href="/tools/calculators" class="tool-card">
+          <span class="tool-cat">// math</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="2" width="16" height="20" rx="2"/>
+              <line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/>
+              <line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/>
+              <line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Calculators</h2>
+          <p class="tool-desc">Engineering and business calculators for quick on-the-fly computations.</p>
+        </a>
+
+        <a href="/tools/estimators" class="tool-card">
+          <span class="tool-cat">// planning</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Estimators</h2>
+          <p class="tool-desc">Project and effort estimation tools for engineering teams.</p>
+        </a>
+
+        <a href="/tools/log-viewer" class="tool-card">
+          <span class="tool-cat">// devops</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/>
+              <line x1="8" y1="17" x2="16" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Log Viewer</h2>
+          <p class="tool-desc">Parse, filter, and inspect structured log files directly in the browser.</p>
+        </a>
+
+        <a href="/tools/online-linters" class="tool-card">
+          <span class="tool-cat">// code quality</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Online Linters</h2>
+          <p class="tool-desc">Lint JavaScript, TypeScript, CSS, and more without leaving the browser.</p>
+        </a>
+
+        <a href="/tools/pipeline-simulator" class="tool-card">
+          <span class="tool-cat">// devops</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Pipeline Simulator</h2>
+          <p class="tool-desc">Simulate and visualize CI/CD pipeline flows and dependencies.</p>
+        </a>
+
+        <a href="/tools/validators" class="tool-card">
+          <span class="tool-cat">// validation</span>
+          <div class="tool-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h2 class="tool-name">Validators</h2>
+          <p class="tool-desc">Validate URLs, emails, regex patterns, YAML, and more.</p>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .tools-page {
+    min-height: 100vh;
+  }
+
+  .tools-hero {
+    border-b: 1px solid hsl(var(--border));
+    padding: 5rem 0 3rem;
+    background: linear-gradient(180deg, hsl(var(--card) / 0.4) 0%, transparent 100%);
+  }
+
+  .tools-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .tools-eyebrow {
+    display: block;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: hsl(var(--primary));
+    margin-bottom: 0.75rem;
+  }
+
+  .tools-title {
+    margin: 0 0 1rem;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: hsl(var(--foreground));
+    letter-spacing: -0.02em;
+  }
+
+  .tools-lead {
+    margin: 0;
+    max-width: 56ch;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .tools-grid-wrap {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+  }
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .tool-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.25rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.75rem;
+    background: hsl(var(--card) / 0.5);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.15s;
+  }
+
+  .tool-card:hover {
+    border-color: hsl(var(--primary) / 0.3);
+    background: hsl(var(--card));
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.08);
+    transform: translateY(-2px);
+  }
+
+  .tool-cat {
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .tool-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--primary-foreground));
+    background: hsl(var(--primary));
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+  }
+
+  .tool-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    background: hsl(var(--muted) / 0.5);
+    color: hsl(var(--primary));
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .tool-card:hover .tool-icon {
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 12px hsl(var(--primary) / 0.15);
+  }
+
+  .tool-name {
+    margin: 0;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    line-height: 1.3;
+  }
+
+  .tool-desc {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: hsl(var(--muted-foreground));
+  }
+
+  @media (max-width: 480px) {
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -2,28 +2,35 @@
   box-sizing: border-box;
 }
 
+/* ── Design tokens matching the main site dark theme ── */
 :root {
-  --bg-1: #f1f5ff;
-  --bg-2: #f8fafc;
-  --text-1: #0f172a;
-  --text-2: #334155;
-  --line: #dbeafe;
-  --primary: #1d4ed8;
-  --primary-soft: #dbeafe;
-  --card: #ffffff;
+  --bg-1: hsl(220 20% 4%);
+  --bg-2: hsl(220 18% 5%);
+  --text-1: hsl(210 40% 98%);
+  --text-2: hsl(220 10% 62%);
+  --line: hsl(220 14% 14%);
+  --primary: hsl(145 80% 50%);
+  --primary-soft: hsl(145 80% 10%);
+  --primary-foreground: hsl(220 20% 4%);
+  --card: hsl(220 18% 7%);
+  --card-hover: hsl(220 18% 9%);
+  --muted: hsl(220 14% 10%);
+  --input-bg: hsl(220 16% 10%);
+  --glow: hsl(145 80% 50% / 0.15);
 }
 
 body {
   margin: 0;
-  font-family: "Manrope", "Segoe UI", sans-serif;
+  font-family: "Inter", "Segoe UI", sans-serif;
   color: var(--text-1);
-  background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  background: var(--bg-1);
 }
 
 a {
   color: inherit;
 }
 
+/* ── Layout ── */
 .page {
   min-height: 100vh;
   max-width: 1080px;
@@ -41,13 +48,16 @@ a {
   text-transform: uppercase;
   font-size: 0.75rem;
   color: var(--primary);
+  font-family: "JetBrains Mono", monospace;
   font-weight: 700;
 }
 
 h1 {
   margin: 0.5rem 0 0.75rem;
   font-size: clamp(2rem, 5vw, 3rem);
+  font-family: "JetBrains Mono", monospace;
   line-height: 1.1;
+  color: var(--text-1);
 }
 
 .lead {
@@ -58,69 +68,114 @@ h1 {
 }
 
 .back-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   margin-top: 1rem;
   color: var(--primary);
   text-decoration: none;
   font-weight: 600;
+  font-size: 0.875rem;
+  transition: opacity 0.15s;
 }
 
+.back-link:hover {
+  opacity: 0.8;
+}
+
+/* ── Tool grid (index page) ── */
 .tool-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1rem;
 }
 
+/* ── Cards ── */
 .card {
-  padding: 1rem;
+  padding: 1.1rem;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 0.75rem;
   background: var(--card);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.card:hover {
+  border-color: hsl(145 80% 50% / 0.25);
+  background: var(--card-hover);
+  box-shadow: 0 0 20px var(--glow);
 }
 
 .card h2,
 .card h3 {
   margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--text-1);
 }
 
+/* ── Pill / tag ── */
 .pill {
   display: inline-block;
-  font-size: 0.75rem;
-  color: #1e293b;
+  font-size: 0.72rem;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--primary);
   background: var(--primary-soft);
-  padding: 0.2rem 0.45rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 999px;
   margin-top: 0.5rem;
+  border: 1px solid hsl(145 80% 50% / 0.2);
 }
 
+/* ── Two-col tool layout ── */
 .tool-layout {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 1rem;
 }
 
+/* ── Stack ── */
 .stack {
   display: grid;
   gap: 0.9rem;
 }
 
+/* ── Form labels ── */
 .label {
   display: block;
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  font-family: "JetBrains Mono", monospace;
+  margin-bottom: 0.3rem;
+  color: var(--text-1);
+  letter-spacing: 0.03em;
 }
 
+/* ── Form inputs ── */
 input[type="number"],
 input[type="text"],
 textarea,
 select {
   width: 100%;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.7rem;
   font: inherit;
+  font-size: 0.875rem;
+  background: var(--input-bg);
+  color: var(--text-1);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: hsl(145 80% 50% / 0.5);
+  box-shadow: 0 0 0 2px hsl(145 80% 50% / 0.1);
+}
+
+input[type="range"] {
+  accent-color: var(--primary);
 }
 
 textarea {
@@ -128,41 +183,73 @@ textarea {
   resize: vertical;
 }
 
+select option {
+  background: var(--card);
+  color: var(--text-1);
+}
+
+/* ── Buttons ── */
 button {
-  border: 1px solid #1e40af;
-  border-radius: 10px;
-  padding: 0.55rem 0.8rem;
+  border: 1px solid hsl(145 80% 40%);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.9rem;
   font: inherit;
+  font-size: 0.875rem;
   font-weight: 700;
-  color: #eff6ff;
-  background: #1d4ed8;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--primary-foreground);
+  background: var(--primary);
   cursor: pointer;
+  transition: opacity 0.15s, box-shadow 0.15s;
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: 0 0 20px hsl(145 80% 50% / 0.3);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 button.secondary {
-  color: #1e3a8a;
-  background: #eff6ff;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-color: hsl(145 80% 50% / 0.2);
 }
 
+button.secondary:hover:not(:disabled) {
+  background: hsl(145 80% 15%);
+  box-shadow: none;
+}
+
+/* ── Action row ── */
 .actions {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
 
+/* ── Result / output box ── */
 .result {
-  border: 1px dashed #93c5fd;
-  border-radius: 12px;
+  border: 1px dashed hsl(145 80% 50% / 0.3);
+  border-radius: 0.6rem;
   padding: 0.85rem;
-  background: #f8fbff;
+  background: hsl(145 80% 3%);
+  font-size: 0.82rem;
+  color: var(--text-2);
 }
 
 .result strong {
   display: block;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-family: "JetBrains Mono", monospace;
   margin-top: 0.15rem;
+  color: var(--text-1);
 }
 
+/* ── Article / info cards row ── */
 .article {
   margin-top: 1.4rem;
   display: grid;
@@ -171,13 +258,16 @@ button.secondary {
 
 .article h2 {
   margin: 0 0 0.4rem;
-  font-size: 1.15rem;
+  font-size: 1rem;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--text-1);
 }
 
 .article p,
 .article li {
   color: var(--text-2);
-  line-height: 1.55;
+  line-height: 1.6;
+  font-size: 0.9rem;
 }
 
 .article ul {
@@ -185,6 +275,7 @@ button.secondary {
   padding-left: 1.1rem;
 }
 
+/* ── Checklist / checkbox row ── */
 .checklist {
   display: grid;
   gap: 0.5rem;
@@ -194,38 +285,48 @@ button.secondary {
   display: flex;
   gap: 0.6rem;
   align-items: flex-start;
-  border: 1px solid #dbeafe;
-  border-radius: 10px;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
   padding: 0.55rem 0.65rem;
-  background: #fff;
+  background: var(--muted);
+  font-size: 0.875rem;
 }
 
 .check input {
   margin-top: 0.2rem;
+  accent-color: var(--primary);
 }
 
+/* ── Typography helpers ── */
 .small {
-  font-size: 0.82rem;
-  color: #475569;
+  font-size: 0.78rem;
+  color: var(--text-2);
 }
 
 .mono {
   font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   word-break: break-all;
+  color: var(--primary);
 }
 
+pre.mono {
+  white-space: pre-wrap;
+  color: var(--text-1);
+}
+
+/* ── Responsive ── */
 @media (max-width: 860px) {
   .tool-layout {
     grid-template-columns: 1fr;
   }
 }
 
+/* ── Word editor (unchanged) ── */
 .word-root {
   min-height: 100vh;
   background: #d3d3d6;
 }
-
 .word-toolbar-wrap {
   position: sticky;
   top: 0;
@@ -233,7 +334,6 @@ button.secondary {
   background: #f8f8f9;
   border-bottom: 1px solid #d1d5db;
 }
-
 .word-menu-row {
   height: 37px;
   display: flex;
@@ -242,7 +342,6 @@ button.secondary {
   padding: 0 10px;
   border-bottom: 1px solid #d1d5db;
 }
-
 .word-menu-btn {
   border: 0;
   background: transparent;
@@ -251,7 +350,6 @@ button.secondary {
   padding: 4px 8px;
   cursor: pointer;
 }
-
 .word-tools-row {
   min-height: 43px;
   display: flex;
@@ -260,7 +358,6 @@ button.secondary {
   padding: 4px 8px;
   overflow-x: auto;
 }
-
 .word-icon-btn,
 .word-select-btn {
   border: 0;
@@ -274,35 +371,29 @@ button.secondary {
   justify-content: center;
   cursor: pointer;
 }
-
 .word-select-btn {
   font-size: 13px;
   padding: 0 8px;
   gap: 6px;
 }
-
 .word-icon-btn:hover,
 .word-select-btn:hover,
 .word-menu-btn:hover {
   background: #e7e7ea;
 }
-
 .word-divider {
   width: 1px;
   height: 20px;
   background: #c9ccd1;
   margin: 0 6px;
 }
-
 .word-editor-bg {
   padding: 30px 12px 72px;
 }
-
 .word-editor-shell {
   max-width: 1040px;
   margin: 0 auto;
 }
-
 .word-paper {
   width: 100%;
   max-width: 952px;
@@ -313,11 +404,9 @@ button.secondary {
   border: 1px solid #d4d7dc;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
-
 .word-paper-inner {
   padding: 76px 62px 80px;
 }
-
 .word-paper h1,
 .word-paper .heading-one {
   font-size: 50px;
@@ -325,7 +414,6 @@ button.secondary {
   letter-spacing: -0.02em;
   font-weight: 800;
 }
-
 @media (max-width: 900px) {
   .word-paper-inner {
     padding: 40px 20px 60px;
