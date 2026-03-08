@@ -1,0 +1,886 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="JWT Inspector | HunterMussel Tools"
+  description="Decode and inspect JWT tokens in your browser. View header, payload, claims, expiry countdown, and security warnings — no data leaves your machine."
+  canonicalPath="/tools/jwt-inspector/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / security</p>
+      <h1>JWT Inspector</h1>
+      <p class="lead">
+        Decode and inspect JSON Web Tokens instantly. View the header, payload,
+        and claims with human-readable explanations. Expiry countdown and
+        security warnings included. Everything runs in your browser — your token
+        never leaves your machine.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <!-- Input area -->
+    <div class="ji-input-wrap card">
+      <div class="ji-input-head">
+        <span class="ji-label">Paste JWT Token</span>
+        <div class="actions">
+          <button id="loadSampleBtn" type="button" class="secondary">Load Sample</button>
+          <button id="clearTokenBtn" type="button" class="secondary">Clear</button>
+        </div>
+      </div>
+      <textarea
+        id="tokenInput"
+        class="ji-textarea"
+        spellcheck="false"
+        placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature"
+      ></textarea>
+      <div id="tokenError" class="ji-token-error" style="display:none">
+        <span class="ji-err-icon">✕</span>
+        <span id="tokenErrorMsg"></span>
+      </div>
+    </div>
+
+    <!-- Results area (hidden until a token is parsed) -->
+    <div id="resultsArea" style="display:none">
+
+      <!-- Expiry & timing section -->
+      <div id="expiryCard" class="card ji-expiry-card">
+        <div class="ji-expiry-header">
+          <span class="ji-section-label">Token Timing</span>
+          <span id="expiryBadge" class="ji-badge"></span>
+        </div>
+        <div class="ji-timing-grid" id="timingGrid"></div>
+      </div>
+
+      <!-- Security warnings -->
+      <div id="warningsCard" class="card ji-warnings-card" style="display:none">
+        <div class="ji-section-label ji-warn-title">
+          <span class="ji-warn-icon">⚠</span> Security Warnings
+        </div>
+        <ul id="warningsList" class="ji-warnings-list"></ul>
+      </div>
+
+      <!-- Three panels: Header | Payload | Signature -->
+      <div class="ji-panels">
+
+        <!-- Header panel -->
+        <div class="card ji-panel">
+          <div class="ji-panel-head">
+            <span class="ji-panel-title">Header</span>
+            <div class="ji-panel-actions">
+              <span id="algBadge" class="ji-alg-badge"></span>
+              <button class="ji-copy-btn secondary" data-target="headerOutput" type="button">Copy</button>
+            </div>
+          </div>
+          <pre id="headerOutput" class="ji-code-block"></pre>
+        </div>
+
+        <!-- Payload panel -->
+        <div class="card ji-panel ji-panel-payload">
+          <div class="ji-panel-head">
+            <span class="ji-panel-title">Payload</span>
+            <button class="ji-copy-btn secondary" data-target="payloadOutput" type="button">Copy</button>
+          </div>
+          <pre id="payloadOutput" class="ji-code-block"></pre>
+          <div class="ji-claims-wrap">
+            <div class="ji-section-label ji-claims-label">Claims</div>
+            <table id="claimsTable" class="ji-claims-table">
+              <thead>
+                <tr>
+                  <th>Claim</th>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody id="claimsBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Signature panel -->
+        <div class="card ji-panel">
+          <div class="ji-panel-head">
+            <span class="ji-panel-title">Signature</span>
+            <button class="ji-copy-btn secondary" data-target="signatureOutput" type="button">Copy</button>
+          </div>
+          <pre id="signatureOutput" class="ji-code-block"></pre>
+          <div class="ji-sig-note">
+            <span class="ji-note-icon">ℹ</span>
+            Signature verification requires the secret key or public certificate.
+            Client-side verification without the key is not possible. Never paste
+            your secret key into a browser tool.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Info articles -->
+    <section class="article">
+      <article class="card">
+        <h2>What is a JWT?</h2>
+        <p>A JSON Web Token (JWT) is a compact, URL-safe way to represent claims
+        between two parties. It consists of three Base64URL-encoded parts separated
+        by dots: the <strong>Header</strong> (algorithm &amp; type), the
+        <strong>Payload</strong> (claims), and the <strong>Signature</strong>.</p>
+      </article>
+      <article class="card">
+        <h2>Standard Claims</h2>
+        <p>The JWT specification (RFC 7519) defines registered claim names such as
+        <code>iss</code> (issuer), <code>sub</code> (subject), <code>aud</code> (audience),
+        <code>exp</code> (expiration), <code>nbf</code> (not before), and <code>iat</code>
+        (issued at). This inspector explains each one in plain English.</p>
+      </article>
+      <article class="card">
+        <h2>Security Considerations</h2>
+        <ul>
+          <li>Never use <code>alg: none</code> — it disables signature verification.</li>
+          <li>Always set an expiry (<code>exp</code>) to limit token lifetime.</li>
+          <li>Keep token lifetimes short — prefer &lt; 1 hour for access tokens.</li>
+          <li>Verify the signature server-side using the issuer's public key or secret.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /* ── Input area ── */
+  .ji-input-wrap {
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+
+  .ji-input-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid #1c2535;
+    background: #0e1219;
+  }
+
+  .ji-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8f9aa6;
+  }
+
+  .ji-textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #090b11 !important;
+    color: #f5f9ff !important;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.82rem !important;
+    line-height: 1.6 !important;
+    padding: 0.85rem !important;
+    min-height: 100px;
+    word-break: break-all;
+  }
+
+  .ji-textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .ji-token-error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    background: hsl(0 60% 8%);
+    border-top: 1px solid hsl(0 60% 22%);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: hsl(0 70% 65%);
+  }
+
+  .ji-err-icon {
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* ── Badges ── */
+  .ji-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    line-height: 1.4;
+  }
+
+  .ji-badge.valid {
+    background: hsl(145 60% 10%);
+    color: #1aeb6a;
+    border: 1px solid hsl(145 70% 25%);
+  }
+
+  .ji-badge.expired {
+    background: hsl(0 60% 10%);
+    color: #ef4444;
+    border: 1px solid hsl(0 60% 25%);
+  }
+
+  .ji-badge.noexp {
+    background: hsl(38 60% 10%);
+    color: #f59e0b;
+    border: 1px solid hsl(38 60% 25%);
+  }
+
+  .ji-alg-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.3rem;
+    background: hsl(145 60% 10%);
+    color: #1aeb6a;
+    border: 1px solid hsl(145 70% 20%);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Expiry card ── */
+  .ji-expiry-card {
+    margin-bottom: 0.75rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .ji-expiry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .ji-section-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8f9aa6;
+  }
+
+  .ji-timing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.65rem;
+  }
+
+  .ji-timing-item {
+    background: #090b11;
+    border: 1px solid #1c2535;
+    border-radius: 0.5rem;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .ji-timing-key {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: #8f9aa6;
+    margin-bottom: 0.2rem;
+  }
+
+  .ji-timing-abs {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    color: #f5f9ff;
+    margin-bottom: 0.15rem;
+  }
+
+  .ji-timing-rel {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    color: #8f9aa6;
+  }
+
+  .ji-timing-rel.expired-text { color: #ef4444; }
+  .ji-timing-rel.valid-text   { color: #1aeb6a; }
+
+  /* ── Warnings card ── */
+  .ji-warnings-card {
+    margin-bottom: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-color: hsl(38 60% 22%);
+    background: hsl(38 30% 5%);
+  }
+
+  .ji-warn-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #f59e0b;
+    margin-bottom: 0.65rem;
+  }
+
+  .ji-warn-icon {
+    font-size: 0.9rem;
+  }
+
+  .ji-warnings-list {
+    margin: 0;
+    padding: 0 0 0 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .ji-warnings-list li {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    color: hsl(38 80% 75%);
+    line-height: 1.5;
+  }
+
+  /* ── Three panels ── */
+  .ji-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 1100px) {
+    .ji-panels { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 680px) {
+    .ji-panels { grid-template-columns: 1fr; }
+  }
+
+  .ji-panel {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .ji-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #1c2535;
+    background: #0e1219;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ji-panel-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8f9aa6;
+  }
+
+  .ji-panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ji-code-block {
+    margin: 0;
+    padding: 0.75rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    word-break: break-all;
+    color: #f5f9ff;
+    background: #090b11;
+    min-height: 120px;
+    overflow-x: auto;
+  }
+
+  /* ── Claims table ── */
+  .ji-claims-wrap {
+    border-top: 1px solid #1c2535;
+    padding: 0.75rem;
+    background: #090b11;
+  }
+
+  .ji-claims-label {
+    margin-bottom: 0.5rem;
+  }
+
+  .ji-claims-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+  }
+
+  .ji-claims-table th {
+    text-align: left;
+    padding: 0.3rem 0.5rem;
+    color: #8f9aa6;
+    border-bottom: 1px solid #1c2535;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.67rem;
+  }
+
+  .ji-claims-table td {
+    padding: 0.3rem 0.5rem;
+    vertical-align: top;
+    border-bottom: 1px solid hsl(215 25% 11%);
+    line-height: 1.5;
+    color: #f5f9ff;
+  }
+
+  .ji-claims-table td:first-child {
+    color: #1aeb6a;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  .ji-claims-table td:nth-child(2) {
+    color: #8f9aa6;
+    white-space: nowrap;
+  }
+
+  .ji-claims-table td:last-child {
+    word-break: break-all;
+  }
+
+  .ji-claims-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ── Signature note ── */
+  .ji-sig-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    padding: 0.65rem 0.75rem;
+    border-top: 1px solid #1c2535;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.73rem;
+    color: #8f9aa6;
+    line-height: 1.55;
+    background: #0e1219;
+  }
+
+  .ji-note-icon {
+    flex-shrink: 0;
+    color: #1aeb6a;
+    font-size: 0.85rem;
+  }
+
+  /* ── Syntax colours (reuse JSON formatter palette) ── */
+  .jk { color: hsl(145 80% 55%); }
+  .js { color: hsl(195 80% 65%); }
+  .ji-n { color: hsl(30 90% 65%); }
+  .jb { color: hsl(280 70% 70%); }
+  .jnull { color: hsl(0 65% 60%); }
+
+  /* ── Copy button feedback ── */
+  .ji-copy-btn.copied {
+    color: #1aeb6a !important;
+  }
+</style>
+
+<script type="module">
+  // ── Sample JWT (HS256, expired) ──────────────────────────────────────────
+  // Header:  {"alg":"HS256","typ":"JWT"}
+  // Payload: {"iss":"https://auth.example.com","sub":"usr_9f3k2m","aud":"app.example.com",
+  //           "iat":1700000000,"exp":1700003600,"name":"Hunter Mussel",
+  //           "email":"hunter@example.com","role":"admin"}
+  // Signature: dummy (not verifiable)
+  const SAMPLE_JWT =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
+    ".eyJpc3MiOiJodHRwczovL2F1dGguZXhhbXBsZS5jb20iLCJzdWIiOiJ1c3JfOWYzazJtIiwiYXVkIjoiYXBwLmV4YW1wbGUuY29tIiwiaWF0IjoxNzAwMDAwMDAwLCJleHAiOjE3MDAwMDM2MDAsIm5hbWUiOiJIdW50ZXIgTXVzc2VsIiwiZW1haWwiOiJodW50ZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4ifQ" +
+    ".SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
+  // ── DOM refs ────────────────────────────────────────────────────────────
+  const tokenInput      = document.getElementById("tokenInput");
+  const tokenError      = document.getElementById("tokenError");
+  const tokenErrorMsg   = document.getElementById("tokenErrorMsg");
+  const resultsArea     = document.getElementById("resultsArea");
+  const expiryCard      = document.getElementById("expiryCard");
+  const expiryBadge     = document.getElementById("expiryBadge");
+  const timingGrid      = document.getElementById("timingGrid");
+  const warningsCard    = document.getElementById("warningsCard");
+  const warningsList    = document.getElementById("warningsList");
+  const headerOutput    = document.getElementById("headerOutput");
+  const payloadOutput   = document.getElementById("payloadOutput");
+  const signatureOutput = document.getElementById("signatureOutput");
+  const algBadge        = document.getElementById("algBadge");
+  const claimsBody      = document.getElementById("claimsBody");
+
+  // ── Claim registry ───────────────────────────────────────────────────────
+  const CLAIM_NAMES = {
+    iss:    "Issuer",
+    sub:    "Subject",
+    aud:    "Audience",
+    exp:    "Expiration Time",
+    nbf:    "Not Before",
+    iat:    "Issued At",
+    jti:    "JWT ID",
+    name:   "Full Name",
+    email:  "Email",
+    role:   "Role",
+    roles:  "Roles",
+    scope:  "OAuth Scopes",
+    scopes: "OAuth Scopes",
+    azp:    "Authorized Party (client_id)",
+  };
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  function decodeBase64url(str) {
+    // Normalise to standard base64
+    let b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+    // Add padding
+    while (b64.length % 4 !== 0) b64 += "=";
+    try {
+      const binary = atob(b64);
+      const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+      return new TextDecoder("utf-8").decode(bytes);
+    } catch {
+      throw new Error("Invalid Base64URL encoding");
+    }
+  }
+
+  function highlight(json) {
+    const esc = json
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    return esc.replace(
+      /("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(?:true|false)\b|\bnull\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+      (m) => {
+        if (m.startsWith('"')) {
+          return m.endsWith(":") || m.endsWith('":')
+            ? `<span class="jk">${m}</span>`
+            : `<span class="js">${m}</span>`;
+        }
+        if (m === "true" || m === "false") return `<span class="jb">${m}</span>`;
+        if (m === "null")                  return `<span class="jnull">${m}</span>`;
+        return `<span class="ji-n">${m}</span>`;
+      }
+    );
+  }
+
+  function formatAbsDate(ts) {
+    return new Date(ts * 1000).toLocaleString(undefined, {
+      year: "numeric", month: "short", day: "numeric",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      timeZoneName: "short",
+    });
+  }
+
+  function relTime(ts) {
+    const now   = Math.floor(Date.now() / 1000);
+    const delta = ts - now;
+    const abs   = Math.abs(delta);
+    const past  = delta < 0;
+
+    if (abs < 60)   return past ? `${abs}s ago`           : `in ${abs}s`;
+    if (abs < 3600) return past ? `${Math.floor(abs/60)}m ago` : `in ${Math.floor(abs/60)}m`;
+    if (abs < 86400) return past ? `${Math.floor(abs/3600)}h ago` : `in ${Math.floor(abs/3600)}h ${Math.floor((abs%3600)/60)}m`;
+    const d = Math.floor(abs/86400);
+    return past ? `${d}d ago` : `in ${d}d`;
+  }
+
+  function countdown(ts) {
+    const now   = Math.floor(Date.now() / 1000);
+    const delta = ts - now;
+    if (delta <= 0) return null; // expired
+    const h = Math.floor(delta / 3600);
+    const m = Math.floor((delta % 3600) / 60);
+    const s = delta % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function claimLabel(key) {
+    return CLAIM_NAMES[key] ?? "Custom claim";
+  }
+
+  function claimValue(key, val) {
+    if ((key === "exp" || key === "iat" || key === "nbf") && typeof val === "number") {
+      return `${val}  (${formatAbsDate(val)})`;
+    }
+    if (Array.isArray(val)) return val.join(", ");
+    if (typeof val === "object" && val !== null) return JSON.stringify(val);
+    return String(val);
+  }
+
+  // ── State ─────────────────────────────────────────────────────────────
+  let countdownInterval = null;
+  let currentExpTs      = null;
+  let currentNbfTs      = null;
+  let currentIatTs      = null;
+
+  // ── Clear state ────────────────────────────────────────────────────────
+  function clearResults() {
+    resultsArea.style.display = "none";
+    tokenError.style.display  = "none";
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+    currentExpTs = null;
+    currentNbfTs = null;
+    currentIatTs = null;
+  }
+
+  function showError(msg) {
+    clearResults();
+    tokenError.style.display = "";
+    tokenErrorMsg.textContent = msg;
+  }
+
+  // ── Timing section renderer ──────────────────────────────────────────
+  function renderTimingItem(label, ts) {
+    if (ts === undefined || ts === null) return null;
+    const div = document.createElement("div");
+    div.className = "ji-timing-item";
+    div.innerHTML = `
+      <div class="ji-timing-key">${label}</div>
+      <div class="ji-timing-abs">${formatAbsDate(ts)}</div>
+      <div class="ji-timing-rel" id="rel-${label.replace(/\s/g,'')}"></div>
+    `;
+    return div;
+  }
+
+  function updateRelTimes() {
+    const now = Math.floor(Date.now() / 1000);
+
+    if (currentIatTs !== null) {
+      const el = document.getElementById("rel-IssuedAt");
+      if (el) {
+        el.textContent = relTime(currentIatTs);
+        el.className = "ji-timing-rel";
+      }
+    }
+    if (currentNbfTs !== null) {
+      const el = document.getElementById("rel-NotBefore");
+      if (el) {
+        el.textContent = relTime(currentNbfTs);
+        el.className = "ji-timing-rel";
+      }
+    }
+    if (currentExpTs !== null) {
+      const expEl = document.getElementById("rel-ExpiresAt");
+      const cd    = countdown(currentExpTs);
+      if (expEl) {
+        if (cd) {
+          expEl.textContent = `Expires in ${cd}`;
+          expEl.className   = "ji-timing-rel valid-text";
+        } else {
+          expEl.textContent = relTime(currentExpTs);
+          expEl.className   = "ji-timing-rel expired-text";
+        }
+      }
+      // update badge
+      if (cd) {
+        expiryBadge.textContent = `Valid · ${cd}`;
+        expiryBadge.className   = "ji-badge valid";
+      } else {
+        expiryBadge.textContent = "Expired";
+        expiryBadge.className   = "ji-badge expired";
+      }
+    }
+  }
+
+  // ── Main parse & render ──────────────────────────────────────────────
+  function parseToken(raw) {
+    const token = raw.trim();
+    if (!token) { clearResults(); return; }
+
+    const parts = token.split(".");
+    if (parts.length !== 3) {
+      showError(`Invalid JWT: expected 3 parts separated by '.', got ${parts.length}.`);
+      return;
+    }
+
+    let header, payload;
+    try {
+      header = JSON.parse(decodeBase64url(parts[0]));
+    } catch (e) {
+      showError(`Failed to decode header: ${e.message}`);
+      return;
+    }
+    try {
+      payload = JSON.parse(decodeBase64url(parts[1]));
+    } catch (e) {
+      showError(`Failed to decode payload: ${e.message}`);
+      return;
+    }
+
+    // Clear previous errors / interval
+    tokenError.style.display = "none";
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+
+    // ── Header panel ─────────────────────────────────────────────────
+    const headerJson = JSON.stringify(header, null, 2);
+    headerOutput.innerHTML = highlight(headerJson);
+    algBadge.textContent   = header.alg ?? "unknown";
+
+    // ── Payload panel ────────────────────────────────────────────────
+    const payloadJson = JSON.stringify(payload, null, 2);
+    payloadOutput.innerHTML = highlight(payloadJson);
+
+    // Claims table
+    claimsBody.innerHTML = "";
+    for (const [key, val] of Object.entries(payload)) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${escHtml(key)}</td>
+        <td>${escHtml(claimLabel(key))}</td>
+        <td>${escHtml(claimValue(key, val))}</td>
+      `;
+      claimsBody.appendChild(tr);
+    }
+
+    // ── Signature panel ──────────────────────────────────────────────
+    signatureOutput.textContent = parts[2];
+
+    // ── Timing ──────────────────────────────────────────────────────
+    currentExpTs = typeof payload.exp === "number" ? payload.exp : null;
+    currentNbfTs = typeof payload.nbf === "number" ? payload.nbf : null;
+    currentIatTs = typeof payload.iat === "number" ? payload.iat : null;
+
+    timingGrid.innerHTML = "";
+    const iatItem = currentIatTs !== null ? renderTimingItem("Issued At",   currentIatTs) : null;
+    const nbfItem = currentNbfTs !== null ? renderTimingItem("Not Before",  currentNbfTs) : null;
+    const expItem = currentExpTs !== null ? renderTimingItem("Expires At",  currentExpTs) : null;
+    if (iatItem) timingGrid.appendChild(iatItem);
+    if (nbfItem) timingGrid.appendChild(nbfItem);
+    if (expItem) timingGrid.appendChild(expItem);
+
+    // Fix IDs to match what updateRelTimes expects
+    if (iatItem) {
+      const el = iatItem.querySelector(".ji-timing-rel");
+      if (el) el.id = "rel-IssuedAt";
+    }
+    if (nbfItem) {
+      const el = nbfItem.querySelector(".ji-timing-rel");
+      if (el) el.id = "rel-NotBefore";
+    }
+    if (expItem) {
+      const el = expItem.querySelector(".ji-timing-rel");
+      if (el) el.id = "rel-ExpiresAt";
+    }
+
+    if (currentExpTs === null) {
+      expiryBadge.textContent = "No Expiry";
+      expiryBadge.className   = "ji-badge noexp";
+    }
+
+    // ── Security warnings ────────────────────────────────────────────
+    const warnings = [];
+    if (header.alg === "none" || header.alg === "None") {
+      warnings.push("Algorithm is set to \"none\" — signature verification is disabled. This is a critical security vulnerability.");
+    }
+    if (currentExpTs === null) {
+      warnings.push("No expiration claim (exp) found. Tokens without an expiry never invalidate and pose a long-term security risk.");
+    } else {
+      const now = Math.floor(Date.now() / 1000);
+      if (currentExpTs < now) {
+        warnings.push("Token is expired. Do not accept or use this token.");
+      } else {
+        const lifetime = currentExpTs - (currentIatTs ?? now);
+        if (lifetime > 365 * 24 * 3600) {
+          warnings.push("Token lifetime exceeds 1 year. Consider using short-lived tokens (e.g. 1 hour) with refresh token rotation.");
+        }
+      }
+    }
+
+    warningsList.innerHTML = "";
+    if (warnings.length > 0) {
+      warnings.forEach((w) => {
+        const li = document.createElement("li");
+        li.textContent = w;
+        warningsList.appendChild(li);
+      });
+      warningsCard.style.display = "";
+    } else {
+      warningsCard.style.display = "none";
+    }
+
+    // Show results
+    resultsArea.style.display = "";
+    updateRelTimes();
+
+    // Start countdown if exp exists
+    if (currentExpTs !== null) {
+      countdownInterval = setInterval(updateRelTimes, 1000);
+    }
+  }
+
+  // ── Escape HTML ───────────────────────────────────────────────────────
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  // ── Copy buttons ─────────────────────────────────────────────────────
+  document.querySelectorAll(".ji-copy-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const targetId = btn.getAttribute("data-target");
+      const el = document.getElementById(targetId);
+      if (!el) return;
+      try {
+        await navigator.clipboard.writeText(el.textContent || "");
+        btn.textContent = "Copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = "Copy";
+          btn.classList.remove("copied");
+        }, 1500);
+      } catch {
+        btn.textContent = "Failed";
+        setTimeout(() => { btn.textContent = "Copy"; }, 1500);
+      }
+    });
+  });
+
+  // ── Sample / Clear ──────────────────────────────────────────────────
+  document.getElementById("loadSampleBtn").addEventListener("click", () => {
+    tokenInput.value = SAMPLE_JWT;
+    parseToken(SAMPLE_JWT);
+  });
+
+  document.getElementById("clearTokenBtn").addEventListener("click", () => {
+    tokenInput.value = "";
+    clearResults();
+  });
+
+  // ── Live parse on input ─────────────────────────────────────────────
+  tokenInput.addEventListener("input", () => {
+    parseToken(tokenInput.value);
+  });
+</script>

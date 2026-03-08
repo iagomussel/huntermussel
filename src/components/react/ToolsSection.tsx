@@ -7,6 +7,9 @@ import {
   FileText,
   ChartBar,
   ScrollText,
+  Lock,
+  Clock,
+  GitCompare,
 } from "lucide-react";
 
 const tools = [
@@ -58,6 +61,27 @@ const tools = [
     slug: "log-viewer",
     category: "devops",
     description: "Parse, filter, and inspect structured log files directly in the browser.",
+  },
+  {
+    icon: Lock,
+    title: "JWT Inspector",
+    slug: "jwt-inspector",
+    category: "security",
+    description: "Decode JWT tokens, inspect claims, and get live expiry countdown with security warnings.",
+  },
+  {
+    icon: Clock,
+    title: "Cron Parser",
+    slug: "cron-parser",
+    category: "devops",
+    description: "Translate cron expressions into plain English and preview next scheduled run times.",
+  },
+  {
+    icon: GitCompare,
+    title: "Diff Viewer",
+    slug: "diff-viewer",
+    category: "text",
+    description: "Compare two texts side-by-side or unified — added, removed, and unchanged lines highlighted.",
   },
 ];
 

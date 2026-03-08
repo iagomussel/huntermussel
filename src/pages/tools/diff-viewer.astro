@@ -1,0 +1,877 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Diff Viewer | HunterMussel Tools"
+  description="Paste two texts and see exactly what changed — line by line, with side-by-side or unified view. Runs entirely in your browser."
+  canonicalPath="/tools/diff-viewer/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / text</p>
+      <h1>Diff Viewer</h1>
+      <p class="lead">
+        Paste two texts and see exactly what changed — line by line, with
+        side-by-side or unified view.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <!-- Toolbar -->
+    <div class="dv-toolbar card">
+      <div class="dv-opts">
+        <!-- View toggle -->
+        <div class="dv-seg" id="viewToggle" role="group" aria-label="View mode">
+          <button class="dv-seg-btn active" data-view="side" type="button">Side by Side</button>
+          <button class="dv-seg-btn" data-view="unified" type="button">Unified</button>
+        </div>
+
+        <label class="dv-check">
+          <input id="ignoreWs" type="checkbox" />
+          <span>Ignore whitespace</span>
+        </label>
+
+        <label class="dv-check">
+          <input id="showLineNums" type="checkbox" checked />
+          <span>Show line numbers</span>
+        </label>
+      </div>
+
+      <div class="dv-right">
+        <span id="diffStats" class="dv-stats"></span>
+        <div class="actions">
+          <button id="sampleBtn" type="button" class="secondary">Load sample</button>
+          <button id="compareBtn" type="button">Compare</button>
+          <button id="copyDiffBtn" type="button" class="secondary">Copy diff</button>
+          <button id="downloadBtn" type="button" class="secondary">Download .diff</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input panels -->
+    <div class="dv-inputs" id="inputArea">
+      <div class="dv-input-panel card">
+        <div class="dv-panel-head">
+          <span>Original</span>
+          <span id="origLines" class="dv-linecount"></span>
+        </div>
+        <div class="dv-ta-wrap">
+          <div class="dv-ta-nums" id="origNums" aria-hidden="true"></div>
+          <textarea
+            id="origInput"
+            class="dv-textarea"
+            spellcheck="false"
+            placeholder="Paste original text here..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="dv-input-panel card">
+        <div class="dv-panel-head">
+          <span>Modified</span>
+          <span id="modLines" class="dv-linecount"></span>
+        </div>
+        <div class="dv-ta-wrap">
+          <div class="dv-ta-nums" id="modNums" aria-hidden="true"></div>
+          <textarea
+            id="modInput"
+            class="dv-textarea"
+            spellcheck="false"
+            placeholder="Paste modified text here..."
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Diff output -->
+    <div id="diffOutput" class="dv-output-area" style="display:none">
+      <!-- Side-by-side view -->
+      <div id="sideView" class="dv-side-view">
+        <div class="dv-diff-panel card">
+          <div class="dv-panel-head"><span>Original</span></div>
+          <div class="dv-diff-scroll" id="leftScroll">
+            <div class="dv-diff-lines" id="leftLines"></div>
+          </div>
+        </div>
+        <div class="dv-diff-panel card">
+          <div class="dv-panel-head"><span>Modified</span></div>
+          <div class="dv-diff-scroll" id="rightScroll">
+            <div class="dv-diff-lines" id="rightLines"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unified view -->
+      <div id="unifiedView" class="dv-unified-view" style="display:none">
+        <div class="card dv-unified-card">
+          <div class="dv-panel-head"><span>Unified Diff</span></div>
+          <div class="dv-diff-scroll">
+            <div class="dv-diff-lines" id="unifiedLines"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="article">
+      <article class="card">
+        <h2>LCS-Based Diff Algorithm</h2>
+        <p>
+          Uses a Longest Common Subsequence dynamic-programming approach to
+          compute the minimal edit distance between two texts. For inputs up to
+          500 lines each, produces a precise, minimal diff. Larger inputs fall
+          back to a simpler deleted/inserted split.
+        </p>
+      </article>
+      <article class="card">
+        <h2>View Modes</h2>
+        <p>
+          <strong>Side by side</strong> renders deletions on the left panel
+          and insertions on the right — equal lines appear in both. <strong
+            >Unified</strong
+          > shows the classic <code>-</code> / <code>+</code> diff format in a
+          single scrollable panel, ideal for copying or sharing.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Paste original text in the left textarea and modified text in the right.</li>
+          <li>The diff runs automatically (300 ms debounce) or click <strong>Compare</strong>.</li>
+          <li>Toggle <strong>Ignore whitespace</strong> to skip indentation-only changes.</li>
+          <li>Use <strong>Copy diff</strong> or <strong>Download .diff</strong> to share results.</li>
+          <li>Click <strong>Load sample</strong> to see an example diff instantly.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /* ── Toolbar ── */
+  .dv-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .dv-opts {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .dv-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  /* Segmented control */
+  .dv-seg {
+    display: flex;
+    border: 1px solid #1c2535;
+    border-radius: 0.45rem;
+    overflow: hidden;
+  }
+
+  .dv-seg-btn {
+    background: #131821;
+    color: #8f9aa6;
+    border: none;
+    padding: 0.35rem 0.85rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border-radius: 0;
+    outline: none;
+  }
+
+  .dv-seg-btn:not(:last-child) {
+    border-right: 1px solid #1c2535;
+  }
+
+  .dv-seg-btn.active {
+    background: #1aeb6a1a;
+    color: #1aeb6a;
+  }
+
+  .dv-seg-btn:hover:not(.active) {
+    background: #0e1219;
+    color: #f5f9ff;
+  }
+
+  /* Checkbox options */
+  .dv-check {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: #8f9aa6;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .dv-check input {
+    width: auto;
+    accent-color: #1aeb6a;
+    cursor: pointer;
+  }
+
+  .dv-stats {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.74rem;
+    color: #8f9aa6;
+    white-space: nowrap;
+  }
+
+  /* ── Input area ── */
+  .dv-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (max-width: 780px) {
+    .dv-inputs { grid-template-columns: 1fr; }
+    .dv-toolbar { flex-direction: column; align-items: flex-start; }
+    .dv-right { width: 100%; justify-content: flex-start; }
+  }
+
+  .dv-input-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    min-height: 260px;
+  }
+
+  .dv-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid #1c2535;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8f9aa6;
+    background: #131821;
+    flex-shrink: 0;
+  }
+
+  .dv-linecount {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    color: #1aeb6a;
+  }
+
+  .dv-ta-wrap {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background: #131821;
+  }
+
+  .dv-ta-nums {
+    flex-shrink: 0;
+    padding: 0.65rem 0.5rem 0.65rem 0.65rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: #8f9aa6;
+    background: #0e1219;
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid #1c2535;
+    min-width: 2.2rem;
+    white-space: pre;
+    overflow: hidden;
+  }
+
+  .dv-textarea {
+    flex: 1;
+    resize: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #131821 !important;
+    color: #f5f9ff !important;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.8rem !important;
+    line-height: 1.55 !important;
+    padding: 0.65rem 0.75rem !important;
+    min-height: 220px;
+    tab-size: 2;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: border-color 0.15s !important;
+  }
+
+  .dv-textarea:focus {
+    outline: none !important;
+    box-shadow: inset 0 0 0 2px #1aeb6a33 !important;
+    border: none !important;
+  }
+
+  /* ── Output area ── */
+  .dv-output-area {
+    margin-bottom: 1.4rem;
+  }
+
+  .dv-side-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 780px) {
+    .dv-side-view { grid-template-columns: 1fr; }
+  }
+
+  .dv-unified-card {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .dv-diff-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    min-height: 200px;
+  }
+
+  .dv-diff-scroll {
+    overflow: auto;
+    flex: 1;
+  }
+
+  .dv-diff-lines {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    white-space: pre;
+  }
+
+  /* ── Diff line types ── */
+  .dv-line {
+    display: flex;
+    align-items: stretch;
+    min-width: max-content;
+  }
+
+  .dv-line-num {
+    flex-shrink: 0;
+    width: 3rem;
+    padding: 0 0.5rem;
+    background: #0e1219;
+    color: #8f9aa6;
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid #1c2535;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .dv-line-num.hidden {
+    visibility: hidden;
+  }
+
+  .dv-line-text {
+    flex: 1;
+    padding: 0 0.65rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .dv-line.equal .dv-line-text {
+    color: #f5f9ff;
+  }
+
+  .dv-line.del {
+    background: rgba(239, 68, 68, 0.15);
+    border-left: 3px solid #ef4444;
+  }
+
+  .dv-line.del .dv-line-num {
+    background: rgba(239, 68, 68, 0.08);
+    color: #ef9898;
+  }
+
+  .dv-line.del .dv-line-text {
+    color: #fca5a5;
+  }
+
+  .dv-line.ins {
+    background: rgba(26, 235, 106, 0.12);
+    border-left: 3px solid #1aeb6a;
+  }
+
+  .dv-line.ins .dv-line-num {
+    background: rgba(26, 235, 106, 0.06);
+    color: #6ef5a8;
+  }
+
+  .dv-line.ins .dv-line-text {
+    color: #a7f3c9;
+  }
+
+  .dv-line.placeholder {
+    background: #0a0d14;
+    border-left: 3px solid transparent;
+  }
+
+  .dv-line.placeholder .dv-line-text {
+    color: transparent;
+    user-select: none;
+  }
+
+  /* Unified prefix character */
+  .dv-prefix {
+    flex-shrink: 0;
+    width: 1.4rem;
+    padding: 0 0.1rem 0 0.45rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+  }
+
+  .dv-line.del .dv-prefix { color: #ef4444; }
+  .dv-line.ins .dv-prefix { color: #1aeb6a; }
+  .dv-line.equal .dv-prefix { color: #3a4a5a; }
+  .dv-line.placeholder .dv-prefix { color: transparent; }
+
+  /* Unified: two line number columns */
+  .dv-line-num-a,
+  .dv-line-num-b {
+    flex-shrink: 0;
+    width: 2.6rem;
+    padding: 0 0.4rem;
+    background: #0e1219;
+    color: #8f9aa6;
+    text-align: right;
+    user-select: none;
+    font-size: 0.72rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .dv-line-num-a {
+    border-right: 1px solid #1c2535;
+  }
+
+  .dv-line-num-b {
+    border-right: 1px solid #1c2535;
+  }
+
+  .dv-line-num-a.hidden,
+  .dv-line-num-b.hidden {
+    visibility: hidden;
+  }
+
+  /* No line numbers mode */
+  .no-linenums .dv-line-num,
+  .no-linenums .dv-line-num-a,
+  .no-linenums .dv-line-num-b {
+    display: none;
+  }
+</style>
+
+<script type="module">
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  const $ = (id) => document.getElementById(id);
+
+  function esc(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function getLines(str) {
+    return str === "" ? [] : str.split("\n");
+  }
+
+  // ── LCS-based diff ─────────────────────────────────────────────────────────
+  function computeDiff(aLines, bLines, ignoreWs) {
+    const normalize = ignoreWs ? (s) => s.trim() : (s) => s;
+    const aNorm = aLines.map(normalize);
+    const bNorm = bLines.map(normalize);
+    const m = aLines.length;
+    const n = bLines.length;
+
+    const MAX = 500;
+    if (m > MAX || n > MAX) {
+      return [
+        ...aLines.map((line) => ({ type: "delete", text: line })),
+        ...bLines.map((line) => ({ type: "insert", text: line })),
+      ];
+    }
+
+    const dp = [];
+    for (let i = 0; i <= m; i++) {
+      dp[i] = new Array(n + 1).fill(0);
+    }
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        dp[i][j] =
+          aNorm[i - 1] === bNorm[j - 1]
+            ? dp[i - 1][j - 1] + 1
+            : Math.max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+
+    // Backtrack
+    const result = [];
+    let i = m,
+      j = n;
+    while (i > 0 || j > 0) {
+      if (i > 0 && j > 0 && aNorm[i - 1] === bNorm[j - 1]) {
+        result.unshift({
+          type: "equal",
+          text: aLines[i - 1],
+          lineA: i,
+          lineB: j,
+        });
+        i--;
+        j--;
+      } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+        result.unshift({ type: "insert", text: bLines[j - 1], lineB: j });
+        j--;
+      } else {
+        result.unshift({ type: "delete", text: aLines[i - 1], lineA: i });
+        i--;
+      }
+    }
+    return result;
+  }
+
+  // ── Render helpers ─────────────────────────────────────────────────────────
+  function makeLine(cls, numHtml, textContent, prefix = null) {
+    const lineNumEl = numHtml;
+    const textEl = `<span class="dv-line-text">${esc(textContent)}</span>`;
+    const prefixEl =
+      prefix !== null
+        ? `<span class="dv-prefix">${esc(prefix)}</span>`
+        : "";
+    return `<div class="dv-line ${cls}">${lineNumEl}${prefixEl}${textEl}</div>`;
+  }
+
+  function numSpan(cls, n, hidden = false) {
+    return `<span class="dv-line-num ${cls}${hidden ? " hidden" : ""}">${hidden ? "" : n}</span>`;
+  }
+
+  function numSpanAB(clsA, nA, hiddenA, clsB, nB, hiddenB) {
+    const a = `<span class="dv-line-num-a ${clsA}${hiddenA ? " hidden" : ""}">${hiddenA ? "" : nA}</span>`;
+    const b = `<span class="dv-line-num-b ${clsB}${hiddenB ? " hidden" : ""}">${hiddenB ? "" : nB}</span>`;
+    return a + b;
+  }
+
+  // ── Side-by-side render ────────────────────────────────────────────────────
+  function renderSide(diff) {
+    const leftLines = [];
+    const rightLines = [];
+
+    for (const entry of diff) {
+      if (entry.type === "equal") {
+        leftLines.push({ type: "equal", text: entry.text, lineA: entry.lineA });
+        rightLines.push({ type: "equal", text: entry.text, lineB: entry.lineB });
+      } else if (entry.type === "delete") {
+        leftLines.push({ type: "del", text: entry.text, lineA: entry.lineA });
+        rightLines.push({ type: "placeholder", text: " " });
+      } else {
+        leftLines.push({ type: "placeholder", text: " " });
+        rightLines.push({ type: "ins", text: entry.text, lineB: entry.lineB });
+      }
+    }
+
+    function buildSide(lines) {
+      return lines
+        .map((l) => {
+          const num =
+            l.lineA != null
+              ? numSpan("", l.lineA)
+              : l.lineB != null
+              ? numSpan("", l.lineB)
+              : numSpan("", "", true);
+          return makeLine(l.type, num, l.text);
+        })
+        .join("");
+    }
+
+    $("leftLines").innerHTML = buildSide(leftLines);
+    $("rightLines").innerHTML = buildSide(rightLines);
+  }
+
+  // ── Unified render ─────────────────────────────────────────────────────────
+  function renderUnified(diff) {
+    const html = diff
+      .map((entry) => {
+        if (entry.type === "equal") {
+          const nums = numSpanAB("", entry.lineA, false, "", entry.lineB, false);
+          return makeLine("equal", nums, entry.text, " ");
+        } else if (entry.type === "delete") {
+          const nums = numSpanAB("", entry.lineA, false, "", "", true);
+          return makeLine("del", nums, entry.text, "-");
+        } else {
+          const nums = numSpanAB("", "", true, "", entry.lineB, false);
+          return makeLine("ins", nums, entry.text, "+");
+        }
+      })
+      .join("");
+
+    $("unifiedLines").innerHTML = html;
+  }
+
+  // ── Stats ──────────────────────────────────────────────────────────────────
+  function calcStats(diff) {
+    let added = 0, removed = 0, unchanged = 0;
+    for (const e of diff) {
+      if (e.type === "insert") added++;
+      else if (e.type === "delete") removed++;
+      else unchanged++;
+    }
+    return { added, removed, unchanged };
+  }
+
+  // ── Unified diff text (for copy / download) ────────────────────────────────
+  function buildUnifiedText(diff) {
+    return diff
+      .map((e) => {
+        if (e.type === "equal") return "  " + e.text;
+        if (e.type === "delete") return "- " + e.text;
+        return "+ " + e.text;
+      })
+      .join("\n");
+  }
+
+  // ── Input line numbers ─────────────────────────────────────────────────────
+  function updateLineNums(textarea, numsEl, countEl) {
+    const lines = textarea.value.split("\n");
+    numsEl.textContent = lines.map((_, i) => i + 1).join("\n");
+    countEl.textContent = `${lines.length} line${lines.length !== 1 ? "s" : ""}`;
+    // Sync scroll
+    numsEl.scrollTop = textarea.scrollTop;
+  }
+
+  function syncScroll(textarea, numsEl) {
+    numsEl.scrollTop = textarea.scrollTop;
+  }
+
+  // ── Main diff runner ───────────────────────────────────────────────────────
+  let lastDiff = [];
+
+  function runDiff() {
+    const origText = $("origInput").value;
+    const modText = $("modInput").value;
+    const ignoreWs = $("ignoreWs").checked;
+
+    if (!origText && !modText) {
+      $("diffOutput").style.display = "none";
+      $("diffStats").textContent = "";
+      return;
+    }
+
+    const aLines = getLines(origText);
+    const bLines = getLines(modText);
+    const diff = computeDiff(aLines, bLines, ignoreWs);
+    lastDiff = diff;
+
+    const stats = calcStats(diff);
+    $("diffStats").textContent =
+      `+${stats.added} added  −${stats.removed} removed  ${stats.unchanged} unchanged`;
+
+    renderSide(diff);
+    renderUnified(diff);
+
+    $("diffOutput").style.display = "";
+    applyLineNumVisibility();
+  }
+
+  // ── Line number visibility ─────────────────────────────────────────────────
+  function applyLineNumVisibility() {
+    const show = $("showLineNums").checked;
+    [$("leftLines"), $("rightLines"), $("unifiedLines")].forEach((el) => {
+      if (show) el.classList.remove("no-linenums");
+      else el.classList.add("no-linenums");
+    });
+  }
+
+  // ── View mode ─────────────────────────────────────────────────────────────
+  let currentView = "side";
+
+  function setView(view) {
+    currentView = view;
+    document.querySelectorAll(".dv-seg-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.view === view);
+    });
+    $("sideView").style.display = view === "side" ? "" : "none";
+    $("unifiedView").style.display = view === "unified" ? "" : "none";
+  }
+
+  // ── Debounce ───────────────────────────────────────────────────────────────
+  let debounceTimer = null;
+  function debouncedDiff() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(runDiff, 300);
+  }
+
+  // ── Sync side-by-side scroll ───────────────────────────────────────────────
+  let syncingScroll = false;
+  function syncSideScroll(source, target) {
+    if (syncingScroll) return;
+    syncingScroll = true;
+    target.scrollTop = source.scrollTop;
+    syncingScroll = false;
+  }
+
+  // ── Sample data ────────────────────────────────────────────────────────────
+  const SAMPLE_ORIGINAL = `{
+  "name": "api-gateway",
+  "version": "2.1.0",
+  "description": "Central API gateway for microservices",
+  "port": 3000,
+  "timeout": 5000,
+  "retries": 3,
+  "auth": {
+    "provider": "jwt",
+    "secret": "change-me-in-production",
+    "expiresIn": "1h"
+  },
+  "rateLimit": {
+    "enabled": false,
+    "maxRequests": 100,
+    "windowMs": 60000
+  },
+  "logging": {
+    "level": "info",
+    "format": "text"
+  },
+  "upstream": [
+    "http://service-a:4001",
+    "http://service-b:4002"
+  ]
+}`;
+
+  const SAMPLE_MODIFIED = `{
+  "name": "api-gateway",
+  "version": "2.2.0",
+  "description": "Central API gateway for microservices",
+  "port": 8080,
+  "timeout": 8000,
+  "retries": 5,
+  "auth": {
+    "provider": "oauth2",
+    "secret": "change-me-in-production",
+    "expiresIn": "2h",
+    "issuer": "https://auth.example.com"
+  },
+  "rateLimit": {
+    "enabled": true,
+    "maxRequests": 200,
+    "windowMs": 60000
+  },
+  "logging": {
+    "level": "warn",
+    "format": "json",
+    "destination": "stdout"
+  },
+  "upstream": [
+    "http://service-a:4001",
+    "http://service-b:4002",
+    "http://service-c:4003"
+  ],
+  "healthCheck": {
+    "path": "/healthz",
+    "intervalMs": 30000
+  }
+}`;
+
+  // ── Event wiring ───────────────────────────────────────────────────────────
+  const origInput = $("origInput");
+  const modInput = $("modInput");
+  const origNums = $("origNums");
+  const modNums = $("modNums");
+  const origLines = $("origLines");
+  const modLines = $("modLines");
+
+  origInput.addEventListener("input", () => {
+    updateLineNums(origInput, origNums, origLines);
+    debouncedDiff();
+  });
+
+  modInput.addEventListener("input", () => {
+    updateLineNums(modInput, modNums, modLines);
+    debouncedDiff();
+  });
+
+  origInput.addEventListener("scroll", () => syncScroll(origInput, origNums));
+  modInput.addEventListener("scroll", () => syncScroll(modInput, modNums));
+
+  $("leftScroll").addEventListener("scroll", (e) =>
+    syncSideScroll(e.currentTarget, $("rightScroll"))
+  );
+  $("rightScroll").addEventListener("scroll", (e) =>
+    syncSideScroll(e.currentTarget, $("leftScroll"))
+  );
+
+  $("compareBtn").addEventListener("click", runDiff);
+
+  $("ignoreWs").addEventListener("change", runDiff);
+
+  $("showLineNums").addEventListener("change", applyLineNumVisibility);
+
+  document.querySelectorAll(".dv-seg-btn").forEach((btn) => {
+    btn.addEventListener("click", () => setView(btn.dataset.view));
+  });
+
+  $("sampleBtn").addEventListener("click", () => {
+    origInput.value = SAMPLE_ORIGINAL;
+    modInput.value = SAMPLE_MODIFIED;
+    updateLineNums(origInput, origNums, origLines);
+    updateLineNums(modInput, modNums, modLines);
+    runDiff();
+  });
+
+  $("copyDiffBtn").addEventListener("click", async () => {
+    if (!lastDiff.length) return;
+    const text = buildUnifiedText(lastDiff);
+    await navigator.clipboard.writeText(text);
+    const btn = $("copyDiffBtn");
+    const orig = btn.textContent;
+    btn.textContent = "Copied!";
+    setTimeout(() => (btn.textContent = orig), 1800);
+  });
+
+  $("downloadBtn").addEventListener("click", () => {
+    if (!lastDiff.length) return;
+    const text = buildUnifiedText(lastDiff);
+    const blob = new Blob([text], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "changes.diff";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  });
+
+  // Init line num state
+  updateLineNums(origInput, origNums, origLines);
+  updateLineNums(modInput, modNums, modLines);
+  setView("side");
+  applyLineNumVisibility();
+</script>
