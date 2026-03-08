@@ -81,6 +81,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <span class="cp-desc-icon">&#9632;</span>
       <span id="cp-description" class="cp-desc-text">Every minute</span>
     </div>
+    <div id="cp-nonstandard-row" class="cp-nonstandard-row" style="display:none">
+      <span class="cp-ns-icon">⚠</span>
+      <span>Non-standard <code>start/step</code> notation — may not work in all cron implementations (works in Quartz, AWS, Spring).</span>
+    </div>
     <div id="cp-error-row" class="cp-error-row card" style="display:none">
       <span class="cp-err-icon">&#x2715;</span>
       <span id="cp-error-msg" class="cp-err-text"></span>
@@ -130,7 +134,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
               <td>Minute</td>
               <td>1st</td>
               <td>0–59</td>
-              <td rowspan="5"><code>*</code> any &nbsp; <code>,</code> list &nbsp; <code>-</code> range &nbsp; <code>/</code> step</td>
+              <td rowspan="5"><code>*</code> any &nbsp; <code>,</code> list &nbsp; <code>-</code> range &nbsp; <code>/</code> step &nbsp; <code>N/S</code> start/step</td>
             </tr>
             <tr>
               <td>Hour</td>
@@ -159,6 +163,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <p><code>0 8-18 * * 1-5</code> — every hour from 8am to 6pm on weekdays</p>
           <p><code>30 6 1,15 * *</code> — at 06:30 on the 1st and 15th of every month</p>
           <p><code>0 0 * 1,7 *</code> — at midnight every day in January and July</p>
+          <p><code>0/2 1/1 * * *</code> — every 2nd minute from 0, every hour from 1 (non-standard)</p>
+          <p><code>@hourly</code> &nbsp; <code>@daily</code> &nbsp; <code>@weekly</code> &nbsp; <code>@monthly</code> &nbsp; <code>@yearly</code> — shorthand aliases</p>
         </div>
       </div>
     </details>
@@ -330,6 +336,30 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     color: #f5f9ff;
     letter-spacing: 0.02em;
   }
+
+  /* ── Non-standard warning ── */
+  .cp-nonstandard-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.75rem;
+    background: rgba(245,158,11,0.07);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-left: 3px solid #f59e0b;
+    border-radius: 0.5rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: #d4a017;
+    line-height: 1.5;
+  }
+  .cp-nonstandard-row code {
+    background: rgba(245,158,11,0.15);
+    color: #f59e0b;
+    padding: 0.05rem 0.3rem;
+    border-radius: 0.2rem;
+  }
+  .cp-ns-icon { font-size: 0.9rem; flex-shrink: 0; }
 
   /* ── Error row ── */
   .cp-error-row {
@@ -601,41 +631,75 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
 <script type="module">
   // ── Constants ──────────────────────────────────────────────
-  const WEEKDAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const MONTH_NAMES = [
-    "", "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+  const WEEKDAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const MONTH_NAMES = ["","January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  // @-shorthand aliases → canonical 5-field expressions
+  const ALIASES = {
+    "@yearly":   "0 0 1 1 *",
+    "@annually": "0 0 1 1 *",
+    "@monthly":  "0 0 1 * *",
+    "@weekly":   "0 0 * * 0",
+    "@daily":    "0 0 * * *",
+    "@midnight": "0 0 * * *",
+    "@hourly":   "0 * * * *",
+  };
 
   // ── Field parsing ──────────────────────────────────────────
+  // Returns null (= "all"), or sorted array of valid integers.
+  // Supports: *, N, N-M, */S, N/S, N-M/S, lists with commas.
   function expandField(field, min, max) {
-    if (field === "*") return null; // null means "all"
+    if (field === "*") return null;
     const values = new Set();
     for (const part of field.split(",")) {
       if (part.includes("/")) {
-        const [range, step] = part.split("/");
-        const stepN = parseInt(step);
-        if (isNaN(stepN) || stepN <= 0) throw new Error(`Invalid step: ${step}`);
-        const [start, end] =
-          range === "*" ? [min, max] : range.split("-").map(Number);
-        for (let i = range === "*" ? min : start; i <= (end !== undefined ? end : max); i += stepN) {
-          values.add(i);
+        const slashIdx = part.indexOf("/");
+        const rangeStr = part.slice(0, slashIdx);
+        const stepN = parseInt(part.slice(slashIdx + 1));
+        if (isNaN(stepN) || stepN <= 0) throw new Error(`Invalid step in "${part}"`);
+
+        let start, end;
+        if (rangeStr === "*") {
+          start = min; end = max;
+        } else if (rangeStr.includes("-")) {
+          [start, end] = rangeStr.split("-").map(Number);
+        } else {
+          // N/S → start=N, end=max (the non-standard "start/step" form)
+          start = parseInt(rangeStr);
+          end = max;
         }
+        if (isNaN(start) || isNaN(end)) throw new Error(`Invalid range in "${part}"`);
+        for (let i = start; i <= end; i += stepN) values.add(i);
       } else if (part.includes("-")) {
         const [a, b] = part.split("-").map(Number);
-        if (isNaN(a) || isNaN(b) || a > b) throw new Error(`Invalid range: ${part}`);
+        if (isNaN(a) || isNaN(b) || a > b) throw new Error(`Invalid range "${part}"`);
         for (let i = a; i <= b; i++) values.add(i);
       } else {
         const n = parseInt(part);
-        if (isNaN(n)) throw new Error(`Invalid value: ${part}`);
+        if (isNaN(n)) throw new Error(`Invalid value "${part}"`);
         values.add(n);
       }
     }
-    // Validate all values are within bounds
     for (const v of values) {
       if (v < min || v > max) throw new Error(`Value ${v} out of range ${min}–${max}`);
     }
     return [...values].sort((a, b) => a - b);
+  }
+
+  // Detect if any field uses the non-standard N/S notation
+  function hasStartStep(expr) {
+    return expr.trim().split(/\s+/).some(f =>
+      f.split(",").some(p => {
+        if (!p.includes("/")) return false;
+        const base = p.split("/")[0];
+        return base !== "*" && !base.includes("-");
+      })
+    );
+  }
+
+  function resolveExpr(raw) {
+    const lower = raw.trim().toLowerCase();
+    return ALIASES[lower] || raw.trim();
   }
 
   function validateAndParse(expr) {
@@ -644,47 +708,38 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     const [mf, hf, domf, monthf, dowf] = parts;
     return {
       mf, hf, domf, monthf, dowf,
-      mins: expandField(mf, 0, 59),
-      hours: expandField(hf, 0, 23),
-      doms: expandField(domf, 1, 31),
-      months: expandField(monthf, 1, 12),
-      dows: expandField(dowf, 0, 6),
+      mins:   expandField(mf,     0,  59),
+      hours:  expandField(hf,     0,  23),
+      doms:   expandField(domf,   1,  31),
+      months: expandField(monthf, 1,  12),
+      dows:   expandField(dowf,   0,   6),
     };
   }
 
   // ── Next run times ─────────────────────────────────────────
   function getNextRuns(expr, count) {
     const { mf, hf, domf, dowf, mins, hours, doms, months, dows } = validateAndParse(expr);
-
     const domStar = domf === "*";
     const dowStar = dowf === "*";
 
     const results = [];
-    let dt = new Date();
+    const dt = new Date();
     dt.setSeconds(0, 0);
     dt.setMinutes(dt.getMinutes() + 1);
 
     let iters = 0;
     while (results.length < count && iters < 525600) {
-      const m = dt.getMinutes();
-      const h = dt.getHours();
-      const dom = dt.getDate();
-      const month = dt.getMonth() + 1;
-      const dow = dt.getDay();
-
-      const monthOk = !months || months.includes(month);
-      const hourOk = !hours || hours.includes(h);
-      const minOk = !mins || mins.includes(m);
-
+      const monthOk = !months || months.includes(dt.getMonth() + 1);
+      const hourOk  = !hours  || hours.includes(dt.getHours());
+      const minOk   = !mins   || mins.includes(dt.getMinutes());
+      const dom = dt.getDate(), dow = dt.getDay();
       let dayOk;
-      if (domStar && dowStar) dayOk = true;
-      else if (domStar) dayOk = !dows || dows.includes(dow);
-      else if (dowStar) dayOk = !doms || doms.includes(dom);
-      else dayOk = (doms && doms.includes(dom)) || (dows && dows.includes(dow));
+      if (domStar && dowStar)  dayOk = true;
+      else if (domStar)        dayOk = !dows || dows.includes(dow);
+      else if (dowStar)        dayOk = !doms || doms.includes(dom);
+      else                     dayOk = (doms?.includes(dom)) || (dows?.includes(dow));
 
-      if (monthOk && dayOk && hourOk && minOk) {
-        results.push(new Date(dt));
-      }
+      if (monthOk && dayOk && hourOk && minOk) results.push(new Date(dt));
       dt.setMinutes(dt.getMinutes() + 1);
       iters++;
     }
@@ -692,199 +747,210 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   }
 
   // ── Human-readable description ─────────────────────────────
-  function ordinal(n) {
-    const s = ["th", "st", "nd", "rd"];
+  function nthSuffix(n) {
     const v = n % 100;
-    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    if (v >= 11 && v <= 13) return n + "th";
+    switch (n % 10) { case 1: return n+"st"; case 2: return n+"nd"; case 3: return n+"rd"; default: return n+"th"; }
   }
 
-  function padTime(h, m) {
-    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  function pad2(n) { return String(n).padStart(2,"0"); }
+
+  // Describe a single cron field part (handles *, N, N-M, */S, N/S, N-M/S)
+  function descPart(p, singular, names, max) {
+    if (p === "*") return `every ${singular}`;
+    if (p.includes("/")) {
+      const si = p.indexOf("/");
+      const base = p.slice(0, si);
+      const step = parseInt(p.slice(si + 1));
+      const nth = nthSuffix(step);
+      if (base === "*") {
+        return step === 1 ? `every ${singular}` : `every ${nth} ${singular}`;
+      }
+      // N-M/S or N/S
+      const [start, end] = base.includes("-") ? base.split("-").map(Number) : [parseInt(base), max];
+      const label = names ? `${singular} from ${names[start]||start} through ${names[end]||end}` : `${singular} from ${start} through ${end}`;
+      return step === 1 ? `every ${label}` : `every ${nth} ${label}`;
+    }
+    if (p.includes("-")) {
+      const [a, b] = p.split("-").map(Number);
+      const na = names ? names[a]||a : a;
+      const nb = names ? names[b]||b : b;
+      return names
+        ? `every ${singular} from ${na} through ${nb}`
+        : `${na} through ${nb}`;
+    }
+    const n = parseInt(p);
+    return names ? (names[n] || String(n)) : String(n);
   }
 
-  function describe(expr) {
-    const parts = expr.trim().split(/\s+/);
+  // Per-field wrappers that handle comma lists
+  function descMin(f) {
+    if (f === "*") return null; // handled at sentence level
+    return f.split(",").map(p => descPart(p, "minute", null, 59)).join(" and ");
+  }
+  function descHour(f) {
+    if (f === "*") return null;
+    return f.split(",").map(p => descPart(p, "hour", null, 23)).join(" and ");
+  }
+  function descDom(f) {
+    if (f === "*") return null;
+    return f.split(",").map(p => descPart(p, "day-of-month", null, 31)).join(" and ");
+  }
+  function descMonth(f) {
+    if (f === "*") return null;
+    return f.split(",").map(p => descPart(p, "month", MONTH_NAMES, 12)).join(" and ");
+  }
+  function descDow(f) {
+    if (f === "*") return null;
+    return f.split(",").map(p => descPart(p, "day-of-week", WEEKDAY_NAMES, 6)).join(" and ");
+  }
+
+  function describe(rawExpr) {
+    const lower = rawExpr.trim().toLowerCase();
+    if (lower === "@yearly" || lower === "@annually") return "At midnight on January 1st (once a year).";
+    if (lower === "@monthly")  return "At midnight on the 1st of every month.";
+    if (lower === "@weekly")   return "At midnight every Sunday.";
+    if (lower === "@daily" || lower === "@midnight") return "Every day at midnight.";
+    if (lower === "@hourly")   return "Every hour, on the hour.";
+    if (lower === "@reboot")   return "At system reboot.";
+
+    const expr = resolveExpr(rawExpr);
+    const parts = expr.split(/\s+/);
     if (parts.length !== 5) return "Invalid expression";
     const [mf, hf, domf, monthf, dowf] = parts;
+    const isStar = f => f === "*";
+    const isNum  = f => /^\d+$/.test(f);
 
-    // Every minute
-    if (mf === "*" && hf === "*" && domf === "*" && monthf === "*" && dowf === "*") {
-      return "Every minute";
-    }
-
-    // Every N minutes: */N * * * *
-    if (/^\*\/\d+$/.test(mf) && hf === "*" && domf === "*" && monthf === "*" && dowf === "*") {
+    // ── Quick named patterns ──
+    if (isStar(mf)&&isStar(hf)&&isStar(domf)&&isStar(monthf)&&isStar(dowf)) return "Every minute.";
+    if (mf==="0"&&hf==="*"&&isStar(domf)&&isStar(monthf)&&isStar(dowf)) return "Every hour, on the hour.";
+    if (/^\*\/(\d+)$/.test(mf)&&isStar(hf)&&isStar(domf)&&isStar(monthf)&&isStar(dowf)) {
       const n = parseInt(mf.split("/")[1]);
-      return n === 1 ? "Every minute" : `Every ${n} minutes`;
+      return n===1 ? "Every minute." : `Every ${n} minutes.`;
     }
-
-    // Every hour on the hour: 0 * * * *
-    if (mf === "0" && hf === "*" && domf === "*" && monthf === "*" && dowf === "*") {
-      return "Every hour, on the hour";
-    }
-
-    // Every N hours: 0 */N * * *
-    if (mf === "0" && /^\*\/\d+$/.test(hf) && domf === "*" && monthf === "*" && dowf === "*") {
+    if (mf==="0"&&/^\*\/(\d+)$/.test(hf)&&isStar(domf)&&isStar(monthf)&&isStar(dowf)) {
       const n = parseInt(hf.split("/")[1]);
-      return n === 1 ? "Every hour, on the hour" : `Every ${n} hours`;
+      return n===1 ? "Every hour, on the hour." : `Every ${n} hours.`;
+    }
+    // Simple time patterns (both numeric)
+    if (isNum(mf) && isNum(hf)) {
+      const t = `${pad2(+hf)}:${pad2(+mf)}`;
+      if (isStar(domf)&&isStar(monthf)&&isStar(dowf)) return `Every day at ${t}.`;
+      if (isStar(domf)&&isStar(monthf)&&isNum(dowf))  return `Every ${WEEKDAY_NAMES[+dowf]} at ${t}.`;
+      if (isStar(domf)&&isStar(monthf)&&/^\d-\d$/.test(dowf)) {
+        const [a,b]=dowf.split("-").map(Number);
+        return `At ${t} from ${WEEKDAY_NAMES[a]} through ${WEEKDAY_NAMES[b]}.`;
+      }
+      if (isNum(domf)&&isStar(monthf)&&isStar(dowf)) return `On the ${nthSuffix(+domf)} of every month at ${t}.`;
+      if (isStar(domf)&&isNum(monthf)&&isStar(dowf)) return `Every day in ${MONTH_NAMES[+monthf]} at ${t}.`;
     }
 
-    const isSimpleNum = (f) => /^\d+$/.test(f);
+    // ── General sentence assembly (crontab.guru style) ──
+    // "At minute X past [hour] on [dom] and on [dow] in [month]."
+    const minD   = descMin(mf);
+    const hourD  = descHour(hf);
+    const domD   = descDom(domf);
+    const monthD = descMonth(monthf);
+    const dowD   = descDow(dowf);
 
-    const h = isSimpleNum(hf) ? parseInt(hf) : null;
-    const m = isSimpleNum(mf) ? parseInt(mf) : null;
-    const timeStr = h !== null && m !== null ? `at ${padTime(h, m)}` : null;
+    // Opening: minute clause
+    let s = minD ? `At ${minD}` : "Every minute";
 
-    // Every day at HH:MM: M H * * *
-    if (timeStr && domf === "*" && monthf === "*" && dowf === "*") {
-      return `Every day ${timeStr}`;
-    }
+    // Hour clause
+    if (hourD) s += ` past ${hourD}`;
 
-    // Specific weekday(s): M H * * D
-    if (timeStr && domf === "*" && monthf === "*" && isSimpleNum(dowf)) {
-      const day = WEEKDAY_NAMES[parseInt(dowf)] || `weekday ${dowf}`;
-      return `Every ${day} ${timeStr}`;
-    }
+    // Day clause — when both dom and dow are set, use "and on"
+    if (domD && dowD)  s += ` on ${domD} and on ${dowD}`;
+    else if (domD)     s += ` on ${domD}`;
+    else if (dowD)     s += ` on ${dowD}`;
 
-    // Weekday range: M H * * D-D
-    if (timeStr && domf === "*" && monthf === "*" && /^\d-\d$/.test(dowf)) {
-      const [da, db] = dowf.split("-").map(Number);
-      const dayA = WEEKDAY_NAMES[da] || da;
-      const dayB = WEEKDAY_NAMES[db] || db;
-      return `${timeStr} every ${dayA} through ${dayB}`;
-    }
+    // Month clause
+    if (monthD) s += ` in ${monthD}`;
 
-    // Specific day of month: M H D * *
-    if (timeStr && isSimpleNum(domf) && monthf === "*" && dowf === "*") {
-      return `On the ${ordinal(parseInt(domf))} of every month ${timeStr}`;
-    }
-
-    // Specific month: M H * M *
-    if (timeStr && domf === "*" && isSimpleNum(monthf) && dowf === "*") {
-      const mon = MONTH_NAMES[parseInt(monthf)] || monthf;
-      return `Every day in ${mon} ${timeStr}`;
-    }
-
-    // Specific day and month: M H D M *
-    if (timeStr && isSimpleNum(domf) && isSimpleNum(monthf) && dowf === "*") {
-      const mon = MONTH_NAMES[parseInt(monthf)] || monthf;
-      return `On ${ordinal(parseInt(domf))} of ${mon} ${timeStr}`;
-    }
-
-    // First of month midnight shortcut
-    if (mf === "0" && hf === "0" && domf === "1" && monthf === "*" && dowf === "*") {
-      return "At midnight on the 1st of every month";
-    }
-
-    // Fallback: describe each field
-    const parts2 = [];
-    if (mf !== "*") parts2.push(`minute: ${mf}`);
-    if (hf !== "*") parts2.push(`hour: ${hf}`);
-    if (domf !== "*") parts2.push(`day of month: ${domf}`);
-    if (monthf !== "*") parts2.push(`month: ${monthf}`);
-    if (dowf !== "*") parts2.push(`weekday: ${dowf}`);
-    return parts2.length ? "Runs when " + parts2.join(", ") : "Every minute";
+    return s + ".";
   }
 
   // ── Relative time ──────────────────────────────────────────
   function relativeTime(date) {
-    const diffMs = date - Date.now();
-    const diffSec = Math.round(diffMs / 1000);
-    if (diffSec < 60) return "in < 1 min";
-    const diffMin = Math.round(diffSec / 60);
-    if (diffMin < 60) return `in ${diffMin} min`;
-    const diffH = Math.round(diffMin / 60);
-    if (diffH < 24) return `in ${diffH} hour${diffH !== 1 ? "s" : ""}`;
-    const diffD = Math.round(diffH / 24);
-    return `in ${diffD} day${diffD !== 1 ? "s" : ""}`;
+    const sec = Math.round((date - Date.now()) / 1000);
+    if (sec < 60)  return "in < 1 min";
+    const min = Math.round(sec / 60);
+    if (min < 60)  return `in ${min} min`;
+    const h = Math.round(min / 60);
+    if (h < 24)    return `in ${h}h`;
+    const d = Math.round(h / 24);
+    return `in ${d}d`;
   }
 
   // ── DOM helpers ────────────────────────────────────────────
-  const $ = (id) => document.getElementById(id);
+  const $ = id => document.getElementById(id);
 
   function setFieldBox(id, value) {
     const el = document.getElementById("field-" + id);
-    const valEl = document.getElementById("fv-" + id);
-    if (!el || !valEl) return;
-    valEl.textContent = value;
-    if (value !== "*") {
-      el.classList.add("active");
-    } else {
-      el.classList.remove("active");
-    }
+    const vEl = document.getElementById("fv-" + id);
+    if (!el || !vEl) return;
+    vEl.textContent = value;
+    el.classList.toggle("active", value !== "*");
   }
 
   function renderRuns(runs, tzName) {
     const list = $("cp-run-list");
-    if (!runs || runs.length === 0) {
+    if (!runs?.length) {
       list.innerHTML = '<li class="cp-run-placeholder">No upcoming runs found within one year.</li>';
       return;
     }
     const fmt = new Intl.DateTimeFormat(undefined, {
       timeZone: tzName,
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
+      year: "numeric", month: "short", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
       hour12: false,
     });
-    list.innerHTML = runs
-      .map((dt, i) => {
-        const abs = fmt.format(dt);
-        const rel = relativeTime(dt);
-        return `<li>
-          <span class="cp-run-num">${String(i + 1).padStart(2, "0")}</span>
-          <span class="cp-run-abs">${abs}</span>
-          <span class="cp-run-rel">${rel}</span>
-        </li>`;
-      })
-      .join("");
+    list.innerHTML = runs.map((dt, i) =>
+      `<li>
+        <span class="cp-run-num">${String(i+1).padStart(2,"0")}</span>
+        <span class="cp-run-abs">${fmt.format(dt)}</span>
+        <span class="cp-run-rel">${relativeTime(dt)}</span>
+      </li>`
+    ).join("");
   }
 
   function showError(msg) {
     $("cp-desc-row").style.display = "none";
+    $("cp-nonstandard-row").style.display = "none";
     $("cp-error-row").style.display = "";
     $("cp-error-msg").textContent = msg;
     $("cp-run-list").innerHTML = '<li class="cp-run-placeholder">Fix the expression to see run times.</li>';
   }
 
-  function showDesc(text) {
+  function showDesc(text, nonStd) {
     $("cp-error-row").style.display = "none";
     $("cp-desc-row").style.display = "";
     $("cp-description").textContent = text;
+    $("cp-nonstandard-row").style.display = nonStd ? "" : "none";
   }
 
   // ── Main parse + render ────────────────────────────────────
   function parseAndRender() {
-    const expr = $("cronInput").value.trim() || "* * * * *";
-    const tz = $("tzSelect").value;
+    const raw = $("cronInput").value.trim() || "* * * * *";
+    const tz  = $("tzSelect").value;
 
-    // Update timezone badge
     $("cp-runs-tz").textContent = tz;
+    document.querySelectorAll(".cp-preset").forEach(btn =>
+      btn.classList.toggle("active", btn.dataset.expr === raw)
+    );
 
-    // Update preset active state
-    document.querySelectorAll(".cp-preset").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.expr === expr);
-    });
-
+    const expr = resolveExpr(raw);
     const parts = expr.split(/\s+/);
     if (parts.length === 5) {
-      setFieldBox("min", parts[0]);
-      setFieldBox("hour", parts[1]);
-      setFieldBox("dom", parts[2]);
-      setFieldBox("month", parts[3]);
-      setFieldBox("dow", parts[4]);
+      ["min","hour","dom","month","dow"].forEach((id, i) => setFieldBox(id, parts[i]));
     } else {
-      ["min", "hour", "dom", "month", "dow"].forEach((id) => setFieldBox(id, "?"));
+      ["min","hour","dom","month","dow"].forEach(id => setFieldBox(id, "?"));
     }
 
     try {
-      const desc = describe(expr);
-      showDesc(desc);
-      const runs = getNextRuns(expr, 10);
-      renderRuns(runs, tz);
+      const nonStd = hasStartStep(expr);
+      showDesc(describe(raw), nonStd);
+      renderRuns(getNextRuns(expr, 10), tz);
     } catch (err) {
       showError(String(err.message || err));
     }
@@ -893,13 +959,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   // ── Event listeners ────────────────────────────────────────
   $("cronInput").addEventListener("input", parseAndRender);
   $("tzSelect").addEventListener("change", parseAndRender);
-
-  document.querySelectorAll(".cp-preset").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      $("cronInput").value = btn.dataset.expr;
-      parseAndRender();
-    });
-  });
+  document.querySelectorAll(".cp-preset").forEach(btn =>
+    btn.addEventListener("click", () => { $("cronInput").value = btn.dataset.expr; parseAndRender(); })
+  );
 
   // ── Initial render ─────────────────────────────────────────
   $("cronInput").value = "* * * * *";
