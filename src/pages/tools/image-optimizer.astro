@@ -1,0 +1,568 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="WebP Image Optimizer | HunterMussel Tools"
+  description="Convert JPG, PNG, GIF, and BMP images to WebP in-browser. Control quality, resize, and download — zero uploads, fully private."
+  canonicalPath="/tools/image-optimizer/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / imaging</p>
+      <h1>WebP Image Optimizer</h1>
+      <p class="lead">
+        Convert images to WebP locally in your browser. Adjust quality and max
+        dimensions, compare file sizes, and download — no server, no uploads.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+    </section>
+
+    <section class="opt-top">
+      <!-- Drop zone -->
+      <div id="dropZone" class="card drop-zone">
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/bmp,image/webp,image/tiff"
+          multiple
+          style="display:none"
+        />
+        <div class="drop-inner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <p class="drop-label">Drop images here or <span class="drop-link">browse files</span></p>
+          <p class="small">Accepts JPG, PNG, GIF, BMP, TIFF, WebP &nbsp;·&nbsp; up to 20 files</p>
+        </div>
+        <div id="fileList" class="file-chips"></div>
+      </div>
+
+      <!-- Settings -->
+      <aside class="card stack">
+        <div>
+          <label class="label" for="qualitySlider">
+            Quality: <span id="qualityValue">80</span>%
+          </label>
+          <input id="qualitySlider" type="range" min="1" max="100" value="80" />
+        </div>
+
+        <div>
+          <label class="label">Resize (optional, preserves ratio)</label>
+          <div class="resize-row">
+            <div>
+              <label class="small" for="maxWidth">Max width px</label>
+              <input id="maxWidth" type="number" placeholder="e.g. 1920" min="1" />
+            </div>
+            <div>
+              <label class="small" for="maxHeight">Max height px</label>
+              <input id="maxHeight" type="number" placeholder="e.g. 1080" min="1" />
+            </div>
+          </div>
+        </div>
+
+        <div id="statusBox" class="result" style="display:none">
+          Status
+          <strong id="statusText">Idle</strong>
+          <span id="statusHint" class="small"></span>
+        </div>
+
+        <div class="actions">
+          <button id="convertBtn" type="button">Convert to WebP</button>
+          <button id="clearBtn" type="button" class="secondary">Clear all</button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Results -->
+    <section id="resultsSection" style="display:none">
+      <div class="results-header">
+        <h2 class="results-title">Converted images</h2>
+        <div class="actions">
+          <button id="downloadAllBtn" type="button" class="secondary">Download all</button>
+        </div>
+      </div>
+      <div id="resultsGrid" class="results-grid"></div>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Decodes images using a hidden canvas, re-encodes them as WebP using
+          the browser's native <code>canvas.toBlob</code> API, and streams the
+          result directly to a download — no pixels ever leave your device.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why WebP</h2>
+        <p>
+          WebP delivers 25–35% smaller files than JPEG at equivalent visual
+          quality and supports lossless, lossy, and transparency in a single
+          format. All major browsers have supported it since 2020.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Drop or select up to 20 image files.</li>
+          <li>Set quality (80 is a good default; lower = smaller file).</li>
+          <li>Optionally set a max width or height to scale images down.</li>
+          <li>Click <strong>Convert to WebP</strong> and download individually or all at once.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .opt-top {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  @media (max-width: 720px) {
+    .opt-top {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .drop-zone {
+    border: 2px dashed #93c5fd;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .drop-zone.drag-over {
+    border-color: #1d4ed8;
+    background: #eff6ff;
+  }
+
+  .drop-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.5rem 1rem;
+    color: #64748b;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .drop-label {
+    margin: 0;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .drop-link {
+    color: #1d4ed8;
+    text-decoration: underline;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .file-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0 0.25rem 0.25rem;
+  }
+
+  .chip {
+    font-size: 0.78rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    color: #1e3a8a;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: #1d4ed8;
+  }
+
+  .resize-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  /* Results */
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .results-title {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .result-card {
+    border: 1px solid #dbeafe;
+    border-radius: 14px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(15,23,42,0.05);
+  }
+
+  .result-thumb {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    background: #f1f5ff;
+  }
+
+  .result-info {
+    padding: 0.75rem;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .result-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #0f172a;
+  }
+
+  .result-sizes {
+    font-size: 0.78rem;
+    color: #475569;
+    font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+
+  .savings-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+  }
+
+  .savings-pos {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .savings-neg {
+    background: #fef9c3;
+    color: #713f12;
+  }
+
+  .result-actions {
+    padding: 0 0.75rem 0.75rem;
+  }
+
+  .result-actions button {
+    width: 100%;
+    font-size: 0.84rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .result-dims {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+
+  .error-card {
+    border-color: #fecaca;
+    background: #fff5f5;
+  }
+
+  .error-msg {
+    font-size: 0.78rem;
+    color: #b91c1c;
+  }
+</style>
+
+<script type="module">
+  const $ = (id) => document.getElementById(id);
+
+  const dropZone = $("dropZone");
+  const fileInput = $("fileInput");
+  const fileList = $("fileList");
+  const qualitySlider = $("qualitySlider");
+  const qualityValue = $("qualityValue");
+  const maxWidth = $("maxWidth");
+  const maxHeight = $("maxHeight");
+  const convertBtn = $("convertBtn");
+  const clearBtn = $("clearBtn");
+  const statusBox = $("statusBox");
+  const statusText = $("statusText");
+  const statusHint = $("statusHint");
+  const resultsSection = $("resultsSection");
+  const resultsGrid = $("resultsGrid");
+  const downloadAllBtn = $("downloadAllBtn");
+
+  let selectedFiles = [];
+  let convertedResults = [];
+
+  // --- Quality slider ---
+  qualitySlider.addEventListener("input", () => {
+    qualityValue.textContent = qualitySlider.value;
+  });
+
+  // --- Drop zone interaction ---
+  dropZone.addEventListener("click", (e) => {
+    if (e.target.closest("button")) return;
+    fileInput.click();
+  });
+
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("drag-over");
+  });
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+    addFiles([...e.dataTransfer.files]);
+  });
+
+  fileInput.addEventListener("change", () => {
+    addFiles([...fileInput.files]);
+    fileInput.value = "";
+  });
+
+  function addFiles(newFiles) {
+    const imageTypes = ["image/jpeg","image/png","image/gif","image/bmp","image/webp","image/tiff"];
+    const valid = newFiles.filter((f) => imageTypes.includes(f.type));
+    selectedFiles = [...selectedFiles, ...valid].slice(0, 20);
+    renderFileChips();
+  }
+
+  function renderFileChips() {
+    fileList.innerHTML = "";
+    selectedFiles.forEach((f) => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = f.name;
+      fileList.appendChild(chip);
+    });
+  }
+
+  // --- Conversion ---
+  function formatSize(bytes) {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  }
+
+  function convertFile(file, quality, maxW, maxH) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onerror = () => reject(new Error("Failed to read file"));
+
+      reader.onload = (e) => {
+        const img = new Image();
+
+        img.onerror = () => reject(new Error("Failed to decode image"));
+
+        img.onload = () => {
+          let w = img.naturalWidth;
+          let h = img.naturalHeight;
+
+          if (maxW && w > maxW) {
+            h = Math.round((h * maxW) / w);
+            w = maxW;
+          }
+          if (maxH && h > maxH) {
+            w = Math.round((w * maxH) / h);
+            h = maxH;
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error("canvas.toBlob returned null"));
+                return;
+              }
+              const savings = (((file.size - blob.size) / file.size) * 100).toFixed(1);
+              const url = URL.createObjectURL(blob);
+              resolve({
+                original: file,
+                blob,
+                savings: parseFloat(savings),
+                url,
+                width: w,
+                height: h,
+              });
+            },
+            "image/webp",
+            quality / 100
+          );
+        };
+
+        img.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function setStatus(text, hint, show = true) {
+    statusBox.style.display = show ? "" : "none";
+    statusText.textContent = text;
+    statusHint.textContent = hint;
+  }
+
+  convertBtn.addEventListener("click", async () => {
+    if (selectedFiles.length === 0) {
+      setStatus("No files selected", "Drop or browse images first.");
+      return;
+    }
+
+    const quality = parseInt(qualitySlider.value, 10);
+    const maxW = parseInt(maxWidth.value, 10) || 0;
+    const maxH = parseInt(maxHeight.value, 10) || 0;
+
+    convertBtn.disabled = true;
+    clearBtn.disabled = true;
+    setStatus("Converting…", `Processing ${selectedFiles.length} file(s)`);
+    resultsSection.style.display = "none";
+    resultsGrid.innerHTML = "";
+
+    // Free previous object URLs
+    convertedResults.forEach((r) => r.url && URL.revokeObjectURL(r.url));
+    convertedResults = [];
+
+    const total = selectedFiles.length;
+    let done = 0;
+
+    const results = await Promise.allSettled(
+      selectedFiles.map((f) => convertFile(f, quality, maxW, maxH))
+    );
+
+    results.forEach((result, i) => {
+      const file = selectedFiles[i];
+
+      if (result.status === "fulfilled") {
+        convertedResults.push(result.value);
+        done++;
+        renderResultCard(result.value);
+      } else {
+        renderErrorCard(file, result.reason?.message || "Unknown error");
+      }
+    });
+
+    const failed = total - done;
+    setStatus(
+      `Done — ${done}/${total} converted`,
+      failed ? `${failed} file(s) failed` : "All files converted successfully."
+    );
+    resultsSection.style.display = "";
+    convertBtn.disabled = false;
+    clearBtn.disabled = false;
+  });
+
+  function getWebPName(originalName) {
+    return originalName.replace(/\.[^.]+$/, "") + ".webp";
+  }
+
+  function renderResultCard(result) {
+    const { original, savings, url, width, height } = result;
+    const name = getWebPName(original.name);
+    const savingsClass = savings >= 0 ? "savings-pos" : "savings-neg";
+    const savingsLabel = savings >= 0 ? `−${savings}%` : `+${Math.abs(savings)}%`;
+
+    const card = document.createElement("div");
+    card.className = "result-card";
+    card.innerHTML = `
+      <img class="result-thumb" src="${url}" alt="${name}" loading="lazy" />
+      <div class="result-info">
+        <div class="result-name" title="${name}">${name}</div>
+        <div class="result-sizes">
+          ${formatSize(original.size)} → ${formatSize(result.blob.size)}
+          <span class="savings-badge ${savingsClass}">${savingsLabel}</span>
+        </div>
+        <div class="result-dims">${width} × ${height} px</div>
+      </div>
+      <div class="result-actions">
+        <button type="button" class="dl-btn secondary">Download</button>
+      </div>
+    `;
+
+    card.querySelector(".dl-btn").addEventListener("click", () => {
+      downloadBlob(result.blob, name);
+    });
+
+    resultsGrid.appendChild(card);
+  }
+
+  function renderErrorCard(file, message) {
+    const card = document.createElement("div");
+    card.className = "result-card error-card";
+    card.innerHTML = `
+      <div class="result-info">
+        <div class="result-name" title="${file.name}">${file.name}</div>
+        <div class="error-msg">Error: ${message}</div>
+      </div>
+    `;
+    resultsGrid.appendChild(card);
+  }
+
+  function downloadBlob(blob, filename) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    // Revoke after a short delay so the browser can start the download
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }
+
+  downloadAllBtn.addEventListener("click", () => {
+    convertedResults.forEach((result, i) => {
+      const name = getWebPName(result.original.name);
+      // Stagger downloads slightly so browsers don't suppress them
+      setTimeout(() => downloadBlob(result.blob, name), i * 120);
+    });
+  });
+
+  clearBtn.addEventListener("click", () => {
+    selectedFiles = [];
+    convertedResults.forEach((r) => r.url && URL.revokeObjectURL(r.url));
+    convertedResults = [];
+    fileList.innerHTML = "";
+    resultsGrid.innerHTML = "";
+    resultsSection.style.display = "none";
+    setStatus("", "", false);
+  });
+</script>

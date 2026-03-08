@@ -16,7 +16,7 @@ keywords:
   - predictive delivery systems
   - demand forecasting ai
   - fleet management software
-image: "/images/blog/1770685010_image_3.webp"
+image: "/images/blog/ai-logistics-delivery-route-optimization.png"
 subtitle: "Transforming manual logistics into a data-driven competitive advantage"
 ---
 
