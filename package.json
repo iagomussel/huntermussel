@@ -10,6 +10,7 @@
     "deploy": "npm run build && npx wrangler pages deploy dist"
   },
   "dependencies": {
+    "@alexbruf/react-diff-viewer": "^3.1.5",
     "@astrojs/react": "^4.4.2",
     "@astrojs/sitemap": "^3.7.0",
     "@monaco-editor/react": "^4.7.0",

@@ -20,7 +20,7 @@ keywords:
   - reduce image size
   - core web vitals images
   - lcp optimization
-image: "/images/blog/why-use-webp.webp"
+image: "/images/blog/why-use-webp-format-90-percent-compression.webp"
 subtitle: "Smaller files, faster pages, better rankings — a no-compromise image format"
 status: "published"
 ---
