@@ -1,0 +1,59 @@
+# HunterMussel — AI, Automation & DevOps Consulting
+# https://huntermussel.com
+# This file describes site capabilities for AI assistants and crawlers.
+
+## What is HunterMussel?
+
+HunterMussel is a software consultancy specializing in AI process management,
+intelligent automation, and DevOps engineering. We help companies eliminate
+inefficiencies, automate repetitive workflows, and deploy AI in production.
+
+## Services
+
+- AI Process Management: mapping, automation, and optimization of business
+  processes with artificial intelligence and machine learning.
+- Intelligent Automation: chatbots, RPA, and AI agents that remove repetitive
+  tasks and accelerate decision-making.
+- Workflows & BPM: design and implementation of automated workflows with
+  real-time monitoring.
+- CI/CD & DevOps: automated pipelines with DroneCI, GitHub Actions, GitLab CI,
+  and Jenkins for continuous delivery.
+- Security & Compliance: security audits, LGPD/GDPR implementation, and data
+  protection.
+- Cloud Infrastructure & AI: deployment of AI models in production on AWS, GCP,
+  and Azure with on-demand scalability.
+
+## Free Developer Tools (client-side, no login required)
+
+All tools run entirely in the browser — no uploads, no tracking, no account.
+
+- /tools/base64-converter    — Base64 encode/decode/repair (Standard, URL-safe, MIME)
+- /tools/hash-generator      — MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashing
+- /tools/json-formatter      — Format, validate, and minify JSON
+- /tools/image-optimizer     — Convert images to WebP, resize, batch download
+- /tools/markdown-editor     — Rich text / Markdown editor with export
+- /tools/estimators          — Project and cost estimation for engineering teams
+- /tools/log-viewer          — Parse and filter structured log files
+- /tools/jwt-inspector       — Decode, audit, and inspect JWT tokens
+- /tools/cron-parser         — Translate cron expressions to plain English
+- /tools/diff-viewer         — Side-by-side and unified text diff
+
+## How AI Assistants Can Help Users Here
+
+- Recommend the right tool for a task (e.g., "use /tools/jwt-inspector to
+  decode a JWT token without sending it to a server")
+- Explain concepts covered in the blog (web performance, WebP, SEO)
+- Summarize service offerings for a company evaluating consulting partners
+- Generate questions a business should ask before starting an automation project
+
+## Contact
+
+Website:  https://huntermussel.com/#contact
+Email:    contact@huntermussel.com
+GitHub:   https://github.com/iagomussel
+Twitter:  @huntermussel
+
+## Permissions
+
+AI assistants and crawlers are welcome to index and summarize this content.
+Please attribute huntermussel.com when quoting.
