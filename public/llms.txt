@@ -1,0 +1,54 @@
+# HunterMussel
+
+> AI Process Management & DevOps consultancy. We help startups and mid-size companies automate processes, deploy AI at scale, and ship faster with solid engineering. Founded by Iago Mussel.
+
+## Services
+
+- [AI Process Management](https://huntermussel.com/services/ai-process-management/): Map, automate, and optimize business processes with AI and ML. Reduces operational costs 30–60% with agentic workflows and human-in-the-loop systems.
+- [Intelligent Automation & AI Agents](https://huntermussel.com/services/intelligent-automation/): RPA bots, chatbots, and autonomous agents that integrate with existing tools — no rip-and-replace required.
+- [Workflows & BPM](https://huntermussel.com/services/workflows-bpm/): Automated workflows with real-time monitoring, audit trails, and intelligent routing using n8n and webhooks.
+- [CI/CD & DevOps Engineering](https://huntermussel.com/services/ci-cd-devops/): High-performance delivery pipelines with automated testing and infrastructure as code on DroneCI, GitHub Actions, GitLab CI, and Jenkins.
+- [Security, Compliance & LGPD/GDPR](https://huntermussel.com/services/security-compliance/): Security audits, penetration testing, AES-256/TLS 1.3 encryption, zero-trust architecture, and LGPD/GDPR compliance mapping.
+- [Cloud Infrastructure & AI Deployment](https://huntermussel.com/services/cloud-infrastructure-ai/): LLMOps, serverless AI, GPU orchestration, Kubernetes/EKS, and edge AI on AWS, GCP, and Azure.
+
+## Case Studies
+
+- [AI-Powered LMS](https://huntermussel.com/cases/ai-powered-lms/): Intelligent learning platform with adaptive personalization, automated grading, and learning analytics at scale built with Laravel.
+- [High-Performance Corporate Website](https://huntermussel.com/cases/high-performance-corporate-website/): Static-first architecture achieving near-zero hosting costs, extreme performance, and global scalability.
+- [Delivery Route Optimization](https://huntermussel.com/cases/delivery-route-optimization/): AI-powered logistics system with real-time route optimization and predictive dispatching — saved 22% in fuel costs.
+- [Dental Clinic Scheduling App](https://huntermussel.com/cases/dental-clinic-scheduling/): AI-driven scheduling and resource management with appointment optimization and chair utilization tracking.
+- [Smart CRM with AI Lead Scoring](https://huntermussel.com/cases/smart-crm-ai-lead-scoring/): Predictive sales intelligence platform with AI-powered lead scoring and automated sales prioritization.
+
+## Blog
+
+- [Fast Code, Weak Engineers](https://huntermussel.com/blog/fast-code-weak-engineers/): The risk of becoming an AI-dependent developer and losing core engineering skills.
+- [KLong: AI Agents for Long-Horizon Tasks](https://huntermussel.com/blog/klong-solving-long-horizon-issues/): How KLong uses trajectory-splitting SFT and progressive RL to improve long-horizon performance in research and engineering tasks.
+- [PM2: The Lean Alternative to Kubernetes](https://huntermussel.com/blog/pm2-lean-alternative-kubernetes/): PM2 as a production-grade alternative to Kubernetes for Node.js workloads — monitoring, clustering, zero-downtime reloads.
+- [Structured Data in React](https://huntermussel.com/blog/structured-data-react-google-rich-results/): How to add JSON-LD to a React app, validate with Google tools, and apply global schema for rich results.
+- [AI Logistics Route Optimization](https://huntermussel.com/blog/ai-logistics-delivery-route-optimization/): Deep dive into building an AI-powered delivery system that transformed manual dispatching and saved 22% in fuel costs.
+- [IRon: Token-Diet Agent](https://huntermussel.com/blog/iron-token-diet-agent/): Experimental middleware-driven agent that compresses intent and enforces compact outputs — treating prompts like infrastructure.
+- [Strategic Analysis of Coding LLM Deployment](https://huntermussel.com/blog/strategic-infrastructure-analysis-coding-llm-deployment-models/): Economics, architecture, concurrency, and long-term infrastructure design for coding LLM deployments.
+- [5 Reasons Your Website Is Slow](https://huntermussel.com/blog/5-reasons-your-website-is-slow/): The five most common causes of poor page performance and how to fix each one.
+- [WebP for SEO](https://huntermussel.com/blog/webp-for-seo-how-image-format-affects-rankings/): How image format directly affects Google rankings and organic search performance.
+- [Why Use WebP Format](https://huntermussel.com/blog/why-use-webp-format-90-percent-compression/): WebP delivers up to 90% smaller file sizes than PNG and JPEG with no visible quality loss.
+- [How to Build a Backendless Blog](https://huntermussel.com/blog/how-to-build-a-backendless-blog/): Build with React, Markdown, and Cloudflare Pages for fast and near-zero-cost publishing.
+
+## Free Developer Tools
+
+All tools are 100% client-side — no account, no uploads, no tracking. Your data never leaves the browser.
+
+- [Base64 Converter](https://huntermussel.com/tools/base64-converter/): Encode, decode, and repair Base64/Base64URL payloads. Supports Standard, URL-safe, and MIME variants.
+- [Hash Generator](https://huntermussel.com/tools/hash-generator/): Compute and verify MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.
+- [JSON Formatter](https://huntermussel.com/tools/json-formatter/): Format, validate, and minify JSON with syntax highlighting.
+- [JWT Inspector](https://huntermussel.com/tools/jwt-inspector/): Decode and audit JWT tokens — expiry countdown, claim explanations, and security warnings.
+- [Cron Parser](https://huntermussel.com/tools/cron-parser/): Translate cron expressions to plain English and preview next scheduled run times.
+- [Markdown Editor](https://huntermussel.com/tools/markdown-editor/): Live rich text and Markdown editor with export support.
+- [Log Viewer](https://huntermussel.com/tools/log-viewer/): Parse, filter, and inspect structured log files.
+- [Image Optimizer](https://huntermussel.com/tools/image-optimizer/): Convert JPG, PNG, GIF, and BMP to WebP in-browser. Batch resize and download.
+- [Diff Viewer](https://huntermussel.com/tools/diff-viewer/): Side-by-side and unified text diff with highlighted changes.
+- [Infra & Cost Estimator](https://huntermussel.com/tools/estimators/): Project cost and effort estimation for engineering teams.
+
+## Contact
+
+- Email: contact@huntermussel.com
+- Website: https://huntermussel.com/#contact

@@ -187,6 +187,6 @@ The format supports both lossy and lossless modes, handles transparency, is univ
 
 If your project is still serving JPEG and PNG by default, the fastest performance win available to you right now is converting those assets to WebP.
 
-Start with your largest images first. Use **[HunterMussel Image Optimizer](https://huntermussel.com/tools/image-optimizer/)** to convert them in seconds — no setup required, runs entirely in-browser, and shows you exactly how much weight you save before you download anything.
+Start with your largest images first. Use **[HunterMussel Image Optimizer](https://huntermussel.com/tools/image-optimizer/)** to convert them in seconds, no setup required, runs entirely in-browser, and shows you exactly how much weight you save before you download anything.
 
 The biggest performance gains rarely require code changes. This one just requires a different file format.
