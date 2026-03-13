@@ -20,29 +20,32 @@ subtitle: "Start with the thing that costs you the most when it breaks."
 status: "draft"
 ---
 
-Infrastructure as Code is one of those practices everyone agrees you should do and few teams actually do well.
+Everyone agrees you should do Infrastructure as Code. Almost nobody does it well.
 
-Not because Terraform is hard. Because most teams try to automate everything at once, hit complexity walls, and abandon the effort halfway through.
+Not because Terraform is hard. Because teams try to automate everything at once, hit a complexity wall somewhere around week three, and quietly abandon the effort. Six months later they're back to clicking through the AWS console, except now they also have a half-finished Terraform repo that nobody wants to touch.
 
-The sequencing matters. Start with the wrong thing and you'll spend three weeks on Terraform modules that manage something you change twice a year.
+The sequencing is the hard part. Start with the wrong thing and you'll spend three weeks writing modules for infrastructure you change twice a year.
 
 <!-- truncate -->
 
-## The principle: automate what breaks or changes
+## Start where the pain is highest
 
-Small teams have limited time. The return on IaC investment is highest where:
+Small teams don't have time to do IaC perfectly. So don't try.
 
-- The infrastructure breaks and manual recovery is painful
-- The configuration drifts and nobody knows the current state
-- The same setup needs to be recreated (staging, new environment, disaster recovery)
+Ask a simpler question: what would hurt most to rebuild from memory right now? That's where you start.
 
-That's where you start. Not with the most "correct" architecture. With the highest cost of not having it automated.
+The infrastructure worth automating first is the kind that:
+- Takes hours to reconstruct when something goes wrong
+- Drifts silently (someone tweaks a security group "just this once" and nobody documents it)
+- Needs to be recreated for staging, QA, disaster recovery
 
-## Week 1-2: Networking and compute baseline
+Not the most architecturally elegant part of your stack. The part that wakes you up at night.
 
-The most painful thing to rebuild manually is your networking layer. VPC, subnets, security groups, routing tables. If you've ever had to reconstruct this from memory after a misconfiguration, you know.
+## Week 1–2: Networking
 
-Start here. Get your foundational network infrastructure into Terraform. It changes rarely, but when it breaks, everything breaks with it.
+The most painful thing to rebuild manually is your VPC. Subnets, routing tables, security groups, internet gateways. If you've ever had to piece this back together after a misconfiguration incident, you know exactly what I mean.
+
+Start here. It changes rarely, but when the network layer breaks, everything breaks with it.
 
 ```hcl
 module "vpc" {
@@ -58,43 +61,43 @@ module "vpc" {
 }
 ```
 
-Don't write the modules yourself yet. Use the community modules. The goal is coverage, not elegance.
+Don't write the modules yourself yet. Use the community modules. The goal right now is coverage, not elegance.
 
-## Week 3-4: Databases and stateful services
+## Week 3–4: Databases and stateful services
 
-After networking, the highest-risk manual configuration is your databases. RDS instances, ElastiCache clusters, storage buckets with lifecycle policies.
+After networking, the highest-risk manual configuration is your databases. RDS instances, ElastiCache clusters, S3 buckets with lifecycle policies.
 
-These are the things that are hardest to recreate correctly from memory — and hardest to recover from if you get wrong. Getting them into Terraform means:
+These are the things you really don't want to recreate from memory at 2am. Getting them into Terraform means:
 
-- You have a documented record of every configuration decision
-- New environments (staging, QA) can be spun up in minutes, not days
-- Disaster recovery becomes a `terraform apply` instead of a 6-hour rebuild
+- Every configuration decision is documented in code, not someone's head
+- Spinning up a staging environment takes minutes, not a day of clicking
+- Disaster recovery is a `terraform apply` instead of a 6-hour reconstruction
 
-One rule: never use Terraform to manage database *data*. Only the infrastructure. Data lives in backups, not in state files.
+One hard rule: Terraform manages infrastructure, not data. Don't put your backups or data migration logic here. That's a separate concern.
 
-## Week 5-6: Application infrastructure and secrets
+## Week 5–6: Application layer and secrets
 
-Load balancers, auto-scaling groups, ECS or EKS clusters, IAM roles. This is where your application actually runs.
+Load balancers, auto-scaling groups, ECS or EKS clusters, IAM roles. This is where your application actually lives.
 
-This layer is also the one most likely to drift. Engineers make manual tweaks to security groups "just this once." An IAM role gets an inline policy added through the console and nobody documents it. Over time, the actual infrastructure diverges from what anyone believes it to be.
+This layer drifts the most. An engineer adds an inbound rule to a security group "to test something quickly" and it stays there for two years. An IAM role gets an inline policy added through the console during an incident and nobody writes it down. Over time, the real infrastructure diverges from what anyone thinks it is.
 
-Getting this into Terraform — and enforcing that changes only happen through code — closes that drift problem.
+Getting this into Terraform and establishing that changes happen through code — not through the console — closes that drift problem.
 
-For secrets, connect Terraform to AWS Secrets Manager or HashiCorp Vault. Provision the secret containers through IaC. Populate actual values through a separate, audited process.
+For secrets: connect to AWS Secrets Manager or HashiCorp Vault. Provision the containers through IaC. Populate the actual values through a separate audited process. Never put secret values in Terraform state.
 
 ## What to skip for now
 
-**Do not start with Kubernetes configuration.** Helm charts, Kustomize overlays, and cluster configuration are a separate problem from infrastructure provisioning. Mixing them adds complexity that drowns small teams.
+**Kubernetes configuration.** Helm charts and Kustomize overlays are a separate problem from infrastructure provisioning. Mixing them early adds complexity that drowns small teams. Get the infra right first.
 
-**Do not abstract everything into reusable modules on day one.** Modules are the right answer at scale. At the start, duplicating resource definitions is fine. Premature abstraction creates maintenance burden before you understand the patterns.
+**Reusable module abstractions.** Modules make sense at scale. Right now, copy-pasting resource definitions is fine. Premature abstraction before you understand the patterns creates maintenance burden, not efficiency.
 
-**Do not automate CI/CD pipeline infrastructure until the pipeline itself is stable.** If your deploy process changes every month, automating its infrastructure locks in instability. Stabilize the process, then codify it.
+**CI/CD pipeline infrastructure.** If your deploy process changes every month, automating its infrastructure locks in instability. Stabilize the process first, then codify it.
 
-## The state file is your most important artifact
+## One thing that's actually non-negotiable: remote state
 
-Terraform tracks the world it manages in a state file. If you lose it, Terraform loses its map. If it gets corrupted, you have a significant recovery problem.
+Terraform keeps a map of everything it manages in a state file. Lose it and Terraform loses its context. Corrupt it and you have a serious recovery problem.
 
-From day one: remote state in S3 with DynamoDB locking.
+From day one, this goes in S3 with DynamoDB locking. Not locally. Not in a teammate's home directory.
 
 ```hcl
 terraform {
@@ -108,18 +111,18 @@ terraform {
 }
 ```
 
-This is not optional. Local state files get lost, overwritten, and conflict. Remote state is the only production-appropriate option.
+This is not a nice-to-have. Local state gets lost, conflicts, and overwrites. Remote state is the minimum viable option for anything running in production.
 
-## The payoff
+## Six weeks later
 
-At the end of 6 weeks following this sequence, a small team has:
+If you follow this sequence, at the end of six weeks a small team has:
 
 - Core networking documented and reproducible
 - Databases recoverable in under an hour
-- Application infrastructure auditable and drift-free
-- A foundation to add the rest incrementally
+- Application infrastructure auditable and drift-resistant
+- A foundation to add everything else incrementally
 
-The goal isn't to finish IaC. It's to build the habit. Infrastructure managed as code, reviewed as code, deployed as code. The rest follows.
+The goal isn't to finish IaC. It's to build the habit. Infrastructure reviewed in PRs, deployed through pipelines, documented in code. Once that habit exists, the rest follows.
 
 ---
 

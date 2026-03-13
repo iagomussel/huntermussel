@@ -20,81 +20,84 @@ subtitle: "The bottleneck isn't the technology. It's knowing where to start."
 status: "draft"
 ---
 
-The question I get most from operations and business teams isn't "how do we automate this?" It's "how do we know what to automate first?"
+The most common question I get from operations teams isn't "how do we automate this?" It's "how do we know what to automate first?"
 
-They have twenty manual processes. Each one feels important. Each one has exceptions. Nobody has time to document all of them before the project loses momentum.
+They have twenty manual processes. Every one feels important. Every one has exceptions. Nobody has time to document them all before the project runs out of momentum.
 
-Here's a framework that cuts through that.
+Here's the framework I actually use.
 
 <!-- truncate -->
 
-## Step 1: Map what's actually happening
+## Step 1: Find out what's actually happening
 
 Before you automate anything, you need an honest picture of what's being done manually today.
 
-Not what the process documentation says. What actually happens.
+Not the process documentation. Not what people think they do. What actually happens.
 
-Talk to the people doing the work. Ask: "Walk me through the last three times you did this. What did you click, what did you check, what did you copy and paste?"
+Go talk to the people doing the work. Ask them: "Walk me through the last three times you did this. What did you click, what did you check, what did you copy and paste?"
 
-You're looking for three signals:
+You're listening for three things:
 
-- **Volume.** How many times per day, per week, per month?
-- **Time.** How long does one instance take, from start to finish?
-- **Variance.** How often does it deviate from the "normal" path?
+**Volume.** How many times per day, per week, per month?
 
-High volume × high time = clear automation candidate. Low variance = automation is straightforward. High variance = needs judgment, which means more complexity.
+**Time.** How long does one complete instance take? Start to finish, not just active work time. A process that requires 10 minutes of work but sits in a queue for two days has a two-day cycle time.
 
-## Step 2: Score the candidates
+**Variance.** How often does it deviate from the normal path?
 
-After mapping five to ten processes, you'll have a list. Score each one on two axes:
+High volume × high time = clear automation candidate. Low variance = straightforward to build. High variance = needs judgment, which means more complexity and more cost.
 
-**Impact (time saved × frequency):** Automating something that takes 2 minutes but happens 200 times a day is worth more than automating something that takes an hour but happens monthly.
+## Step 2: Score them before you build anything
 
-**Complexity (variance + exception rate):** A process with clean, consistent inputs and predictable outputs is cheaper to automate. A process full of "well, it depends" is expensive.
+Once you've mapped five to ten processes, you'll have a list. Score each on two dimensions before touching a single tool.
 
-Start in the top-left quadrant: high impact, low complexity.
+**Impact:** Automating something that takes 2 minutes but happens 200 times a day is worth more than automating something that takes an hour but happens once a month. Do the math.
 
-## Step 3: Choose the right tool for the job
+**Complexity:** A process with clean, consistent inputs and predictable outputs is cheap to automate. A process full of "well, it depends on the customer" is expensive — because you're either encoding every rule or you're relying on AI judgment that needs careful design.
 
-Not every automation needs engineers. Match the tool to the complexity.
+Start with high impact, low complexity. That combination ships fast, delivers visible results, and builds the organizational confidence to tackle harder things next.
 
-**No-code tools (Zapier, Make, n8n):** Ideal for connecting existing SaaS tools. Data flows from one system to another based on triggers. If your automation is essentially "when X happens in system A, do Y in system B," this is your starting point. No engineers required.
+## Step 3: Match the tool to the problem
 
-**Scripted automation:** When no-code tools hit their limits — complex data transformation, conditional logic, batch processing — a short Python or Node.js script gets you further. This requires basic engineering skills but not a full team.
+Not every automation needs engineers. Not every automation needs AI. Match the tool to the actual complexity.
 
-**AI-assisted processes:** When the input is variable (unstructured text, emails, documents) and the output requires interpretation, language models can bridge the gap. Classify an incoming support ticket. Extract structured data from a PDF. Route a request based on intent, not keywords.
+**No-code tools (Zapier, Make, n8n):** If your automation is essentially "when X happens in system A, do Y in system B" — this is your starting point. No engineers needed. Drag, connect, test, done.
 
-**Full agent systems:** When the task spans multiple systems, requires decision-making across steps, and needs to handle exceptions autonomously. This is the highest investment and highest payoff for the right use cases.
+**Scripts (Python, Node.js):** When no-code hits its limits — complex data transformation, conditional logic, batch processing — a short script gets you there. This needs some technical fluency, but not a full engineering team.
 
-## What "no engineering team" actually means
+**AI-assisted processes:** When the input is unstructured (emails, PDFs, free-text forms) and the output requires interpretation — classify this ticket, extract these fields, route this request based on intent. Language models bridge the gap between variable input and structured action.
 
-You don't need a dedicated team to get started. You need one person with enough technical fluency to connect tools and write simple logic — and the business context to understand what's worth automating.
+**Agent systems:** When the task spans multiple systems, requires multi-step decision-making, and needs to handle exceptions on its own. Highest investment, highest payoff when the problem is right for it.
 
-That person is often already inside the company. An analyst who knows the processes and can learn n8n or write basic Python. An operations lead who's tired of copy-pasting between spreadsheets and has the initiative to fix it.
+## The person you actually need
 
-The risk is scope creep. Start with one process. Get it running. Measure the time saved. Then pick the next one.
+You don't need an engineering team to get started. You need one person with enough technical fluency to connect tools and write simple logic — plus the business context to know what's worth their time.
 
-## The four automation mistakes that waste months
+That person is probably already inside your company. An analyst who's tired of the same manual work and has the initiative to fix it. An operations lead who can learn n8n in a weekend. A developer who understands the business processes and has 20% time to spare.
 
-**Automating before understanding.** If you automate a broken process, you get a broken process that runs faster. Document and simplify before automating.
+Start with one process. Finish it. Measure what changed. Then do the next one.
 
-**Over-engineering the first version.** The first version should do the job, not be elegant. A Zapier workflow that saves 10 hours a week is better than a perfectly architected system that ships in three months.
+## The four mistakes that waste months
 
-**Ignoring exceptions.** Every process has them. Build the 80% case first. Document the 20% that falls through. Handle exceptions manually until the volume justifies automating them too.
+**Automating a broken process.** If the process itself is wrong — bad business rules, outdated logic, a workaround that should have been fixed — automation makes it worse faster. Fix the process first.
 
-**Not measuring before and after.** If you don't know how long the manual process took, you can't demonstrate value. Measure before you automate. Report after.
+**Over-engineering the first version.** A Zapier workflow that saves your team 10 hours a week is better than a perfectly architected system that takes three months to build. Ship the 80%.
 
-## The ROI conversation
+**Ignoring exceptions.** Every process has them. Build the clean path first. Document the exceptions. Handle them manually until the volume justifies automating them too. Don't let "what about this edge case" stop you from shipping anything.
 
-When you need to justify the investment internally — to a manager, a board, or yourself — the math is simple:
+**Not measuring before.** If you don't know how long the manual process took, you can't demonstrate the value of the automation. Five minutes before you build anything: time it. Count it. Write it down.
 
-`(time saved per instance × instances per month × hourly cost of the person doing it) - (cost of building and maintaining the automation)`
+## The ROI math
 
-Be honest about maintenance. Automations aren't free after they're built. Systems change, APIs change, edge cases emerge. Budget 20% of the build cost per year for ongoing maintenance.
+When you need to justify this internally:
 
-Most mid-volume processes pay back in under six months. Many in under 90 days.
+```
+(time saved per instance × instances per month × hourly cost)
+- (build cost + annual maintenance)
+```
 
-The bottleneck is never the technology. It's always the willingness to treat the first version as good enough.
+Be honest about maintenance. Automations aren't free after they ship. APIs change. Systems update. Edge cases surface. Budget roughly 20% of the build cost per year for ongoing upkeep.
+
+Most mid-volume processes pay back in under six months. Many in under 90 days. The bottleneck is never the technology. It's always the willingness to call version one good enough.
 
 ---
 

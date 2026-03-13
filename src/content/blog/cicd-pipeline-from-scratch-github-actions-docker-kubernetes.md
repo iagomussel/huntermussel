@@ -20,27 +20,29 @@ subtitle: "From first commit to automated production deploy."
 status: "draft"
 ---
 
-Most CI/CD tutorials show you the happy path. This one shows you the full pipeline — including the parts that break, the decisions that matter, and what to skip when you're starting from zero.
+Most CI/CD tutorials show you a happy path that works in isolation and breaks the moment you touch anything real.
 
-The stack: GitHub Actions for orchestration, Docker for packaging, Kubernetes for deployment.
+This one shows you the full pipeline — including the decisions that matter, the parts that are easy to get wrong, and what to skip when you're starting from zero.
+
+Stack: GitHub Actions for orchestration, Docker for packaging, Kubernetes for deployment. Here's exactly what I'd build.
 
 <!-- truncate -->
 
-## What we're building
+## What you're building
 
 A pipeline that:
 
 1. Runs tests on every pull request
 2. Builds a Docker image on merge to main
 3. Pushes the image to a registry
-4. Deploys to a Kubernetes cluster with zero downtime
-5. Validates the deploy before marking it complete
+4. Deploys to Kubernetes with zero downtime
+5. Validates the deploy before declaring success
 
-That's the baseline. Everything else is optimization.
+That's the baseline. Everything else is optimization you can add later.
 
-## Step 1: The repository structure
+## Start with the repository structure
 
-Before writing any pipeline code, make sure your repository has what the pipeline needs.
+Before writing any workflow YAML, make sure your repo has what the pipeline actually needs.
 
 ```
 project/
@@ -57,9 +59,9 @@ project/
         └── deploy.yml
 ```
 
-Two workflow files. `ci.yml` handles testing — runs on every PR. `deploy.yml` handles building and deploying — runs on merge to main.
+Two workflow files. `ci.yml` handles testing — fires on every PR. `deploy.yml` handles building and deploying — fires on merge to main. Keeping them separate means a failing test doesn't prevent you from understanding deploy behavior, and you can iterate on each independently.
 
-## Step 2: The CI workflow
+## The CI workflow
 
 ```yaml
 # .github/workflows/ci.yml
@@ -91,9 +93,11 @@ jobs:
         run: npm run lint
 ```
 
-Keep CI fast. Under 5 minutes is the target. Over 10 minutes means developers stop waiting for it.
+Keep CI fast. Under 5 minutes is the target. Over 10 minutes and developers start skipping it or merging before it finishes — which defeats the whole point.
 
-## Step 3: The Dockerfile
+If your tests are slow, that's a test architecture problem. Don't accept slow CI as normal.
+
+## The Dockerfile
 
 ```dockerfile
 FROM node:20-alpine AS builder
@@ -113,11 +117,11 @@ EXPOSE 3000
 CMD ["node", "dist/index.js"]
 ```
 
-Two stages. The builder installs everything and compiles. The runtime image contains only what's needed to run. Smaller image, smaller attack surface.
+Two stages. The builder installs and compiles. The runtime image only contains what's needed to run the app. Smaller image, smaller attack surface.
 
-Run as a non-root user. This is not optional in production.
+The non-root user at the end is not optional in production. Running containers as root is a security risk that's trivial to avoid.
 
-## Step 4: The deploy workflow
+## The deploy workflow
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -191,9 +195,9 @@ jobs:
         run: kubectl rollout status deployment/app --timeout=5m --kubeconfig /tmp/kubeconfig
 ```
 
-The `rollout status` step is the validation gate. The workflow fails if the new pods don't become healthy within 5 minutes. This means a bad deploy doesn't silently succeed — it fails the pipeline and gives you a signal to investigate.
+That last `rollout status` step is the important one. The workflow fails if the new pods don't become healthy within 5 minutes. A bad deploy fails the pipeline — it doesn't silently succeed and leave you wondering what happened.
 
-## Step 5: The Kubernetes deployment
+## The Kubernetes deployment
 
 ```yaml
 # k8s/deployment.yaml
@@ -236,26 +240,28 @@ spec:
             cpu: "500m"
 ```
 
-`maxUnavailable: 0` ensures zero-downtime rolling updates. The readiness probe ensures Kubernetes doesn't route traffic to a pod that isn't ready to serve it.
+`maxUnavailable: 0` is what gives you zero-downtime rolling updates. Old pods stay up until the new ones are ready.
 
-## The secrets you need to configure
+The readiness probe is equally important. Without it, Kubernetes routes traffic to pods before they're actually ready to handle requests. That causes errors during deploys that look like bugs but are really just timing issues.
 
-In your GitHub repository settings (Settings → Secrets):
+## Secrets setup
 
-- `KUBECONFIG`: Base64-encoded kubeconfig for your cluster (`cat ~/.kube/config | base64`)
+Two things to configure in GitHub repository settings → Secrets:
 
-The Docker registry authentication uses `GITHUB_TOKEN`, which GitHub provides automatically for GitHub Container Registry.
+- `KUBECONFIG`: Base64 your kubeconfig with `cat ~/.kube/config | base64`
+
+Docker registry auth uses `GITHUB_TOKEN`, which GitHub provides automatically for GitHub Container Registry. No additional setup needed.
 
 ## What to add next
 
-This baseline gets you to zero-downtime deploys with automated testing. From here, the highest-value additions are:
+This baseline gets you from PR to zero-downtime production deploy with validation. Once it's stable, the highest-value additions are:
 
-1. **Slack notifications** on deploy success/failure
-2. **Environment-specific workflows** (staging deploy on PR merge, production deploy on tag)
-3. **Secret scanning** in CI to catch leaked credentials before they ship
-4. **Image vulnerability scanning** with Trivy before the push step
+- **Slack/Discord notifications** on deploy success or failure — know immediately without watching the Actions tab
+- **Environment-specific workflows** — staging on PR merge, production on tag push
+- **Secret scanning** in CI — catch leaked credentials before they ship
+- **Image vulnerability scanning** with Trivy before the push step
 
-Build the baseline first. Add the rest once it's stable.
+Build the baseline. Run it for two weeks. Then add the rest.
 
 ---
 

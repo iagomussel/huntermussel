@@ -22,77 +22,80 @@ status: "draft"
 
 For the past three years, AI's main job was to respond.
 
-You asked a question. It answered. You gave it a document. It summarized. The model was a very smart autocomplete — powerful, but passive.
+You asked a question. It answered. You gave it a document. It summarized. You asked it to write code. It wrote code. The model was a very smart autocomplete — genuinely powerful, but fundamentally passive.
 
-That's changing. The shift to agentic AI is not a new product category. It's a different relationship between AI and work.
+Something changed. And it's not a new product category or a new model announcement. It's a different relationship between AI and work.
 
 <!-- truncate -->
 
 ## What "agentic" actually means
 
-An agentic AI system is one that pursues a goal across multiple steps, using tools, maintaining context, and adapting based on what it discovers along the way.
+An agentic AI system pursues a goal across multiple steps. It uses tools. It maintains context. It adapts based on what it discovers along the way.
 
-The core components:
+Four things make it work:
 
-- **A model that reasons.** Not just predicts the next token, but evaluates options and selects actions.
-- **Tools.** APIs, code execution, web search, database access, file systems. The agent can interact with the world, not just describe it.
-- **Memory.** Short-term context within a task. Optionally, long-term memory across sessions.
-- **A loop.** The agent acts, observes the result, decides the next action, and repeats until the goal is met or it determines it can't proceed.
+**A model that reasons.** Not just predicting the next token — actually evaluating options, selecting actions, and deciding what to do when the first attempt doesn't work.
 
-This is different from a chatbot that calls a function when prompted. An agent is running a plan, not following a script.
+**Tools.** APIs, code execution, web search, database access, file systems. The agent can interact with the world, not just describe it.
 
-## Why now
+**Memory.** Short-term context within a task. Optionally, longer-term memory that persists across sessions.
 
-Three things converged to make this practical in 2024–2025:
+**A loop.** The agent acts, observes the result, decides the next step, and repeats. It doesn't stop after one response.
 
-**Context windows got large enough.** Earlier models could hold a few pages of context. Current models hold hundreds of pages — enough to reason across a full codebase, a full document set, or a full conversation history.
+This is fundamentally different from a chatbot that calls a function when you say the magic words. An agent is running a plan. A chatbot is following a script.
 
-**Tool use became reliable.** The ability to call functions, parse structured outputs, and recover from tool errors matured significantly. Early agents were unreliable because the model couldn't consistently select the right tool or interpret the result. That's largely solved.
+## Why this is happening now and not three years ago
 
-**Compute costs dropped.** Running a multi-step agent involves many model calls per task. When inference was expensive, the economics didn't work outside narrow use cases. At current prices, agent-based workflows are economically viable at scale.
+Three things converged between 2023 and 2025 that made agents actually viable.
 
-The technology caught up to the idea.
+Context windows got big enough. Earlier models held a few pages of context. Current models hold hundreds — enough to reason across a full codebase, a complete document set, a long conversation history. That matters because multi-step tasks need that context to make coherent decisions.
 
-## What changes with agents
+Tool use became reliable. Early agents were unreliable in a specific way: the model would pick the wrong tool, misinterpret the result, and confidently proceed in the wrong direction. That problem is largely solved. The models are much better at tool selection and result interpretation.
 
-The most significant change is the scope of tasks AI can handle autonomously.
+Inference got cheap. Running an agent means many model calls per task. When inference was expensive, the economics only worked for narrow, high-value use cases. Now they work at scale.
 
-Before agents: AI assists with discrete tasks. Write this email. Summarize this document. Explain this error.
+The idea was always sound. The infrastructure just caught up.
 
-With agents: AI handles processes. Research this prospect, check CRM history, draft an outreach sequence, and log the activity. Review this PR, run the tests, flag security patterns, and leave structured comments.
+## What actually changes
 
-The output is no longer a single artifact. It's the completion of a workflow.
+The biggest change is the scope of what AI can handle without a human orchestrating every step.
 
-This changes the economics of automation. Tasks that weren't worth automating because they required too much human orchestration are now viable. The agent handles the orchestration.
+Before agents, AI assists with discrete tasks. Write this email. Summarize this document. Explain this error. One prompt, one output, done.
 
-## The failure modes to plan for
+With agents, AI handles processes. Research this prospect, check CRM history, draft an outreach sequence, and log the activity. Review this PR, run the tests, flag security patterns, and leave structured comments. Tasks that used to require a human to coordinate each step.
 
-Agentic systems fail in ways that chat systems don't.
+The output isn't a single artifact anymore. It's a completed workflow.
 
-**Cascading errors.** A wrong decision early in a multi-step task compounds. The agent builds subsequent steps on a faulty premise. By step 10, it's confidently doing the wrong thing.
+That changes the economics of automation. A lot of processes that weren't worth automating — because they required too much human judgment to orchestrate — are now viable candidates.
 
-**Unbounded execution.** Without hard limits on steps, API calls, or time, agents can loop. They need explicit termination conditions.
+## The failure modes you need to plan for
 
-**Unaudited actions.** An agent that can write to a database, send an email, or modify a file needs an audit trail. Every action, every decision point, every tool call — logged.
+Agentic systems fail in ways that simple chatbots don't. Worth knowing before you build.
 
-**Scope creep.** Agents given broad tool access will sometimes use tools in unintended ways. Scope the permissions tightly. The principle of least privilege applies to agents.
+**Cascading errors.** A wrong decision in step 2 compounds by step 10. The agent builds on a faulty premise and gets very confident in the wrong direction. You need checkpoints.
 
-None of these are reasons to avoid agentic systems. They're reasons to build them carefully.
+**Unbounded loops.** Without explicit termination conditions, agents can loop. Set hard limits on steps, API calls, and wall-clock time.
 
-## Where the market is actually landing
+**Silent actions.** An agent that can write to a database, send an email, or modify a file needs a complete audit trail. Every tool call, every decision — logged. "The agent decided" is not a defensible answer when something goes wrong.
 
-The hype cycle around agents peaked in 2024. The practical cycle is happening now.
+**Scope creep.** Agents given broad tool access will sometimes use tools in creative ways you didn't intend. Scope the permissions tightly. Least privilege applies to agents exactly as it does to humans.
 
-Teams that deployed experimental agents in 2024 spent 2025 learning what actually worked. The patterns that survived:
+These aren't reasons to avoid agentic systems. They're the reasons to build them carefully rather than just copying a demo from a conference talk.
+
+## Where this is actually landing
+
+The hype peaked in 2024. The practical cycle is happening now.
+
+Teams that shipped experimental agents in 2024 spent 2025 learning what actually worked in production versus what worked in a demo. The patterns that survived are consistent:
 
 - Narrow scope, clear goal, well-defined tools
-- Human-in-the-loop at high-stakes decision points
-- Comprehensive logging and the ability to replay or audit any run
-- Gradual autonomy expansion — prove the agent works on low-stakes tasks before expanding its reach
+- Human review at high-stakes decision points before irreversible actions
+- Complete logging and the ability to replay any run
+- Gradual autonomy expansion — prove the agent on low-stakes tasks first, then widen the scope
 
-The enterprise adoption pattern is moving from "full autonomy" demos to "supervised autonomy" production systems. The agent does the work. The human reviews the output before it has irreversible consequences.
+The demos sold "full autonomy." What's actually working in production is "supervised autonomy." The agent does the work. A human reviews before it matters.
 
-That's not a limitation. That's how you build trust in a new category of system.
+That's not a failure of the technology. That's how you build trust in a new kind of system. The autonomy expands as the trust builds.
 
 ---
 

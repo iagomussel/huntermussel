@@ -22,39 +22,39 @@ status: "draft"
 
 The first AI automation is a proof of concept. The tenth is a dependency.
 
-When you have one workflow, you know it intimately. You built it. You can debug it. If it breaks, you know where to look.
+When you have one workflow, you know it intimately. You built it. You know where the edge cases are. If it breaks, you know exactly where to look.
 
-At ten workflows, you have processes depending on other processes. Inputs coming from sources you don't fully control. Outputs feeding downstream systems that break silently when the automation produces unexpected results. And a team that's grown beyond the one person who understood the original design.
+At ten workflows, you have processes depending on other processes. Inputs from sources you don't fully control. Outputs feeding downstream systems that break silently when the automation produces something unexpected. And a team that's grown beyond the one person who understood the original design.
 
-That's when the control problem becomes real.
+That's when the control problem becomes real. And most teams don't have an answer ready.
 
 <!-- truncate -->
 
-## The core problem: AI automations fail quietly
+## Why AI automations fail differently than normal software
 
-Traditional software fails loudly. An exception is thrown. A process crashes. A HTTP 500 comes back. The failure is visible and urgent.
+Traditional software fails loudly. An exception gets thrown. A process crashes. A 500 error comes back. The failure is visible and urgent.
 
-AI automations fail subtly. The model returns a plausible-looking answer that's wrong. The classification is off by one category. The summary omits a critical detail. The agent takes an action that's technically valid but not what the business intended.
+AI automations fail quietly. The model returns a plausible-looking answer that's wrong. The classification is off by one category. The summary omits the critical detail. The agent takes an action that's technically valid but not what the business intended.
 
-These failures don't throw exceptions. They produce downstream errors that surface hours or days later, in a different system, with no obvious connection to the automation that caused them.
+These failures don't throw exceptions. They create downstream errors that surface hours or days later, in a different system, with no obvious connection to the automation that caused them.
 
-**The solution is not fewer AI automations. It's a logging and observability layer built into every one.**
+**The solution isn't fewer automations. It's building observability into every single one from the start.**
 
-## The minimum viable governance layer
+## The minimum you need in production
 
-Every AI automation in production needs:
+Every AI automation running in production needs four things.
 
-**An immutable run log.** For every execution: input, output, model used, timestamp, duration, cost. This is your audit trail. Without it, you can't diagnose failures, can't satisfy compliance requirements, and can't improve the system.
+**An immutable run log.** For every execution: input, output, model used, timestamp, duration, and cost. This is your audit trail. Without it, you can't diagnose failures, can't satisfy compliance requests, and can't improve the system over time.
 
-**Confidence scores or uncertainty signals.** If the model is uncertain, you need to know. Route low-confidence outputs to a human review queue instead of passing them downstream as if they were certain.
+**Confidence signals.** If the model is uncertain, you need to know before that uncertainty reaches the downstream system. Route low-confidence outputs to a human review queue. Don't pass them through as if they were certain.
 
-**An exception/override path.** Every automation that makes a consequential decision needs a way for a human to override it. Not as an afterthought — as a first-class feature of the system.
+**An override path.** Every automation that makes a consequential decision needs a way for a human to override it. Not as an afterthought — as a first-class part of the design.
 
-**Downstream impact tagging.** Every automation action should be tagged with what systems it affected. If a downstream system breaks, you need to trace backward to the automation run that caused it.
+**Downstream impact tagging.** Tag every action with what systems it affected. When something breaks downstream, you need to trace backward to the specific run that caused it.
 
-## Structuring runs for observability
+## Treat runs like transactions
 
-Treat every automation run like a transaction.
+This pattern has saved me hours of debugging across multiple projects. Wrap every automation run in a structured log entry.
 
 ```python
 run_id = generate_run_id()
@@ -78,51 +78,54 @@ log_run_end(run_id, {
 })
 ```
 
-Every run has an ID. Every run log captures input fingerprint, output, model metadata, and routing decision. This costs almost nothing to implement. It's the difference between debuggable and opaque.
+Every run has an ID. Every log captures the input fingerprint, output, model metadata, and routing decision. It costs almost nothing to implement and it's the difference between a system you can debug and a system you can only guess at.
 
-## Tiered autonomy: not all automations should act the same way
+## Not every automation should have the same autonomy
 
-As you scale, not every automation should have the same level of autonomy.
+This is the framework I use when scoping automations:
 
-**Tier 1 — Inform only.** The automation analyzes and produces a recommendation. A human makes the decision. No real-world action is taken without approval. Use this for high-stakes, low-volume decisions.
+**Tier 1 — Inform only.** The automation analyzes and produces a recommendation. A human makes the decision. No real-world action without approval. Use this for high-stakes, low-volume decisions where errors are expensive.
 
-**Tier 2 — Act with notification.** The automation takes action and immediately notifies a human. The human can reverse it within a defined window. Use this for medium-stakes decisions with clear reversal paths.
+**Tier 2 — Act with notification.** The automation acts and immediately notifies a human. The human can reverse it within a defined window. Use this for medium-stakes decisions with clear reversal paths — think: routing a support ticket, updating a CRM record.
 
-**Tier 3 — Act autonomously.** The automation acts and logs. Human review happens on a cadence, not in real time. Use this only for well-understood, low-stakes, high-volume operations where the cost of human review exceeds the cost of occasional errors.
+**Tier 3 — Act autonomously.** The automation acts and logs. Human review happens on a cadence, not in real time. Use this only for well-understood, low-stakes, high-volume operations where the cost of human review genuinely exceeds the cost of occasional errors.
 
-Map every automation to a tier before deploying it. Promote from Tier 1 to Tier 3 as you build confidence — not before.
+Map every automation to a tier before you deploy it. Promote from Tier 1 toward Tier 3 as you build confidence — not before. "We'll check the logs after" is not a governance strategy for Tier 3.
 
-## Version and test your automations like software
+## Treat prompts like code
 
-The most common scaling failure: a prompt changes, a model updates, a connected API changes its schema — and the automation starts producing wrong outputs. Nobody notices until the damage accumulates.
+The most common scaling failure I've seen: a prompt changes, a model version updates, or a connected API shifts its schema — and the automation starts producing wrong outputs. Nobody notices until the damage accumulates.
 
-Treat automations as software:
+Three practices that prevent this:
 
-- **Version the prompts.** A prompt is code. It goes in version control. Changes are reviewed and approved.
-- **Maintain an evaluation suite.** A set of known inputs with expected outputs. Run it on every change to the automation. If the outputs deviate, the change doesn't ship.
-- **Lock model versions in production.** When a new model version is released, test it against your evaluation suite before switching. "Latest" is not a production deployment strategy.
+**Version your prompts.** A prompt is code. It goes in version control. Changes go through review. Nobody edits the production prompt directly because "it'll be fine."
 
-## The team structure question
+**Maintain an evaluation suite.** A set of known inputs with expected outputs. Run it on every prompt change. If the outputs deviate from the expected, the change doesn't ship.
 
-At small scale, one engineer can own multiple automations. At ten workflows, you start to need:
+**Lock model versions in production.** When a new model is released, test it against your evaluation suite before switching. "Latest" is not a production deployment strategy. I've seen teams switch model versions mid-sprint and spend a week debugging why their classification accuracy dropped.
 
-- **An owner per automation** — someone accountable for its behavior and performance
-- **A central observability dashboard** — a single view of all automation runs, error rates, confidence distributions, and human override rates across every workflow
-- **A regular review cadence** — monthly review of automation performance metrics. Are the confidence scores trending down? Is the human override rate increasing? Either signal means something changed and needs investigation.
+## Structure before you need it
 
-## The governance document
+At small scale, one engineer can own multiple automations. Once you're past ten workflows, you need:
 
-When regulators, auditors, or stakeholders ask "how do your AI automations work," you need a document that answers:
+- An owner per automation — someone accountable for its behavior and metrics
+- A central dashboard — error rate, confidence distribution, and human override rate across every workflow in one view
+- A monthly review cadence — are confidence scores trending down? Is the override rate increasing? Either is a signal something changed
 
-- What does each automation do?
+## The governance document nobody writes until it's too late
+
+When a regulator, an auditor, or a board member asks "how do your AI automations work," you need a written answer. Not a demo. A document.
+
+One page per automation:
+- What does it do?
 - What data does it process?
-- What decisions does it make autonomously vs. with human review?
+- What does it decide autonomously vs. with human review?
 - How is it tested and monitored?
-- What is the exception and override process?
+- What's the override and exception process?
 
-One page per automation. Updated whenever the automation changes. This is not bureaucracy — it's the minimum viable documentation for operating AI systems responsibly.
+Update it when the automation changes. This isn't bureaucracy — it's the minimum viable documentation for running AI systems responsibly.
 
-Scale without this, and the tenth automation is not a system. It's a collection of separate black boxes that nobody fully understands.
+Scale without this and the tenth automation isn't a system. It's ten separate black boxes that nobody fully understands, including the people who built them.
 
 ---
 

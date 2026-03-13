@@ -22,27 +22,27 @@ status: "draft"
 
 "We'll add security later" is how you end up with a CVE in production, a compliance audit you failed, or a compromised dependency you didn't know existed.
 
-But the pushback against security in pipelines is real. Engineers have seen security processes that added 20 minutes to every build, blocked deploys over low-severity findings, and required three approval signatures for a CSS change. That's not security — it's theater with a badge.
+But I get the pushback. Engineers have seen security processes that added 20 minutes to every build, blocked deploys over low-severity findings that had been "known and accepted" for months, and required three approvals for a CSS change. That's not security. That's theater with a badge on it.
 
-The goal is security that finds real problems without destroying delivery velocity.
+The goal is security that actually catches real problems — without turning your pipeline into a parking lot.
 
 <!-- truncate -->
 
-## The DevSecOps principle: fail fast on what matters
+## The principle: only block on what actually matters
 
-Security checks should run early, run automatically, and only block on findings that represent real risk.
+Security checks should run early, run automatically, and hard-block only on findings that represent real risk.
 
-Everything else — low-severity informational findings, accepted risks, known false positives — goes into a report that gets reviewed on a cadence, not a hard gate that stops shipping.
+Everything else — informational findings, accepted risks, known false positives — goes into a report reviewed on a cadence. Not a gate that stops shipping.
 
-The teams that hate security in CI/CD have pipelines full of noise. Every deploy blocked by a finding that's been "known and accepted" for six months. Every build slower because of a scanner that runs sequentially instead of in parallel.
+The teams that hate security in CI/CD are the ones running noisy scanners sequentially, getting blocked by the same stale finding every deploy, and spending more time managing the security tool than the security problem.
 
 Fix the noise. The signal is worth protecting.
 
-## Layer 1: Secret scanning (non-negotiable)
+## Layer 1: Secret scanning — non-negotiable, runs everywhere
 
-A leaked API key, database credential, or private key in a public repository is an incident. This is the highest-severity risk with the lowest complexity to catch.
+A leaked API key or database credential in your repository is an incident. This is the highest-severity risk with the simplest fix.
 
-Run secret scanning on every commit. It's fast, it's accurate, and it should hard-block on any finding.
+Run secret scanning on every commit. It's fast and the false positive rate is manageable with the right configuration.
 
 ```yaml
 - name: Secret scanning
@@ -54,22 +54,22 @@ Run secret scanning on every commit. It's fast, it's accurate, and it should har
     extra_args: --only-verified
 ```
 
-`--only-verified` filters to secrets that have been confirmed active. This eliminates the majority of false positives.
+`--only-verified` filters to credentials that are confirmed active. This eliminates the majority of false positives from test fixture data and example configs.
 
-No secrets in code. If a secret is found: rotate it immediately, then fix the commit. Order matters — rotate first.
+If a secret is found: rotate it immediately, then fix the commit. That order matters. Rotate first.
 
 ## Layer 2: Dependency scanning
 
-Your application is mostly other people's code. If a library you depend on has a known vulnerability, you're exposed.
+Your application is mostly other people's code. That's fine — until one of those libraries has a known vulnerability and you're carrying it to production unaware.
 
 ```yaml
 - name: Dependency audit
   run: npm audit --audit-level=high
 ```
 
-Run this in every PR. Block on high and critical severity findings. Report moderate and low for review.
+Run this in every PR. Block on CRITICAL and HIGH. Report MODERATE and LOW for scheduled review.
 
-For containers, add image scanning before push:
+For container images, add scanning before push:
 
 ```yaml
 - name: Scan image
@@ -82,13 +82,13 @@ For containers, add image scanning before push:
     exit-code: '1'
 ```
 
-The key decision: what severity level warrants a hard block versus a report? My default: CRITICAL always blocks. HIGH blocks with an exception process. MEDIUM and LOW go to a scheduled review.
+My defaults: CRITICAL always blocks. HIGH blocks with an exception process. MEDIUM and LOW go to a scheduled review. These aren't magic thresholds — adjust for your risk tolerance — but having a documented policy matters more than the specific levels.
 
-## Layer 3: Static Application Security Testing (SAST)
+## Layer 3: Static analysis (SAST)
 
-SAST tools analyze your code for security patterns: SQL injection, XSS, insecure deserialization, hardcoded credentials, unsafe cryptography.
+SAST tools scan your code for security patterns: SQL injection, XSS, unsafe deserialization, hardcoded credentials. They catch things that linters miss.
 
-GitHub's CodeQL is free for open-source and reasonably priced for private repositories:
+GitHub's CodeQL is free for open source:
 
 ```yaml
 - name: Initialize CodeQL
@@ -102,11 +102,11 @@ GitHub's CodeQL is free for open-source and reasonably priced for private reposi
     category: "/language:javascript"
 ```
 
-SAST has a false positive problem. Tune the ruleset to your language and framework. Don't block on informational findings — they'll bury real issues.
+SAST has a false positive problem. Every tool does. Tune the ruleset to your language and framework, and start in report-only mode before enabling hard blocking. If you turn on hard blocking before you've reviewed the initial findings, you'll immediately have a backlog of blocked deploys and a team that resents the tool.
 
-## Layer 4: Infrastructure security scanning
+## Layer 4: Infrastructure scanning
 
-If you're shipping IaC (Terraform, CloudFormation, Kubernetes manifests), scan them too.
+If you're shipping Terraform or Kubernetes manifests, scan them.
 
 ```yaml
 - name: Scan Terraform
@@ -115,11 +115,11 @@ If you're shipping IaC (Terraform, CloudFormation, Kubernetes manifests), scan t
     soft_fail: true
 ```
 
-`soft_fail: true` during initial rollout lets you see findings without breaking existing pipelines. Set a date to move it to hard fail after the backlog is addressed.
+Start with `soft_fail: true`. Set a date — two or three sprints out — to move it to hard fail after you've worked through the initial findings. This is the same "report first, block second" pattern. It works.
 
-## Running it fast: parallelization
+## Run all of this in parallel
 
-The biggest performance mistake in security pipelines is running checks sequentially.
+The single biggest reason security in CI/CD is slow is sequential execution.
 
 ```yaml
 jobs:
@@ -134,31 +134,23 @@ jobs:
         run: ./scripts/security/${{ matrix.check }}.sh
 ```
 
-Secret scanning, dependency scanning, and SAST have no dependencies on each other. Run them in parallel. A 12-minute sequential security stage becomes a 4-minute parallel one.
+Secret scanning, dependency scanning, and SAST have no dependencies on each other. Run them in parallel. A 12-minute sequential security stage becomes a 4-minute parallel one. That's the difference between "this adds friction" and "this is invisible."
 
-## The exception process
+## What to do with findings you can't fix immediately
 
-Not every finding is fixable immediately. Some require library upgrades that break compatibility. Some are in code you don't own. Some are accepted risks for your threat model.
+Not every finding is fixable now. Some require library upgrades that break compatibility. Some are in code you don't own. Some are accepted risks for your specific threat model.
 
-These need a documented exception process — not ignored, not silently suppressed.
+These need a documented exception — not ignored, not silently suppressed.
 
-A finding accepted as a known risk should have:
-- Who accepted it
-- Why
-- When it will be reviewed again
-- What mitigations are in place
+A finding accepted as a known risk needs: who accepted it, why, when it'll be reviewed again, and what mitigations are in place. A YAML file in the repo reviewed quarterly is enough for most teams. The goal is auditability, not paperwork.
 
-A YAML file in the repository, reviewed quarterly, is sufficient for most teams. The goal is auditability — not bureaucracy.
+## The three things that kill security in pipelines
 
-## What not to do
+**Running everything on every commit.** SAST on a one-line doc change is overhead with no return. Scope checks to what changed.
 
-**Don't run everything on every commit.** SAST on a one-line docs change is overhead with no return. Scope security checks to what changed.
+**Hard-blocking on findings you haven't reviewed.** Turn new scanners on in report mode first. See what they catch. Decide what's signal. Then block on it.
 
-**Don't hard-block on findings you haven't reviewed.** Turn on new scanners in report mode first. Review the findings. Decide what's real. Then enable hard blocking on the signal you trust.
-
-**Don't treat security as a separate team's problem.** When security findings are routed to a different team to resolve, they accumulate. When the engineer who wrote the code gets the finding immediately, it gets fixed.
-
-Security in the pipeline is only as good as the culture around it.
+**Making it someone else's problem.** When findings get routed to a separate security team, they accumulate. When the engineer who wrote the code sees the finding immediately, it gets fixed. Security in the pipeline only works when the people who wrote the code own the findings.
 
 ---
 

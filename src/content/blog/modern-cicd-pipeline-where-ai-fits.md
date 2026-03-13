@@ -20,85 +20,83 @@ subtitle: "Most teams understand CI/CD. Few understand where AI changes it."
 status: "draft"
 ---
 
-CI/CD is one of the most searched topics in software engineering. The fundamentals are well understood. The confusion comes when people start asking: where does AI fit into this?
+Most engineers can tell you what CI/CD is. Fewer can tell you where AI actually fits into it — beyond the vague "AI makes it smarter" pitch every vendor is running right now.
 
-The honest answer is: in more places than most teams use it, but fewer places than vendors claim.
+I've set up pipelines for teams at every stage. From a 3-person startup deploying to a single EC2 instance, to 40-engineer orgs running Kubernetes across multiple regions. The fundamentals don't change much. What's changing is what AI can do inside each stage.
+
+Let me walk you through both.
 
 <!-- truncate -->
 
-## The anatomy of a modern pipeline
+## What a modern pipeline actually looks like
 
-A CI/CD pipeline moves code from a developer's branch to production. Every step has a job.
+A CI/CD pipeline moves code from a developer's branch to production. Every stage has one job.
 
-**Commit trigger.** A push or pull request fires the pipeline. This is the input event everything else responds to.
+**Commit trigger.** Someone pushes code or opens a PR. The pipeline wakes up. Everything else is a response to this event.
 
-**Build.** The code compiles. Dependencies resolve. Docker images get built. This step verifies the code is structurally valid before any tests run.
+**Build.** Code compiles. Dependencies install. Docker images get built. This step exists to answer one question: does this code even build? You'd be surprised how often that fails.
 
-**Test.** Unit tests, integration tests, and contract tests run in isolation. This is where most bugs are caught — or should be.
+**Test.** Unit tests, integration tests, contract tests. This is where bugs should get caught. If your tests aren't catching bugs here, you have a coverage problem that no pipeline can fix.
 
-**Static analysis.** Code quality tools, linters, security scanners. This runs in parallel with tests in mature pipelines.
+**Static analysis.** Linters, security scanners, code quality tools. Ideally running in parallel with tests, not after them. Sequential security checks are how you add 20 minutes to every build.
 
-**Staging deploy.** A version of the change runs in a production-like environment. Smoke tests, end-to-end tests, and manual QA gates can live here.
+**Staging deploy.** A production-like environment gets the new version. Smoke tests run. QA gates happen here if you have them.
 
-**Approval gate.** Automated or human. In high-stakes systems, a human reviews before the next step. In mature teams with high test coverage, this is automated.
+**Approval gate.** Automated or human. On critical systems, a human reviews before anything touches prod. On mature pipelines with real test coverage, this is automated.
 
-**Production deploy.** Blue-green, canary, or rolling — depending on the risk tolerance of the system.
+**Production deploy.** Blue-green, canary, or rolling. Your risk tolerance decides which one.
 
-**Post-deploy validation.** Synthetic transactions, health checks, error rate monitoring. The pipeline isn't done when the deploy finishes — it's done when the system confirms it's healthy.
+**Post-deploy validation.** Health checks, error rate checks, synthetic transactions. The pipeline isn't done when the deploy command finishes. It's done when the system says it's healthy.
 
-That's the skeleton. The quality of a pipeline is determined by what happens in each stage, not whether the stages exist.
+That's the skeleton. The quality of a pipeline comes from what happens inside each stage — not just whether the stages exist on a diagram.
 
 ## Where AI is genuinely useful
 
 ### Test failure triage
 
-Flaky tests and failing builds are among the highest-friction points in a developer's day. Most failures are either unrelated to the PR or have a known pattern from previous failures.
+A failing build at 9am is already friction. Spending 20 minutes figuring out *why* it failed makes it worse.
 
-AI can analyze the failure log, correlate it with historical failures, and surface a probable cause before the developer even opens the terminal. This turns a 20-minute debugging session into a 2-minute confirmation.
-
-Some teams are running LLM-assisted failure summarization in their CI pipelines today. The model reads the test output, checks the diff, and writes a one-paragraph explanation of what likely broke and why.
+AI can read the failure log, cross-reference it with the diff, compare it to historical failures, and surface a probable cause before you open the terminal. That 20-minute debugging session becomes a 2-minute confirmation. Some teams are shipping this today — the model reads the output and writes a one-paragraph explanation of what broke and why.
 
 ### Code review on every PR
 
-Static analysis catches syntax and known vulnerability patterns. It doesn't catch logic issues, architectural inconsistencies, or missed edge cases.
+Static analysis catches syntax errors and known vulnerability patterns. It doesn't catch logic holes, missed edge cases, or the architectural inconsistency that won't break anything today but will cause a painful refactor in six months.
 
-An AI agent running on every PR can flag patterns that rule-based tools miss: a function that handles the happy path but doesn't account for the null case, a security pattern inconsistent with the rest of the codebase, a dependency introduced without a version pin.
+An AI reviewer running on every PR can flag those patterns. A function that handles the happy path but silently fails on null input. A security pattern inconsistent with the rest of the codebase. A direct dependency introduced without a version pin.
 
-This isn't replacing the human reviewer. It's giving the reviewer a first-pass summary so they can focus on the decisions that require judgment.
+This isn't replacing the human reviewer. It's giving them a first-pass summary so they can stop reviewing spacing decisions and start reviewing decisions that matter.
 
 ### Deployment risk scoring
 
-Not all changes carry the same risk. A one-line config change is lower risk than a database migration touching 3 tables.
+Not every change carries the same risk. A one-line typo fix in a README is different from a database migration touching three tables.
 
-AI models trained on your deploy history can score incoming changes by predicted incident probability — based on file surface area, test coverage of changed code, time since last incident, and deploy frequency patterns. Teams using this are routing high-risk deploys to stricter approval gates automatically.
+AI trained on your deploy history can score incoming changes by predicted incident probability — factoring in file surface area, test coverage of the changed code, time since the last incident in this area, and deploy frequency. Teams using this automatically route high-risk changes to stricter gates. It's a smarter version of "require two reviewers for database changes."
 
-### Observability and anomaly detection
+### Post-deploy anomaly detection
 
-Post-deploy, the question is: did this change break anything?
+Did this deploy break anything? That question is harder than it sounds when you're relying on static thresholds.
 
-AI-assisted anomaly detection watches error rate, latency, and key business metrics in the window after a deploy. Instead of static thresholds (alert when error rate > 1%), it compares the current pattern to historical baselines and flags deviations that match incident signatures — even if no static threshold is crossed.
+AI-assisted monitoring watches error rate, latency, and key business metrics in the window right after a deploy. Instead of firing when error rate crosses 1%, it compares the current pattern to historical baselines and flags deviations that look like past incidents — even if no static threshold is crossed. Quieter normal. Louder when something's actually wrong.
 
-## Where AI doesn't belong in CI/CD
+## Where AI doesn't belong
 
-**Replacing tests.** AI-generated test summaries are useful. AI skipping test execution because "it looks fine" is not. Tests are ground truth. Don't use AI to bypass them.
+**Skipping tests.** I've heard "AI can just tell us if it looks right." No. Tests are ground truth. They're not the slow part — a test suite that takes 15 minutes is a you-need-better-tests problem, not an AI-can-skip-this problem.
 
-**Automated production deploys with no human gate on critical systems.** Confidence scores are not guarantees. In systems where a bad deploy has major consequences, keep a human in the loop at the production gate.
+**Autonomous production deploys on critical systems.** Confidence scores aren't guarantees. If a bad deploy costs you users, revenue, or sleep — keep a human at the production gate. The cost of that review is lower than the cost of a bad deploy.
 
-**Undocumented decisions.** If an AI agent made a call — skip this test, approve this gate, roll back this deploy — that decision needs to be logged. Auditability is non-negotiable in any serious system.
+**Undocumented automated decisions.** If an AI agent skipped a test, approved a gate, or triggered a rollback — that needs to be in the logs. "The system decided" isn't an acceptable answer when something goes wrong.
 
-## The pipeline maturity ladder
+## The thing most people get backwards
 
-Most teams asking "where does AI fit in my pipeline?" are asking the wrong question because they don't yet have a solid pipeline to add AI to.
+Teams ask "where does AI fit in my pipeline?" before they have a pipeline worth fitting AI into.
 
-Before optimizing with AI, the baseline needs to be in place:
+Before AI optimization makes sense, you need:
+- Tests that actually run deterministically
+- A staging environment that resembles production
+- Rollback capability in under 5 minutes
+- Some baseline for what "healthy" looks like post-deploy
 
-1. Automated tests with meaningful coverage
-2. Deterministic builds (no "it worked last time")
-3. Separate staging and production environments
-4. Rollback capability in under 5 minutes
-5. Post-deploy health monitoring
-
-Once that exists, AI accelerates every stage. Without it, AI adds noise to a system that doesn't have signal yet.
+Without those, AI adds noise to a system that doesn't have signal yet. Get the foundation right. Then add the intelligence.
 
 ---
 

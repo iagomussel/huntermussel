@@ -20,83 +20,73 @@ subtitle: "The market is confusing three different things. Here's how to tell th
 status: "draft"
 ---
 
-There is enormous confusion in the market right now between RPA, Generative AI, and autonomous agents.
+There's a lot of noise in the market right now about RPA, GenAI, and AI agents. Vendors use all three terms like they mean the same thing. They don't.
 
-Vendors use all three terms interchangeably. Analysts define them differently. Engineers implement something in between. Meanwhile, the person buying the solution doesn't know what they actually need.
+I've sat in enough meetings where a CTO thought they were buying an AI agent and got an RPA bot. Or thought they needed an agent and actually just needed a smarter trigger on an existing workflow. The confusion is expensive.
 
-Let's fix that.
+Let me break this down cleanly.
 
 <!-- truncate -->
 
-## Traditional automation: rule-based, predictable
+## Traditional automation: it executes. Full stop.
 
-Traditional automation — including RPA (Robotic Process Automation) — works by executing a predefined sequence of steps. You map out a process. You encode the rules. The tool executes them.
+RPA — Robotic Process Automation — does exactly what you tell it to do. You map the steps. It runs them. Click this button, copy this value, paste it here, submit the form.
 
-It's reliable when the inputs are consistent. Fill in form field A, click button B, extract value C, write to database D. Repeat.
+That's it. No judgment. No adaptation. If the input is clean and the UI doesn't change, it's incredibly reliable. That's genuinely useful for high-volume, repetitive work where the rules don't change.
 
-The limitation is rigidity. Change the UI, change the data format, change the business rule — and the automation breaks. Someone has to update it manually. Traditional automation is powerful for stable, high-volume, low-variance tasks.
+The problem is fragility. Change the layout of the web form. Update the ERP version. Add a field to the CSV. The bot breaks. Someone has to fix it.
 
-It does not think. It executes.
+RPA doesn't think. It executes.
 
-## Generative AI: probabilistic, creative, context-aware
+## Generative AI: it responds. But it doesn't act.
 
-GenAI models — GPT-4, Claude, Gemini — generate output based on learned patterns from training data. They understand context. They handle ambiguity. They can produce text, code, analysis, and decisions that weren't explicitly programmed.
+Call an LLM API with a prompt and you get text back. That text can be a summary, a classification, a code snippet, a draft email — whatever you asked for. The model is powerful because it understands context, handles ambiguity, and can reason through things that rules-based systems can't touch.
 
-But by default, GenAI is stateless. You send a prompt. You get a response. It doesn't take actions in the world unless you wire it to tools.
+But here's the thing: a language model is stateless by default. You send a prompt. It answers. It has no memory of the last call unless you pass the history manually. And it can't *do* anything in the world unless you build the plumbing yourself.
 
-GenAI is powerful for augmenting human judgment — drafting, summarizing, classifying, explaining. It is not, by itself, an agent.
+GenAI is brilliant at augmenting human judgment. It's not an agent.
 
-## AI Agents: reasoning + tool use + autonomy
+## AI agents: they pursue goals.
 
-An AI agent combines a language model with the ability to take actions.
+An AI agent combines a language model with tools and a loop.
 
-The model reasons about a goal. It selects tools to use (APIs, code execution, database queries, browser control). It evaluates results. It decides what to do next. It loops until the goal is met or it can't proceed.
+The model gets a goal. It selects a tool — a database query, an API call, a web search, code execution. It runs it. It looks at the result. It decides what to do next. It repeats until the goal is met or it hits a dead end.
 
-This is categorically different from automation. The agent adapts. It handles unexpected states. It can take a multi-step goal like "research the top 10 competitors, compare their pricing, and draft a summary for the product team" and execute it without a human encoding every step.
+That's categorically different from automation. The agent adapts. It handles states it wasn't explicitly programmed for. You give it a goal like "research our top 10 competitors, compare their pricing, and draft a summary for the product team" — and it figures out how to get there without you encoding every step.
 
 **RPA executes a script. GenAI responds to a prompt. An agent pursues a goal.**
 
-## Why the distinction matters
+That sentence is worth rereading.
 
-Choosing the wrong tool for the job is expensive.
+## Why it actually matters
 
-Using RPA for a task with variable input is building a system that will break constantly. Using a GenAI completion for a workflow that requires memory, state, and real-world actions is building a chatbot that feels smart but does nothing.
+Getting this wrong is expensive. I've seen teams spend three months building RPA bots for processes with variable input — bots that break constantly because they can't handle variance. They should have used an agent.
 
-Using an agent for a stable, high-volume, well-defined process is over-engineering. RPA is cheaper, faster to deploy, and easier to audit.
+I've also seen teams build full agent architectures for simple, stable, high-volume processes. Massive over-engineering. RPA would've been cheaper, faster to deploy, and easier to audit.
 
-The question is not "should we use AI?" The question is: **what kind of process are we dealing with?**
+The heuristic is straightforward:
 
 | | RPA | GenAI | AI Agent |
 |---|---|---|---|
-| Handles variable input | No | Yes | Yes |
-| Takes real-world actions | Yes | No | Yes |
-| Adapts to new context | No | Partially | Yes |
-| Auditable step-by-step | Yes | Partially | Yes (with logging) |
-| Best for | Stable, high-volume tasks | Augmenting human judgment | Multi-step, context-dependent goals |
+| Input is consistent | ✓ | — | — |
+| Needs to handle ambiguity | — | ✓ | ✓ |
+| Takes actions in the world | ✓ | — | ✓ |
+| Adapts mid-process | — | partially | ✓ |
+| Best for | Stable, high-volume tasks | Augmenting judgment | Multi-step, variable goals |
 
-## Where agents are being used today
+## Three questions before you pick anything
 
-The use cases maturing fastest are in contexts where the process is too variable for RPA but too complex for a single GenAI call.
+Before any implementation decision, answer these:
 
-Customer support escalation: an agent reads the ticket, checks the account history, queries the order system, drafts a resolution, and escalates only when it can't resolve.
+1. Is the input consistent every time, or does it vary?
+2. Does completing the task require judgment, or just execution?
+3. Does the outcome need to change based on what you discover mid-process?
 
-Code review automation: an agent reads a PR, runs static analysis, checks for security patterns, and leaves structured comments — not just "looks good."
+All three "no" — use RPA. It's cheaper, more reliable, and easier to audit.
 
-Sales intelligence: an agent researches a prospect, pulls context from CRM and LinkedIn, and generates a personalized outreach brief before the rep makes contact.
+Any "yes" — you're looking at agents. The complexity is justified by the problem.
 
-These aren't automations you could build with RPA. They require reasoning, tool orchestration, and adaptive behavior.
-
-## The practical question
-
-Before any implementation decision, answer three things:
-
-1. Is the input consistent, or does it vary?
-2. Does the task require judgment, or just execution?
-3. Does the outcome need to adapt based on intermediate results?
-
-If 1, 2, and 3 are "no" — use RPA. It's cheaper, more reliable, easier to maintain.
-
-If any of the three are "yes" — you're in agent territory. The complexity is justified.
+The tool should match the work. Not the hype cycle.
 
 ---
 

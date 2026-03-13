@@ -24,79 +24,77 @@ status: "draft"
 
 I've written that line in project summaries. I've read it in a hundred vendor case studies. And I've learned to ask the same question every time: compared to what, measured how?
 
-The honest version of an automation ROI calculation is harder than the marketing version. But it's the one that survives a board review, a procurement audit, or the next budget cycle.
+The honest version of an automation ROI calculation is harder than the marketing version. But it's the one that survives a board review, a procurement audit, or the next budget cycle when someone asks whether this thing actually paid off.
 
 <!-- truncate -->
 
 ## Why most automation ROI numbers are wrong
 
-Two failure modes.
+Two failure modes I see constantly.
 
-**No baseline.** The team automates a process, measures the new state, and reports the result. Without a documented baseline, the comparison is either a memory ("we think it used to take this long") or fabricated. Neither holds up.
+**No baseline.** The team automates a process, measures the new state, and reports the result. Without a documented baseline, the comparison is either a memory ("we think it used to take this long") or made up. Neither holds up when someone asks hard questions.
 
-**Wrong metric.** Time saved is the easy one to report. But time saved only creates value if the time freed up is actually redirected to something productive. If the automation saves an analyst 5 hours a week but those hours go to meetings, the business didn't capture the value.
+**Wrong metric.** Time saved is the easy one to report. But time saved only creates value if those hours get redirected to something productive. If the automation saves an analyst 5 hours a week and those hours go back into meetings, the business didn't capture anything.
 
-ROI requires two things: a before measurement and an after measurement of metrics that connect to business outcomes.
+Good ROI measurement requires two things: a before measurement and an after measurement of metrics that connect to real outcomes.
 
-## Step 1: Measure the baseline before you build
+## The most important work happens before you build anything
 
-The most important ROI work happens before the project starts.
+I've started treating the baseline measurement as the first deliverable on any automation project. Not the design. Not the tool selection. The numbers that describe what currently exists.
 
 For every process you're planning to automate, document:
 
-**Volume:** How many times does this process run per day/week/month?
+**Volume:** How many times does this run per day, week, or month?
 
-**Cycle time:** From initiation to completion, how long does one instance take? Include wait time, not just active work time. A process that takes 10 minutes of work but sits in a queue for 2 days has a 2-day cycle time, not a 10-minute one.
+**Cycle time:** From initiation to completion, how long does one instance take? And include wait time — not just active work time. A process that takes 10 minutes of real work but sits in a queue for two days has a two-day cycle time.
 
-**Error rate:** What percentage of instances result in an error, rework, or escalation?
+**Error rate:** What percentage of instances end up needing rework, escalation, or manual correction?
 
-**Cost per instance:** (time × hourly fully-loaded cost of the person doing it) + any tooling costs
+**Cost per instance:** Time × hourly fully-loaded cost of the person doing it, plus any tooling costs.
 
-**Downstream impact:** Does this process bottleneck something else? A slow approval workflow might not look expensive in isolation, but if it delays revenue recognition by 3 days per deal, the real cost is much higher.
+**Downstream impact:** Does this process block something else? A slow approval workflow might look cheap in isolation but delay revenue recognition by three days per deal. That downstream cost is often the real story.
 
-This documentation is the baseline. Timestamp it. Keep it.
+Timestamp this. Keep it somewhere you'll find it in six months.
 
-## Step 2: Define the right metrics before you build
+## Pick the right metrics before you build
 
 Not everything is worth measuring. Choose three to five metrics that:
 
 1. Connect directly to the process being automated
-2. Connect to a business outcome (revenue, cost, quality, speed)
-3. Can be measured objectively, not estimated
+2. Connect to a business outcome — revenue, cost, quality, or speed
+3. Can be measured objectively, not estimated from memory
 
-For a customer support automation: resolution time, escalation rate, CSAT score, tickets handled per agent per day.
+For customer support automation: resolution time, escalation rate, CSAT, tickets handled per agent per day.
 
-For a CI/CD pipeline automation: deploy frequency, lead time for changes, mean time to recovery, change failure rate. (These are the DORA metrics — use them.)
+For a CI/CD pipeline: deploy frequency, lead time for changes, mean time to recovery, change failure rate. (These are the DORA metrics. Use them. They're the industry standard for a reason.)
 
-For a data processing automation: records processed per hour, error rate, processing cost per record.
+For data processing: records per hour, error rate, processing cost per record.
 
-Define these before you build. Agree on them with whoever needs to see the ROI numbers.
+Agree on these metrics with whoever needs to see the ROI numbers before you build. Don't let the goalposts move after the fact.
 
-## Step 3: Measure consistently after
+## Measure after at steady state
 
-The after measurement needs to happen at the same conditions as the before. Same volume of work, same time period, same measurement method.
+The first two weeks after go-live are not representative. People are still learning the new system. Edge cases are surfacing. Adjustments are being made. If you measure then, you'll undercount the value.
 
-Don't measure the first two weeks after go-live. That's the ramp-up period — people are still learning the new system, edge cases are surfacing, adjustments are being made. Measure at steady state: typically 4–6 weeks after full deployment.
+Measure at steady state — typically 4 to 6 weeks after full deployment. And measure for the same duration as your baseline. If you collected a month of before data, collect a month of after data.
 
-Measure for the same duration as your baseline period. A month of before data deserves a month of after data.
+## The real numbers I've seen
 
-## The real numbers
+Across projects I've actually worked on, these are the consistent patterns:
 
-Across projects I've been involved in, the consistent patterns:
+**Manual data processing:** 60–80% reduction in cycle time. Error rates drop from 3–8% to near zero.
 
-**Manual data processing:** 60–80% reduction in cycle time. Error rates drop to near zero from 3–8%.
-
-**Customer support routing and triage:** 30–50% reduction in resolution time. Escalation rate drops 20–40%.
+**Customer support triage:** 30–50% reduction in resolution time. Escalation rate drops 20–40%.
 
 **CI/CD pipeline optimization:** Deploy frequency increases 2–4x. MTTR drops 40–60%.
 
-**Report generation:** 80–95% reduction in time. The remaining time is analysis, which is the part that matters.
+**Report generation:** 80–95% reduction in time. The remaining time is the analysis that actually matters.
 
-The variance is real. A well-scoped automation of a high-volume, low-variance process at the bottom of that range is still a strong result. A poorly-scoped automation of a complex, exception-heavy process might deliver 10% improvement at high maintenance cost.
+The variance is real. A well-scoped automation of a high-volume, low-variance process is still a strong result even at the low end of those ranges. A poorly scoped automation of an exception-heavy process might deliver 10% improvement at three times the expected maintenance cost.
 
-**The metric that matters most isn't the percentage. It's whether the value captured exceeds the cost of building and maintaining the system.**
+**The metric that matters most isn't the percentage. It's whether the value captured exceeds the total cost of building and running the system.**
 
-## The full ROI formula
+## The formula
 
 ```
 Annual value = (time saved per instance × instances per year × hourly cost)
@@ -104,23 +102,23 @@ Annual value = (time saved per instance × instances per year × hourly cost)
              + (cycle time reduction × downstream value)
 
 Annual cost  = build cost / expected lifespan in years
-             + annual maintenance (typically 15–25% of build cost)
+             + annual maintenance (15–25% of build cost)
              + tooling and infrastructure
 
 ROI = (Annual value - Annual cost) / Annual cost × 100
+
+Payback = Annual cost / Annual value × 12 months
 ```
 
-Payback period = Annual cost / Annual value × 12 (in months)
+Most well-scoped automation projects land at 6–18 month payback. If your estimate is longer than 24 months, something is wrong — either the scope is too large, the process too complex, or the volume too low to justify the investment.
 
-Most well-scoped automation projects land at 6–18 month payback. Projects longer than 24 months should be reexamined — either the scope is too large, the process too complex, or the volume too low.
+## Use the numbers to prioritize, not just to report
 
-## What to do with the numbers
+This calculation isn't just for the retrospective. Run it with estimates before you build anything.
 
-The ROI calculation isn't just for reporting. It's for prioritization.
+If the payback period looks like 30 months at current assumptions, the scope needs to change. Maybe you automate only the high-frequency portion. Maybe this isn't the right process to tackle first.
 
-Before building anything, run the formula with estimates. If the payback period is longer than 18 months, either the scope needs to change or this isn't the right process to automate first.
-
-After deployment, compare actuals to estimates. The gap tells you whether your scoping assumptions were accurate — which makes every subsequent project estimate more reliable.
+After deployment, compare actuals to estimates. The gap tells you how accurate your assumptions were — which makes every subsequent project estimate more reliable. After three or four projects, your estimates will be genuinely useful.
 
 ---
 
