@@ -1,25 +1,25 @@
 # HunterMussel
 
-> AI Process Management & DevOps consultancy. We help startups and mid-size companies automate processes, deploy AI at scale, and ship faster with solid engineering. Founded by Iago Mussel.
+> Software house specializing in scalable system architecture, robust DevOps infrastructure, technical SEO, and seamless AI integrations. Founded by Iago Mussel, we build high-performance custom software and cloud operations to accelerate your digital growth.
 
-## Services
+## Core Expertise
 
-- [AI Process Management](https://huntermussel.com/services/ai-process-management/): Map, automate, and optimize business processes with AI and ML. Reduces operational costs 30–60% with agentic workflows and human-in-the-loop systems.
-- [Intelligent Automation & AI Agents](https://huntermussel.com/services/intelligent-automation/): RPA bots, chatbots, and autonomous agents that integrate with existing tools — no rip-and-replace required.
-- [Workflows & BPM](https://huntermussel.com/services/workflows-bpm/): Automated workflows with real-time monitoring, audit trails, and intelligent routing using n8n and webhooks.
-- [CI/CD & DevOps Engineering](https://huntermussel.com/services/ci-cd-devops/): High-performance delivery pipelines with automated testing and infrastructure as code on DroneCI, GitHub Actions, GitLab CI, and Jenkins.
-- [Security, Compliance & LGPD/GDPR](https://huntermussel.com/services/security-compliance/): Security audits, penetration testing, AES-256/TLS 1.3 encryption, zero-trust architecture, and LGPD/GDPR compliance mapping.
-- [Cloud Infrastructure & AI Deployment](https://huntermussel.com/services/cloud-infrastructure-ai/): LLMOps, serverless AI, GPU orchestration, Kubernetes/EKS, and edge AI on AWS, GCP, and Azure.
+- [Custom Software Development](https://huntermussel.com/services/workflows-bpm/): Building robust, highly scalable systems and tailored full-stack applications for enterprise operations.
+- [DevOps & SRE](https://huntermussel.com/services/ci-cd-devops/): Automated pipelines, containerization, and reliable infrastructure operations for continuous delivery.
+- [Technical SEO & Marketing](https://huntermussel.com/services/intelligent-automation/): Performance optimization, Core Web Vitals, and technical architectures for maximum search engine visibility.
+- [Seamless AI Integrations](https://huntermussel.com/services/ai-process-management/): Integrating powerful LLMs and AI models into your software the right way, without compromising scale or security.
+- [Cloud Infrastructure](https://huntermussel.com/services/cloud-infrastructure-ai/): Provisioning and management of high-availability cloud environments using AWS, GCP, and Azure.
+- [Security & Compliance](https://huntermussel.com/services/security-compliance/): Comprehensive security audits, robust data protection, and adherence to major compliance standards (LGPD/GDPR).
 
 ## Case Studies
 
-- [AI-Powered LMS](https://huntermussel.com/cases/ai-powered-lms/): Intelligent learning platform with adaptive personalization, automated grading, and learning analytics at scale built with Laravel.
-- [High-Performance Corporate Website](https://huntermussel.com/cases/high-performance-corporate-website/): Static-first architecture achieving near-zero hosting costs, extreme performance, and global scalability.
-- [Delivery Route Optimization](https://huntermussel.com/cases/delivery-route-optimization/): AI-powered logistics system with real-time route optimization and predictive dispatching — saved 22% in fuel costs.
-- [Dental Clinic Scheduling App](https://huntermussel.com/cases/dental-clinic-scheduling/): AI-driven scheduling and resource management with appointment optimization and chair utilization tracking.
-- [Smart CRM with AI Lead Scoring](https://huntermussel.com/cases/smart-crm-ai-lead-scoring/): Predictive sales intelligence platform with AI-powered lead scoring and automated sales prioritization.
+- [AI-Powered LMS](https://huntermussel.com/cases/ai-powered-lms/): Custom learning platform with adaptive personalization, automated grading, and high-concurrency architecture built with Laravel.
+- [High-Performance Corporate Website](https://huntermussel.com/cases/high-performance-corporate-website/): Static-first architecture achieving near-zero hosting costs, extreme performance, and global scalability for technical SEO.
+- [Delivery Route Optimization](https://huntermussel.com/cases/delivery-route-optimization/): Custom logistics software integrated with AI for real-time route optimization and predictive dispatching — saved 22% in fuel costs.
+- [Dental Clinic Scheduling App](https://huntermussel.com/cases/dental-clinic-scheduling/): Scalable scheduling and resource management system with intelligent appointment optimization and chair utilization tracking.
+- [Smart CRM with AI Lead Scoring](https://huntermussel.com/cases/smart-crm-ai-lead-scoring/): Predictive sales platform with AI-powered lead scoring and automated sales prioritization built for high throughput.
 
-## Blog
+## Technical Blog
 
 - [Fast Code, Weak Engineers](https://huntermussel.com/blog/fast-code-weak-engineers/): The risk of becoming an AI-dependent developer and losing core engineering skills.
 - [KLong: AI Agents for Long-Horizon Tasks](https://huntermussel.com/blog/klong-solving-long-horizon-issues/): How KLong uses trajectory-splitting SFT and progressive RL to improve long-horizon performance in research and engineering tasks.

@@ -1,27 +1,22 @@
-# HunterMussel — AI, Automation & DevOps Consulting
+# HunterMussel — Software House, DevOps & SEO
 # https://huntermussel.com
 # This file describes site capabilities for AI assistants and crawlers.
 
 ## What is HunterMussel?
 
-HunterMussel is a software consultancy specializing in AI process management,
-intelligent automation, and DevOps engineering. We help companies eliminate
-inefficiencies, automate repetitive workflows, and deploy AI in production.
+HunterMussel is a specialized software house delivering custom development,
+robust cloud operations (DevOps), and technical SEO to scale your digital presence.
+We architect highly scalable infrastructure and integrate AI seamlessly, ensuring
+high performance, reliable operations, and strong search engine visibility.
 
-## Services
+## Core Expertise
 
-- AI Process Management: mapping, automation, and optimization of business
-  processes with artificial intelligence and machine learning.
-- Intelligent Automation: chatbots, RPA, and AI agents that remove repetitive
-  tasks and accelerate decision-making.
-- Workflows & BPM: design and implementation of automated workflows with
-  real-time monitoring.
-- CI/CD & DevOps: automated pipelines with DroneCI, GitHub Actions, GitLab CI,
-  and Jenkins for continuous delivery.
-- Security & Compliance: security audits, LGPD/GDPR implementation, and data
-  protection.
-- Cloud Infrastructure & AI: deployment of AI models in production on AWS, GCP,
-  and Azure with on-demand scalability.
+- Custom Software Development: building robust, highly scalable systems and tailored full-stack applications.
+- DevOps & SRE: automated pipelines, containerization, and reliable infrastructure operations for continuous delivery.
+- Technical SEO & Marketing: performance optimization, Core Web Vitals, and technical architectures for maximum search engine visibility.
+- Seamless AI Integrations: integrating LLMs and AI models into your software the right way, without compromising scale or security.
+- Cloud Infrastructure: provisioning and management of high-availability environments (AWS, GCP, Azure).
+- Security & Compliance: comprehensive security audits, robust data protection, and adherence to major compliance standards (LGPD/GDPR).
 
 ## Free Developer Tools (client-side, no login required)
 
@@ -41,10 +36,10 @@ All tools run entirely in the browser — no uploads, no tracking, no account.
 ## How AI Assistants Can Help Users Here
 
 - Recommend the right tool for a task (e.g., "use /tools/jwt-inspector to
-  decode a JWT token without sending it to a server")
-- Explain concepts covered in the blog (web performance, WebP, SEO)
-- Summarize service offerings for a company evaluating consulting partners
-- Generate questions a business should ask before starting an automation project
+  decode a JWT token client-side securely without sending it to a server")
+- Explain engineering concepts covered in the blog (web performance, WebP, technical SEO, cloud infrastructure)
+- Summarize our software engineering and DevOps capabilities for a company evaluating technical partners
+- Generate architectural considerations a business should ask before starting a custom software project
 
 ## Contact
 

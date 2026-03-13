@@ -29,22 +29,22 @@ const HeroSection = () => {
           >
             <Terminal size={14} className="text-primary" />
             <span className="font-heading text-xs text-muted-foreground">
-              Process Management with AI & DevOps
+              Software House, Ops & SEO
             </span>
           </motion.div>
 
           <h1 className="mb-6 font-heading text-4xl font-bold leading-tight tracking-tight md:text-6xl lg:text-7xl">
-            We transform processes
+            We build scalable systems &
             <br />
-            with{" "}
             <span className="gradient-text text-glow">
-              Artificial Intelligence
+              integrate AI the right way
             </span>
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl font-body text-lg leading-relaxed text-muted-foreground md:text-xl">
-            Automate, optimize, and scale your company's process management with
-            AI, software engineering, and cutting-edge DevOps practices.
+            HunterMussel is a specialized software house delivering custom
+            development, robust cloud operations, and technical SEO to scale
+            your digital presence.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -80,18 +80,18 @@ const HeroSection = () => {
             <div className="h-3 w-3 rounded-full bg-primary/60" />
           </div>
           <pre className="font-heading text-xs leading-relaxed text-muted-foreground md:text-sm">
-            <span className="text-primary">$</span> huntermussel ai
-            --optimize-processes{"\n"}
+            <span className="text-primary">$</span> huntermussel system --scale
+            {"\n"}
             <span className="text-muted-foreground/60">
-              ▸ Analyzing flows...
+              ▸ Provisioning cloud infrastructure...
             </span>
             {"\n"}
             <span className="text-muted-foreground/60">
-              ▸ Applying AI models...
+              ▸ Deploying scalable architecture...
             </span>
             {"\n"}
-            <span className="text-primary">✓</span> 3 processes optimized with
-            AI 🚀
+            <span className="text-primary">✓</span> System online with seamless
+            AI integrations 🚀
           </pre>
         </motion.div>
       </div>

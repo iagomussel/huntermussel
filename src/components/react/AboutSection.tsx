@@ -16,23 +16,24 @@ const AboutSection = () => {
               // about
             </span>
             <h2 className="mb-6 font-heading text-3xl font-bold tracking-tight md:text-4xl">
-              Process management
+              Software engineering
               <br />
-              <span className="gradient-text">empowered by AI</span>
+              <span className="gradient-text">built for scale</span>
             </h2>
             <p className="mb-6 font-body text-base leading-relaxed text-muted-foreground">
-              HunterMussel was born from a passion for solving complex problems
-              with technology and artificial intelligence. We combine AI,
-              automation, and DevOps practices to transform business processes
-              into intelligent and scalable operations.
+              HunterMussel is a software house driven by a passion for solving
+              complex problems. We combine robust custom development, cloud
+              operations (Ops), and technical SEO to build highly scalable
+              systems.
             </p>
             <p className="mb-6 font-body text-base leading-relaxed text-muted-foreground">
               Operating from the Americas (GMT-3), we collaborate in real-time
               with global teams to deliver high-impact solutions.
             </p>
             <p className="font-body text-base leading-relaxed text-muted-foreground">
-              Our mission is to eliminate inefficiencies with AI — automating
-              decisions, optimizing flows, and delivering measurable results.
+              We don't just build software; we architect scalable infrastructure
+              and integrate AI the right way, ensuring high performance,
+              reliable operations, and strong search engine visibility.
             </p>
           </motion.div>
 
@@ -53,10 +54,10 @@ const AboutSection = () => {
               </div>
             </div>
             <p className="mb-6 font-body text-sm leading-relaxed text-muted-foreground">
-              Software engineer with experience in artificial intelligence,
-              distributed architectures, and DevOps culture. Passionate about
-              applying AI in process management and building high-performance
-              teams.
+              Software engineer with deep expertise in distributed
+              architectures, cloud operations, and SEO marketing. Passionate
+              about building scalable systems, high-performance teams, and
+              integrating AI seamlessly.
             </p>
             <div className="flex gap-3">
               <a

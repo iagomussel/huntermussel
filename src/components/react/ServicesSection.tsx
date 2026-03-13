@@ -1,49 +1,56 @@
 import { motion } from "framer-motion";
 
-import { Brain, Workflow, GitBranch, Shield, Cloud, Bot } from "lucide-react";
+import {
+  Brain,
+  Code2,
+  GitBranch,
+  Shield,
+  Cloud,
+  TrendingUp,
+} from "lucide-react";
 
 const services = [
   {
-    icon: Brain,
-    title: "AI Process Management",
-    slug: "ai-process-management",
-    description:
-      "Mapping, automation, and optimization of business processes using artificial intelligence and machine learning.",
-  },
-  {
-    icon: Bot,
-    title: "Intelligent Automation",
-    slug: "intelligent-automation",
-    description:
-      "Chatbots, RPA, and AI agents that eliminate repetitive tasks and accelerate decision-making.",
-  },
-  {
-    icon: Workflow,
-    title: "Workflows & BPM",
+    icon: Code2,
+    title: "Custom Software Development",
     slug: "workflows-bpm",
     description:
-      "Design and implementation of automated workflows with real-time monitoring.",
+      "Building robust, highly scalable systems and tailored full-stack applications for your business operations.",
   },
   {
     icon: GitBranch,
-    title: "CI/CD & DevOps",
+    title: "DevOps & SRE",
     slug: "ci-cd-devops",
     description:
-      "Automated pipelines with DroneCI, GitHub Actions, GitLab CI, and Jenkins for continuous delivery.",
+      "Automated pipelines, containerization, and reliable infrastructure operations for continuous delivery.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Technical SEO & Marketing",
+    slug: "intelligent-automation",
+    description:
+      "Performance optimization, Core Web Vitals, and technical architectures for maximum search engine visibility.",
+  },
+  {
+    icon: Brain,
+    title: "Seamless AI Integrations",
+    slug: "ai-process-management",
+    description:
+      "Integrating powerful LLMs and AI models into your software the right way, without compromising scale or security.",
+  },
+  {
+    icon: Cloud,
+    title: "Cloud Infrastructure",
+    slug: "cloud-infrastructure-ai",
+    description:
+      "Provisioning and management of high-availability cloud environments using AWS, GCP, and Azure.",
   },
   {
     icon: Shield,
     title: "Security & Compliance",
     slug: "security-compliance",
     description:
-      "Security audits, LGPD/GDPR implementation, and sensitive data protection.",
-  },
-  {
-    icon: Cloud,
-    title: "Cloud Infrastructure & AI",
-    slug: "cloud-infrastructure-ai",
-    description:
-      "Deployment of AI models in production with AWS, GCP, and Azure. On-demand scalability.",
+      "Comprehensive security audits, robust data protection, and adherence to major compliance standards.",
   },
 ];
 
@@ -56,7 +63,11 @@ const container = {
 
 const item = {
   hidden: (i: number) => ({ opacity: 0, x: i % 2 === 0 ? -50 : 50 }),
-  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, damping: 20 } as const },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { type: "spring", stiffness: 50, damping: 20 } as const,
+  },
 };
 
 const ServicesSection = () => {
@@ -71,10 +82,10 @@ const ServicesSection = () => {
           className="mb-16 text-center"
         >
           <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
-            // services
+            // expertise
           </span>
           <h2 className="font-heading text-3xl font-bold tracking-tight md:text-4xl">
-            What We Do
+            Software, Operations & SEO
           </h2>
         </motion.div>
 
@@ -92,7 +103,10 @@ const ServicesSection = () => {
               variants={item}
               className="group rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
             >
-              <a href={`/services/${service.slug}`} className="block p-6 text-current no-underline hover:no-underline">
+              <a
+                href={`/services/${service.slug}`}
+                className="block p-6 text-current no-underline hover:no-underline"
+              >
                 <div className="mb-4 inline-flex rounded-md border border-border bg-muted/50 p-3 text-primary transition-all group-hover:border-glow group-hover:box-glow">
                   <service.icon size={22} />
                 </div>
