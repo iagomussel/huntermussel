@@ -17,7 +17,7 @@ keywords:
   - devops consultant
   - outsourced devops
 subtitle: "The math that most CTOs run — and what they're missing"
-status: "published"
+status: "draft"
 ---
 
 "That's a lot for someone part-time."

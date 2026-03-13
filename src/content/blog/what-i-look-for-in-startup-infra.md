@@ -17,7 +17,7 @@ keywords:
   - devops assessment
   - technical due diligence
 subtitle: "The 20-minute audit I run before every engagement"
-status: "published"
+status: "draft"
 ---
 
 I say no to potential clients. Not often — but I do it.
