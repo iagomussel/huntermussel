@@ -28,10 +28,10 @@ const authorKey = entry.data.authors?.[0];
 const author = authorKey && authors[authorKey];
 ---
 
-<Layout title={entry.data.title} description={entry.data.description} image={entry.data.image}>
+<Layout title={entry.data.title} description={entry.data.description} image={entry.data.image} canonicalUrl={url} type="article" keywords={entry.data.keywords}>
   <div class="min-h-screen bg-background">
      <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
-     
+
      <main class="container relative z-10 px-6 pt-32 pb-24">
        <article class="mx-auto max-w-3xl">
           <a
@@ -41,7 +41,7 @@ const author = authorKey && authors[authorKey];
             <ArrowLeft size={16} />
             Back to blog
           </a>
-          
+
           {formattedDate && (
              <time class="block font-body text-sm text-muted-foreground">{formattedDate}</time>
           )}

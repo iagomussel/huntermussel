@@ -6,12 +6,22 @@ import "@/styles/globals.css";
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  canonicalUrl?: string;
+  type?: string;
+  keywords?: string | string[];
 }
 
-const { 
-  title, 
-  description = "Automate and optimize your company's process management with Artificial Intelligence, intelligent automation, and DevOps." 
+const {
+  title,
+  description = "Automate and optimize your company's process management with Artificial Intelligence, intelligent automation, and DevOps.",
+  image = "https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp",
+  canonicalUrl = Astro.url.href,
+  type = "website",
+  keywords
 } = Astro.props;
+
+const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
 ---
 
 <html lang="en" class="dark">
@@ -21,6 +31,25 @@ const {
     <meta name="generator" content={Astro.generator} />
     <title>{title} | HunterMussel</title>
     <meta name="description" content={description} />
+    {keywordsString && <meta name="keywords" content={keywordsString} />}
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={`${title} | HunterMussel`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site || 'https://huntermussel.com')} />
+    <meta property="og:site_name" content="HunterMussel" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={`${title} | HunterMussel`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.site || 'https://huntermussel.com')} />
+    <meta name="twitter:site" content="@huntermussel" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />

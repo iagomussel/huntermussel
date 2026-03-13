@@ -15,10 +15,10 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<Layout title={entry.data.title} description={entry.data.description}>
+<Layout title={entry.data.title} description={entry.data.description} image={entry.data.image} keywords={entry.data.keywords}>
   <div class="min-h-screen bg-background">
     <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
-    
+
     <main class="container relative z-10 px-6 pt-32 pb-24">
       <a
         href="/#cases"
