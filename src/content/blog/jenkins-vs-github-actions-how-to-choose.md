@@ -20,7 +20,7 @@ subtitle: "The answer depends on questions most people skip."
 status: "draft"
 ---
 
-Jenkins is 18 years old. GitHub Actions launched in 2019. The default assumption in most engineering conversations today is that Jenkins is legacy and GitHub Actions is the right answer.
+Jenkins is 18 years old. GitHub Actions launched in 2019. And if you've been in any engineering conversation lately, you already know what the default take is: Jenkins is legacy, GitHub Actions is the answer.
 
 I've worked with enough teams to know that assumption is wrong often enough to hurt people.
 
@@ -30,14 +30,9 @@ I've worked with enough teams to know that assumption is wrong often enough to h
 
 Jenkins has been around long enough that people know how to make it do almost anything. Over 1,800 plugins. A pipeline DSL that can handle complex, multi-stage, conditional workflows that are genuinely difficult to replicate cleanly in GitHub Actions.
 
-More importantly: if you already have Jenkins, you have institutional knowledge, existing pipeline code, and a team that knows where the sharp edges are. That's worth something.
+More importantly: if you already have Jenkins, you have institutional knowledge, existing pipeline code, and a team that knows where the sharp edges are. **That's worth something.**
 
-**Jenkins is still the right choice when:**
-
-- You have complex pipelines with custom infrastructure requirements that don't map to GitHub-hosted runners
-- You need to run jobs on machines you own — air-gapped networks, specialized hardware, on-premise infrastructure
-- Your pipelines have been running in Jenkins for years and the migration cost is higher than the benefit
-- You have a large number of pipelines maintained by teams who don't use GitHub as their primary development workflow
+Jenkins is still the right choice when you need to run jobs on machines you own — air-gapped networks, specialized hardware, on-premise infrastructure. When your pipelines have been running in Jenkins for years and the migration cost is higher than the benefit. When you have complex workflows with custom infrastructure requirements that don't map cleanly to GitHub-hosted runners.
 
 **The decision to move off Jenkins should be driven by concrete problems, not trend-following.** "It's old" is not a business case.
 
@@ -45,17 +40,11 @@ More importantly: if you already have Jenkins, you have institutional knowledge,
 
 GitHub Actions integrates directly with where your code lives. No separate server to maintain. No plugins to update. No Groovy DSL to learn.
 
-For a team that lives in GitHub — pull requests, issues, reviews, discussions — the integration is frictionless. Events in the repository trigger workflows naturally. Secrets are managed in the same place as the code. OIDC-based authentication to AWS, GCP, and Azure eliminates the need to store long-lived credentials.
+For a team that lives in GitHub — pull requests, issues, reviews, discussions — the integration is frictionless. Events in the repo trigger workflows naturally. Secrets are managed in the same place as the code. OIDC-based authentication to AWS, GCP, and Azure means you're not storing long-lived credentials anywhere.
 
 The marketplace has thousands of community actions for common tasks. Docker, Kubernetes, Terraform, cloud providers — they all have first-party or well-maintained community actions.
 
-**GitHub Actions is the right choice when:**
-
-- You're starting from scratch and your code lives on GitHub
-- Your team is small and you can't afford to maintain a Jenkins server
-- Your pipelines are straightforward CI/CD: test, build, deploy
-- You want managed infrastructure for runners with no server to maintain
-- You're optimizing for developer experience over operational flexibility
+GitHub Actions is the right choice when you're starting from scratch and your code lives on GitHub. When your team is small and can't afford to maintain a Jenkins server. When your pipelines are straightforward CI/CD — test, build, deploy. When you're optimizing for developer experience over operational flexibility.
 
 ## The migration question
 
@@ -63,30 +52,19 @@ The most common context for this decision isn't "which do I start with" — it's
 
 The honest answer requires a cost analysis. And most teams skip it.
 
-**Migration costs:**
-- Rewriting existing pipeline code — Groovy Jenkinsfiles don't translate line-for-line to GitHub Actions YAML, and that's real engineering time
-- Reproducing any custom plugins or integrations
-- Retraining the team
-- Handling the risk of breaking existing pipelines during transition
-- For complex pipelines: weeks to months of engineering time
+Migration costs are real: rewriting Groovy Jenkinsfiles to GitHub Actions YAML isn't a line-for-line translation, and that's real engineering time. Reproducing custom plugins. Retraining the team. Handling the risk of breaking existing pipelines mid-transition. For complex pipelines, you're looking at weeks to months of engineering time.
 
-**Migration benefits:**
-- Eliminating Jenkins server maintenance — patching, plugin updates, JVM performance tuning
-- Reducing operational surface area
-- Tighter GitHub integration
-- Potentially lower cost depending on your build volume
+The benefits are also real: no more Jenkins server maintenance, patching, plugin updates, JVM performance tuning. Tighter GitHub integration. Potentially lower cost depending on your build volume.
 
-Here's the honest take: if your Jenkins installation is well-maintained, your pipelines are complex, and your team is productive with it — the migration cost is high for a benefit that's mostly operational aesthetics. Don't migrate because someone told you Jenkins is legacy.
+Here's my honest take: **if your Jenkins installation is well-maintained, your pipelines are complex, and your team is productive with it — don't migrate because someone told you Jenkins is legacy.** The migration cost is high for a benefit that's mostly operational aesthetics.
 
-If your Jenkins is poorly maintained, running on aging infrastructure, owned by one person who's a flight risk, and the team finds it painful every day — migrate. That pain is real and it compounds.
+But if your Jenkins is poorly maintained, running on aging infrastructure, owned by one person who's a flight risk, and the team finds it painful every single day — migrate. That pain is real and it compounds.
 
 ## The cost model
 
 GitHub Actions charges by compute minutes. Jenkins charges by infrastructure.
 
-For a small team with low build volume, GitHub Actions hosted runners are almost certainly cheaper than maintaining a Jenkins server — even at cloud VPS prices.
-
-For a large team with high build volume, the calculation reverses. At scale, self-hosted runners for GitHub Actions — or Jenkins on owned hardware — beat the hosted runner pricing significantly.
+For a small team with low build volume, GitHub Actions hosted runners are almost certainly cheaper than maintaining a Jenkins server — even at cloud VPS prices. For a large team with high build volume, the calculation reverses fast.
 
 **Rough guide: if you're running more than 30,000 build minutes per month, run the numbers carefully before assuming GitHub Actions hosted runners are cheaper.** Don't assume. Model it.
 

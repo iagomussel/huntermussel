@@ -22,7 +22,7 @@ status: "draft"
 
 The vendor landscape has blurred the line between RPA and AI automation to the point where the terms are nearly interchangeable in sales decks.
 
-They are not the same thing. They solve different problems. Using the wrong one for your context costs time, money, and credibility when the implementation struggles.
+They're not the same thing. I've seen teams waste months building AI solutions for problems that RPA would have solved in three weeks — and teams build brittle RPA bots for workflows that needed judgment, not scripts. Using the wrong tool for your context costs time, money, and credibility when the implementation struggles.
 
 <!-- truncate -->
 
@@ -30,19 +30,13 @@ They are not the same thing. They solve different problems. Using the wrong one 
 
 Robotic Process Automation executes a defined sequence of steps on software interfaces. It mimics human interaction: click this button, copy this value, paste it into this field, submit this form.
 
-RPA bots are deterministic. Given the same input and the same UI state, they produce the same output. That predictability is both the strength and the limitation.
+RPA bots are deterministic. Give them the same input and the same UI state, they produce the same output. Every time. **That predictability is both the strength and the limitation.**
 
-The technology is relatively simple: screen scraping, form automation, rule-based decision trees. It requires no machine learning, no training data, no probabilistic reasoning.
+The technology is relatively simple: screen scraping, form automation, rule-based decision trees. No machine learning. No training data. No probabilistic reasoning.
 
-**RPA is the right tool for:**
+RPA is the right tool when you're dealing with high-volume, repetitive tasks where the process is fully defined. When input comes from stable, structured sources — ERP systems, Excel files with consistent formats, web forms that don't change. When auditability and determinism matter more than adaptability. And when you're dealing with legacy systems that have no API access, where UI automation is literally the only integration option.
 
-- High-volume, repetitive tasks where the process is fully defined
-- Structured input from stable sources (ERP systems, Excel files with consistent formats, web forms that don't change)
-- Tasks where auditability and determinism matter more than adaptability
-- Environments where AI governance requirements make probabilistic systems harder to deploy
-- Legacy systems with no API access — where UI automation is the only integration option
-
-The failure mode of RPA is fragility. Change the UI layout, update the ERP version, modify the input format — and the bot breaks. Someone has to fix it. This maintenance cost is real and often underestimated.
+The failure mode of RPA is fragility. Change the UI layout, update the ERP version, modify the input format — and the bot breaks. Someone has to fix it. This maintenance cost is real and almost always underestimated.
 
 ## What AI automation actually is
 
@@ -50,15 +44,9 @@ AI automation uses machine learning models — typically language models — to 
 
 Unlike RPA, AI automation is probabilistic. It doesn't execute a fixed script. It reasons about input and produces output based on learned patterns. This makes it flexible but introduces uncertainty. The same input might produce slightly different output across runs. There's a confidence score, not a guarantee.
 
-**AI automation is the right tool for:**
+AI automation is the right tool for unstructured input — emails, documents, free-text forms, images. Tasks where the "right" action depends on interpreting content rather than executing a rule. Classification, extraction, routing, and summarization at scale. Processes where the input format varies and rigid rules break too often.
 
-- Unstructured input: emails, documents, free-text forms, images
-- Tasks where the "right" action depends on interpreting content rather than executing a rule
-- Classification, extraction, routing, and summarization at scale
-- Processes where the input format varies and rigid rules break too often
-- Augmenting human judgment rather than replacing it entirely
-
-The failure mode of AI automation is silent degradation. The output looks plausible but is wrong. A misclassified support ticket. An incorrectly extracted invoice field. These failures don't throw errors — they create downstream problems that surface later.
+The failure mode of AI automation is silent degradation. **The output looks plausible but is wrong.** A misclassified support ticket. An incorrectly extracted invoice field. These failures don't throw errors — they create downstream problems that surface hours or days later.
 
 ## The practical decision framework
 
@@ -90,26 +78,26 @@ Frequently changes → AI automation's flexibility reduces the update burden.
 
 ## The hybrid model
 
-Most real-world automation problems aren't purely one or the other.
+Most real-world automation problems aren't purely one or the other. And I'd argue the most robust implementations I've seen are explicitly designed as hybrids.
 
-A common pattern: AI handles the interpretation layer, RPA handles the execution layer.
+The pattern that works: AI handles the interpretation layer, RPA handles the execution layer.
 
-Example: processing supplier invoices.
+Here's a concrete example — processing supplier invoices:
 
-- **AI:** Extracts fields from unstructured PDF invoices (vendor name, amount, line items, due date) — handles variation in invoice formats
-- **RPA:** Takes the structured, extracted data and enters it into the ERP system — handles the deterministic interaction with a legacy UI
+- **AI:** Extracts fields from unstructured PDF invoices (vendor name, amount, line items, due date) — handles variation in invoice formats without breaking when a new supplier formats things differently
+- **RPA:** Takes the structured, extracted data and enters it into the ERP system — handles the deterministic interaction with a legacy UI reliably and auditably
 
-This separation respects the strengths of each tool. AI handles ambiguity. RPA handles reliability.
+This separation respects the strengths of each tool. AI handles ambiguity. RPA handles reliability. Stop trying to make one tool do both jobs.
 
 ## The governance question
 
-One consideration that often determines the decision before the technical one: governance requirements.
+One consideration that often determines the decision before the technical analysis even starts: governance requirements.
 
-In regulated industries (banking, healthcare, insurance), AI systems must be explainable and auditable. Probabilistic outputs that "the model decided" are harder to defend in a compliance context than rule-based RPA decisions that produce a clear decision tree.
+In regulated industries — banking, healthcare, insurance — AI systems must be explainable and auditable. Probabilistic outputs that "the model decided" are harder to defend in a compliance context than rule-based RPA decisions that produce a clear decision tree you can show a regulator.
 
 If your automation decisions need to be explainable to regulators, lean toward RPA for the core decision logic. Use AI in advisory mode — surfacing recommendations that a human or a rule confirms before the RPA executes.
 
-This isn't a permanent limitation. AI governance frameworks are maturing. But in 2026, the compliance expectation gap still exists and is worth accounting for in implementation decisions.
+This isn't a permanent limitation. AI governance frameworks are maturing fast. But in 2026, the compliance expectation gap still exists and it's worth accounting for in your implementation decisions before you've committed to an architecture you can't defend.
 
 ---
 

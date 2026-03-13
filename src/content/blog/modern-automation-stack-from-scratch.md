@@ -28,7 +28,7 @@ This is not a neutral comparison of options. It's what I actually build, and why
 
 ## The philosophy first
 
-A good automation stack has three properties:
+A good automation stack has three properties. Everything else flows from these.
 
 **Observable.** Every action is logged. Every failure is surfaced. You can answer "what happened and why" for any execution going back 90 days.
 
@@ -36,7 +36,7 @@ A good automation stack has three properties:
 
 **Composable.** Automations can call other automations. Outputs feed inputs. A webhook triggers a pipeline that calls an AI model that writes to a database and sends a notification. Each piece does one thing. They combine to do many things.
 
-Every tool I choose and every pattern I recommend comes back to these three.
+Every tool I choose and every pattern I recommend comes back to these three. If a tool doesn't serve at least two of them, I don't add it.
 
 ## Layer 1: Workflow orchestration
 
@@ -46,7 +46,7 @@ The workflow layer is the core of the stack. It sequences steps, handles failure
 
 Temporal is a workflow orchestration platform built for durability. Workflows are written in code (Go, TypeScript, Python, Java) rather than YAML or visual editors. When a workflow is interrupted — server restart, network failure, exception — Temporal replays it from where it left off automatically.
 
-This is the property that makes it different from every queue-based or YAML-based alternative. You don't have to design retry logic, state recovery, or failure handling into every workflow. Temporal handles it at the infrastructure level.
+That's the property that makes it different from every queue-based or YAML-based alternative. You don't have to design retry logic, state recovery, or failure handling into every workflow. Temporal handles it at the infrastructure level.
 
 For teams that find Temporal's operational overhead too high at small scale, **n8n** is a reasonable starting point. Self-hostable, visual workflow builder, good integration breadth. The ceiling is lower, but the floor is accessible.
 
@@ -78,7 +78,7 @@ For agent-based workflows: the Claude API with tool use. Define the tools the ag
 
 For tasks that need to run fast and cheap at high volume: smaller, specialized models (embedding models for classification, fine-tuned models for narrow domains).
 
-**The anti-pattern:** a single prompt string embedded in application code, changed directly in production by whoever has access. This is how you end up with AI behavior that nobody can explain or reproduce.
+**The anti-pattern I see constantly:** a single prompt string embedded in application code, changed directly in production by whoever has access. This is how you end up with AI behavior that nobody can explain or reproduce.
 
 ## Layer 4: Data and state
 
@@ -111,7 +111,7 @@ When something breaks, you can trace backward from the symptom to the exact exec
 
 ## The sequencing
 
-Don't build all five layers at once.
+Don't build all five layers at once. That's how you end up with a six-month architecture project that produces nothing useful.
 
 **Month 1:** GitHub Actions for CI/CD. Redis for basic event queuing. Structured logging.
 

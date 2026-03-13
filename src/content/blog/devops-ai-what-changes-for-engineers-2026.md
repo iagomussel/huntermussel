@@ -24,7 +24,7 @@ Every few years, someone announces that DevOps engineers are about to be replace
 
 None of those predictions came true as described. The role shifted. The work changed. The title often stayed the same.
 
-AI is doing the same thing. Not eliminating DevOps engineers — changing what the good ones spend their time on.
+AI is doing the same thing. Not eliminating DevOps engineers — changing what the good ones spend their time on. I've watched this play out across enough teams now to say what's actually different.
 
 <!-- truncate -->
 
@@ -36,7 +36,7 @@ The most time-consuming part of an on-call rotation is the first 15 minutes of a
 
 AI-assisted observability tools are starting to do this automatically. They correlate anomalies across services, surface the most likely root cause, and present a structured hypothesis with supporting evidence.
 
-This doesn't resolve incidents. It accelerates the diagnosis phase — which is where the most variable engineering time goes. An experienced engineer who would have diagnosed in 20 minutes might now diagnose in 5. A less experienced engineer who would have taken 90 minutes might now take 15.
+This doesn't resolve incidents. It accelerates the diagnosis phase — which is where the most variable engineering time goes. An experienced engineer who would have diagnosed in 20 minutes might now diagnose in 5. A less experienced engineer who would have taken 90 minutes might now take 15. **That's a meaningful shift in who can handle on-call effectively.**
 
 **Configuration and IaC generation.**
 
@@ -76,7 +76,7 @@ The DevOps engineers who will struggle are the ones whose primary value was exec
 
 The ones who will do better are the ones who were always most valuable for their judgment: diagnosing ambiguous failures, making architectural tradeoffs, keeping complex systems running reliably under pressure.
 
-AI is, in that sense, an accelerant for the skills that already mattered. The change is that the gap between the two types of engineers will be more visible, faster.
+AI is, in that sense, an accelerant for the skills that already mattered. **The change is that the gap between the two types of engineers will be more visible, faster.**
 
 ---
 

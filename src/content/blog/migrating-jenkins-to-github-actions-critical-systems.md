@@ -22,7 +22,7 @@ status: "draft"
 
 Jenkins to GitHub Actions migrations look straightforward until you start one in earnest.
 
-In a demo, it's a YAML rewrite. In a production environment with 40 pipelines, 6 teams, 3 years of accumulated Groovy plugins, and applications where a broken deploy costs real money — it's a different project.
+In a demo, it's a YAML rewrite. In a production environment with 40 pipelines, 6 teams, 3 years of accumulated Groovy plugins, and applications where a broken deploy costs real money — it's a different project entirely. I've seen teams underestimate this badly.
 
 <!-- truncate -->
 
@@ -30,13 +30,13 @@ In a demo, it's a YAML rewrite. In a production environment with 40 pipelines, 6
 
 The challenge isn't the syntax difference between Groovy and YAML. It's everything that accumulated around the Jenkins installation that nobody fully documented.
 
-**Shared libraries.** Jenkins allows shared Groovy libraries that encapsulate logic used across multiple pipelines. Teams write these once and forget they exist — until they try to migrate and discover 15 pipelines depend on a library that took 6 months to build.
+**Shared libraries.** Jenkins allows shared Groovy libraries that encapsulate logic used across multiple pipelines. Teams write these once and forget they exist — until they try to migrate and discover 15 pipelines depend on a library that took 6 months to build and has no documentation.
 
-**Custom plugins.** The Jenkins plugin ecosystem solved a lot of integration problems that GitHub Actions handles differently. A Jenkins plugin that integrated with your ticket system, artifact store, or notification service may have no direct GitHub Actions equivalent. You're building a new integration, not migrating one.
+**Custom plugins.** The Jenkins plugin ecosystem solved a lot of integration problems that GitHub Actions handles differently. A Jenkins plugin that integrated with your ticket system, artifact store, or notification service may have no direct GitHub Actions equivalent. You're not migrating an integration — you're building a new one.
 
 **Build agent configurations.** Jenkins build agents are often configured manually over time — specific JDK versions installed, custom tools, network configurations for on-premise access. GitHub-hosted runners start clean and don't have any of that. Every custom requirement needs explicit setup in the workflow YAML.
 
-**Environment-specific logic.** Jenkins pipelines often contain environment-specific conditionals that grew organically: "if this is the production server, run this extra step." This logic is rarely documented — it's just in the Jenkinsfile. Finding and migrating it requires reading every pipeline carefully, not just translating the structure.
+**Environment-specific logic.** Jenkins pipelines often contain environment-specific conditionals that grew organically over years: "if this is the production server, run this extra step." This logic is rarely documented — it's just in the Jenkinsfile. Finding and migrating it requires reading every pipeline carefully, not just translating the structure.
 
 **Approval gates.** Complex Jenkins pipelines often have manual approval gates, pauses between stages, and input steps that allow operators to modify parameters mid-run. GitHub Actions has deployment environments with required reviewers, but the mapping isn't always one-to-one.
 
@@ -44,7 +44,7 @@ The challenge isn't the syntax difference between Groovy and YAML. It's everythi
 
 The worst approach is the "big bang" migration: migrate everything at once over a weekend, cut over on Monday.
 
-This concentrates all the risk in one window. When something breaks — and something will — you're triaging multiple pipelines simultaneously while engineers are trying to ship features.
+This concentrates all the risk in one window. When something breaks — and something will — you're triaging multiple pipelines simultaneously while engineers are trying to ship features. I've watched teams spend entire weeks in incident mode after a migration like this.
 
 The right approach is parallel operation with gradual cutover.
 
@@ -68,7 +68,7 @@ Don't cut over until you've run both in parallel for at least two weeks without 
 
 Cut over the validated low-risk pipelines to GitHub Actions exclusively. Keep Jenkins available but not the primary trigger.
 
-Let this run for a month. Identify any issues that only surface in the real-world conditions you didn't simulate in parallel. Fix them.
+Let this run for a month. Identify any issues that only surface in real-world conditions you didn't simulate in parallel. Fix them before touching anything critical.
 
 **Phase 4: High-risk pipeline migration with rollback plan.**
 
@@ -88,7 +88,7 @@ Some Jenkins patterns don't have direct GitHub Actions equivalents. Know these b
 
 **Jenkins declarative vs. scripted pipelines.** If your team has a mix of declarative and scripted Jenkinsfiles, migration complexity varies significantly between the two. Scripted pipelines with embedded Groovy logic are harder to migrate.
 
-**Parameterized builds.** Jenkins parameterized builds (allowing operators to pass values at trigger time) have an equivalent in `workflow_dispatch` with inputs, but the UX is different.
+**Parameterized builds.** Jenkins parameterized builds — allowing operators to pass values at trigger time — have an equivalent in `workflow_dispatch` with inputs, but the UX is different and some teams find the transition jarring.
 
 ## The hidden cost
 
@@ -96,7 +96,7 @@ The technical migration is usually 30–40% of the total project cost.
 
 The rest is: team training, documentation updates, runbook rewrites, integrations with adjacent systems (notification tools, artifact registries, monitoring platforms), and the operational overhead of running two CI/CD systems simultaneously during the transition.
 
-Budget honestly. A 40-pipeline Jenkins migration for a mid-size engineering team typically takes 3–5 months of part-time effort when done carefully.
+**Budget honestly.** A 40-pipeline Jenkins migration for a mid-size engineering team typically takes 3–5 months of part-time effort when done carefully.
 
 Rushing it costs more than taking the time to do it right.
 

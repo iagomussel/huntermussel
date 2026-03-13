@@ -22,13 +22,13 @@ status: "draft"
 
 Tutorials show you how it's supposed to work. Production shows you how it actually works.
 
-After implementing AI automations across logistics operations, customer support workflows, sales pipelines, and development tooling, the patterns that matter aren't the ones you learn in documentation.
+I've implemented AI automations across logistics operations, customer support workflows, sales pipelines, and development tooling. The patterns that matter aren't the ones you learn in documentation.
 
 <!-- truncate -->
 
 ## Lesson 1: The prompt is not the hard part
 
-Every AI project I've seen starts with the team spending the most time on the prompt. Crafting it. Refining it. Benchmarking it against examples.
+Every AI project I've worked on starts the same way: the team spends most of their early time on the prompt. Crafting it. Refining it. Benchmarking it against examples.
 
 The prompt matters. But it's rarely where the project succeeds or fails.
 
@@ -41,7 +41,7 @@ What actually determines outcomes:
 
 I've seen excellent prompts fail because the input was inconsistently formatted. I've seen mediocre prompts work reliably for months because the inputs were clean and the failure handling was solid.
 
-Build the surrounding system first. The prompt will improve iteratively. The infrastructure won't.
+**Build the surrounding system first.** The prompt will improve iteratively. The infrastructure won't.
 
 ## Lesson 2: Confidence scores are non-negotiable
 
@@ -53,7 +53,7 @@ This sounds simple. Teams resist it because it means building a review queue, wh
 
 But here's what happens without it: the model makes a low-confidence decision. It's wrong. The wrong output propagates downstream — to a CRM, an order system, a customer communication. The damage surfaces hours or days later with no obvious connection to the AI that caused it.
 
-The review queue is not overhead. It's the safety net that makes the automation trustworthy.
+**The review queue is not overhead. It's the safety net that makes the automation trustworthy.**
 
 ## Lesson 3: Integration failures are more common than model failures
 
@@ -86,11 +86,11 @@ If the first failure produces a confusing output that nobody notices for three d
 
 If the first failure routes cleanly to a human review queue, gets resolved in 10 minutes, and generates a log entry that becomes a prompt improvement — the team gains confidence and expands the automation's scope.
 
-Design the failure path as carefully as the happy path.
+**Design the failure path as carefully as the happy path.**
 
 ## Lesson 6: ROI comes from the right level of automation
 
-The highest ROI implementations I've seen aren't fully autonomous. They're human-AI collaborative systems where the AI handles the high-volume, routine portion and humans handle the exceptions.
+The highest-ROI implementations I've seen aren't fully autonomous. They're human-AI collaborative systems where the AI handles the high-volume, routine portion and humans handle the exceptions.
 
 Full automation of a high-variance process is expensive to build, expensive to maintain, and often has lower quality than a well-designed collaboration system.
 

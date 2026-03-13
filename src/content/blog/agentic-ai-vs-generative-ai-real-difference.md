@@ -20,9 +20,9 @@ subtitle: "One responds. The other acts. The difference matters when you're buil
 status: "draft"
 ---
 
-Both terms appear in the same conversations, the same vendor decks, and the same budget requests. Most teams use them interchangeably. They're not the same.
+Both terms appear in the same conversations, the same vendor decks, and the same budget requests. Most teams use them interchangeably.
 
-The distinction matters when you're making an implementation decision — because building with the wrong mental model produces systems that either underperform or over-promise.
+They're not the same. And the distinction matters when you're making an implementation decision — because building with the wrong mental model produces systems that either underperform or over-promise. I've watched both happen.
 
 <!-- truncate -->
 
@@ -32,14 +32,14 @@ Generative AI refers to models that produce output — text, code, images, audio
 
 When you call an LLM API with a prompt, that's generative AI. The model takes in a context window of tokens and produces the next most probable sequence. It's sophisticated autocomplete powered by patterns learned from a massive corpus.
 
-Key properties:
+Key properties you need to understand:
 
 - **Stateless by default.** Each call is independent. The model has no memory of previous conversations unless you explicitly pass conversation history in the prompt.
 - **Single-turn.** One input, one output. The model responds to what you send and stops.
 - **No external state.** The model can't read files, call APIs, query databases, or take any action in the world unless you build that plumbing separately.
 - **Probabilistic.** The same prompt can produce different outputs on different calls. This is intentional — it's how the model generates creative, contextual responses rather than rote repetition.
 
-This is what most teams have deployed in 2023–2024: a language model embedded in a product, answering questions, generating content, helping with writing or code. Extremely valuable. But bounded by the single-turn, no-memory, no-action model.
+This is what most teams deployed in 2023–2024: a language model embedded in a product, answering questions, generating content, helping with writing or code. Extremely valuable. But bounded by the single-turn, no-memory, no-action model.
 
 ## Agentic AI: adding the loop
 
@@ -106,9 +106,9 @@ Use agentic AI when:
 
 ## The mistake teams make
 
-The most common mistake: building agentic architecture when the use case only needs generative AI.
+The most common mistake I see: building agentic architecture when the use case only needs generative AI.
 
-An agent is not an upgrade from a simple LLM call. It's a different system with different complexity, cost, latency, and failure modes. If your task is single-step, don't build a loop around it.
+An agent is not an upgrade from a simple LLM call. It's a different system with different complexity, cost, latency, and failure modes. **If your task is single-step, don't build a loop around it.**
 
 The second most common mistake: building a generative AI integration when the task actually requires multi-step execution — and then watching the system fail because it can't take actions or maintain context across steps.
 

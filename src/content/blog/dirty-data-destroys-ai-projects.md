@@ -24,35 +24,35 @@ Teams spend weeks evaluating AI models. Comparing benchmarks. Reading papers. De
 
 Then they connect the model to their data and discover that none of that matters yet — because the data isn't ready.
 
-Data quality problems destroy more AI projects than model limitations. And they destroy them earlier, before anything is deployed, when the team discovers that the 18 months of historical data they were counting on is inconsistent, incomplete, or structured in a way that makes it nearly useless.
+I've seen this happen more times than I can count. Data quality problems destroy more AI projects than model limitations. And they destroy them earlier — before anything is deployed, when the team discovers that the 18 months of historical data they were counting on is inconsistent, incomplete, or structured in a way that makes it nearly useless.
 
 <!-- truncate -->
 
 ## The data quality audit nobody does before starting
 
-Most AI projects begin with an assumption: "we have data." What they mean is "we have records stored somewhere." Those are different things.
+Most AI projects begin with an assumption: "we have data." What they actually mean is "we have records stored somewhere." Those are different things.
 
 Data quality has five dimensions. Most teams check one (completeness) and miss the other four.
 
 **Completeness.** Are the fields you need present? A dataset with 40% null values in a key column is incomplete. You can impute some of it. You can't impute your way out of a systemic collection problem.
 
-**Consistency.** Does the same concept appear the same way across records? "United States," "US," "U.S.A.," and "usa" are the same country. To a naive model, they're four different values. If your CRM has been populated by 50 different people over 8 years, it has consistency problems.
+**Consistency.** Does the same concept appear the same way across records? "United States," "US," "U.S.A.," and "usa" are the same country. To a naive model, they're four different values. If your CRM has been populated by 50 different people over 8 years, it has consistency problems. Guaranteed.
 
-**Accuracy.** Does the data reflect reality? Old records with addresses that have changed. Products with prices that haven't been updated. Customer segments that were defined under a different business model. Accurate at the time of collection doesn't mean accurate now.
+**Accuracy.** Does the data reflect reality? Old records with addresses that have changed. Products with prices that haven't been updated. Customer segments defined under a different business model. Accurate at the time of collection doesn't mean accurate now.
 
 **Timeliness.** Is the data current enough to be useful? A model trained on 3-year-old transaction data will reflect behavioral patterns from a different market. For dynamic domains, stale training data is worse than no data — it trains confidently on patterns that no longer hold.
 
 **Uniqueness.** Are there duplicates? The same customer appearing 17 times in the CRM because different reps entered them slightly differently. The same product with multiple SKUs that weren't merged after an acquisition. Duplicates bias models toward whatever the most-duplicated records represent.
 
-## What it costs
+## What it costs you
 
 Bad data doesn't just slow down model training. It creates a compounding cost throughout the project.
 
-**Discovery delay.** Data quality problems are usually found mid-project, not at the start. Teams discover issues when they start training and see nonsensical outputs. This delays the entire timeline while data is investigated and cleaned.
+**Discovery delay.** Data quality problems are usually found mid-project, not at the start. Teams discover issues when they start training and see nonsensical outputs. This delays the entire timeline while data is investigated and cleaned. I've seen projects lose 6 weeks to this.
 
 **Rework.** If the data pipeline is built before data quality issues are understood, it gets rebuilt. Cleaning logic added retroactively is messier and harder to maintain than cleaning logic designed in from the start.
 
-**Model performance shortfall.** A model trained on dirty data performs worse than its architecture theoretically allows. When the client sees the results, the shortfall gets attributed to the model or the approach — not the data quality problem that caused it. The team chases model improvements that won't help.
+**Model performance shortfall.** A model trained on dirty data performs worse than its architecture theoretically allows. When the client sees the results, the shortfall gets attributed to the model or the approach — not the data quality problem that caused it. **The team chases model improvements that won't help.**
 
 **Trust erosion.** If the model's outputs are inconsistent — because inconsistent data produced inconsistent training — stakeholders lose trust. An AI system that's right 80% of the time and wrong 20% of the time in unpredictable ways is often harder to adopt than one that's slower but trustworthy.
 
@@ -74,7 +74,7 @@ This takes a few days. It prevents months of wasted work.
 
 ## What to fix first
 
-You will never have perfect data. The goal is "good enough to train a model that's useful."
+You'll never have perfect data. The goal is "good enough to train a model that's useful."
 
 Prioritize cleaning in this order:
 
