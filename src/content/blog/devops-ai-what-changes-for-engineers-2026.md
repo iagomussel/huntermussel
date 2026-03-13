@@ -9,7 +9,7 @@ tags:
   - AI
   - Engineering
   - Future of Work
-  - 2026
+  - "2026"
 keywords:
   - devops ai 2026
   - ai changes devops
