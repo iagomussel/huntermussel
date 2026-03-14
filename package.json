@@ -9,6 +9,12 @@
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
     "deploy": "npm run build && npx wrangler pages deploy dist"
   },
+  "overrides": {
+    "devalue": "5.6.4",
+    "dompurify": "3.3.2",
+    "rollup": "4.59.0",
+    "svgo": "4.0.1"
+  },
   "dependencies": {
     "@alexbruf/react-diff-viewer": "^3.1.5",
     "@astrojs/react": "^4.4.2",
