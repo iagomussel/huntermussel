@@ -1,0 +1,326 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="YAML ↔ JSON Converter | HunterMussel Tools"
+  description="Bidirectional YAML and JSON converter with real-time validation and inline error reporting. Works offline — no server, no logs."
+  canonicalPath="/tools/yaml-json/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / devops</p>
+      <h1>YAML ↔ JSON Converter</h1>
+      <p class="lead">
+        Paste YAML or JSON in either panel and the other updates instantly.
+        Inline error reporting shows the exact line. No server, no logs.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <!-- Toolbar -->
+    <div class="card yj-toolbar">
+      <div class="yj-toolbar-left">
+        <label class="yj-label" for="indentSel">
+          JSON indent
+          <select id="indentSel">
+            <option value="2" selected>2 spaces</option>
+            <option value="4">4 spaces</option>
+          </select>
+        </label>
+        <span id="dirIndicator" class="yj-dir-badge"></span>
+      </div>
+      <div class="actions">
+        <button id="clearBtn" type="button" class="secondary">Clear all</button>
+      </div>
+    </div>
+
+    <!-- Panels -->
+    <div class="yj-editor">
+      <div class="card yj-panel">
+        <div class="yj-panel-head">
+          <span>YAML</span>
+          <button class="yj-copy-btn" id="copyYaml" type="button">Copy</button>
+        </div>
+        <textarea id="yamlInput" class="yj-textarea" spellcheck="false" placeholder="name: hunter&#10;tags:&#10;  - ai&#10;  - devops&#10;enabled: true"></textarea>
+        <div id="yamlError" class="yj-error" style="display:none"></div>
+      </div>
+
+      <div class="yj-arrow-col" aria-hidden="true">
+        <span class="yj-arrows">⇄</span>
+      </div>
+
+      <div class="card yj-panel">
+        <div class="yj-panel-head">
+          <span>JSON</span>
+          <button class="yj-copy-btn" id="copyJson" type="button">Copy</button>
+        </div>
+        <textarea id="jsonInput" class="yj-textarea" spellcheck="false" placeholder='{"name":"hunter","tags":["ai","devops"],"enabled":true}'></textarea>
+        <div id="jsonError" class="yj-error" style="display:none"></div>
+      </div>
+    </div>
+
+    <section class="article">
+      <article class="card">
+        <h2>Bidirectional Conversion</h2>
+        <p>Edit either panel and the other updates in real time. If the source is invalid, the destination panel keeps its last valid content while the error is shown inline.</p>
+      </article>
+      <article class="card">
+        <h2>Common Uses</h2>
+        <ul>
+          <li>Convert Kubernetes / Docker Compose YAML to JSON for API calls.</li>
+          <li>Turn GitHub Actions workflow YAML into JSON for linting.</li>
+          <li>Inspect Terraform variable files in JSON format.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Privacy</h2>
+        <p>All conversion happens locally in your browser using <code>js-yaml</code>. Nothing is sent to any server.</p>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .yj-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .yj-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .yj-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .yj-label select {
+    width: auto;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.78rem;
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .yj-dir-badge {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--primary) / 0.3);
+    background: hsl(var(--primary) / 0.08);
+    color: hsl(var(--primary));
+    display: none;
+  }
+
+  .yj-dir-badge.visible { display: inline; }
+
+  /* ── Panels ── */
+  .yj-editor {
+    display: grid;
+    grid-template-columns: 1fr 2rem 1fr;
+    gap: 0;
+    margin-bottom: 1.4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 800px) {
+    .yj-editor {
+      grid-template-columns: 1fr;
+    }
+    .yj-arrow-col { display: none; }
+  }
+
+  .yj-arrow-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2.5rem;
+  }
+
+  .yj-arrows {
+    font-size: 1.1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .yj-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    min-height: 380px;
+  }
+
+  .yj-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid hsl(var(--border));
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: hsl(var(--muted-foreground));
+    background: hsl(var(--muted) / 0.5);
+  }
+
+  .yj-copy-btn {
+    padding: 0.1rem 0.55rem;
+    font-size: 0.72rem;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 700;
+    background: hsl(var(--muted));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.3rem;
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    transition: border-color 0.12s;
+  }
+
+  .yj-copy-btn:hover {
+    border-color: hsl(var(--primary) / 0.4);
+    color: hsl(var(--primary));
+  }
+
+  .yj-textarea {
+    flex: 1;
+    resize: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: hsl(var(--card)) !important;
+    color: hsl(var(--foreground)) !important;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.82rem !important;
+    line-height: 1.65 !important;
+    padding: 0.75rem !important;
+    min-height: 340px;
+  }
+
+  .yj-textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .yj-error {
+    padding: 0.4rem 0.75rem;
+    background: hsl(0 60% 8%);
+    border-top: 1px solid hsl(0 60% 25%);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.76rem;
+    color: hsl(0 70% 65%);
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+</style>
+
+<script>
+  import yaml from "js-yaml";
+
+  const $ = (id) => document.getElementById(id);
+
+  let activePanel = null; // "yaml" | "json"
+  let debounce = null;
+
+  function getIndent() {
+    return Number($("indentSel").value);
+  }
+
+  function showDir(dir) {
+    const el = $("dirIndicator");
+    if (dir) {
+      el.textContent = dir;
+      el.classList.add("visible");
+    } else {
+      el.classList.remove("visible");
+    }
+  }
+
+  function clearError(panel) {
+    $(`${panel}Error`).style.display = "none";
+    $(`${panel}Error`).textContent = "";
+  }
+
+  function showError(panel, msg) {
+    const el = $(`${panel}Error`);
+    el.textContent = msg;
+    el.style.display = "";
+  }
+
+  function yamlToJson() {
+    const src = $("yamlInput").value;
+    clearError("yaml");
+    clearError("json");
+    if (!src.trim()) { $("jsonInput").value = ""; showDir(null); return; }
+    try {
+      const parsed = yaml.load(src);
+      $("jsonInput").value = JSON.stringify(parsed, null, getIndent());
+      showDir("YAML → JSON");
+    } catch (e) {
+      showError("yaml", String(e).replace(/^YAMLException:\s*/, ""));
+    }
+  }
+
+  function jsonToYaml() {
+    const src = $("jsonInput").value;
+    clearError("yaml");
+    clearError("json");
+    if (!src.trim()) { $("yamlInput").value = ""; showDir(null); return; }
+    try {
+      const parsed = JSON.parse(src);
+      $("yamlInput").value = yaml.dump(parsed, { lineWidth: 120 });
+      showDir("JSON → YAML");
+    } catch (e) {
+      showError("json", String(e));
+    }
+  }
+
+  function schedule(fn) {
+    clearTimeout(debounce);
+    debounce = setTimeout(fn, 120);
+  }
+
+  $("yamlInput").addEventListener("input", () => { activePanel = "yaml"; schedule(yamlToJson); });
+  $("jsonInput").addEventListener("input", () => { activePanel = "json"; schedule(jsonToYaml); });
+  $("indentSel").addEventListener("change", () => { if (activePanel === "yaml") yamlToJson(); else if (activePanel === "json") jsonToYaml(); });
+
+  async function copy(textareaId, btn) {
+    const text = $(textareaId).value;
+    if (!text) return;
+    await navigator.clipboard.writeText(text);
+    const orig = btn.textContent;
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = orig; }, 1500);
+  }
+
+  $("copyYaml").addEventListener("click", () => copy("yamlInput", $("copyYaml")));
+  $("copyJson").addEventListener("click", () => copy("jsonInput", $("copyJson")));
+
+  $("clearBtn").addEventListener("click", () => {
+    $("yamlInput").value = "";
+    $("jsonInput").value = "";
+    clearError("yaml");
+    clearError("json");
+    showDir(null);
+    activePanel = null;
+  });
+</script>

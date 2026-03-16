@@ -1,0 +1,483 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Regex Tester | HunterMussel Tools"
+  description="Test regular expressions with live highlight, capture group colouring, and quick-insert patterns for email, URL, IPv4, CPF, CNPJ. Runs entirely in your browser."
+  canonicalPath="/tools/regex-tester/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / text</p>
+      <h1>Regex Tester</h1>
+      <p class="lead">
+        Live regex matching with coloured capture groups, match positions, and
+        one-click patterns for common formats. Zero network requests.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <!-- Pattern row -->
+    <div class="card rt-pattern-card">
+      <div class="rt-pattern-row">
+        <span class="rt-slash">/</span>
+        <input id="patternInput" class="rt-pattern-input" type="text" spellcheck="false" placeholder="(\w+)@([\w.]+)" autocomplete="off" />
+        <span class="rt-slash">/</span>
+        <div class="rt-flags" id="flagsRow">
+          <label class="rt-flag" title="Global — find all matches"><input type="checkbox" id="fg" value="g" checked /><span>g</span></label>
+          <label class="rt-flag" title="Case-insensitive"><input type="checkbox" id="fi" value="i" /><span>i</span></label>
+          <label class="rt-flag" title="Multiline — ^ and $ match line boundaries"><input type="checkbox" id="fm" value="m" /><span>m</span></label>
+          <label class="rt-flag" title="Dotall — . matches newlines"><input type="checkbox" id="fs" value="s" /><span>s</span></label>
+          <label class="rt-flag" title="Unicode"><input type="checkbox" id="fu" value="u" /><span>u</span></label>
+        </div>
+      </div>
+      <div id="patternError" class="rt-pattern-error" style="display:none"></div>
+      <!-- Quick patterns -->
+      <div class="rt-shortcuts">
+        <span class="rt-shortcuts-label">Quick:</span>
+        <button class="rt-shortcut" data-pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" data-flags="gi">Email</button>
+        <button class="rt-shortcut" data-pattern="https?://[\w\-._~:/?#[\]@!$&'()*+,;=]+" data-flags="gi">URL</button>
+        <button class="rt-shortcut" data-pattern="\b(?:\d{1,3}\.){3}\d{1,3}\b" data-flags="g">IPv4</button>
+        <button class="rt-shortcut" data-pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}" data-flags="g">CPF</button>
+        <button class="rt-shortcut" data-pattern="\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}" data-flags="g">CNPJ</button>
+        <button class="rt-shortcut" data-pattern="\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+\-]\d{2}:\d{2})?)?" data-flags="g">ISO Date</button>
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div class="rt-editor">
+      <div class="card rt-panel rt-left-panel">
+        <div class="rt-panel-head">
+          <span>Test Text</span>
+          <span id="matchCount" class="rt-match-count"></span>
+        </div>
+        <textarea id="testInput" class="rt-textarea" spellcheck="false" placeholder="Paste text here to test…"></textarea>
+      </div>
+      <div class="card rt-panel rt-right-panel">
+        <div class="rt-panel-head">
+          <span>Highlighted</span>
+        </div>
+        <div id="highlightOutput" class="rt-highlight-output"></div>
+      </div>
+    </div>
+
+    <!-- Match list -->
+    <div id="matchListWrap" class="card rt-match-list-card" style="display:none">
+      <div class="rt-panel-head"><span>Matches</span></div>
+      <div id="matchList" class="rt-match-list"></div>
+    </div>
+
+    <section class="article">
+      <article class="card">
+        <h2>Capture Groups</h2>
+        <p>Groups are colour-coded by index: group 1 is blue, group 2 green, group 3 orange, group 4 pink. Full matches with no groups are highlighted in yellow.</p>
+      </article>
+      <article class="card">
+        <h2>Flags</h2>
+        <ul>
+          <li><code>g</code> — find all matches, not just the first</li>
+          <li><code>i</code> — case-insensitive matching</li>
+          <li><code>m</code> — <code>^</code> and <code>$</code> match line boundaries</li>
+          <li><code>s</code> — dot matches newlines (dotall mode)</li>
+          <li><code>u</code> — full Unicode support</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>How to Use</h2>
+        <ul>
+          <li>Type a regex pattern in the top bar.</li>
+          <li>Toggle flags as needed.</li>
+          <li>Paste test text — matches highlight in real time.</li>
+          <li>Use Quick buttons to load common patterns instantly.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .rt-pattern-card {
+    margin-bottom: 0.75rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .rt-pattern-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .rt-slash {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: hsl(var(--primary));
+    line-height: 1;
+  }
+
+  .rt-pattern-input {
+    flex: 1;
+    min-width: 200px;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.95rem !important;
+    background: hsl(var(--muted) / 0.5) !important;
+    border-color: hsl(var(--border)) !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+
+  .rt-flags {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .rt-flag {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    cursor: pointer;
+  }
+
+  .rt-flag input[type="checkbox"] {
+    width: auto;
+    accent-color: hsl(var(--primary));
+    cursor: pointer;
+  }
+
+  .rt-flag span {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: hsl(var(--muted-foreground));
+    letter-spacing: 0.05em;
+  }
+
+  .rt-flag:has(input:checked) span {
+    color: hsl(var(--primary));
+  }
+
+  .rt-pattern-error {
+    margin-top: 0.5rem;
+    padding: 0.35rem 0.6rem;
+    background: hsl(0 60% 8%);
+    border: 1px solid hsl(0 60% 25%);
+    border-radius: 0.4rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: hsl(0 70% 65%);
+  }
+
+  .rt-shortcuts {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .rt-shortcuts-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+    margin-right: 0.2rem;
+  }
+
+  .rt-shortcut {
+    padding: 0.2rem 0.65rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: hsl(var(--muted) / 0.6);
+    border: 1px solid hsl(var(--border));
+    border-radius: 999px;
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    transition: border-color 0.12s, background 0.12s;
+  }
+
+  .rt-shortcut:hover {
+    border-color: hsl(var(--primary) / 0.4);
+    background: hsl(var(--primary) / 0.08);
+    color: hsl(var(--primary));
+  }
+
+  /* ── Editor ── */
+  .rt-editor {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (max-width: 800px) {
+    .rt-editor { grid-template-columns: 1fr; }
+  }
+
+  .rt-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    min-height: 320px;
+  }
+
+  .rt-panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid hsl(var(--border));
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: hsl(var(--muted-foreground));
+    background: hsl(var(--muted) / 0.5);
+  }
+
+  .rt-match-count {
+    font-size: 0.72rem;
+    color: hsl(var(--primary));
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .rt-textarea {
+    flex: 1;
+    resize: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: hsl(var(--card)) !important;
+    color: hsl(var(--foreground)) !important;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.82rem !important;
+    line-height: 1.7 !important;
+    padding: 0.75rem !important;
+    min-height: 280px;
+  }
+
+  .rt-textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .rt-highlight-output {
+    flex: 1;
+    padding: 0.75rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: hsl(var(--foreground));
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow: auto;
+    background: hsl(var(--card));
+    min-height: 280px;
+  }
+
+  /* Capture group colours */
+  .rt-highlight-output mark { border-radius: 2px; padding: 0 1px; }
+  .rt-m0  { background: hsl(55 90% 55% / 0.35); color: hsl(55 90% 80%); }   /* full match – yellow */
+  .rt-m1  { background: hsl(210 90% 55% / 0.35); color: hsl(210 90% 80%); } /* group 1 – blue */
+  .rt-m2  { background: hsl(145 70% 45% / 0.35); color: hsl(145 70% 70%); } /* group 2 – green */
+  .rt-m3  { background: hsl(30 90% 55% / 0.35); color: hsl(30 90% 80%); }   /* group 3 – orange */
+  .rt-m4  { background: hsl(315 70% 55% / 0.35); color: hsl(315 70% 80%); } /* group 4 – pink */
+
+  /* Match list */
+  .rt-match-list-card {
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 1.4rem;
+  }
+
+  .rt-match-list {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-height: 240px;
+    overflow: auto;
+  }
+
+  .rt-match-item {
+    display: grid;
+    grid-template-columns: 2rem 5rem 1fr;
+    gap: 0.5rem;
+    align-items: start;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    padding: 0.3rem 0.4rem;
+    border-radius: 0.3rem;
+    background: hsl(var(--muted) / 0.4);
+  }
+
+  .rt-match-idx {
+    color: hsl(var(--primary));
+    font-weight: 700;
+  }
+
+  .rt-match-pos {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .rt-match-val {
+    color: hsl(var(--foreground));
+    word-break: break-all;
+  }
+
+  .rt-match-groups {
+    grid-column: 1 / -1;
+    padding-left: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .rt-group-badge {
+    padding: 0.05rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.72rem;
+  }
+</style>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  let debounceTimer = null;
+
+  function getFlags() {
+    const checkboxes = document.querySelectorAll("#flagsRow input[type=checkbox]");
+    return Array.from(checkboxes).filter(c => c.checked).map(c => c.value).join("");
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  const GROUP_CLASSES = ["rt-m1", "rt-m2", "rt-m3", "rt-m4"];
+
+  function run() {
+    const pattern = $("patternInput").value;
+    const text = $("testInput").value;
+    const errEl = $("patternError");
+    const output = $("highlightOutput");
+    const countEl = $("matchCount");
+    const listWrap = $("matchListWrap");
+    const list = $("matchList");
+
+    if (!pattern) {
+      errEl.style.display = "none";
+      output.textContent = text;
+      countEl.textContent = "";
+      listWrap.style.display = "none";
+      return;
+    }
+
+    let re;
+    try {
+      re = new RegExp(pattern, getFlags());
+      errEl.style.display = "none";
+    } catch (e) {
+      errEl.textContent = String(e);
+      errEl.style.display = "";
+      output.textContent = text;
+      countEl.textContent = "";
+      listWrap.style.display = "none";
+      return;
+    }
+
+    // Collect matches
+    const matches = [];
+    const globalRe = new RegExp(pattern, getFlags().includes("g") ? getFlags() : getFlags() + "g");
+    let m;
+    while ((m = globalRe.exec(text)) !== null) {
+      matches.push({ index: m.index, value: m[0], groups: Array.from(m).slice(1) });
+      if (!globalRe.flags.includes("g")) break;
+    }
+
+    // Build highlighted HTML
+    let html = "";
+    let cursor = 0;
+    for (const match of matches) {
+      html += escHtml(text.slice(cursor, match.index));
+      if (match.groups.some(g => g !== undefined)) {
+        // Has capture groups — highlight each group
+        let matchCursor = match.index;
+        for (let gi = 0; gi < match.groups.length; gi++) {
+          const g = match.groups[gi];
+          if (g === undefined) continue;
+          const gStart = text.indexOf(g, matchCursor);
+          if (gStart === -1) continue;
+          html += escHtml(text.slice(matchCursor, gStart));
+          const cls = GROUP_CLASSES[gi] || GROUP_CLASSES[GROUP_CLASSES.length - 1];
+          html += `<mark class="${cls}">${escHtml(g)}</mark>`;
+          matchCursor = gStart + g.length;
+        }
+        html += escHtml(text.slice(matchCursor, match.index + match.value.length));
+      } else {
+        html += `<mark class="rt-m0">${escHtml(match.value)}</mark>`;
+      }
+      cursor = match.index + match.value.length;
+    }
+    html += escHtml(text.slice(cursor));
+    output.innerHTML = html;
+
+    // Update count
+    const n = matches.length;
+    countEl.textContent = n === 0 ? "no matches" : `${n} match${n === 1 ? "" : "es"}`;
+
+    // Build match list
+    if (n > 0) {
+      listWrap.style.display = "";
+      list.innerHTML = matches.map((match, i) => {
+        const groupsHtml = match.groups.filter(g => g !== undefined).length > 0
+          ? `<div class="rt-match-groups">${match.groups.map((g, gi) =>
+              g !== undefined
+                ? `<span class="rt-group-badge ${GROUP_CLASSES[gi] || ''}" style="background:none;border:1px solid currentColor">group ${gi+1}: ${escHtml(g)}</span>`
+                : ""
+            ).join("")}</div>`
+          : "";
+        return `<div class="rt-match-item">
+          <span class="rt-match-idx">#${i + 1}</span>
+          <span class="rt-match-pos">[${match.index}–${match.index + match.value.length}]</span>
+          <span class="rt-match-val">${escHtml(match.value)}</span>
+          ${groupsHtml}
+        </div>`;
+      }).join("");
+    } else {
+      listWrap.style.display = "none";
+    }
+  }
+
+  function scheduleRun() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(run, 150);
+  }
+
+  $("patternInput").addEventListener("input", scheduleRun);
+  $("testInput").addEventListener("input", scheduleRun);
+  document.querySelectorAll("#flagsRow input").forEach(cb => cb.addEventListener("change", run));
+
+  document.querySelectorAll(".rt-shortcut").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $("patternInput").value = btn.dataset.pattern;
+      const flags = (btn.dataset.flags || "g").split("");
+      document.querySelectorAll("#flagsRow input[type=checkbox]").forEach(cb => {
+        cb.checked = flags.includes(cb.value);
+      });
+      run();
+    });
+  });
+
+  // Default test text
+  $("testInput").value = "Contact: john.doe@example.com or jane@company.org\nIP: 192.168.1.1 and 10.0.0.255";
+  run();
+</script>

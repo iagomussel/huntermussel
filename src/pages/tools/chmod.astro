@@ -1,0 +1,481 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="chmod Calculator | HunterMussel Tools"
+  description="Convert between chmod octal numbers, symbolic notation, and checkbox grids. Security warnings for insecure permissions. Ready-to-copy chmod command."
+  canonicalPath="/tools/chmod/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / devops</p>
+      <h1>chmod Calculator</h1>
+      <p class="lead">
+        Click checkboxes, type an octal number, or enter symbolic notation —
+        all three stay in sync. Security warnings for dangerous permissions.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <div class="ch-layout">
+      <!-- Grid + outputs -->
+      <div class="card stack ch-main">
+        <!-- Checkbox grid -->
+        <table class="ch-grid" id="chGrid">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Read (r)</th>
+              <th>Write (w)</th>
+              <th>Execute (x)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="ch-who">Owner</td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="0" data-bit="4" /><span></span></label></td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="0" data-bit="2" /><span></span></label></td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="0" data-bit="1" /><span></span></label></td>
+            </tr>
+            <tr>
+              <td class="ch-who">Group</td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="1" data-bit="4" /><span></span></label></td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="1" data-bit="2" /><span></span></label></td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="1" data-bit="1" /><span></span></label></td>
+            </tr>
+            <tr>
+              <td class="ch-who">Other</td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="2" data-bit="4" /><span></span></label></td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="2" data-bit="2" /><span></span></label></td>
+              <td><label class="ch-cb"><input type="checkbox" data-who="2" data-bit="1" /><span></span></label></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Quick presets -->
+        <div class="ch-presets">
+          <span class="ch-presets-label">Presets:</span>
+          <button class="ch-preset" data-octal="644">644</button>
+          <button class="ch-preset" data-octal="755">755</button>
+          <button class="ch-preset" data-octal="600">600</button>
+          <button class="ch-preset" data-octal="700">700</button>
+          <button class="ch-preset" data-octal="400">400</button>
+          <button class="ch-preset ch-preset--warn" data-octal="666">666</button>
+          <button class="ch-preset ch-preset--danger" data-octal="777">777</button>
+        </div>
+
+        <!-- Inputs -->
+        <div class="ch-inputs">
+          <div class="ch-input-group">
+            <label class="ch-input-label" for="octalInput">Octal</label>
+            <input id="octalInput" class="ch-num-input" type="text" maxlength="3" inputmode="numeric" placeholder="755" spellcheck="false" />
+          </div>
+          <div class="ch-input-group">
+            <label class="ch-input-label" for="symbolicInput">Symbolic</label>
+            <input id="symbolicInput" class="ch-sym-input" type="text" maxlength="9" placeholder="rwxr-xr-x" spellcheck="false" />
+          </div>
+        </div>
+
+        <!-- Warning -->
+        <div id="secWarning" class="ch-warning" style="display:none"></div>
+
+        <!-- Command -->
+        <div class="ch-cmd-row">
+          <code id="chmodCmd" class="ch-cmd"></code>
+          <button id="copyCmd" type="button" class="secondary">Copy</button>
+        </div>
+      </div>
+
+      <!-- Reference -->
+      <div class="card stack ch-ref">
+        <h3 class="ch-ref-head">Octal Reference</h3>
+        <table class="ch-ref-table">
+          <thead><tr><th>Bits</th><th>Octal</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>000</td><td>0</td><td>---</td></tr>
+            <tr><td>001</td><td>1</td><td>--x</td></tr>
+            <tr><td>010</td><td>2</td><td>-w-</td></tr>
+            <tr><td>011</td><td>3</td><td>-wx</td></tr>
+            <tr><td>100</td><td>4</td><td>r--</td></tr>
+            <tr><td>101</td><td>5</td><td>r-x</td></tr>
+            <tr><td>110</td><td>6</td><td>rw-</td></tr>
+            <tr><td>111</td><td>7</td><td>rwx</td></tr>
+          </tbody>
+        </table>
+        <p class="ch-ref-note">Three digits: Owner · Group · Other. Each digit is the sum of r=4, w=2, x=1.</p>
+      </div>
+    </div>
+
+    <section class="article">
+      <article class="card">
+        <h2>Common Permissions</h2>
+        <ul>
+          <li><code>644</code> — files: readable by all, writable by owner only.</li>
+          <li><code>755</code> — directories and executables: readable and executable by all, writable by owner.</li>
+          <li><code>600</code> — private key files: only the owner can read or write.</li>
+          <li><code>400</code> — read-only for owner, nothing for anyone else.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Security Notes</h2>
+        <ul>
+          <li><strong>777</strong> is almost always wrong on production systems — any user can modify the file.</li>
+          <li><strong>666</strong> lets anyone write to the file without needing execute permission.</li>
+          <li>SSH private keys must be <code>600</code> or SSH will refuse to use them.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .ch-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 0.75rem;
+    margin-bottom: 1.4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 800px) {
+    .ch-layout { grid-template-columns: 1fr; }
+  }
+
+  .ch-main { padding: 1.25rem; }
+
+  /* ── Checkbox grid ── */
+  .ch-grid {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ch-grid th {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+    padding: 0.4rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .ch-grid th:first-child { text-align: left; }
+
+  .ch-grid td {
+    padding: 0.6rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .ch-who {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+    text-align: left !important;
+  }
+
+  .ch-cb {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .ch-cb input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: hsl(var(--primary));
+    cursor: pointer;
+  }
+
+  /* ── Presets ── */
+  .ch-presets {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+  }
+
+  .ch-presets-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ch-preset {
+    padding: 0.2rem 0.6rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: hsl(var(--muted) / 0.6);
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.3rem;
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    transition: border-color 0.12s, color 0.12s;
+  }
+
+  .ch-preset:hover {
+    border-color: hsl(var(--primary) / 0.4);
+    color: hsl(var(--primary));
+  }
+
+  .ch-preset--warn {
+    border-color: hsl(40 90% 50% / 0.5);
+    color: hsl(40 90% 65%);
+  }
+
+  .ch-preset--danger {
+    border-color: hsl(0 70% 50% / 0.5);
+    color: hsl(0 70% 65%);
+  }
+
+  /* ── Inputs ── */
+  .ch-inputs {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .ch-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .ch-input-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .ch-num-input,
+  .ch-sym-input {
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  /* ── Warning ── */
+  .ch-warning {
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.45rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .ch-warning.warn {
+    background: hsl(40 90% 10%);
+    border: 1px solid hsl(40 90% 35%);
+    color: hsl(40 90% 70%);
+  }
+
+  .ch-warning.danger {
+    background: hsl(0 60% 8%);
+    border: 1px solid hsl(0 60% 30%);
+    color: hsl(0 70% 65%);
+  }
+
+  /* ── Command row ── */
+  .ch-cmd-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: hsl(var(--muted) / 0.5);
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .ch-cmd {
+    flex: 1;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.88rem;
+    color: hsl(var(--primary));
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Reference card ── */
+  .ch-ref { padding: 1.25rem; }
+
+  .ch-ref-head {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: hsl(var(--muted-foreground));
+    margin: 0 0 0.75rem;
+  }
+
+  .ch-ref-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ch-ref-table th {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .ch-ref-table td {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: hsl(var(--foreground));
+    padding: 0.28rem 0.5rem;
+    border-bottom: 1px solid hsl(var(--border) / 0.4);
+  }
+
+  .ch-ref-note {
+    font-size: 0.75rem;
+    color: hsl(var(--muted-foreground));
+    margin-top: 0.75rem;
+    line-height: 1.5;
+  }
+</style>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const checkboxes = document.querySelectorAll("#chGrid input[type=checkbox]");
+
+  // octal[who] = sum of bits for that group
+  const octal = [0, 0, 0]; // [owner, group, other]
+
+  function bitsToSym(n) {
+    return (n & 4 ? "r" : "-") + (n & 2 ? "w" : "-") + (n & 1 ? "x" : "-");
+  }
+
+  function symToOctal(sym) {
+    const clean = sym.trim().toLowerCase();
+    if (clean.length !== 9) return null;
+    const groups = [clean.slice(0,3), clean.slice(3,6), clean.slice(6,9)];
+    return groups.map(g => {
+      let v = 0;
+      if (g[0] === "r") v |= 4;
+      if (g[1] === "w") v |= 2;
+      if (g[2] === "x") v |= 1;
+      return v;
+    });
+  }
+
+  function getOctalStr() {
+    return octal.join("");
+  }
+
+  function getSymbolic() {
+    return octal.map(bitsToSym).join("");
+  }
+
+  function updateFromOctal() {
+    // Update checkboxes
+    checkboxes.forEach(cb => {
+      const who = Number(cb.dataset.who);
+      const bit = Number(cb.dataset.bit);
+      cb.checked = (octal[who] & bit) !== 0;
+    });
+
+    // Update inputs
+    $("octalInput").value = getOctalStr();
+    $("symbolicInput").value = getSymbolic();
+
+    // Update command
+    $("chmodCmd").textContent = `chmod ${getOctalStr()} <file>`;
+
+    // Security warning
+    const oct = getOctalStr();
+    const warn = $("secWarning");
+    if (oct === "777") {
+      warn.textContent = "⚠ 777 is a critical risk — any user on the system can read, write, and execute this file.";
+      warn.className = "ch-warning danger";
+      warn.style.display = "";
+    } else if (oct === "666") {
+      warn.textContent = "⚠ 666 gives write access to all users — usually unintentional for files.";
+      warn.className = "ch-warning warn";
+      warn.style.display = "";
+    } else {
+      warn.style.display = "none";
+    }
+  }
+
+  // Checkboxes → octal
+  checkboxes.forEach(cb => {
+    cb.addEventListener("change", () => {
+      const who = Number(cb.dataset.who);
+      const bit = Number(cb.dataset.bit);
+      if (cb.checked) octal[who] |= bit;
+      else octal[who] &= ~bit;
+      updateFromOctal();
+    });
+  });
+
+  // Octal input → state
+  $("octalInput").addEventListener("input", () => {
+    const val = $("octalInput").value.trim();
+    if (/^[0-7]{3}$/.test(val)) {
+      octal[0] = Number(val[0]);
+      octal[1] = Number(val[1]);
+      octal[2] = Number(val[2]);
+      updateFromOctal();
+    }
+  });
+
+  // Symbolic input → state
+  $("symbolicInput").addEventListener("input", () => {
+    const parsed = symToOctal($("symbolicInput").value);
+    if (parsed) {
+      octal[0] = parsed[0]; octal[1] = parsed[1]; octal[2] = parsed[2];
+      $("octalInput").value = getOctalStr();
+      checkboxes.forEach(cb => {
+        const who = Number(cb.dataset.who);
+        const bit = Number(cb.dataset.bit);
+        cb.checked = (octal[who] & bit) !== 0;
+      });
+      $("chmodCmd").textContent = `chmod ${getOctalStr()} <file>`;
+    }
+  });
+
+  // Preset buttons
+  document.querySelectorAll(".ch-preset").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const val = btn.dataset.octal;
+      octal[0] = Number(val[0]);
+      octal[1] = Number(val[1]);
+      octal[2] = Number(val[2]);
+      updateFromOctal();
+    });
+  });
+
+  // Copy command
+  $("copyCmd").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(`chmod ${getOctalStr()} <file>`);
+    const btn = $("copyCmd");
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = "Copy"; }, 1500);
+  });
+
+  // Initialize with 644
+  octal[0] = 6; octal[1] = 4; octal[2] = 4;
+  updateFromOctal();
+</script>
