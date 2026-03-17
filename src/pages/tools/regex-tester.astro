@@ -394,13 +394,15 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       return;
     }
 
-    // Collect matches
+    // Collect matches — always add 'd' flag for exact group indices; respect user's 'g' choice
     const matches = [];
-    const globalRe = new RegExp(pattern, getFlags().includes("g") ? getFlags() : getFlags() + "g");
+    const userFlags = getFlags();
+    const execFlags = userFlags.includes("d") ? userFlags : userFlags + "d";
+    const execRe = new RegExp(pattern, execFlags);
     let m;
-    while ((m = globalRe.exec(text)) !== null) {
-      matches.push({ index: m.index, value: m[0], groups: Array.from(m).slice(1) });
-      if (!globalRe.flags.includes("g")) break;
+    while ((m = execRe.exec(text)) !== null) {
+      matches.push({ index: m.index, value: m[0], groups: Array.from(m).slice(1), indices: m.indices ? Array.from(m.indices).slice(1) : null });
+      if (!userFlags.includes("g")) break;
     }
 
     // Build highlighted HTML
@@ -409,17 +411,19 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     for (const match of matches) {
       html += escHtml(text.slice(cursor, match.index));
       if (match.groups.some(g => g !== undefined)) {
-        // Has capture groups — highlight each group
+        // Has capture groups — use exact indices from 'd' flag to avoid wrong-occurrence highlighting
         let matchCursor = match.index;
         for (let gi = 0; gi < match.groups.length; gi++) {
           const g = match.groups[gi];
           if (g === undefined) continue;
-          const gStart = text.indexOf(g, matchCursor);
-          if (gStart === -1) continue;
+          const idxPair = match.indices && match.indices[gi];
+          const gStart = idxPair ? idxPair[0] : -1;
+          const gEnd   = idxPair ? idxPair[1] : -1;
+          if (gStart === -1 || gStart < matchCursor) continue;
           html += escHtml(text.slice(matchCursor, gStart));
           const cls = GROUP_CLASSES[gi] || GROUP_CLASSES[GROUP_CLASSES.length - 1];
-          html += `<mark class="${cls}">${escHtml(g)}</mark>`;
-          matchCursor = gStart + g.length;
+          html += `<mark class="${cls}">${escHtml(text.slice(gStart, gEnd))}</mark>`;
+          matchCursor = gEnd;
         }
         html += escHtml(text.slice(matchCursor, match.index + match.value.length));
       } else {
