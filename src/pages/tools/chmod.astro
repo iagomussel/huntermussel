@@ -446,13 +446,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     const parsed = symToOctal($("symbolicInput").value);
     if (parsed) {
       octal[0] = parsed[0]; octal[1] = parsed[1]; octal[2] = parsed[2];
-      $("octalInput").value = getOctalStr();
-      checkboxes.forEach(cb => {
-        const who = Number(cb.dataset.who);
-        const bit = Number(cb.dataset.bit);
-        cb.checked = (octal[who] & bit) !== 0;
-      });
-      $("chmodCmd").textContent = `chmod ${getOctalStr()} <file>`;
+      updateFromOctal();
     }
   });
 
