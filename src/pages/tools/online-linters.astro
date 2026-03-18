@@ -1,0 +1,72 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import OnlineLintersWorkbench from "@/components/react/tools/online-linters/OnlineLintersWorkbench";
+---
+
+<BaseLayout
+  title="Online Linters | HunterMussel Tools"
+  description="Run advanced online lint checks for JSON, YAML, JavaScript, and Markdown with a full-featured Monaco editor."
+  canonicalPath="/tools/online-linters/"
+>
+  <main class="page linters-page">
+    <section class="hero linters-hero">
+      <p class="eyebrow">tool / linting</p>
+      <h1>Online Linters</h1>
+      <p class="lead">
+        Full-featured browser linting for JSON, YAML, JavaScript, and Markdown.
+        Catch syntax errors, format your code, and apply quality rules in real-time.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <OnlineLintersWorkbench client:only="react" />
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Provides an integrated environment powered by Monaco Editor to write,
+          paste, and lint code directly in your browser. Supported languages include JSON,
+          YAML, JavaScript, and Markdown. It catches syntax errors, formatting issues,
+          and quality violations.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why It Matters</h2>
+        <p>
+          Catching syntax errors before committing or deploying can save countless hours of debugging.
+          Especially useful for configuration files (YAML, JSON) where a stray comma or bad indent breaks
+          the whole pipeline.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Select the target language from the toolbar.</li>
+          <li>Paste the content to check into the editor.</li>
+          <li>Real-time markers will show errors and warnings. You can also manually trigger a format or specific linter checks.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .linters-page {
+    max-width: min(1600px, calc(100vw - 1.5rem));
+    padding-bottom: 5rem;
+  }
+
+  .linters-hero {
+    max-width: 72ch;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 700px) {
+    .linters-page {
+      max-width: calc(100vw - 1rem);
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+</style>
