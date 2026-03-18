@@ -4,8 +4,20 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
 <BaseLayout
   title="WebP Image Optimizer | HunterMussel Tools"
-  description="Convert JPG, PNG, GIF, and BMP images to WebP in-browser. Control quality, resize, and download — zero uploads, fully private."
+  description="Optimize JPG, PNG, GIF, BMP, TIFF, and WebP images in-browser. Adjust quality, resize, compare sizes, and download private WebP exports."
   canonicalPath="/tools/image-optimizer/"
+  keywords={[
+    "webp image optimizer",
+    "image optimizer online",
+    "convert image to webp",
+    "jpg to webp",
+    "png to webp",
+    "compress images in browser",
+    "resize images online",
+    "private image optimizer",
+    "client side image compression",
+    "batch webp converter",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -90,9 +102,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       <article class="card">
         <h2>What It Does</h2>
         <p>
-          Decodes images using a hidden canvas, re-encodes them as WebP using
-          the browser's native <code>canvas.toBlob</code> API, and streams the
-          result directly to a download — no pixels ever leave your device.
+          Converts JPG, PNG, GIF, BMP, TIFF, and existing WebP files into fresh
+          WebP exports directly in the browser. You can tune compression
+          quality, optionally downscale large images, and compare the original
+          file size against the optimized output before downloading.
         </p>
       </article>
       <article class="card">
@@ -101,6 +114,27 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           WebP delivers 25–35% smaller files than JPEG at equivalent visual
           quality and supports lossless, lossy, and transparency in a single
           format. All major browsers have supported it since 2020.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How It Works</h2>
+        <p>
+          When you add an image, the tool reads the file locally with the
+          browser File API, draws it into an off-screen canvas, then exports a
+          new <code>image/webp</code> file with your selected quality setting.
+          If you provide a max width or height, it resizes the image before
+          encoding so you reduce both pixel dimensions and file weight in a
+          single pass. Nothing is uploaded or processed on a remote server.
+        </p>
+        <p>
+          If you want the technical SEO angle, read
+          <a href="/blog/webp-for-seo-how-image-format-affects-rankings/">
+            WebP for SEO: How Your Image Format Directly Affects Google Rankings
+          </a>.
+          If you want the compression and format basics, read
+          <a href="/blog/why-use-webp-format-90-percent-compression/">
+            Why Use WebP Format? The 90% Compression Advantage Explained
+          </a>.
         </p>
       </article>
       <article class="card">

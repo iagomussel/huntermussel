@@ -2,9 +2,8 @@
 
 title: "In 2026, Code Is Cheap. Judgment Is Not."
 date: "2026-03-18"
-authors:
-
-iago-mussel
+authors: 
+ - "iago-mussel"
 description: "Why technical judgment, architecture, and human-led analysis have become the real premium in software development in 2026."
 tags:
   - Fractional CTO
@@ -32,7 +31,7 @@ The software market has changed.
 
 In 2026, writing code is no longer the hardest part of building software. AI coding tools have made raw implementation dramatically cheaper and faster, especially for prototypes, CRUD apps, internal tools, and first-pass product development. The bottleneck has moved somewhere else: **technical judgment**.
 
-The latest 2026 developer data reinforces this shift. Sonar's 2026 State of Code survey reports that **72% of developers who have tried AI coding tools now use them every day**, and developers say that **42% of their code is currently AI-generated or AI-assisted**. Sonar's January 2026 release goes even further, stating that AI now accounts for **42% of all committed code** in the surveyed population. Meanwhile, Stack Overflow's latest survey data still available in 2026 shows that **84% of respondents are using or planning to use AI tools in development**, and **51% of professional developers use them daily**. This does not mean software engineering has become trivial. It means implementation has become more abundant, and therefore less differentiating. ([sonarsource.com](https://www.sonarsource.com/state-of-code-developer-survey-report.pdf?utm_source=chatgpt.com))
+The latest 2026 developer data reinforces this shift. Sonar's 2026 State of Code survey reports that **72% of developers who have tried AI coding tools now use them every day**, and developers say that **42% of their code is currently AI-generated or AI-assisted**. Sonar's January 2026 release goes even further, stating that AI now accounts for **42% of all committed code** in the surveyed population. Meanwhile, Stack Overflow's latest survey data still available in 2026 shows that **84% of respondents are using or planning to use AI tools in development**, and **51% of professional developers use them daily**. This does not mean software engineering has become trivial. It means implementation has become more abundant, and therefore less differentiating. ([sonarsource.com](https://www.sonarsource.com/state-of-code-developer-survey-report.pdf?utm_source=huntermussel.com))
 
 Today, the real advantage is not simply shipping features faster. It is deciding **what should be built, how it should be structured, what should be automated, and what will still make sense 18 months from now**.
 
@@ -138,7 +137,7 @@ If you operate in fintech, healthtech, legal services, govtech, or B2B SaaS for 
 * can data handling be explained?
 * can changes be traced?
 
-AI tools can accelerate implementation, but they do not replace governance. In the US, HHS continues to define the HIPAA Security Rule as a set of **administrative, physical, and technical safeguards** for electronic protected health information, while NIST's Cybersecurity Framework remains a core reference point for managing cybersecurity risk across organizations. In other words, governance is not a feature you add later; it must be designed into the system. ([hhs.gov](https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html?utm_source=chatgpt.com))
+AI tools can accelerate implementation, but they do not replace governance. In the US, HHS continues to define the HIPAA Security Rule as a set of **administrative, physical, and technical safeguards** for electronic protected health information, while NIST's Cybersecurity Framework remains a core reference point for managing cybersecurity risk across organizations. In other words, governance is not a feature you add later; it must be designed into the system. ([hhs.gov](https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html?utm_source=huntermussel.com))
 
 A strong technical lead helps ensure that security and compliance are designed into the system from the beginning, including:
 
@@ -162,7 +161,7 @@ That is only partially true.
 
 **Execution became cheaper. Mistakes became cheaper to make, and more expensive to unwind.**
 
-The labor side of the equation still matters. As of March 2026, Glassdoor estimates the average US software engineer salary at **$148,825**, with reported upper-end compensation around **$232,714**. Levels.fyi shows a much higher market for top-tier companies, with a US median total compensation of about **$190,000** for software engineers and materially higher bands at larger firms. Indeed's March 2026 estimate places average base salary at **$130,987**. The exact benchmark varies by methodology, but the conclusion is consistent: skilled engineering talent remains expensive, and poor technical decisions still compound into long-term cost. ([glassdoor.com](https://www.glassdoor.com/Salaries/software-engineer-salary-SRCH_KO0%2C17.htm?utm_source=chatgpt.com))
+The labor side of the equation still matters. As of March 2026, Glassdoor estimates the average US software engineer salary at **$148,825**, with reported upper-end compensation around **$232,714**. Levels.fyi shows a much higher market for top-tier companies, with a US median total compensation of about **$190,000** for software engineers and materially higher bands at larger firms. Indeed's March 2026 estimate places average base salary at **$130,987**. The exact benchmark varies by methodology, but the conclusion is consistent: skilled engineering talent remains expensive, and poor technical decisions still compound into long-term cost. ([glassdoor.com](https://www.glassdoor.com/Salaries/software-engineer-salary-SRCH_KO0%2C17.htm?utm_source=huntermussel.com))
 
 The real cost structure now looks like this:
 
@@ -182,7 +181,7 @@ You may save on first-pass development, but lose far more later through:
 
 A mature system should not route every request through the most expensive model.
 
-This is not a theoretical concern. Cost curves continued falling into 2026. Stanford's AI Index, still one of the most cited benchmark references in 2026, reported that the inference cost for a system performing at the level of GPT-3.5 fell by **more than 280x** between November 2022 and October 2024. More recent market tracking from Artificial Analysis showed that during 2025, inference prices for capable frontier-class models dropped by roughly **50% or more** in several model tiers as cheaper fast and open options entered the market. In practical terms, model choice, routing, caching, batching, and fallback design now directly affect margin. ([hai.stanford.edu](https://hai.stanford.edu/ai-index/2025-ai-index-report?utm_source=chatgpt.com))
+This is not a theoretical concern. Cost curves continued falling into 2026. Stanford's AI Index, still one of the most cited benchmark references in 2026, reported that the inference cost for a system performing at the level of GPT-3.5 fell by **more than 280x** between November 2022 and October 2024. More recent market tracking from Artificial Analysis showed that during 2025, inference prices for capable frontier-class models dropped by roughly **50% or more** in several model tiers as cheaper fast and open options entered the market. In practical terms, model choice, routing, caching, batching, and fallback design now directly affect margin. ([hai.stanford.edu](https://hai.stanford.edu/ai-index/2025-ai-index-report?utm_source=huntermussel.com))
 
 Human-led architecture can reduce waste by deciding:
 
