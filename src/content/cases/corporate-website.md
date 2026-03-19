@@ -16,7 +16,7 @@ keywords:
   - static architecture website
   - zero cost hosting site
   - ultra fast website stack
-image: "/images/blog/high-performance-site.webp"
+image: "/images/cases/high-performance-site.webp"
 subtitle: "Engineering a corporate website that scales globally without infrastructure overhead"
 ---
 

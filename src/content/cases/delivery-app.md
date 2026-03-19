@@ -16,7 +16,7 @@ keywords:
   - logistics app architecture
   - predictive dispatch system
   - fleet optimization software
-image: "/images/blog/delivery-route-optimization.webp"
+image: "/images/cases/delivery-route-optimization.webp"
 subtitle: "Transforming delivery operations into a real-time optimization system"
 ---
 

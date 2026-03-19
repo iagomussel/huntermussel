@@ -16,7 +16,7 @@ keywords:
   - laravel lms
   - adaptive learning system
   - ai education software
-image: "/images/blog/ai-lms-cover.webp"
+image: "/images/cases/ai-lms-cover.webp"
 subtitle: "Transforming traditional e-learning platforms into adaptive, intelligent systems"
 ---
 

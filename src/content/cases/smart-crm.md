@@ -16,7 +16,7 @@ keywords:
   - predictive sales analytics
   - automated lead prioritization
   - intelligent crm software
-image: "/images/blog/ai-crm-lead-scoring.webp"
+image: "/images/cases/ai-crm-lead-scoring.webp"
 subtitle: "Turning raw leads into ranked revenue opportunities through predictive intelligence"
 ---
 

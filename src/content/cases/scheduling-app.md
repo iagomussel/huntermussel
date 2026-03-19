@@ -16,7 +16,7 @@ keywords:
   - ai appointment system
   - healthcare automation platform
   - smart clinic management
-image: "/images/blog/dental-scheduling-ai.webp"
+image: "/images/cases/dental-scheduling-ai.webp"
 subtitle: "Transforming clinic operations through predictive scheduling and automation"
 ---
 

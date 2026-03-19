@@ -8,7 +8,7 @@ const HeroSection = () => {
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30"
-        style={{ backgroundImage: `url(${heroBg})` }}
+        style={{ backgroundImage: `url(${heroBg.src})` }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
       <div className="absolute inset-0 grid-bg opacity-20" />
@@ -29,22 +29,22 @@ const HeroSection = () => {
           >
             <Terminal size={14} className="text-primary" />
             <span className="font-heading text-xs text-muted-foreground">
-              Software House, Ops & SEO
+              AI Automation, DevOps & Software Delivery
             </span>
           </motion.div>
 
           <h1 className="mb-6 font-heading text-4xl font-bold leading-tight tracking-tight md:text-6xl lg:text-7xl">
-            We build scalable systems &
+            AI automation, DevOps, &
             <br />
             <span className="gradient-text text-glow">
-              integrate AI the right way
+              scalable software engineering
             </span>
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl font-body text-lg leading-relaxed text-muted-foreground md:text-xl">
-            HunterMussel is a specialized software house delivering custom
-            development, robust cloud operations, and technical SEO to scale
-            your digital presence.
+            HunterMussel designs custom software, cloud infrastructure, and AI
+            automation systems for teams that need reliable delivery, faster
+            operations, and measurable growth.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -59,10 +59,10 @@ const HeroSection = () => {
               />
             </a>
             <a
-              href="#services"
+              href="/cases"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-8 py-3.5 font-heading text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-card"
             >
-              View Services
+              View Case Studies
             </a>
           </div>
         </motion.div>

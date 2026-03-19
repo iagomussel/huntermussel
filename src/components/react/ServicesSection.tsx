@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 import {
   Brain,
@@ -12,45 +13,45 @@ import {
 const services = [
   {
     icon: Code2,
-    title: "Custom Software Development",
+    title: "Workflows & BPM",
     slug: "workflows-bpm",
     description:
-      "Building robust, highly scalable systems and tailored full-stack applications for your business operations.",
+      "Designing the operating backbone behind scalable teams, approvals, handoffs, and automated business logic.",
   },
   {
     icon: GitBranch,
-    title: "DevOps & SRE",
+    title: "CI/CD & DevOps Engineering",
     slug: "ci-cd-devops",
     description:
-      "Automated pipelines, containerization, and reliable infrastructure operations for continuous delivery.",
+      "Automated delivery pipelines, infrastructure as code, and production-safe release systems for fast teams.",
   },
   {
     icon: TrendingUp,
-    title: "Technical SEO & Marketing",
+    title: "Intelligent Automation & AI Agents",
     slug: "intelligent-automation",
     description:
-      "Performance optimization, Core Web Vitals, and technical architectures for maximum search engine visibility.",
+      "Autonomous agents, orchestrated workflows, and AI-powered task automation connected to your real systems.",
   },
   {
     icon: Brain,
-    title: "Seamless AI Integrations",
+    title: "AI Process Management",
     slug: "ai-process-management",
     description:
-      "Integrating powerful LLMs and AI models into your software the right way, without compromising scale or security.",
+      "Mapping, redesigning, and optimizing operational processes with AI-backed decision systems and measurable ROI.",
   },
   {
     icon: Cloud,
-    title: "Cloud Infrastructure",
+    title: "Cloud Infrastructure & AI Deployment",
     slug: "cloud-infrastructure-ai",
     description:
-      "Provisioning and management of high-availability cloud environments using AWS, GCP, and Azure.",
+      "Production cloud platforms for AI workloads, LLMOps, observability, and high-availability deployment patterns.",
   },
   {
     icon: Shield,
-    title: "Security & Compliance",
+    title: "Security, Compliance & LGPD/GDPR",
     slug: "security-compliance",
     description:
-      "Comprehensive security audits, robust data protection, and adherence to major compliance standards.",
+      "Security audits, privacy controls, encryption strategy, and compliance implementation for sensitive systems.",
   },
 ];
 
@@ -85,7 +86,7 @@ const ServicesSection = () => {
             // expertise
           </span>
           <h2 className="font-heading text-3xl font-bold tracking-tight md:text-4xl">
-            Software, Operations & SEO
+            Services for systems, delivery, and automation
           </h2>
         </motion.div>
 
@@ -119,6 +120,22 @@ const ServicesSection = () => {
               </a>
             </motion.div>
           ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-10 text-center"
+        >
+          <a
+            href="/services"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-6 py-2.5 font-heading text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-card"
+          >
+            View all services
+            <ArrowRight size={16} />
+          </a>
         </motion.div>
       </div>
     </section>

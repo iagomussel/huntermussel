@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import { ArrowLeft } from 'lucide-react';
+import authors from '@/data/authors.json';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -13,36 +14,168 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const cases = await getCollection('cases');
+
+const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateString("en-US", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+}) : null;
+
+const url = `https://huntermussel.com/cases/${entry.slug}/`;
+const authorKey = entry.data.authors?.[0];
+const author = authorKey && authors[authorKey];
+const relatedCases = cases.filter((item) => item.slug !== entry.slug).slice(0, 3);
+const caseSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: entry.data.title,
+    description: entry.data.description,
+    image: entry.data.image ? `https://huntermussel.com${entry.data.image}` : undefined,
+    datePublished: entry.data.date?.toISOString(),
+    dateModified: entry.data.date?.toISOString(),
+    author: author
+      ? {
+          "@type": "Person",
+          name: author.name,
+          url: author.url,
+        }
+      : undefined,
+    publisher: {
+      "@type": "Organization",
+      name: "HunterMussel",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://huntermussel.com/img/logo.svg",
+      },
+    },
+    mainEntityOfPage: url,
+    articleSection: "Case Studies",
+    keywords: entry.data.keywords?.join(", "),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://huntermussel.com/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Case Studies",
+        item: "https://huntermussel.com/cases/",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: entry.data.title,
+        item: url,
+      },
+    ],
+  },
+];
 ---
 
-<Layout title={entry.data.title} description={entry.data.description} image={entry.data.image} keywords={entry.data.keywords}>
+<Layout
+  title={entry.data.title}
+  description={entry.data.description}
+  image={entry.data.image}
+  canonicalUrl={url}
+  type="article"
+  keywords={entry.data.keywords}
+  schema={caseSchema}
+>
   <div class="min-h-screen bg-background">
     <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
 
     <main class="container relative z-10 px-6 pt-32 pb-24">
       <a
-        href="/#cases"
+        href="/cases"
         class="mb-12 inline-flex items-center gap-2 font-body text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft size={16} />
         Back to cases
       </a>
 
+      <article class="mx-auto max-w-4xl">
       <header class="mb-16">
         <span class="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
           // case study
         </span>
+        {formattedDate && (
+          <time class="mb-3 block font-body text-sm text-muted-foreground">{formattedDate}</time>
+        )}
         <h1 class="font-heading text-4xl font-bold tracking-tight md:text-6xl mb-6">
           {entry.data.title}
         </h1>
+        {entry.data.subtitle && (
+          <p class="mb-6 max-w-3xl font-body text-lg italic leading-relaxed text-muted-foreground">
+            {entry.data.subtitle}
+          </p>
+        )}
         <p class="font-body text-xl text-muted-foreground leading-relaxed max-w-2xl">
           {entry.data.description}
         </p>
+
+        {(author || (entry.data.tags && entry.data.tags.length > 0)) && (
+          <div class="mt-8 flex flex-col gap-4 border-t border-border pt-5 md:flex-row md:items-center md:justify-between">
+            {author && (
+              <div class="flex items-center gap-4">
+                <img src={author.image_url} alt={author.name} class="h-10 w-10 rounded-full bg-primary/10 p-1" />
+                <div>
+                  <p class="font-heading text-sm font-bold">{author.name}</p>
+                  <p class="font-body text-xs text-muted-foreground">{author.title}</p>
+                </div>
+              </div>
+            )}
+            {entry.data.tags && entry.data.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {entry.data.tags.map((tag) => (
+                  <span class="rounded-full border border-border bg-muted/30 px-2.5 py-1 font-heading text-[10px] uppercase tracking-wider text-muted-foreground">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </header>
+
+      {entry.data.image && (
+        <div class="mb-10 overflow-hidden rounded-xl border border-border">
+          <img src={entry.data.image} alt={entry.data.title} class="h-auto w-full object-contain md:aspect-video md:object-cover" />
+        </div>
+      )}
 
       <div class="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none">
         <Content />
       </div>
+
+      {relatedCases.length > 0 && (
+        <section class="mt-20 border-t border-border pt-10">
+          <h2 class="mb-6 font-heading text-2xl font-bold">Related case studies</h2>
+          <div class="grid gap-6 md:grid-cols-3">
+            {relatedCases.map((item) => (
+              <article class="rounded-lg border border-border bg-card/40 p-5 transition-all hover:border-primary/30 hover:bg-card">
+                <h3 class="font-heading text-lg font-semibold">
+                  <a href={`/cases/${item.slug}`} class="transition-colors hover:text-primary">
+                    {item.data.title}
+                  </a>
+                </h3>
+                <p class="mt-3 font-body text-sm leading-relaxed text-muted-foreground">
+                  {item.data.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div class="mt-20 text-center">
         <div class="rounded-2xl border border-primary/20 bg-primary/5 p-12 backdrop-blur-md">
@@ -58,6 +191,7 @@ const { Content } = await entry.render();
           </a>
         </div>
       </div>
+      </article>
     </main>
   </div>
 </Layout>
