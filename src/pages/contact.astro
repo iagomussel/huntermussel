@@ -1,0 +1,72 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ContactSection from "@/components/react/ContactSection";
+
+const url = "https://huntermussel.com/contact/";
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact HunterMussel",
+    url,
+    description:
+      "Get in touch with HunterMussel to discuss your project. We respond within 24 hours.",
+    mainEntity: {
+      "@type": "Organization",
+      name: "HunterMussel",
+      url: "https://huntermussel.com",
+      email: "contact@huntermussel.com",
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "contact@huntermussel.com",
+        availableLanguage: ["English", "Portuguese"],
+      },
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://huntermussel.com/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Contact",
+        item: url,
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Contact"
+  description="Get in touch with HunterMussel. Tell us about your project and we'll respond within 24 hours."
+  canonicalUrl={url}
+  keywords={["contact huntermussel", "hire software agency", "ai development consultation", "devops consulting"]}
+  schema={schema}
+>
+  <div class="min-h-screen bg-background">
+    <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
+
+    <div class="relative z-10 container px-6 pt-20 pb-4 text-center">
+      <span class="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
+        // contact
+      </span>
+      <h1 class="font-heading text-4xl font-bold tracking-tight md:text-5xl mb-4">
+        Let's Build Together
+      </h1>
+      <p class="font-body text-lg text-muted-foreground max-w-xl mx-auto">
+        Tell us about your project. We'll respond within 24 hours.
+      </p>
+    </div>
+
+    <ContactSection hideHeader client:load />
+  </div>
+</Layout>

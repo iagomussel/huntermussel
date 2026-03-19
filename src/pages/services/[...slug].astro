@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
+import MermaidRenderer from '@/components/MermaidRenderer.astro';
 import { ArrowLeft } from 'lucide-react';
 
 export async function getStaticPaths() {
@@ -133,4 +134,5 @@ const serviceSchema = [
       </article>
     </main>
   </div>
+  <MermaidRenderer />
 </Layout>

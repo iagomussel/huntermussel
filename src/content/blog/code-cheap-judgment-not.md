@@ -271,4 +271,4 @@ Build for durability, not just momentum.
 
 ## CTA
 
-If you want a senior technical review of your product, architecture, AI usage, or scaling plan, contact **[huntermussel.com/contact](https://huntermussel.com/contact)**.
+If you want a senior technical review of your product, architecture, AI usage, or scaling plan, **[get in touch](https://huntermussel.com/#contact)**.

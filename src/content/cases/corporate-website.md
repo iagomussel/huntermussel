@@ -70,6 +70,68 @@ The system was engineered for performance, resilience, and simplicity.
 
 This combination allows the site to scale from 10 visitors to 10 million without architectural modification.
 
+## Infrastructure & Deployment
+
+The architecture was designed to eliminate persistent infrastructure entirely. There is no application server to manage, patch, or scale.
+
+**Hosting:** Cloudflare Pages — global edge deployment with automatic SSL and HTTP/2
+**CDN:** Cloudflare global network (300+ edge locations) serving pre-built assets from the nearest node
+**DNS:** Cloudflare DNS with zero-TTL propagation and DDoS protection included
+**Serverless Functions:** Cloudflare Workers for dynamic endpoints (contact form handling, analytics ingestion)
+**Form Backend:** Serverless Worker proxying submissions to a managed email delivery API
+**Object Storage:** Cloudflare R2 for large media assets served from the same edge network
+**Build Pipeline:** GitHub Actions triggers Astro build on every push to main; output deployed to Cloudflare Pages via Wrangler CLI
+**Preview Deployments:** Pull request builds automatically deploy to isolated preview URLs for stakeholder review
+
+**Deployment Pipeline**
+- GitHub Actions runs `astro build` and validates output bundle size on each commit
+- Cloudflare Pages integration deploys automatically from the main branch
+- Image optimization runs as a build step; all images converted to WebP/AVIF with responsive variants
+- Lighthouse CI runs post-deploy against the production URL and fails the pipeline if scores drop below threshold
+
+## Observability & Monitoring
+
+Static sites eliminate server-side failure modes but introduce a different set of concerns: content delivery quality, build failures, and form submission reliability.
+
+**Performance Monitoring:** Cloudflare Analytics for request volume, cache hit rate, and geographic distribution
+**Real User Monitoring:** Web Vitals reported via Cloudflare Browser Insights (Core Web Vitals: LCP, CLS, FID)
+**Synthetic Monitoring:** Lighthouse CI scheduled weekly against the production URL; scores tracked over time
+**Uptime Monitoring:** Betterstack (formerly Uptime Robot) with 1-minute check intervals and Slack alerting
+**Build Alerts:** GitHub Actions notifies on build failure via Slack webhook
+**Form Reliability:** Cloudflare Worker logs submission success/failure rates; alert triggers if error rate exceeds 1% over 15 minutes
+
+Key dashboards tracked:
+- Global cache hit rate (target: >98%)
+- Core Web Vitals per page (LCP < 1.2s, CLS < 0.1)
+- Lighthouse Performance score over time
+- Contact form submission success rate
+- CDN bandwidth and request distribution by region
+
+## Infrastructure Diagram
+
+```mermaid
+graph TD
+    Visitor["Visitor Browser<br/>(Global)"]
+    CF["Cloudflare Edge Network<br/>(300+ PoPs)"]
+    Pages["Cloudflare Pages<br/>(Static Assets)"]
+    R2["Cloudflare R2<br/>(Media / Assets)"]
+    Worker["Cloudflare Worker<br/>(Contact Form / Analytics)"]
+    EmailAPI["Email Delivery API<br/>(Transactional)"]
+    GitHub["GitHub Actions<br/>(Build Pipeline)"]
+    LighthouseCI["Lighthouse CI<br/>(Post-Deploy Checks)"]
+    Betterstack["Betterstack<br/>(Uptime Monitoring)"]
+
+    Visitor --> CF
+    CF --> Pages
+    CF --> R2
+    CF -->|Dynamic Requests| Worker
+    Worker --> EmailAPI
+    GitHub -->|Wrangler Deploy| Pages
+    GitHub --> LighthouseCI
+    LighthouseCI -->|Score Report| GitHub
+    Betterstack -->|Health Checks| CF
+```
+
 ## The Result: Performance and Cost Metrics
 
 After deployment and benchmarking, the results demonstrated measurable gains:

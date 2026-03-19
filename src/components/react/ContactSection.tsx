@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Mail, MapPin, MessageCircle } from "lucide-react";
 import CalSchedulerEmbed from "@/components/react/CalSchedulerEmbed";
 
-const ContactSection = () => {
+const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -58,24 +58,26 @@ const ContactSection = () => {
     <section id="contact" className="relative border-t border-border py-24">
       <div className="container px-6">
         <div className="mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mx-auto max-w-2xl text-center"
-          >
-            <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
-              // contact
-            </span>
-            <h2 className="mb-4 font-heading text-3xl font-bold tracking-tight md:text-4xl">
-              Let's Build{" "}
-              <span className="gradient-text">Together?</span>
-            </h2>
-            <p className="mb-10 font-body text-base text-muted-foreground">
-              Tell us about your project. We'll respond within 24 hours.
-            </p>
-          </motion.div>
+          {!hideHeader && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mx-auto max-w-2xl text-center"
+            >
+              <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
+                // contact
+              </span>
+              <h2 className="mb-4 font-heading text-3xl font-bold tracking-tight md:text-4xl">
+                Let's Build{" "}
+                <span className="gradient-text">Together?</span>
+              </h2>
+              <p className="mb-10 font-body text-base text-muted-foreground">
+                Tell us about your project. We'll respond within 24 hours.
+              </p>
+            </motion.div>
+          )}
 
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
             <motion.div

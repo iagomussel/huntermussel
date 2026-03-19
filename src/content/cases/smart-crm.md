@@ -85,6 +85,70 @@ Each lead passes through a prediction workflow:
 
 This architecture allows scoring to occur instantly without slowing user interactions.
 
+## Infrastructure & Deployment
+
+The platform was deployed on AWS using a containerized architecture to ensure environment consistency and horizontal scalability.
+
+**Cloud Provider:** AWS
+**Compute:** ECS Fargate for the Laravel API and Python scoring service
+**Database:** Amazon RDS (PostgreSQL Multi-AZ) for lead and activity data
+**Cache & Queue:** Amazon ElastiCache (Redis) for async job processing
+**Object Storage:** S3 for model artifacts and lead attachments
+**CDN:** CloudFront for static frontend assets
+**Secrets:** AWS Secrets Manager for API keys and model credentials
+
+**Deployment Pipeline**
+- CI/CD via GitHub Actions with automated tests on each push
+- Docker images built and pushed to ECR
+- ECS rolling deployments with health checks and automatic rollback
+- Infrastructure as Code using Terraform modules per service
+
+## Observability & Monitoring
+
+Reliable lead scoring requires knowing when predictions degrade or services fail before sales teams are impacted.
+
+**Metrics:** Amazon CloudWatch for service-level metrics (CPU, memory, queue depth)
+**Application Monitoring:** Sentry for error tracking across Laravel and Python services
+**Dashboards:** Grafana connected to CloudWatch and custom RDS metrics
+**Log Aggregation:** CloudWatch Logs with structured JSON logging per service
+**Alerting:** PagerDuty integration for critical alerts (scoring pipeline failures, queue saturation)
+**Model Drift Detection:** Weekly batch job comparing recent prediction accuracy against baseline thresholds
+
+Key dashboards tracked:
+- Scoring pipeline throughput (events/sec)
+- Model inference latency (p50, p95, p99)
+- Queue depth and consumer lag
+- Lead conversion prediction accuracy over time
+
+## Infrastructure Diagram
+
+```mermaid
+graph TD
+    Browser["Sales Dashboard<br/>(React SPA)"]
+    CF["CloudFront CDN"]
+    ALB["Application Load Balancer"]
+    API["Laravel API<br/>(ECS Fargate)"]
+    ML["Python Scoring Service<br/>(ECS Fargate)"]
+    Redis["ElastiCache Redis<br/>(Queue / Cache)"]
+    RDS["RDS PostgreSQL<br/>(Multi-AZ)"]
+    S3["S3<br/>(Model Artifacts)"]
+    CW["CloudWatch<br/>+ Grafana"]
+    Sentry["Sentry"]
+
+    Browser --> CF
+    CF --> ALB
+    ALB --> API
+    API --> Redis
+    API --> RDS
+    Redis -->|Async Jobs| ML
+    ML --> RDS
+    ML --> S3
+    API --> CW
+    ML --> CW
+    API --> Sentry
+    ML --> Sentry
+```
+
 ## Measurable Business Impact
 
 After production deployment, sales teams observed clear improvements:

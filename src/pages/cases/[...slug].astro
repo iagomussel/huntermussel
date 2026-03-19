@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
+import MermaidRenderer from '@/components/MermaidRenderer.astro';
 import { ArrowLeft } from 'lucide-react';
 import authors from '@/data/authors.json';
 
@@ -153,7 +154,7 @@ const caseSchema = [
         </div>
       )}
 
-      <div class="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none">
+      <div class="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none" id="case-content">
         <Content />
       </div>
 
@@ -194,4 +195,5 @@ const caseSchema = [
       </article>
     </main>
   </div>
+  <MermaidRenderer />
 </Layout>

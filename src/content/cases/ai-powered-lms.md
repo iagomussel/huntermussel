@@ -88,6 +88,76 @@ The LMS communicates with AI services through an internal API gateway that handl
 
 This separation ensures that AI models can be updated or replaced without modifying the core platform.
 
+## Infrastructure & Deployment
+
+The platform was deployed on AWS with clearly separated services for the LMS core, AI processing layer, and real-time feedback engine.
+
+**Cloud Provider:** AWS
+**Compute:** ECS Fargate for Laravel API and Python AI microservices; EC2 Auto Scaling group for WebSocket service
+**Database:** Amazon RDS (PostgreSQL Multi-AZ) with read replicas for analytics queries
+**Cache & Queue:** Amazon ElastiCache (Redis) for job dispatching and session caching
+**Object Storage:** S3 for course content, video assets, and trained model binaries
+**CDN:** CloudFront for media delivery and frontend assets
+**Networking:** VPC with private subnets isolating AI services from public traffic
+**Secrets:** AWS Secrets Manager for model API credentials and DB connection strings
+
+**Deployment Pipeline**
+- GitHub Actions CI/CD with linting, unit, and integration test stages
+- Docker images tagged per commit and stored in ECR
+- ECS blue/green deployments for zero-downtime releases
+- Terraform manages all infrastructure resources; state stored in S3 with DynamoDB locking
+
+## Observability & Monitoring
+
+The LMS handles real learner outcomes, making observability critical. Grading errors or silent model failures must be detected immediately.
+
+**Metrics:** CloudWatch container-level metrics with custom namespace for AI inference latency
+**Error Tracking:** Sentry for PHP (Laravel) and Python service exceptions
+**Dashboards:** Grafana with panels for queue depth, grading throughput, and model prediction confidence
+**Log Aggregation:** CloudWatch Logs with structured logging; log groups per service environment
+**Alerting:** PagerDuty escalation policy for queue saturation, grading failures, and WebSocket disconnects
+**Model Monitoring:** Nightly job validating NLP grading accuracy on a labeled validation set; results written to CloudWatch custom metrics
+
+Key dashboards tracked:
+- Evaluation queue depth and processing rate
+- NLP grading latency (p50, p95)
+- WebSocket active connections and reconnect rate
+- At-risk student alert delivery rate
+
+## Infrastructure Diagram
+
+```mermaid
+graph TD
+    Learner["Learner Browser"]
+    Instructor["Instructor Dashboard"]
+    CF["CloudFront CDN"]
+    ALB["Application Load Balancer"]
+    API["Laravel API<br/>(ECS Fargate)"]
+    WS["WebSocket Service<br/>(EC2 Auto Scaling)"]
+    AI["Python AI Microservices<br/>(ECS Fargate)"]
+    Redis["ElastiCache Redis<br/>(Queue / Session)"]
+    RDS["RDS PostgreSQL<br/>(Multi-AZ + Read Replica)"]
+    S3["S3<br/>(Content / Models)"]
+    CW["CloudWatch<br/>+ Grafana"]
+    Sentry["Sentry"]
+
+    Learner --> CF
+    Instructor --> CF
+    CF --> ALB
+    ALB --> API
+    ALB --> WS
+    API --> Redis
+    API --> RDS
+    Redis -->|Async Jobs| AI
+    AI --> RDS
+    AI --> S3
+    WS --> Redis
+    API --> CW
+    AI --> CW
+    API --> Sentry
+    AI --> Sentry
+```
+
 ## The Impact: Measurable Learning Gains
 
 After deployment across multiple training cohorts, measurable improvements emerged:

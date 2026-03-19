@@ -87,6 +87,75 @@ Input data flows through a decision pipeline:
 
 This architecture ensures the system reacts instantly to operational changes.
 
+## Infrastructure & Deployment
+
+The platform was built on Google Cloud Platform (GCP) with Kubernetes to handle high-concurrency routing workloads and enable rapid horizontal scaling during demand spikes.
+
+**Cloud Provider:** GCP
+**Compute:** Google Kubernetes Engine (GKE) for all services; HPA (Horizontal Pod Autoscaler) on the Go API and Python optimizer pods
+**Database:** Cloud SQL (PostgreSQL) with PostGIS extension for geospatial indexing; read replicas for analytics
+**Messaging:** Redis Streams on Memorystore for event-driven route updates
+**Object Storage:** Google Cloud Storage for optimization model checkpoints and historical route logs
+**CDN:** Cloud CDN for operator dashboard assets
+**Networking:** VPC-native GKE cluster; internal load balancer separating the optimization service from public endpoints
+**Secrets:** Google Secret Manager for database credentials and external map API keys
+
+**Deployment Pipeline**
+- GitHub Actions CI/CD with Go unit tests, Python model validation, and integration tests against a staging GKE namespace
+- Container images built with Cloud Build and stored in Artifact Registry
+- Helm charts per service; promoted from staging to production via ArgoCD GitOps
+- Terraform provisions GKE, Cloud SQL, and Memorystore; modules maintained per environment
+
+## Observability & Monitoring
+
+Route optimization failures are immediate and visible to drivers and customers. The observability stack was designed for real-time incident response.
+
+**Metrics:** Google Cloud Monitoring with custom metrics for route recalculation latency and dispatch decision time
+**Dashboards:** Grafana connected to Cloud Monitoring and Prometheus scrape endpoints in GKE
+**Error Tracking:** Sentry for Go API panics and Python optimizer exceptions
+**Log Aggregation:** Cloud Logging with structured JSON logs; log-based alerting for critical error rates
+**Alerting:** PagerDuty with escalation policies for route computation failures, Redis stream consumer lag, and database replica lag
+**Performance Regression Detection:** Automated benchmark job runs on every Python model deployment comparing p95 optimization latency against baseline
+
+Key dashboards tracked:
+- Route recalculation rate (recalculations/min)
+- Optimization decision latency (p50, p95, p99)
+- Active driver WebSocket connections
+- Redis stream consumer lag per service group
+- Fleet utilization percentage over time
+
+## Infrastructure Diagram
+
+```mermaid
+graph TD
+    Driver["Driver Mobile App"]
+    Operator["Operator Dashboard"]
+    GCLB["Google Cloud Load Balancer"]
+    GoAPI["Go API Service<br/>(GKE - HPA)"]
+    NodeSvc["Node.js Realtime Service<br/>(GKE)"]
+    PyOpt["Python Optimizer<br/>(GKE - HPA)"]
+    Redis["Memorystore Redis Streams<br/>(Event Bus)"]
+    PG["Cloud SQL PostgreSQL<br/>(PostGIS + Read Replica)"]
+    GCS["Cloud Storage<br/>(Models / Route Logs)"]
+    Monitoring["Cloud Monitoring<br/>+ Grafana"]
+    Sentry["Sentry"]
+
+    Driver --> GCLB
+    Operator --> GCLB
+    GCLB --> GoAPI
+    GCLB --> NodeSvc
+    GoAPI --> Redis
+    GoAPI --> PG
+    NodeSvc --> Redis
+    Redis -->|Route Events| PyOpt
+    PyOpt --> PG
+    PyOpt --> GCS
+    GoAPI --> Monitoring
+    PyOpt --> Monitoring
+    GoAPI --> Sentry
+    PyOpt --> Sentry
+```
+
 ## Performance Results
 
 After production deployment, operational metrics demonstrated clear improvements:

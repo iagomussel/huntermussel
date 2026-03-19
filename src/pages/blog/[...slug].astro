@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
+import MermaidRenderer from '@/components/MermaidRenderer.astro';
 import { ArrowLeft } from 'lucide-react';
 import DisqusComments from '@/components/react/DisqusComments';
 import BlogShareSection from '@/components/react/BlogShareSection';
@@ -92,4 +93,5 @@ const author = authorKey && authors[authorKey];
        </article>
      </main>
   </div>
+  <MermaidRenderer />
 </Layout>
