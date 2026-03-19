@@ -1,6 +1,6 @@
 ---
 title: "High-Performance Corporate Website: Building a Free, Infinitely Scalable Platform"
-date: "2026-02-22"
+date: "2025-12-22"
 authors:
   - iago-mussel
 description: "A technical breakdown of how a modern corporate website can achieve near-zero hosting costs, extreme performance, and infinite scalability using a static-first architecture."

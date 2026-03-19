@@ -1,6 +1,6 @@
 ---
 title: "AI-Powered LMS: Building an Intelligent Learning Platform with Laravel"
-date: "2026-02-22"
+date: "2026-01-20"
 authors:
   - iago-mussel
 description: "A technical deep dive into how an AI-enhanced LMS built on Laravel automates personalization, grading, and learning analytics at scale."

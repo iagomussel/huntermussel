@@ -1,6 +1,6 @@
 ---
 title: "Intelligent Scheduling & Resource App for Dental Clinics"
-date: "2026-02-22"
+date: "2026-03-01"
 authors:
   - iago-mussel
 description: "A technical case study on building an AI-driven scheduling and resource management system that optimizes appointments, chair utilization, and staff allocation for dental clinics."

@@ -1,6 +1,6 @@
 ---
 title: "Delivery App Route Optimization: Engineering Real-Time Logistics Intelligence"
-date: "2026-02-22"
+date: "2025-11-01"
 authors:
   - iago-mussel
 description: "A technical case study on building a delivery platform with real-time route optimization, predictive dispatching, and AI-driven logistics automation."
