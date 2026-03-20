@@ -26,7 +26,7 @@ const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateSt
   year: "numeric",
 }) : null;
 
-const url = `https://huntermussel.com/blog/${entry.slug}`;
+const url = `https://huntermussel.com/blog/${entry.slug}/`;
 const authorKey = entry.data.authors?.[0];
 const author = authorKey && authors[authorKey];
 

@@ -35,6 +35,19 @@ const casesSchema = [
       },
     ],
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Case Studies",
+    url: casesUrl,
+    numberOfItems: cases.length,
+    itemListElement: cases.map((entry, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `https://huntermussel.com/cases/${entry.slug}/`,
+      name: entry.data.title,
+    })),
+  },
 ];
 ---
 
