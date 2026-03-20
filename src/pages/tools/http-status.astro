@@ -1,0 +1,283 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="HTTP Status Code Reference | HunterMussel Tools"
+  description="Search HTTP status codes by number or keyword. Cards grouped by family with REST API usage guidance. Instant client-side filtering."
+  canonicalPath="/tools/http-status/"
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / reference</p>
+      <h1>HTTP Status Code Reference</h1>
+      <p class="lead">
+        Search by code or keyword. Every entry includes a plain-English
+        description and guidance on when to use it in a REST API.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <!-- Search + filters -->
+    <div class="card hs-bar">
+      <input id="searchInput" class="hs-search" type="search" placeholder="Search: 404, unauthorized, redirect…" autocomplete="off" />
+      <div class="hs-filters" id="filterRow">
+        <button class="hs-filter active" data-family="all">All</button>
+        <button class="hs-filter" data-family="2xx">2xx Success</button>
+        <button class="hs-filter" data-family="3xx">3xx Redirect</button>
+        <button class="hs-filter" data-family="4xx">4xx Client</button>
+        <button class="hs-filter" data-family="5xx">5xx Server</button>
+      </div>
+    </div>
+
+    <!-- Card grid -->
+    <div id="statusGrid" class="hs-grid"></div>
+    <p id="emptyMsg" class="hs-empty" style="display:none">No status codes match your search.</p>
+  </main>
+</BaseLayout>
+
+<style>
+  .hs-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .hs-search {
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.9rem !important;
+    width: 100%;
+  }
+
+  .hs-filters {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .hs-filter {
+    padding: 0.25rem 0.75rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    background: hsl(var(--muted) / 0.5);
+    border: 1px solid hsl(var(--border));
+    border-radius: 999px;
+    color: hsl(var(--muted-foreground));
+    cursor: pointer;
+    transition: border-color 0.12s, color 0.12s, background 0.12s;
+  }
+
+  .hs-filter.active,
+  .hs-filter:hover {
+    border-color: hsl(var(--primary) / 0.4);
+    background: hsl(var(--primary) / 0.08);
+    color: hsl(var(--primary));
+  }
+
+  /* ── Grid ── */
+  .hs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    .hs-grid { grid-template-columns: 1fr; }
+  }
+
+  .hs-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.65rem;
+    background: hsl(var(--card) / 0.5);
+    transition: border-color 0.12s;
+  }
+
+  .hs-card:hover {
+    border-color: hsl(var(--primary) / 0.25);
+  }
+
+  .hs-card-top {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .hs-code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .hs-code.f2 { color: hsl(145 70% 55%); }
+  .hs-code.f3 { color: hsl(195 80% 65%); }
+  .hs-code.f4 { color: hsl(40 90% 65%); }
+  .hs-code.f5 { color: hsl(0 70% 65%); }
+
+  .hs-name {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .hs-desc {
+    font-size: 0.78rem;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .hs-rest {
+    font-size: 0.75rem;
+    color: hsl(var(--foreground) / 0.7);
+    line-height: 1.5;
+    border-top: 1px solid hsl(var(--border) / 0.6);
+    padding-top: 0.4rem;
+    margin-top: 0.1rem;
+  }
+
+  .hs-rest strong {
+    color: hsl(var(--primary));
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+
+  mark.hs-hl {
+    background: hsl(55 90% 55% / 0.35);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  .hs-empty {
+    text-align: center;
+    color: hsl(var(--muted-foreground));
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.85rem;
+    padding: 3rem 0;
+  }
+</style>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  const CODES = [
+    // 2xx
+    { code: 200, name: "OK", desc: "The request succeeded.", rest: "Default success for GET, PUT, PATCH, and DELETE responses that return a body." },
+    { code: 201, name: "Created", desc: "A new resource was created as a result of the request.", rest: "Use after a successful POST that creates a resource. Include a Location header pointing to the new resource." },
+    { code: 202, name: "Accepted", desc: "The request has been received but not yet processed.", rest: "Use for long-running async operations. Return a job ID the client can poll." },
+    { code: 204, name: "No Content", desc: "The request succeeded but returns no body.", rest: "Ideal for DELETE and for PUT/PATCH when you don't return the updated resource." },
+    { code: 206, name: "Partial Content", desc: "The server is delivering part of the resource due to a Range header.", rest: "Use for chunked downloads, video streaming, and paginated binary data." },
+    // 3xx
+    { code: 301, name: "Moved Permanently", desc: "The resource has been permanently moved to a new URL.", rest: "Use when permanently redirecting an old API version or deprecated endpoint. Clients should update bookmarks." },
+    { code: 302, name: "Found", desc: "The resource is temporarily at a different URL.", rest: "Rarely used in REST APIs. Prefer 307 when you need a temporary redirect that preserves the HTTP method." },
+    { code: 304, name: "Not Modified", desc: "The cached version is still valid; no body is returned.", rest: "Use with ETag or Last-Modified to let clients avoid downloading unchanged resources." },
+    { code: 307, name: "Temporary Redirect", desc: "The resource is temporarily at another URL; the method must not change.", rest: "Unlike 302, POST stays POST after the redirect. Use for temporary maintenance redirects." },
+    { code: 308, name: "Permanent Redirect", desc: "The resource has permanently moved; the method must not change.", rest: "Like 301 but preserves the HTTP method. Use when permanently moving endpoints that accept POST bodies." },
+    // 4xx
+    { code: 400, name: "Bad Request", desc: "The server cannot process the request due to a client error (malformed syntax, invalid framing, etc.).", rest: "Return with a body explaining what's wrong. Use for validation errors, missing required fields, and malformed JSON." },
+    { code: 401, name: "Unauthorized", desc: "Authentication is required and has failed or has not been provided.", rest: "The client is not authenticated. Include a WWW-Authenticate header. Do NOT use when the user is authenticated but lacks permissions — use 403." },
+    { code: 403, name: "Forbidden", desc: "The server understood the request but refuses to authorise it.", rest: "The client is authenticated but doesn't have permission. Don't reveal whether the resource exists if that's sensitive." },
+    { code: 404, name: "Not Found", desc: "The requested resource could not be found.", rest: "Can also be returned instead of 403 to avoid leaking information about resource existence." },
+    { code: 405, name: "Method Not Allowed", desc: "The HTTP method is not supported for this endpoint.", rest: "Include an Allow header listing the supported methods (e.g. GET, POST)." },
+    { code: 409, name: "Conflict", desc: "The request conflicts with the current state of the resource.", rest: "Use for duplicate resource creation, optimistic locking failures, or state machine violations." },
+    { code: 410, name: "Gone", desc: "The resource is permanently deleted and will not be available again.", rest: "Use instead of 404 when you want to signal that a resource was intentionally removed and won't return." },
+    { code: 413, name: "Content Too Large", desc: "The request body exceeds the server's configured limit.", rest: "Return when a file upload or JSON payload exceeds the allowed size. Include the max size in the error body." },
+    { code: 415, name: "Unsupported Media Type", desc: "The Content-Type of the request is not supported.", rest: "Return when the client sends XML but your API only accepts JSON, for example." },
+    { code: 422, name: "Unprocessable Entity", desc: "The request was well-formed but contains semantic errors.", rest: "Use for business logic validation failures (e.g. end date before start date). 400 is for syntax; 422 is for semantics." },
+    { code: 429, name: "Too Many Requests", desc: "The client has sent too many requests in a given time window.", rest: "Include Retry-After and X-RateLimit-* headers so clients can back off correctly." },
+    // 5xx
+    { code: 500, name: "Internal Server Error", desc: "An unexpected condition was encountered on the server.", rest: "The generic catch-all for unhandled errors. Log the full stack trace server-side; return only a safe message to the client." },
+    { code: 501, name: "Not Implemented", desc: "The server does not support the functionality required.", rest: "Use for features that are planned but not yet built — better than 404 when the route exists but the logic is missing." },
+    { code: 502, name: "Bad Gateway", desc: "An upstream server returned an invalid response.", rest: "Common when your API proxies a downstream service that is misbehaving. Indicates the problem is not your server." },
+    { code: 503, name: "Service Unavailable", desc: "The server is currently unable to handle the request (overload or maintenance).", rest: "Include a Retry-After header. Use during planned downtime or circuit-breaker trips." },
+    { code: 504, name: "Gateway Timeout", desc: "An upstream server did not respond in time.", rest: "Indicates a slow downstream dependency. Investigate queue depth, DB query times, or external API latency." },
+  ];
+
+  function family(code) {
+    if (code < 300) return "2xx";
+    if (code < 400) return "3xx";
+    if (code < 500) return "4xx";
+    return "5xx";
+  }
+
+  function fCode(code) {
+    return "f" + String(code)[0];
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function highlight(text, q) {
+    if (!q) return escHtml(text);
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return escHtml(text).replace(new RegExp(escaped, "gi"), m => `<mark class="hs-hl">${m}</mark>`);
+  }
+
+  let activeFamily = "all";
+
+  function render() {
+    const q = $("searchInput").value.trim().toLowerCase();
+    const grid = $("statusGrid");
+    const empty = $("emptyMsg");
+
+    const filtered = CODES.filter(c => {
+      const matchFamily = activeFamily === "all" || family(c.code) === activeFamily;
+      const matchSearch = !q
+        || String(c.code).includes(q)
+        || c.name.toLowerCase().includes(q)
+        || c.desc.toLowerCase().includes(q)
+        || c.rest.toLowerCase().includes(q);
+      return matchFamily && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = "";
+      empty.style.display = "";
+      return;
+    }
+
+    empty.style.display = "none";
+    grid.innerHTML = filtered.map(c => `
+      <div class="hs-card">
+        <div class="hs-card-top">
+          <span class="hs-code ${fCode(c.code)}">${c.code}</span>
+          <span class="hs-name">${highlight(c.name, q)}</span>
+        </div>
+        <p class="hs-desc">${highlight(c.desc, q)}</p>
+        <div class="hs-rest"><strong>REST API</strong>${highlight(c.rest, q)}</div>
+      </div>
+    `).join("");
+  }
+
+  $("searchInput").addEventListener("input", render);
+
+  document.querySelectorAll(".hs-filter").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".hs-filter").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeFamily = btn.dataset.family;
+      render();
+    });
+  });
+
+  render();
+</script>
