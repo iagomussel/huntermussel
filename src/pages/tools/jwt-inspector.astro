@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
@@ -152,6 +153,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <li>Verify the signature server-side using the issuer's public key or secret.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="security-compliance"
+        title="Need a security review of your authentication system?"
+        description="HunterMussel audits JWT implementations, OAuth flows, and identity systems against OWASP and LGPD/GDPR requirements — and builds secure auth architectures from scratch."
+        linkLabel="Explore Security & Compliance"
+      />
     </section>
   </main>
 </BaseLayout>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
@@ -136,6 +137,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <li>SSH private keys must be <code>600</code> or SSH will refuse to use them.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Automating server provisioning and security hardening?"
+        description="HunterMussel builds Infrastructure as Code pipelines that enforce file permissions, OS hardening, and security baselines automatically across all environments."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
     </section>
   </main>
 </BaseLayout>

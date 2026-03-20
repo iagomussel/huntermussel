@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
@@ -75,6 +76,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         <h2>Click to Copy</h2>
         <p>Click any UUID in the list to copy it to the clipboard individually. The copied value flashes green as confirmation.</p>
       </article>
+      <ServiceCTA
+        service="intelligent-automation"
+        title="Building distributed systems that need reliable unique IDs?"
+        description="HunterMussel designs event-driven architectures and intelligent automation workflows with UUID-based entity tracking, idempotency guarantees, and distributed state management."
+        linkLabel="Explore Intelligent Automation"
+      />
     </section>
   </main>
 </BaseLayout>

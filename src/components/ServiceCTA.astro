@@ -1,0 +1,65 @@
+---
+interface Props {
+  service: "ci-cd-devops" | "cloud-infrastructure-ai" | "intelligent-automation" | "security-compliance" | "workflows-bpm" | "ai-process-management";
+  title: string;
+  description: string;
+  linkLabel: string;
+}
+
+const { service, title, description, linkLabel } = Astro.props;
+const href = `/services/${service}/`;
+---
+
+<article class="card service-cta">
+  <p class="cta-eyebrow">// huntermussel</p>
+  <h2>{title}</h2>
+  <p>{description}</p>
+  <a href={href} class="cta-link">{linkLabel} →</a>
+</article>
+
+<style>
+  .service-cta {
+    border-color: hsl(145 80% 50% / 0.2);
+    background: hsl(145 80% 50% / 0.04);
+  }
+
+  .cta-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: hsl(145 80% 50%);
+    margin: 0 0 0.5rem;
+  }
+
+  .service-cta h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .service-cta p {
+    margin: 0 0 1rem;
+    font-size: 0.85rem;
+    color: var(--text-2);
+    line-height: 1.6;
+  }
+
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: hsl(145 80% 50%);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: gap 0.15s;
+  }
+
+  .cta-link:hover {
+    gap: 0.6rem;
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import OnlineLintersWorkbench from "@/components/react/tools/online-linters/OnlineLintersWorkbench";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
@@ -58,6 +59,12 @@ import OnlineLintersWorkbench from "@/components/react/tools/online-linters/Onli
           <li>Real-time markers will show errors and warnings. You can also manually trigger a format or specific linter checks.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Want code quality gates enforced automatically in your CI pipeline?"
+        description="HunterMussel integrates linting, static analysis, and automated quality checks directly into your CI/CD pipelines — catching issues before they ever reach production."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
     </section>
   </main>
 </BaseLayout>

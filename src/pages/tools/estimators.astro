@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import estimatorsScript from "@/scripts/estimators.js?url";
 import "@/styles/estimators.css";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
@@ -228,6 +229,15 @@ import "@/styles/estimators.css";
           </div>
         </details>
       </aside>
+    </section>
+
+    <section class="article">
+      <ServiceCTA
+        service="cloud-infrastructure-ai"
+        title="Ready to move from cost estimate to production-grade infrastructure?"
+        description="HunterMussel architects and deploys production cloud infrastructure on AWS, GCP, and multi-cloud environments — from cost modeling and architecture review to go-live."
+        linkLabel="Explore Cloud Infrastructure & AI"
+      />
     </section>
   </main>
 </BaseLayout>

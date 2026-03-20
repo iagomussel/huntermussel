@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import DiffWorkbench from "@/components/react/tools/diff-viewer/DiffWorkbench";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
@@ -31,6 +32,15 @@ import DiffWorkbench from "@/components/react/tools/diff-viewer/DiffWorkbench";
     </section>
 
     <DiffWorkbench client:only="react" />
+
+    <section class="article">
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Tired of manual code review bottlenecks slowing down deployments?"
+        description="HunterMussel builds automated deployment pipelines with PR review automation, change impact analysis, and one-click rollback — so your team ships faster with confidence."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
+    </section>
   </main>
 </BaseLayout>
 

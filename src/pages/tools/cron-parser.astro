@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
@@ -179,6 +180,15 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         </div>
       </div>
     </details>
+
+    <section class="article">
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Managing complex scheduled jobs in production?"
+        description="HunterMussel engineers CI/CD pipelines and workflow orchestration systems with battle-tested scheduling, retry logic, and observability built in from day one."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
+    </section>
   </main>
 </BaseLayout>
 

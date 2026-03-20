@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
@@ -88,6 +89,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         <h2>Privacy</h2>
         <p>All conversion happens locally in your browser using <code>js-yaml</code>. Nothing is sent to any server.</p>
       </article>
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Managing Kubernetes configs or CI/CD YAML at scale?"
+        description="HunterMussel designs DevOps infrastructure with Helm, Kustomize, and GitOps workflows — keeping your Kubernetes and pipeline configs versioned, validated, and auditable."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
     </section>
   </main>
 </BaseLayout>
