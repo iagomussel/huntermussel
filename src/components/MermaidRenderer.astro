@@ -1,0 +1,61 @@
+<script>
+  import mermaid from 'mermaid';
+
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',
+    securityLevel: 'loose',
+    flowchart: {
+      htmlLabels: true,
+      useMaxWidth: true,
+    },
+    themeVariables: {
+      background: 'transparent',
+      primaryColor: '#22c55e',
+      primaryTextColor: '#f4f4f5',
+      primaryBorderColor: '#3f3f46',
+      lineColor: '#71717a',
+      secondaryColor: '#18181b',
+      tertiaryColor: '#27272a',
+      edgeLabelBackground: '#1c1c1e',
+      clusterBkg: '#27272a',
+    },
+  });
+
+  const renderMermaidDiagrams = async () => {
+    const blocks = document.querySelectorAll<HTMLElement>(
+      'pre[data-language="mermaid"], pre code.language-mermaid'
+    );
+
+    for (const block of Array.from(blocks)) {
+      const pre = block.tagName === 'PRE' ? block : block.closest('pre');
+      if (!pre || pre.dataset.mermaidProcessed === 'true') continue;
+
+      const definition = pre.textContent?.trim();
+      if (!definition) continue;
+
+      const container = document.createElement('pre');
+      container.className =
+        'mermaid mermaid-diagram my-8 overflow-x-auto rounded-lg border border-border bg-card/30 p-4';
+      container.textContent = definition;
+
+      pre.dataset.mermaidProcessed = 'true';
+      pre.replaceWith(container);
+
+      try {
+        await mermaid.run({ nodes: [container] });
+      } catch (err) {
+        console.error('Mermaid render error:', err);
+        container.textContent = definition;
+      }
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      void renderMermaidDiagrams();
+    }, { once: true });
+  } else {
+    void renderMermaidDiagrams();
+  }
+</script>

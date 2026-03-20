@@ -1,11 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="Hash Generator | HunterMussel Tools"
   description="Generate and verify MD5/SHA hashes for text payloads."
   canonicalPath="/tools/hash-generator/"
+  keywords={[
+    "hash generator online",
+    "md5 hash generator",
+    "sha256 generator",
+    "sha-512 hash tool",
+    "sha-1 generator online",
+    "checksum generator",
+    "hash verification tool",
+    "cryptographic hash online",
+    "free hash generator",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -80,6 +92,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <li>Optional: provide expected hash to instantly verify match/mismatch.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="security-compliance"
+        title="Need a security audit for your data integrity systems?"
+        description="HunterMussel helps teams implement secure hashing, encryption, and compliance frameworks — covering GDPR/LGPD, artifact integrity, and API signature verification."
+        linkLabel="Explore Security & Compliance"
+      />
     </section>
   </main>
 </BaseLayout>

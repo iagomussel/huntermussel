@@ -1,0 +1,135 @@
+"use client";
+
+import { useEffect } from "react";
+
+declare global {
+  interface Window {
+    Cal?: {
+      (...args: unknown[]): void;
+      loaded?: boolean;
+      ns?: Record<string, { q?: unknown[] } & ((...args: unknown[]) => void)>;
+      q?: unknown[];
+    };
+  }
+}
+
+const CAL_SCRIPT_URL = "https://app.cal.com/embed/embed.js";
+const CAL_NAMESPACE = "secret";
+const CAL_CONTAINER_ID = "my-cal-inline-secret";
+const CAL_ORIGIN = "https://app.cal.com";
+const CAL_LINK = "iago-mussel-2zqprh/secret";
+
+const initializeCal = () => {
+  const C = window;
+  const d = C.document;
+
+  C.Cal =
+    C.Cal ||
+    function (...args: unknown[]) {
+      const cal = C.Cal!;
+
+      if (!cal.loaded) {
+        cal.ns = {};
+        cal.q = cal.q || [];
+        d.head.appendChild(d.createElement("script")).src = CAL_SCRIPT_URL;
+        cal.loaded = true;
+      }
+
+      if (args[0] === "init") {
+        const namespace = args[1];
+        const api = function (...apiArgs: unknown[]) {
+          api.q = api.q || [];
+          api.q.push(apiArgs);
+        };
+
+        api.q = api.q || [];
+
+        if (typeof namespace === "string") {
+          cal.ns = cal.ns || {};
+          cal.ns[namespace] = cal.ns[namespace] || api;
+          cal.ns[namespace].q = cal.ns[namespace].q || [];
+          cal.ns[namespace].q?.push(args);
+          cal.q = cal.q || [];
+          cal.q.push(["initNamespace", namespace]);
+        } else {
+          cal.q = cal.q || [];
+          cal.q.push(args);
+        }
+
+        return;
+      }
+
+      cal.q = cal.q || [];
+      cal.q.push(args);
+    };
+};
+
+const CalSchedulerEmbed = () => {
+  useEffect(() => {
+    initializeCal();
+
+    const host = document.getElementById(CAL_CONTAINER_ID);
+    if (host) {
+      host.innerHTML = "";
+    }
+
+    window.Cal?.("init", CAL_NAMESPACE, { origin: CAL_ORIGIN });
+    window.Cal?.ns?.[CAL_NAMESPACE]?.("inline", {
+      elementOrSelector: `#${CAL_CONTAINER_ID}`,
+      config: {
+        layout: "week_view",
+        useSlotsViewOnSmallScreen: true,
+        theme: "dark",
+      },
+      calLink: CAL_LINK,
+    });
+    window.Cal?.ns?.[CAL_NAMESPACE]?.("ui", {
+      theme: "dark",
+      cssVarsPerTheme: {
+        dark: {
+          "cal-brand": "#ffffff",
+        },
+      },
+      hideEventTypeDetails: true,
+      layout: "week_view",
+    });
+
+    return () => {
+      if (host) {
+        host.innerHTML = "";
+      }
+    };
+  }, []);
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <p className="font-heading text-lg font-semibold text-foreground">
+            Book a time directly
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Choose a slot on the calendar below to schedule a consultation.
+          </p>
+        </div>
+        <a
+          href={`https://cal.com/${CAL_LINK}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shrink-0 rounded-md border border-border bg-muted/40 px-3 py-2 font-heading text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+        >
+          Open in Cal
+        </a>
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-border bg-muted/20">
+        <div
+          id={CAL_CONTAINER_ID}
+          className="h-[720px] w-full overflow-y-auto"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default CalSchedulerEmbed;

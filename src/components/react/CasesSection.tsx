@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 import {
   Truck,
@@ -108,7 +109,7 @@ const CasesSection = () => {
               variants={item}
               className="group relative overflow-hidden rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
             >
-              <a href={`/cases/${c.slug}`} className="block p-6 text-current no-underline hover:no-underline">
+              <a href={`/cases/${c.slug}/`} className="block p-6 text-current no-underline hover:no-underline">
                 <div className="mb-4 flex items-center justify-between">
                   <div className="inline-flex rounded-md border border-border bg-muted/50 p-3 text-primary transition-all group-hover:border-glow group-hover:box-glow">
                     <c.icon size={22} />
@@ -128,7 +129,21 @@ const CasesSection = () => {
           ))}
         </motion.div>
 
-       
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-10 text-center"
+        >
+          <a
+            href="/cases"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-6 py-2.5 font-heading text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-card"
+          >
+            View all case studies
+            <ArrowRight size={16} />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

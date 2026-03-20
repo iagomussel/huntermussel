@@ -7,14 +7,100 @@ import AboutSection from "@/components/react/AboutSection";
 import TechSection from "@/components/react/TechSection";
 import ContactSection from "@/components/react/ContactSection";
 import ToolsSection from "@/components/react/ToolsSection";
+import FAQSection from "@/components/react/FAQSection";
+import { homeFAQ } from "@/data/faq";
+
+const homepageUrl = "https://huntermussel.com/";
+const homepageSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "HunterMussel",
+    url: homepageUrl,
+    logo: "https://huntermussel.com/img/logo.svg",
+    founder: {
+      "@type": "Person",
+      name: "Iago Mussel",
+      url: "https://huntermussel.com/about/",
+    },
+    sameAs: [
+      "https://www.linkedin.com/in/iago-mussel/",
+      "https://github.com/iagomussel",
+    ],
+    areaServed: "Worldwide",
+    knowsAbout: [
+      "AI automation",
+      "custom software development",
+      "DevOps engineering",
+      "cloud infrastructure",
+      "technical SEO",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "HunterMussel",
+    url: homepageUrl,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "AI Automation, DevOps, and Custom Software Development",
+    url: homepageUrl,
+    description:
+      "HunterMussel helps companies build scalable software, AI automation workflows, cloud infrastructure, and technical SEO systems.",
+    about: [
+      "AI automation",
+      "DevOps engineering",
+      "custom software development",
+      "technical SEO",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homeFAQ.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  },
+];
 ---
 
-<Layout title="AI Process Management & DevOps">
+<Layout
+  title="AI Automation, DevOps & Custom Software Development"
+  description="HunterMussel helps companies build scalable software, AI automation workflows, cloud infrastructure, and technical SEO systems."
+  canonicalUrl={homepageUrl}
+  keywords={[
+    "ai automation agency",
+    "custom software development company",
+    "devops consulting",
+    "devops practices",
+    "devops best practices",
+    "cloud infrastructure engineering",
+    "technical seo services",
+    "ai integration company",
+    "workflow automation consulting",
+    "scalable software architecture",
+    "custom software development",
+    "devops engineering",
+    "continuous integration tools",
+    "containerization technologies",
+    "best it firms to work for",
+    "HunterMussel",
+  ]}
+  schema={homepageSchema}
+>
   <HeroSection client:load />
   <ServicesSection client:load />
   <CasesSection client:load />
   <AboutSection client:load />
   <TechSection client:load />
   <ToolsSection client:load />
+  <FAQSection client:load items={homeFAQ} />
   <ContactSection client:load />
 </Layout>

@@ -1,11 +1,22 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="Log Viewer | HunterMussel Tools"
   description="Filter, summarize, and inspect logs with quick in-browser analysis."
   canonicalPath="/tools/log-viewer/"
+  keywords={[
+    "log viewer online",
+    "log file analyzer",
+    "log parser browser",
+    "structured log viewer",
+    "devops log tool",
+    "log inspection tool",
+    "json log viewer",
+    "free log analyzer",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -74,6 +85,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <li>Click <strong>Analyze logs</strong> to see summary and matched lines.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="cloud-infrastructure-ai"
+        title="Drowning in production logs?"
+        description="HunterMussel deploys centralized observability stacks with structured logging, distributed tracing, and AI-assisted anomaly detection — so you catch issues before users do."
+        linkLabel="Explore Cloud Infrastructure & AI"
+      />
     </section>
   </main>
 </BaseLayout>

@@ -20,7 +20,7 @@ keywords:
   - webp vs jpeg seo
   - image optimization seo 2026
   - pagespeed seo impact
-image: "/images/blog/webp-seo-rankings.webp"
+image: "/images/blog/webp-for-seo-how-image-format-affects-rankings.webp"
 subtitle: "The image format decision you make today becomes the LCP score Google measures tomorrow"
 status: "published"
 ---

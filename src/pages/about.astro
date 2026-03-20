@@ -1,0 +1,83 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import AboutPage from "@/components/react/AboutPage";
+
+const url = "https://huntermussel.com/about/";
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    name: "About Iago Mussel — CEO & Founder at HunterMussel",
+    url,
+    description:
+      "16+ years of software engineering depth. Solution architect, tech lead, and founder of HunterMussel. Go, Python, AWS, AI automation, multi-cloud.",
+    mainEntity: {
+      "@type": "Person",
+      name: "Iago Mussel",
+      jobTitle: "CEO & Founder",
+      worksFor: {
+        "@type": "Organization",
+        name: "HunterMussel",
+        url: "https://huntermussel.com/",
+      },
+      url,
+      email: "contact@huntermussel.com",
+      sameAs: [
+        "https://www.linkedin.com/in/iago-mussel/",
+        "https://github.com/iagomussel",
+      ],
+      knowsAbout: [
+        "Software Engineering",
+        "Cloud Architecture",
+        "AI Automation",
+        "DevOps",
+        "Go",
+        "Python",
+        "AWS",
+        "GCP",
+        "LLM Agents",
+        "Solution Architecture",
+      ],
+      description:
+        "Software engineer with 16+ years of experience across distributed architectures, cloud operations, AI integration, and engineering team leadership. Founder of HunterMussel.",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://huntermussel.com/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "About",
+        item: url,
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="About Iago Mussel"
+  description="16+ years of software engineering depth. Solution architect, tech lead, and founder of HunterMussel — specializing in AI automation, multi-cloud architecture, and scalable system design."
+  canonicalUrl={url}
+  keywords={[
+    "iago mussel",
+    "huntermussel founder",
+    "solution architect",
+    "tech lead",
+    "ai engineer",
+    "devops engineer",
+    "software engineering brazil",
+    "multi-cloud architect",
+  ]}
+  schema={schema}
+>
+  <AboutPage client:load />
+</Layout>

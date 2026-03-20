@@ -1,13 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
+import MermaidRenderer from '@/components/MermaidRenderer.astro';
 import { ArrowLeft } from 'lucide-react';
 import DisqusComments from '@/components/react/DisqusComments';
 import BlogShareSection from '@/components/react/BlogShareSection';
 import authors from '@/data/authors.json';
+import FAQSection from '@/components/react/FAQSection';
+import { blogDevOpsFAQ, blogAIFAQ, blogCloudFAQ, blogGeneralFAQ } from '@/data/faq';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection('blog', ({ data }) => data.status !== 'draft');
   return posts.map(entry => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -23,15 +26,65 @@ const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateSt
   year: "numeric",
 }) : null;
 
-const url = `https://huntermussel.com/blog/${entry.slug}`;
+const url = `https://huntermussel.com/blog/${entry.slug}/`;
 const authorKey = entry.data.authors?.[0];
 const author = authorKey && authors[authorKey];
+
+const tags = entry.data.tags ?? [];
+const tagStr = tags.join(' ').toLowerCase();
+const faqItems = tagStr.match(/\b(cloud|aws|gcp|azure|infrastructure|terraform)\b/)
+  ? blogCloudFAQ
+  : tagStr.match(/\b(ai|llm|rag|automation|agent|openai|langchain)\b/)
+  ? blogAIFAQ
+  : tagStr.match(/\b(devops|cicd|ci\/cd|pipeline|kubernetes|docker|sre)\b/)
+  ? blogDevOpsFAQ
+  : blogGeneralFAQ;
+
+const blogSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: entry.data.title,
+    description: entry.data.description,
+    image: entry.data.image ? `https://huntermussel.com${entry.data.image}` : undefined,
+    datePublished: entry.data.date?.toISOString(),
+    dateModified: entry.data.date?.toISOString(),
+    author: author
+      ? { "@type": "Person", name: author.name, url: author.url }
+      : undefined,
+    publisher: {
+      "@type": "Organization",
+      name: "HunterMussel",
+      logo: { "@type": "ImageObject", url: "https://huntermussel.com/img/logo.svg" },
+    },
+    mainEntityOfPage: url,
+    keywords: entry.data.keywords?.join(", "),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://huntermussel.com/" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://huntermussel.com/blog/" },
+      { "@type": "ListItem", position: 3, name: entry.data.title, item: url },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  },
+];
 ---
 
-<Layout title={entry.data.title} description={entry.data.description} image={entry.data.image}>
+<Layout title={entry.data.title} description={entry.data.description} image={entry.data.image} canonicalUrl={url} type="article" keywords={entry.data.keywords} schema={blogSchema}>
   <div class="min-h-screen bg-background">
      <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
-     
+
      <main class="container relative z-10 px-6 pt-32 pb-24">
        <article class="mx-auto max-w-3xl">
           <a
@@ -41,7 +94,7 @@ const author = authorKey && authors[authorKey];
             <ArrowLeft size={16} />
             Back to blog
           </a>
-          
+
           {formattedDate && (
              <time class="block font-body text-sm text-muted-foreground">{formattedDate}</time>
           )}
@@ -88,8 +141,11 @@ const author = authorKey && authors[authorKey];
 
           <BlogShareSection client:load title={entry.data.title} url={url} />
 
+          <FAQSection client:load items={faqItems} title="Frequently Asked Questions" />
+
           <DisqusComments client:only="react" title={entry.data.title} identifier={entry.slug} url={url} />
        </article>
      </main>
   </div>
+  <MermaidRenderer />
 </Layout>

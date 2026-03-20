@@ -1,11 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="Cron Expression Parser | HunterMussel Tools"
   description="Parse cron expressions into human-readable descriptions and preview the next 10 scheduled run times with timezone support. Fully in-browser."
   canonicalPath="/tools/cron-parser/"
+  keywords={[
+    "cron expression parser",
+    "cron parser online",
+    "cron expression generator",
+    "cron job scheduler tool",
+    "cron syntax explainer",
+    "crontab generator",
+    "cron expression tester",
+    "next cron run time",
+    "devops cron tool",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -168,6 +180,15 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         </div>
       </div>
     </details>
+
+    <section class="article">
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Managing complex scheduled jobs in production?"
+        description="HunterMussel engineers CI/CD pipelines and workflow orchestration systems with battle-tested scheduling, retry logic, and observability built in from day one."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
+    </section>
   </main>
 </BaseLayout>
 

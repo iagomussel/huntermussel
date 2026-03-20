@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://huntermussel.com/sitemap.xml
+Sitemap: https://huntermussel.com/sitemap-index.xml

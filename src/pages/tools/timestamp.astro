@@ -1,0 +1,393 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="Unix Timestamp Converter | HunterMussel Tools"
+  description="Convert Unix timestamps (seconds or milliseconds) to human-readable dates and back. Shows UTC, local time, and relative time. Fully client-side."
+  canonicalPath="/tools/timestamp/"
+  keywords={[
+    "unix timestamp converter",
+    "epoch time converter",
+    "timestamp to date online",
+    "unix time converter",
+    "epoch to date converter",
+    "timestamp calculator",
+    "milliseconds to date",
+    "unix epoch tool",
+    "free timestamp converter",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / devops</p>
+      <h1>Unix Timestamp Converter</h1>
+      <p class="lead">
+        Paste a timestamp from a log, JWT, or API response. Seconds and
+        milliseconds are detected automatically. Converts both ways.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <div class="ts-layout">
+      <!-- Left: Timestamp → Date -->
+      <div class="card stack ts-card">
+        <div class="ts-section-head">Timestamp → Date</div>
+        <div class="ts-input-row">
+          <input id="tsInput" class="ts-input" type="text" inputmode="numeric" spellcheck="false" placeholder="e.g. 1700000000 or 1700000000000" autocomplete="off" />
+          <button id="nowBtn" type="button">Now</button>
+        </div>
+        <div class="ts-unit-hint" id="unitHint"></div>
+        <label class="ts-tz-label">
+          Timezone
+          <select id="tzSel">
+            <option value="UTC">UTC</option>
+            <option value="America/Sao_Paulo">America/Sao_Paulo</option>
+            <option value="America/New_York">America/New_York (Eastern)</option>
+            <option value="America/Chicago">America/Chicago (Central)</option>
+            <option value="America/Denver">America/Denver (Mountain)</option>
+            <option value="America/Los_Angeles">America/Los_Angeles (Pacific)</option>
+            <option value="Europe/London">Europe/London</option>
+            <option value="Europe/Berlin">Europe/Berlin (CET)</option>
+            <option value="Asia/Tokyo">Asia/Tokyo</option>
+            <option value="Asia/Shanghai">Asia/Shanghai</option>
+            <option value="Australia/Sydney">Australia/Sydney</option>
+          </select>
+        </label>
+
+        <div id="tsResults" class="ts-results" style="display:none">
+          <div class="ts-result-row">
+            <span class="ts-result-label">UTC (ISO 8601)</span>
+            <span id="resUtc" class="ts-result-val"></span>
+          </div>
+          <div class="ts-result-row">
+            <span class="ts-result-label">Local browser</span>
+            <span id="resLocal" class="ts-result-val"></span>
+          </div>
+          <div class="ts-result-row">
+            <span class="ts-result-label" id="tzLabel">Timezone</span>
+            <span id="resTz" class="ts-result-val"></span>
+          </div>
+          <div class="ts-result-row">
+            <span class="ts-result-label">Relative</span>
+            <span id="resRelative" class="ts-result-val ts-relative"></span>
+          </div>
+          <div class="ts-result-row">
+            <span class="ts-result-label">Seconds (s)</span>
+            <span id="resSec" class="ts-result-val ts-mono"></span>
+          </div>
+          <div class="ts-result-row">
+            <span class="ts-result-label">Milliseconds (ms)</span>
+            <span id="resMs" class="ts-result-val ts-mono"></span>
+          </div>
+        </div>
+        <div id="tsError" class="ts-error" style="display:none"></div>
+      </div>
+
+      <!-- Right: Date → Timestamp -->
+      <div class="card stack ts-card">
+        <div class="ts-section-head">Date → Timestamp</div>
+        <div class="ts-input-row">
+          <input id="dateInput" class="ts-input" type="datetime-local" step="1" />
+        </div>
+        <p class="ts-helper">Enter a date and time to get the UNIX timestamp.</p>
+
+        <div id="dateResults" class="ts-results" style="display:none">
+          <div class="ts-result-row">
+            <span class="ts-result-label">Seconds (s)</span>
+            <span id="dateSec" class="ts-result-val ts-mono"></span>
+          </div>
+          <div class="ts-result-row">
+            <span class="ts-result-label">Milliseconds (ms)</span>
+            <span id="dateMs" class="ts-result-val ts-mono"></span>
+          </div>
+          <div class="ts-result-row">
+            <span class="ts-result-label">UTC (ISO 8601)</span>
+            <span id="dateUtc" class="ts-result-val"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="article">
+      <article class="card">
+        <h2>Seconds vs. Milliseconds</h2>
+        <p>10-digit numbers are treated as seconds; 13-digit as milliseconds. Both representations are always shown in the output so you can copy whichever you need.</p>
+      </article>
+      <article class="card">
+        <h2>Common Sources</h2>
+        <ul>
+          <li><strong>JWT <code>iat</code> / <code>exp</code></strong> — always seconds</li>
+          <li><strong>JavaScript <code>Date.now()</code></strong> — milliseconds</li>
+          <li><strong>Unix <code>date +%s</code></strong> — seconds</li>
+          <li><strong>Most API responses</strong> — check the docs; usually seconds</li>
+        </ul>
+      </article>
+      <ServiceCTA
+        service="cloud-infrastructure-ai"
+        title="Debugging distributed systems across time zones?"
+        description="HunterMussel architects distributed cloud systems with centralized observability, structured logging, and timezone-aware event tracing — so you always know exactly what happened and when."
+        linkLabel="Explore Cloud Infrastructure & AI"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .ts-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 800px) {
+    .ts-layout { grid-template-columns: 1fr; }
+  }
+
+  .ts-card {
+    padding: 1.25rem;
+  }
+
+  .ts-section-head {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: hsl(var(--primary));
+    margin-bottom: 1rem;
+  }
+
+  .ts-input-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .ts-input {
+    flex: 1;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 0.9rem !important;
+  }
+
+  .ts-unit-hint {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    color: hsl(var(--primary));
+    min-height: 1.2rem;
+    margin-top: 0.1rem;
+  }
+
+  .ts-tz-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: hsl(var(--muted-foreground));
+    margin-top: 0.5rem;
+  }
+
+  .ts-tz-label select {
+    flex: 1;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.78rem;
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .ts-results {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-top: 1px solid hsl(var(--border));
+    padding-top: 1rem;
+  }
+
+  .ts-result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .ts-result-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ts-result-val {
+    font-size: 0.85rem;
+    color: hsl(var(--foreground));
+    text-align: right;
+    word-break: break-all;
+  }
+
+  .ts-result-val.ts-mono {
+    font-family: "JetBrains Mono", monospace;
+    color: hsl(var(--primary));
+  }
+
+  .ts-result-val.ts-relative {
+    color: hsl(195 80% 65%);
+    font-style: italic;
+  }
+
+  .ts-error {
+    margin-top: 0.5rem;
+    padding: 0.35rem 0.6rem;
+    background: hsl(0 60% 8%);
+    border: 1px solid hsl(0 60% 25%);
+    border-radius: 0.4rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: hsl(0 70% 65%);
+  }
+
+  .ts-helper {
+    font-size: 0.8rem;
+    color: hsl(var(--muted-foreground));
+    margin: 0.4rem 0 0;
+  }
+</style>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  // ── Helpers ──────────────────────────────────────────────
+
+  function detectUnit(raw) {
+    const s = raw.trim();
+    if (/^\d+$/.test(s)) {
+      if (s.length <= 11) return "s";
+      if (s.length <= 14) return "ms";
+    }
+    return null;
+  }
+
+  function toMs(raw) {
+    const unit = detectUnit(raw);
+    if (!unit) return null;
+    const n = Number(raw.trim());
+    return unit === "s" ? n * 1000 : n;
+  }
+
+  function relativeTime(ms) {
+    const diff = ms - Date.now();
+    const abs = Math.abs(diff);
+    const future = diff > 0;
+    const units = [
+      [60_000, "minute"],
+      [3_600_000, "hour"],
+      [86_400_000, "day"],
+      [2_592_000_000, "month"],
+      [31_536_000_000, "year"],
+    ];
+    if (abs < 45_000) return "just now";
+    for (let i = 0; i < units.length; i++) {
+      const [next] = units[i + 1] || [Infinity];
+      if (abs < next) {
+        const val = Math.round(abs / units[i][0]);
+        const label = `${val} ${units[i][1]}${val !== 1 ? "s" : ""}`;
+        return future ? `in ${label}` : `${label} ago`;
+      }
+    }
+    return future ? "far future" : "long ago";
+  }
+
+  function fmtTz(ms, tz) {
+    try {
+      return new Intl.DateTimeFormat("en-US", {
+        timeZone: tz,
+        year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit",
+        hour12: false,
+        timeZoneName: "short",
+      }).format(new Date(ms));
+    } catch {
+      return "(unsupported timezone)";
+    }
+  }
+
+  // ── Timestamp → Date ────────────────────────────────────
+
+  function convertTs() {
+    const raw = $("tsInput").value.trim();
+    const err = $("tsError");
+    const res = $("tsResults");
+    const hint = $("unitHint");
+
+    if (!raw) {
+      res.style.display = "none";
+      err.style.display = "none";
+      hint.textContent = "";
+      return;
+    }
+
+    const unit = detectUnit(raw);
+    if (!unit) {
+      hint.textContent = "";
+      err.textContent = "Enter a 10-digit (seconds) or 13-digit (milliseconds) number.";
+      err.style.display = "";
+      res.style.display = "none";
+      return;
+    }
+
+    hint.textContent = unit === "s" ? "→ treating as seconds" : "→ treating as milliseconds";
+    err.style.display = "none";
+
+    const ms = toMs(raw);
+    const d = new Date(ms);
+    const tz = $("tzSel").value;
+
+    $("resUtc").textContent = d.toISOString();
+    $("resLocal").textContent = d.toLocaleString(undefined, { timeZoneName: "short" });
+    $("resTz").textContent = fmtTz(ms, tz);
+    $("tzLabel").textContent = tz;
+    $("resRelative").textContent = relativeTime(ms);
+    $("resSec").textContent = Math.floor(ms / 1000).toString();
+    $("resMs").textContent = ms.toString();
+    res.style.display = "";
+  }
+
+  $("tsInput").addEventListener("input", convertTs);
+  $("tzSel").addEventListener("change", convertTs);
+
+  $("nowBtn").addEventListener("click", () => {
+    $("tsInput").value = Date.now().toString();
+    convertTs();
+  });
+
+  // ── Date → Timestamp ────────────────────────────────────
+
+  function convertDate() {
+    const val = $("dateInput").value;
+    const res = $("dateResults");
+    if (!val) { res.style.display = "none"; return; }
+    const ms = new Date(val).getTime();
+    if (isNaN(ms)) { res.style.display = "none"; return; }
+    $("dateSec").textContent = Math.floor(ms / 1000).toString();
+    $("dateMs").textContent = ms.toString();
+    $("dateUtc").textContent = new Date(ms).toISOString();
+    res.style.display = "";
+  }
+
+  $("dateInput").addEventListener("input", convertDate);
+
+  // Set default date input to now
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  $("dateInput").value = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  convertDate();
+</script>
