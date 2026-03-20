@@ -1,9 +1,9 @@
 ---
-title: "Inventory & Order Management System: Delivered 32% Under Estimate"
+title: "Inventory & Order Management System for a Multi-Warehouse Distributor"
 date: "2026-02-10"
 authors:
   - iago-mussel
-description: "A technical case study on building a B2B inventory and order management platform for a wholesale distributor — estimated at 500 hours, delivered in 340 hours, with the savings returned to the client as a direct discount."
+description: "A technical case study on building a centralized inventory and order management platform in Go and React for a wholesale distributor — replacing spreadsheets and a legacy desktop app with real-time automation and ERP integration."
 tags:
   - Inventory
   - Order Management
@@ -17,57 +17,21 @@ keywords:
   - wholesale distribution system
   - stock control automation
 image: "/images/cases/inventory-order-management.webp"
-subtitle: "Estimated 500h. Delivered in 340h. Client received the difference back."
+subtitle: "Replacing spreadsheets and a legacy desktop app with a real-time inventory and order automation platform"
 ---
 
-When a wholesale distributor started losing orders to manual processing errors, the cost was no longer abstract — it was visible in chargebacks, missed shipments, and staff overtime. The existing system was a patchwork of spreadsheets and a legacy desktop application that had not been updated in six years.
+When a wholesale distributor starts losing orders to manual processing errors, the cost is no longer abstract — it shows up in chargebacks, missed shipments, and staff overtime. The existing system was a patchwork of spreadsheets and a legacy desktop application that had not been updated in six years.
 
-HunterMussel was engaged to design and deliver a **centralized inventory and order management platform** — a system that would replace manual workflows with structured automation, integrate directly with supplier ERP systems, and give warehouse staff and operations managers a single source of truth.
-
-The project was scoped at **500 hours**. It was delivered in **340 hours**. The client paid for the actual hours worked.
+HunterMussel was engaged to design and deliver a **centralized inventory and order management platform** — a system that would replace manual workflows with structured automation, integrate directly with supplier ERP systems, and give warehouse staff and operations managers a single source of truth across three locations.
 
 ## Project Context
 
 **Client:** Mid-size wholesale distributor in the industrial supplies sector (identity protected under NDA)
 **Scale:** 3 warehouse locations, 18 operations staff, approximately 400 orders processed per week
 **Prior System:** Excel-based stock tracking + legacy desktop app with no API access
-**Engagement Duration:** 4.5 months at 20 hours/week; completed at approximately 3 months
+**Engagement Duration:** Completed in approximately 3 months at 20 hours/week
+**Investment:** 340h / $18,700 at $55/h — invoiced at actual hours worked (initial estimate: 500h)
 **Measurement Period:** Operational metrics collected across 60 days post-launch
-
-## Development Investment
-
-| | Estimated | Actual |
-|---|---|---|
-| **Hours** | 500 h | 340 h |
-| **Rate** | $55 / hour | $55 / hour |
-| **Total** | $27,500 | **$18,700** |
-| **Client Savings** | — | **$8,800 (32% discount)** |
-
-**Estimated phase breakdown vs. actuals:**
-
-| Phase | Estimated | Actual | Notes |
-|---|---|---|---|
-| Discovery, data modeling & architecture | 45 h | 38 h | Faster alignment than expected |
-| Go API — orders, inventory, supplier sync | 140 h | 95 h | Supplier ERP had a well-documented REST API; custom adapter scope dropped |
-| React operations dashboard | 80 h | 55 h | Client provided detailed wireframes; no design iteration required |
-| PDF report & invoice generation module | 50 h | 22 h | Mature Go PDF library handled 90% of requirements out of the box |
-| Data migration from legacy system | 60 h | 38 h | Source data was cleaner than scoped; migration scripts were straightforward |
-| AWS infrastructure (Terraform, ECS, RDS) | 50 h | 42 h | Reused Terraform module patterns from prior project |
-| CI/CD pipeline & deployment automation | 35 h | 28 h | — |
-| Observability, alerting & QA | 40 h | 22 h | — |
-| **Total** | **500 h** | **340 h** | |
-
-### Why It Came In Under Estimate
-
-Estimates are built around uncertainty. When uncertainty resolves in the client's favor, we pass the savings on — no questions asked. Three factors drove the efficiency on this project:
-
-1. **Supplier API quality.** The client's primary supplier operated a documented REST API with sandbox access. The original scope assumed a custom XML adapter for EDI-style integration based on what was described during discovery. The real API reduced that phase by ~45 hours.
-
-2. **Client-provided wireframes.** The operations team had a clear mental model of their workflow and provided annotated wireframes during kickoff. This removed an entire design iteration cycle from the dashboard phase.
-
-3. **Data quality.** Legacy data migrations are routinely scoped conservatively because source data is often inconsistent. In this case, the client's export was well-structured. The migration scripting phase finished more than 35% faster than scoped.
-
-<!-- truncate -->
 
 ## The Challenge: Manual Workflows at Scale Break Predictably
 
@@ -77,60 +41,73 @@ Three structural problems were identified during the discovery phase:
 2. **Order Processing Bottleneck:** Each order required manual entry, manual supplier verification, and manual status updates — averaging 22 minutes of staff time per order.
 3. **Zero ERP Integration:** Purchase orders to suppliers were sent via email, with no automated reconciliation between what was ordered and what arrived.
 
-As order volume grew, these bottlenecks did not scale linearly — they compounded. Staff overtime increased 40% over 18 months while throughput grew only 12%.
+As order volume grew, these bottlenecks compounded. Staff overtime increased 40% over 18 months while throughput grew only 12%.
+
+<!-- truncate -->
 
 ## The Solution: Centralized Automation Layer
 
 ### 1. Real-Time Inventory Engine
-Stock levels are updated on every inbound shipment scan, every order confirmation, and every return event. The system maintains a live inventory state across all three warehouse locations, with low-stock alerts triggering automated purchase order drafts for review.
+Stock levels update on every inbound shipment scan, every order confirmation, and every return event. The system maintains a live inventory state across all three warehouse locations simultaneously. Low-stock thresholds trigger automated purchase order drafts for manager review — no manual monitoring required.
 
 ### 2. Automated Order Pipeline
-Order intake, validation, supplier lookup, availability confirmation, and status broadcasting are fully automated. Staff interaction is required only for exceptions — damaged goods, partial fulfillment, or customer escalations.
+Order intake, validation, supplier lookup, availability confirmation, and status broadcasting are fully automated. Staff interaction is required only for exceptions — damaged goods, partial fulfillment, or customer escalations. The average handling time per order dropped from 22 minutes to 12 minutes.
 
-### 3. ERP Sync via Supplier API
-The platform connects directly to the supplier's REST API, eliminating email-based purchase orders entirely. Inbound shipments are matched to open POs automatically, and discrepancies are flagged for review rather than silently absorbed.
+### 3. ERP Sync via Supplier REST API
+The platform connects directly to the primary supplier's REST API, eliminating email-based purchase orders. Inbound shipments are matched to open POs automatically. Discrepancies are flagged for review rather than silently absorbed into inventory counts.
 
 ## System Architecture
 
 **Core Stack**
-- API Layer: Go for high-throughput order and inventory operations
-- Frontend: React dashboard with real-time stock and order status views
-- Database: PostgreSQL with indexed order state and location tables
-- Queue Layer: Redis for async supplier sync and notification jobs
-- Reporting: Server-side PDF generation via Go `gofpdf` library
+- API Layer: Go — high-throughput order and inventory operations, state machine enforcement
+- Frontend: React dashboard with real-time stock levels, order pipeline status, and warehouse views per location
+- Database: PostgreSQL with indexed order state and multi-location inventory tables
+- Queue Layer: Redis for async supplier sync jobs, notification dispatch, and report generation
+- Reporting: Server-side PDF invoice and packing slip generation via Go `gofpdf`
 
 **Order State Machine**
-Each order moves through a defined state machine:
-1. Received → 2. Validated → 3. Supplier confirmed → 4. Picking → 5. Packed → 6. Dispatched → 7. Delivered
 
-State transitions trigger automated actions: notifications, supplier API calls, inventory deductions, and invoice generation.
+Each order moves through a strictly enforced state machine:
+
+```
+Received → Validated → Supplier Confirmed → Picking → Packed → Dispatched → Delivered
+```
+
+Every state transition triggers automated downstream actions: supplier API calls, inventory deductions, staff notifications, and — on dispatch — PDF invoice generation and customer email delivery.
 
 ## Infrastructure & Deployment
 
 **Cloud Provider:** AWS
-**Compute:** ECS Fargate for Go API and background sync workers
-**Database:** Amazon RDS (PostgreSQL Multi-AZ) with separate read replica for reporting queries
-**Cache & Queue:** ElastiCache (Redis) for job dispatching and session management
-**Object Storage:** S3 for generated PDF invoices and audit log archives
+**Compute:** ECS Fargate for the Go API service and a separate Go sync worker task definition; independent scaling per service
+**Database:** Amazon RDS (PostgreSQL Multi-AZ) — primary for writes, read replica for reporting and dashboard queries
+**Cache & Queue:** Amazon ElastiCache (Redis) for job dispatching, order event queuing, and session management
+**Object Storage:** S3 for generated PDF invoices, packing slips, and audit log archives
 **CDN:** CloudFront for React dashboard static assets
-**Networking:** VPC with private subnets for database and queue tiers
-**Secrets:** AWS Secrets Manager for supplier API credentials and DB connection strings
+**Networking:** VPC with private subnets isolating database and queue tiers from public endpoints; API exposed via Application Load Balancer
+**Secrets:** AWS Secrets Manager for supplier API credentials, DB connection strings, and email delivery keys
 
 **Deployment Pipeline**
-- GitHub Actions CI/CD with unit tests, integration tests against staging RDS, and Go vet checks
-- Docker images pushed to ECR on merge to main
-- ECS rolling deployments with minimum healthy threshold and automatic rollback
-- Terraform manages all infrastructure; staging mirrors production topology
+- GitHub Actions CI/CD with Go unit tests, state machine integration tests, and `go vet` checks on every push
+- Docker images tagged per commit and stored in ECR
+- ECS rolling deployments with minimum healthy threshold; automatic rollback on health check failure
+- Terraform manages all infrastructure resources; staging environment mirrors production topology
 
 ## Observability & Monitoring
 
-Inventory systems carry financial consequence when they fail silently. Monitoring was designed around the cost of a missed stock event or a stuck order.
+Inventory errors carry financial consequence. A missed stock event or a stuck order is not a UX issue — it is a revenue issue. Monitoring was designed around those failure modes specifically.
 
-**Metrics:** CloudWatch with custom metrics for order processing latency and supplier sync success rate
-**Error Tracking:** Sentry capturing Go panics and React runtime errors
-**Dashboards:** Grafana panels for queue depth, order pipeline throughput, and inventory event rate
-**Alerting:** PagerDuty for supplier API failures, queue saturation, and orders stuck in state for more than 30 minutes
-**Audit Logging:** Every inventory mutation and order state transition is logged with timestamp, user, and trigger source
+**Metrics:** CloudWatch with custom metrics for order processing latency, supplier sync success rate, and inventory mutation throughput
+**Error Tracking:** Sentry capturing Go API panics and React runtime errors with full stack traces
+**Dashboards:** Grafana panels for order pipeline throughput, queue depth, supplier API response times, and per-location inventory event rate
+**Alerting:** PagerDuty for supplier API failures, queue consumer saturation, and orders stuck in a single state for more than 30 minutes
+**Audit Logging:** Every inventory mutation and order state transition is stored with timestamp, user ID, and trigger source (API, worker, or manual override)
+
+Key dashboards tracked:
+- Order pipeline throughput (orders/hour)
+- Order processing latency p50 and p95
+- Supplier API success rate and response latency
+- Queue depth and consumer lag per worker group
+- Per-location inventory event rate and low-stock alert frequency
 
 ## Infrastructure Diagram
 
@@ -167,23 +144,15 @@ graph TD
 
 Measured against the 60-day pre-launch baseline:
 
-- **44% Faster Order Processing:** Average staff time per order dropped from 22 minutes to 12 minutes; automated validation and supplier confirmation removed the manual steps.
-- **71% Reduction in Stock Discrepancy Rate:** Real-time inventory updates eliminated the end-of-shift sync gap that caused overselling.
-- **12 Hours/Week Recovered in Warehouse Operations:** Staff time previously spent on manual reorder tracking and email-based PO management was fully automated.
-- **Zero Order Backlog Incidents:** In the 60-day baseline period, there were 4 backlog events caused by missed supplier confirmations. Post-launch: zero.
-
-## On Honest Estimation
-
-Scoping a custom software project always involves uncertainty. The responsible approach is to estimate conservatively so that clients can plan and budget with confidence — not to pad estimates for margin protection, and not to underestimate to win the work.
-
-When a project resolves faster than estimated, the right thing to do is charge for the actual hours worked.
-
-This project came in at 340 hours against a 500-hour estimate. The client received an invoice for $18,700 instead of $27,500. That is not a promotion or a discount code — it is how the engagement model is supposed to work.
+- **44% Faster Order Processing:** Average staff time per order dropped from 22 minutes to 12 minutes — automated validation, supplier confirmation, and state transitions removed every manual step in the standard path.
+- **71% Reduction in Stock Discrepancy Rate:** Real-time inventory updates eliminated the end-of-shift sync gap that had caused overselling across all three locations.
+- **12 Hours/Week Recovered in Warehouse Operations:** Staff time previously consumed by manual reorder tracking, email-based PO management, and shipment reconciliation was fully automated.
+- **Zero Order Backlog Incidents:** The 60-day baseline period included 4 backlog events caused by missed supplier confirmations. Post-launch: zero incidents across the same 60-day window.
 
 ---
 
-**Is your operations team managing inventory in spreadsheets while the business scales around them?**
+**Is your operations team managing inventory in spreadsheets while the business grows around them?**
 
-HunterMussel builds custom operational systems designed to replace manual workflows with automation that scales.
+HunterMussel builds custom operational platforms designed to replace manual workflows with automation that scales.
 
 [**Request an Operations System Consultation**](https://huntermussel.com/#contact)
