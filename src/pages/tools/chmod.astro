@@ -1,11 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="chmod Calculator | HunterMussel Tools"
   description="Convert between chmod octal numbers, symbolic notation, and checkbox grids. Security warnings for insecure permissions. Ready-to-copy chmod command."
   canonicalPath="/tools/chmod/"
+  keywords={[
+    "chmod calculator",
+    "chmod permission calculator",
+    "linux file permissions calculator",
+    "chmod octal calculator",
+    "chmod symbolic notation",
+    "unix permission calculator",
+    "file permission tool",
+    "chmod 755 calculator",
+    "linux chmod tool",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -125,6 +137,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <li>SSH private keys must be <code>600</code> or SSH will refuse to use them.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Automating server provisioning and security hardening?"
+        description="HunterMussel builds Infrastructure as Code pipelines that enforce file permissions, OS hardening, and security baselines automatically across all environments."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
     </section>
   </main>
 </BaseLayout>

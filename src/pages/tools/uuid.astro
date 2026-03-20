@@ -1,11 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="UUID Generator | HunterMussel Tools"
   description="Generate UUID v4 values instantly. Bulk generation up to 100 UUIDs, with/without hyphens, one-click copy. Fully client-side using the Web Crypto API."
   canonicalPath="/tools/uuid/"
+  keywords={[
+    "uuid generator",
+    "uuid v4 generator",
+    "random uuid generator",
+    "guid generator online",
+    "unique id generator",
+    "bulk uuid generator",
+    "uuid without hyphens",
+    "online uuid tool",
+    "free uuid generator",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -64,6 +76,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         <h2>Click to Copy</h2>
         <p>Click any UUID in the list to copy it to the clipboard individually. The copied value flashes green as confirmation.</p>
       </article>
+      <ServiceCTA
+        service="intelligent-automation"
+        title="Building distributed systems that need reliable unique IDs?"
+        description="HunterMussel designs event-driven architectures and intelligent automation workflows with UUID-based entity tracking, idempotency guarantees, and distributed state management."
+        linkLabel="Explore Intelligent Automation"
+      />
     </section>
   </main>
 </BaseLayout>

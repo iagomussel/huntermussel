@@ -1,11 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="Unix Timestamp Converter | HunterMussel Tools"
   description="Convert Unix timestamps (seconds or milliseconds) to human-readable dates and back. Shows UTC, local time, and relative time. Fully client-side."
   canonicalPath="/tools/timestamp/"
+  keywords={[
+    "unix timestamp converter",
+    "epoch time converter",
+    "timestamp to date online",
+    "unix time converter",
+    "epoch to date converter",
+    "timestamp calculator",
+    "milliseconds to date",
+    "unix epoch tool",
+    "free timestamp converter",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -112,6 +124,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <li><strong>Most API responses</strong> — check the docs; usually seconds</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="cloud-infrastructure-ai"
+        title="Debugging distributed systems across time zones?"
+        description="HunterMussel architects distributed cloud systems with centralized observability, structured logging, and timezone-aware event tracing — so you always know exactly what happened and when."
+        linkLabel="Explore Cloud Infrastructure & AI"
+      />
     </section>
   </main>
 </BaseLayout>

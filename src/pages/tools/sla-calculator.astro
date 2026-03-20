@@ -1,11 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="SLA Downtime Calculator | HunterMussel Tools"
   description="Calculate allowed downtime from an SLA uptime percentage. Comparison table for 99% through 99.9999%. Copy as Markdown for architecture docs."
   canonicalPath="/tools/sla-calculator/"
+  keywords={[
+    "sla calculator",
+    "uptime calculator",
+    "sla downtime calculator",
+    "99.9 uptime calculator",
+    "availability calculator",
+    "sla nines calculator",
+    "five nines uptime",
+    "devops sla tool",
+    "service level agreement calculator",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -72,6 +84,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <li><strong>99.999%</strong> — "five nines" — ~26 sec/month. Carrier-grade.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="cloud-infrastructure-ai"
+        title="Need to hit 99.9% uptime in production?"
+        description="HunterMussel architects high-availability cloud systems with multi-region deployments, auto-scaling, automated failover, and SLA-driven infrastructure design."
+        linkLabel="Explore Cloud Infrastructure & AI"
+      />
     </section>
   </main>
 </BaseLayout>

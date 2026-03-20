@@ -1,11 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="YAML ↔ JSON Converter | HunterMussel Tools"
   description="Bidirectional YAML and JSON converter with real-time validation and inline error reporting. Works offline — no server, no logs."
   canonicalPath="/tools/yaml-json/"
+  keywords={[
+    "yaml to json converter",
+    "json to yaml converter",
+    "yaml json tool online",
+    "convert yaml to json",
+    "convert json to yaml",
+    "yaml validator online",
+    "yaml parser browser",
+    "devops yaml tool",
+    "free yaml converter",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -77,6 +89,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         <h2>Privacy</h2>
         <p>All conversion happens locally in your browser using <code>js-yaml</code>. Nothing is sent to any server.</p>
       </article>
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Managing Kubernetes configs or CI/CD YAML at scale?"
+        description="HunterMussel designs DevOps infrastructure with Helm, Kustomize, and GitOps workflows — keeping your Kubernetes and pipeline configs versioned, validated, and auditable."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
     </section>
   </main>
 </BaseLayout>
