@@ -31,6 +31,31 @@ In a recent project, HunterMussel engineered a next-generation **AI-powered Lear
 **Engagement Duration:** 5 months from architecture to production launch
 **Measurement Period:** Results measured across 3 consecutive training cohorts (approximately 5 months) post-deployment, compared to 3 cohorts run on the prior static LMS
 
+## Development Investment
+
+| | |
+|---|---|
+| **Total Estimated Hours** | ~380 h |
+| **Rate** | $55 / hour |
+| **Total Investment** | ~$20,900 |
+| **Timeline at 20 h/week** | ~19 weeks (4.75 months) |
+| **Timeline at 40 h/week** | ~9.5 weeks (2.5 months) |
+
+**Phase breakdown:**
+
+| Phase | Hours |
+|---|---|
+| Discovery, learning architecture & AI integration design | 30 h |
+| Laravel core — courses, auth, permissions, multi-tenancy | 120 h |
+| Python AI microservices (adaptive engine, NLP grading, forecasting) | 100 h |
+| WebSocket real-time feedback service | 40 h |
+| AWS infrastructure (Terraform, ECS, RDS Multi-AZ, S3, CloudFront) | 50 h |
+| CI/CD pipeline (blue/green deployment, model validation jobs) | 20 h |
+| Observability, model monitoring & alerting | 20 h |
+| **Total** | **380 h** |
+
+> The Python AI microservices phase is the most variable in scope. Integrating a third-party LLM API for NLP grading (rather than training a custom model) reduces this phase by ~30 hours and lowers cost accordingly.
+
 ## The Problem: Static Learning in a Dynamic World
 
 Most LMS platforms share the same structural limitation — they treat all students identically. This causes three major inefficiencies:

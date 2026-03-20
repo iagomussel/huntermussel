@@ -31,6 +31,31 @@ In this project, HunterMussel developed a **smart CRM platform with AI-driven le
 **Engagement Duration:** 4 months from system design to production rollout
 **Measurement Period:** Results tracked across two full sales quarters post-deployment, compared to the prior two-quarter baseline
 
+## Development Investment
+
+| | |
+|---|---|
+| **Total Estimated Hours** | ~360 h |
+| **Rate** | $55 / hour |
+| **Total Investment** | ~$19,800 |
+| **Timeline at 20 h/week** | ~18 weeks (4.5 months) |
+| **Timeline at 40 h/week** | ~9 weeks (2.25 months) |
+
+**Phase breakdown:**
+
+| Phase | Hours |
+|---|---|
+| Discovery, CRM data modeling & scoring architecture | 30 h |
+| Laravel backend, API & lead pipeline logic | 100 h |
+| Python ML scoring service & model training pipeline | 90 h |
+| React sales dashboard & real-time lead ranking UI | 60 h |
+| AWS infrastructure (Terraform, ECS Fargate, RDS Multi-AZ) | 40 h |
+| CI/CD pipeline & rolling deployment configuration | 20 h |
+| Observability, model drift monitoring & alerting | 20 h |
+| **Total** | **360 h** |
+
+> Estimates assume a single developer. A two-person team (backend + ML/frontend split) can deliver in roughly half the calendar time at the same total cost.
+
 ## The Bottleneck: Manual Prioritization Does Not Scale
 
 During system analysis, three recurring limitations appeared in traditional CRM workflows:

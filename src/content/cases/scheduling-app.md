@@ -31,6 +31,32 @@ In this project, HunterMussel engineered an **intelligent scheduling and resourc
 **Engagement Duration:** 6 months from requirements to full multi-site rollout
 **Measurement Period:** Results collected across 60 days of production operation, compared to 60-day pre-deployment baseline
 
+## Development Investment
+
+| | |
+|---|---|
+| **Total Estimated Hours** | ~440 h |
+| **Rate** | $55 / hour |
+| **Total Investment** | ~$24,200 |
+| **Timeline at 20 h/week** | ~22 weeks (5.5 months) |
+| **Timeline at 40 h/week** | ~11 weeks (2.75 months) |
+
+**Phase breakdown:**
+
+| Phase | Hours |
+|---|---|
+| Discovery, workflow analysis & constraint modeling | 40 h |
+| Laravel API, business logic & multi-tenant architecture | 110 h |
+| Python scheduling optimizer & constraint solver | 100 h |
+| Clinic staff dashboard (React) | 60 h |
+| AWS infrastructure (Terraform, ECS, RDS Multi-AZ, VPC) | 60 h |
+| CI/CD pipeline & regression test fixtures | 25 h |
+| Observability setup & alerting (CloudWatch, PagerDuty) | 20 h |
+| Multi-site deployment, staff onboarding support & UAT | 25 h |
+| **Total** | **440 h** |
+
+> The multi-clinic rollout phase includes integration support at each location and is the primary driver of this project's longer calendar duration relative to single-site builds.
+
 ## The Operational Gap: Static Calendars vs. Dynamic Clinics
 
 An analysis of existing workflows revealed three structural inefficiencies:

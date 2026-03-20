@@ -31,6 +31,30 @@ In this project, HunterMussel designed a **high-performance corporate website ar
 **Engagement Duration:** 6 weeks from discovery to production launch, including content migration
 **Measurement Period:** Performance benchmarks captured 30 days post-launch; cost and uptime data tracked over 6 months
 
+## Development Investment
+
+| | |
+|---|---|
+| **Total Estimated Hours** | ~130 h |
+| **Rate** | $55 / hour |
+| **Total Investment** | ~$7,150 |
+| **Timeline at 20 h/week** | ~6.5 weeks |
+| **Timeline at 40 h/week** | ~3.5 weeks |
+
+**Phase breakdown:**
+
+| Phase | Hours |
+|---|---|
+| Discovery, content audit & information architecture | 16 h |
+| Component design & full site implementation (Astro) | 60 h |
+| Content migration, SEO metadata & structured data (JSON-LD) | 20 h |
+| Cloudflare Pages setup, DNS config & Workers for dynamic endpoints | 16 h |
+| GitHub Actions CI/CD pipeline + Lighthouse CI thresholds | 10 h |
+| QA, cross-browser testing & performance validation | 8 h |
+| **Total** | **130 h** |
+
+> This is the most cost-efficient engagement in the portfolio. The static architecture eliminates backend development entirely, concentrating budget on design quality, content structure, and delivery performance — areas that directly impact conversion and SEO.
+
 ## The Problem: Traditional Sites Carry Invisible Weight
 
 Many corporate websites rely on dynamic stacks originally designed for web applications. While powerful, these architectures introduce unnecessary overhead for informational sites.

@@ -31,6 +31,32 @@ In this project, HunterMussel developed a **real-time route optimization engine*
 **Engagement Duration:** 5 months from discovery to production launch
 **Measurement Period:** Results tracked over 90 days post-launch against a 90-day pre-deployment baseline
 
+## Development Investment
+
+| | |
+|---|---|
+| **Total Estimated Hours** | ~420 h |
+| **Rate** | $55 / hour |
+| **Total Investment** | ~$23,100 |
+| **Timeline at 20 h/week** | ~21 weeks (5 months) |
+| **Timeline at 40 h/week** | ~10 weeks (2.5 months) |
+
+**Phase breakdown:**
+
+| Phase | Hours |
+|---|---|
+| Discovery, system analysis & architecture | 40 h |
+| Go API — routing, dispatch, event ingestion | 120 h |
+| Python optimizer microservice | 90 h |
+| Node.js realtime service & WebSocket layer | 40 h |
+| GCP infrastructure (Terraform, GKE, Cloud SQL, Redis) | 60 h |
+| CI/CD pipeline, ArgoCD GitOps & Helm charts | 30 h |
+| Observability setup (Grafana, Sentry, PagerDuty) | 20 h |
+| Integration testing, staging validation & QA | 20 h |
+| **Total** | **420 h** |
+
+> Estimates assume a single developer. Parallel streams with a two-person team compress the calendar timeline by roughly 40% without changing the total investment.
+
 ## The Challenge: Logistics Complexity Grows Faster Than Volume
 
 When analyzing the client’s system, three structural limitations emerged:
