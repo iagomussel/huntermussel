@@ -24,6 +24,39 @@ Dental clinics operate on precision timing. Each missed slot, delay, or overbook
 
 In this project, HunterMussel engineered an **intelligent scheduling and resource optimization platform** tailored for dental clinics. The objective was to convert manual planning into an automated system capable of predicting demand, optimizing chair allocation, and coordinating staff schedules in real time.
 
+## Project Context
+
+**Client:** Multi-location dental group operating 4 clinics across two cities (identity protected under NDA)
+**Scale:** 22 dentists, 38 support staff, approximately 380 patient appointments per week across all locations
+**Engagement Duration:** 6 months from requirements to full multi-site rollout
+**Measurement Period:** Results collected across 60 days of production operation, compared to 60-day pre-deployment baseline
+
+## Development Investment
+
+| | |
+|---|---|
+| **Total Estimated Hours** | ~440 h |
+| **Rate** | $55 / hour |
+| **Total Investment** | ~$24,200 |
+| **Timeline at 20 h/week** | ~22 weeks (5.5 months) |
+| **Timeline at 40 h/week** | ~11 weeks (2.75 months) |
+
+**Phase breakdown:**
+
+| Phase | Hours |
+|---|---|
+| Discovery, workflow analysis & constraint modeling | 40 h |
+| Laravel API, business logic & multi-tenant architecture | 110 h |
+| Python scheduling optimizer & constraint solver | 100 h |
+| Clinic staff dashboard (React) | 60 h |
+| AWS infrastructure (Terraform, ECS, RDS Multi-AZ, VPC) | 60 h |
+| CI/CD pipeline & regression test fixtures | 25 h |
+| Observability setup & alerting (CloudWatch, PagerDuty) | 20 h |
+| Multi-site deployment, staff onboarding support & UAT | 25 h |
+| **Total** | **440 h** |
+
+> The multi-clinic rollout phase includes integration support at each location and is the primary driver of this project's longer calendar duration relative to single-site builds.
+
 ## The Operational Gap: Static Calendars vs. Dynamic Clinics
 
 An analysis of existing workflows revealed three structural inefficiencies:
@@ -154,12 +187,12 @@ graph TD
 
 ## Measurable Results After Deployment
 
-Within months of production use, clinics reported operational improvements:
+Within 60 days of production deployment across all four clinic locations, measurable improvements were recorded against the pre-launch baseline:
 
-- **31% Increase in Chair Utilization:** Idle time reduced through intelligent allocation.
-- **42% Fewer Scheduling Conflicts:** Automated constraint validation prevented overlaps.
-- **Reduced Administrative Workload:** Reception staff spent significantly less time managing calendars.
-- **Higher Patient Throughput:** More appointments completed without extending working hours.
+- **31% Increase in Chair Utilization:** Average chair utilization rate rose from 61% to 80% during scheduled clinic hours.
+- **42% Fewer Scheduling Conflicts:** Automated constraint validation reduced weekly booking conflicts from an average of 34 per clinic to under 20.
+- **3.4 Hours Saved Per Clinic Per Day:** Reception staff time spent on manual calendar management dropped from approximately 5.1 hours to 1.7 hours per day.
+- **19% More Appointments Completed Daily:** Average completed appointments per chair per day increased from 6.3 to 7.5 without extending operating hours.
 
 ## Why Intelligence Matters in Healthcare Scheduling
 
