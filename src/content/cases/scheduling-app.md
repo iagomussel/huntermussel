@@ -1,6 +1,6 @@
 ---
 title: "Intelligent Scheduling & Resource App for Dental Clinics"
-date: "2026-02-22"
+date: "2026-03-01"
 authors:
   - iago-mussel
 description: "A technical case study on building an AI-driven scheduling and resource management system that optimizes appointments, chair utilization, and staff allocation for dental clinics."
@@ -16,7 +16,7 @@ keywords:
   - ai appointment system
   - healthcare automation platform
   - smart clinic management
-image: "/images/blog/dental-scheduling-ai.webp"
+image: "/images/cases/dental-scheduling-ai.webp"
 subtitle: "Transforming clinic operations through predictive scheduling and automation"
 ---
 
@@ -85,6 +85,72 @@ Each scheduling action passes through a computation sequence:
 6. Final slot assignment
 
 This ensures that every scheduled appointment is mathematically optimal within existing constraints.
+
+## Infrastructure & Deployment
+
+The platform was deployed on AWS with a managed container stack designed to meet healthcare-grade reliability requirements without over-engineering a relatively focused workload.
+
+**Cloud Provider:** AWS
+**Compute:** ECS Fargate for the Laravel API and Python scheduling engine; separate task definitions allow independent scaling
+**Database:** Amazon RDS (PostgreSQL Multi-AZ) with temporal indexing for appointment windows and resource timelines
+**Cache & Queue:** Amazon ElastiCache (Redis) for async scheduling jobs and session caching
+**Object Storage:** S3 for historical scheduling reports and model snapshots
+**CDN:** CloudFront for clinic dashboard static assets
+**Networking:** VPC with private subnets for database and scheduler tiers; API exposed via Application Load Balancer
+**Secrets:** AWS Secrets Manager for database credentials and external calendar integration tokens
+
+**Deployment Pipeline**
+- GitHub Actions CI/CD with automated unit tests, constraint solver validation, and database migration checks
+- Docker images per service pushed to ECR on merge to main
+- ECS rolling deployments with minimum 100% healthy threshold to avoid scheduling downtime
+- Terraform manages environment infrastructure; staging environment mirrors production topology
+
+## Observability & Monitoring
+
+Scheduling errors have direct patient impact. Monitoring was configured to surface conflicts or optimization degradation immediately, before clinic staff encounter problems.
+
+**Metrics:** CloudWatch with custom metrics for scheduling decision latency and constraint conflict rate
+**Error Tracking:** Sentry capturing exceptions from both Laravel and Python microservices
+**Dashboards:** Grafana dashboards showing queue throughput, slot assignment latency, and resource utilization per clinic
+**Log Aggregation:** CloudWatch Logs with structured per-request logs; log groups isolated per clinic tenant
+**Alerting:** SNS-based alerts for queue saturation, optimization timeout, and failed slot assignments; on-call rotation via PagerDuty
+**Regression Checks:** Daily synthetic scheduling job validates constraint solver output against known fixture data; failures trigger immediate alert
+
+Key dashboards tracked:
+- Scheduling decision latency (p50, p95)
+- Queue depth per clinic
+- Daily conflict rate (scheduling overlaps detected and resolved)
+- Chair utilization rate across active clinics
+- Optimization scoring accuracy over time
+
+## Infrastructure Diagram
+
+```mermaid
+graph TD
+    Staff["Clinic Staff Dashboard"]
+    CF["CloudFront CDN"]
+    ALB["Application Load Balancer"]
+    API["Laravel API<br/>(ECS Fargate)"]
+    Sched["Python Scheduling Engine<br/>(ECS Fargate)"]
+    Redis["ElastiCache Redis<br/>(Queue / Cache)"]
+    RDS["RDS PostgreSQL<br/>(Multi-AZ, Temporal Indexes)"]
+    S3["S3<br/>(Reports / Model Snapshots)"]
+    CW["CloudWatch<br/>+ Grafana"]
+    Sentry["Sentry"]
+
+    Staff --> CF
+    CF --> ALB
+    ALB --> API
+    API --> Redis
+    API --> RDS
+    Redis -->|Async Scheduling Jobs| Sched
+    Sched --> RDS
+    Sched --> S3
+    API --> CW
+    Sched --> CW
+    API --> Sentry
+    Sched --> Sentry
+```
 
 ## Measurable Results After Deployment
 

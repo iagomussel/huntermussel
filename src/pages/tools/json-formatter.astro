@@ -1,11 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="JSON Formatter / Validator | HunterMussel Tools"
   description="Format, validate, and minify JSON with syntax highlighting, line numbers, stats, and download — fully in-browser."
   canonicalPath="/tools/json-formatter/"
+  keywords={[
+    "json formatter online",
+    "json validator",
+    "json beautifier",
+    "json minifier",
+    "format json online",
+    "json pretty print",
+    "json lint",
+    "json syntax checker",
+    "free json formatter",
+  ]}
 >
   <main class="page">
     <section class="hero">
@@ -111,6 +123,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           <li>Download the result as a <code>.json</code> file or copy to clipboard.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Working with JSON payloads across CI/CD pipelines?"
+        description="HunterMussel designs high-performance delivery pipelines with automated JSON schema validation, contract testing, and API quality gates built in from day one."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
     </section>
   </main>
 </BaseLayout>

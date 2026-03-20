@@ -9,6 +9,7 @@ interface Props {
   description: string;
   canonicalPath?: string;
   ogImage?: string;
+  keywords?: string | string[];
   robots?: string;
   schemaType?: "WebPage" | "WebApplication";
 }
@@ -18,10 +19,12 @@ const {
   description,
   canonicalPath = "/tools/",
   ogImage = "https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp",
+  keywords,
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
   schemaType = canonicalPath === "/tools/" ? "WebPage" : "WebApplication",
 } = Astro.props;
 const canonicalUrl = `https://huntermussel.com${canonicalPath}`;
+const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
 const pathParts = canonicalPath.split("/").filter(Boolean);
 const breadcrumbItems = [
   { name: "Home", item: "https://huntermussel.com/" },
@@ -69,9 +72,17 @@ const pageSchema =
 <!doctype html>
 <html lang="en" class="dark">
   <head>
+    <!-- Google Tag Manager -->
+    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-K8THDL4C');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {keywordsString && <meta name="keywords" content={keywordsString} />}
     <meta name="robots" content={robots} />
     <meta name="googlebot" content={robots} />
     <meta name="theme-color" content="#1d4ed8" />
@@ -91,9 +102,11 @@ const pageSchema =
     <meta name="twitter:creator" content="@huntermussel" />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" type="application/xml" href="https://huntermussel.com/sitemap-index.xml" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
+    <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />
     <title>{title}</title>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NENC1CBCTS"></script>
-    <script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-NENC1CBCTS"></script>
+    <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -105,6 +118,10 @@ const pageSchema =
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   </head>
   <body class="bg-background text-foreground min-h-screen flex flex-col font-sans antialiased selection:bg-primary/20 selection:text-primary">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K8THDL4C"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <Navbar client:load />
     <main class="flex-1 pt-16">
       <slot />
