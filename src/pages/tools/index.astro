@@ -1,8 +1,72 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+
+const toolsUrl = "https://huntermussel.com/tools/";
+const toolsList = [
+  { name: "Base64 Converter", slug: "base64-converter" },
+  { name: "Hash Generator", slug: "hash-generator" },
+  { name: "JSON Formatter", slug: "json-formatter" },
+  { name: "Image Optimizer", slug: "image-optimizer" },
+  { name: "Markdown Editor", slug: "markdown-editor" },
+  { name: "Estimators", slug: "estimators" },
+  { name: "Log Viewer", slug: "log-viewer" },
+  { name: "JWT Inspector", slug: "jwt-inspector" },
+  { name: "Cron Parser", slug: "cron-parser" },
+  { name: "Online Linters", slug: "online-linters" },
+  { name: "Diff Viewer", slug: "diff-viewer" },
+];
+const toolsSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Free Developer Tools — HunterMussel",
+    url: toolsUrl,
+    description:
+      "Free client-side developer tools: Base64, Hash Generator, JSON Formatter, Image Optimizer, Markdown Editor, JWT Inspector, Cron Parser, and more. No account, no uploads.",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://huntermussel.com/" },
+      { "@type": "ListItem", position: 2, name: "Tools", item: toolsUrl },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Developer Tools",
+    url: toolsUrl,
+    numberOfItems: toolsList.length,
+    itemListElement: toolsList.map((tool, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `https://huntermussel.com/tools/${tool.slug}/`,
+      name: tool.name,
+    })),
+  },
+];
 ---
 
-<Layout title="Developer Tools">
+<Layout
+  title="Free Developer Tools: Base64, Hash, JSON, JWT, Cron & More"
+  description="Free client-side developer tools for encoding, hashing, formatting, imaging, and more. No account, no uploads — everything runs in your browser."
+  canonicalUrl={toolsUrl}
+  keywords={[
+    "free developer tools",
+    "base64 converter online",
+    "hash generator tool",
+    "json formatter online",
+    "jwt inspector tool",
+    "cron parser tool",
+    "image optimizer browser",
+    "markdown editor online",
+    "online linter tool",
+    "diff viewer online",
+    "developer utilities",
+  ]}
+  schema={toolsSchema}
+>
   <div class="tools-page">
     <!-- Hero -->
     <div class="tools-hero">

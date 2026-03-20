@@ -33,6 +33,19 @@ const servicesSchema = [
       },
     ],
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Services",
+    url: servicesUrl,
+    numberOfItems: services.length,
+    itemListElement: services.map((entry, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `https://huntermussel.com/services/${entry.slug}/`,
+      name: entry.data.title,
+    })),
+  },
 ];
 ---
 
