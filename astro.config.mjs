@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   site: "https://huntermussel.com",
+  trailingSlash: "always",
 
   integrations: [
     react(),
