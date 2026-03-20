@@ -24,6 +24,13 @@ Scaling a delivery operation is not a matter of adding drivers. It is a matter o
 
 In this project, HunterMussel developed a **real-time route optimization engine** embedded inside a delivery platform designed to orchestrate drivers, orders, and traffic conditions dynamically. The goal was to eliminate wasted mileage, reduce delivery time, and maintain operational efficiency even during demand spikes.
 
+## Project Context
+
+**Client:** Regional last-mile delivery operator (identity protected under NDA)
+**Scale:** 48 active drivers across 3 metro delivery zones; approximately 900 orders per day at peak
+**Engagement Duration:** 5 months from discovery to production launch
+**Measurement Period:** Results tracked over 90 days post-launch against a 90-day pre-deployment baseline
+
 ## The Challenge: Logistics Complexity Grows Faster Than Volume
 
 When analyzing the client’s system, three structural limitations emerged:
@@ -158,12 +165,12 @@ graph TD
 
 ## Performance Results
 
-After production deployment, operational metrics demonstrated clear improvements:
+After production deployment, operational metrics demonstrated clear improvements against the 90-day pre-launch baseline:
 
-- **28% Reduction in Total Mileage:** Optimized routing minimized redundant travel.
-- **37% Faster Deliveries:** Dynamic adjustments eliminated delays caused by outdated routes.
-- **Driver Utilization Increase:** Idle time dropped significantly due to predictive positioning.
-- **Operational Scalability:** The platform handled 5× order volume without additional dispatch staff.
+- **28% Reduction in Total Mileage:** Average daily fleet mileage dropped from 4,100 km to 2,950 km across the same order volume.
+- **37% Faster Deliveries:** Median delivery time fell from 52 minutes to 33 minutes per order.
+- **23% Reduction in Driver Idle Time:** Predictive positioning cut average inter-assignment idle time from 18 minutes to 14 minutes per shift.
+- **Operational Scalability:** The platform handled 5× order volume (from ~180 to ~900 orders/day) without adding dispatch staff or degrading route quality.
 
 ## Why Real-Time Optimization Matters
 

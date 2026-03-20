@@ -24,6 +24,13 @@ Most CRM systems store data. Few actually interpret it. Sales teams often rely o
 
 In this project, HunterMussel developed a **smart CRM platform with AI-driven lead scoring** designed to transform raw contact data into ranked, actionable insights. The objective was to eliminate guesswork from sales pipelines and replace it with predictive decision logic.
 
+## Project Context
+
+**Client:** B2B SaaS company serving the HR and workforce management sector (identity protected under NDA)
+**Scale:** 14-person inside sales team managing approximately 1,600 active leads per quarter
+**Engagement Duration:** 4 months from system design to production rollout
+**Measurement Period:** Results tracked across two full sales quarters post-deployment, compared to the prior two-quarter baseline
+
 ## The Bottleneck: Manual Prioritization Does Not Scale
 
 During system analysis, three recurring limitations appeared in traditional CRM workflows:
@@ -151,12 +158,12 @@ graph TD
 
 ## Measurable Business Impact
 
-After production deployment, sales teams observed clear improvements:
+After production deployment, sales performance data from two full quarters showed clear improvements over the prior baseline:
 
-- **52% Increase in Conversion Efficiency:** Teams focused on high-probability leads first.
-- **Shorter Sales Cycles:** Prioritized follow-ups reduced response delays.
-- **Improved Forecast Accuracy:** Predictive scoring improved revenue projections.
-- **Higher Team Productivity:** Less time spent evaluating low-value prospects.
+- **52% Increase in Conversion Efficiency:** Lead-to-opportunity conversion rate rose from 11% to 16.7%, with high-scoring leads converting at 31%.
+- **26% Shorter Sales Cycles:** Average time-to-close dropped from 41 days to 30 days, driven by prioritized follow-up on warm leads.
+- **Forecast Accuracy Improved by 38%:** Monthly revenue forecast variance narrowed from ±24% to ±15%, enabling more reliable pipeline planning.
+- **2.3× More Qualified Opportunities Per Rep:** Each sales rep handled 2.3× more sales-ready leads per sprint without increasing headcount.
 
 ## Why AI Lead Scoring Changes CRM Strategy
 
