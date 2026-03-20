@@ -105,7 +105,7 @@ const ServicesSection = () => {
               className="group rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
             >
               <a
-                href={`/services/${service.slug}`}
+                href={`/services/${service.slug}/`}
                 className="block p-6 text-current no-underline hover:no-underline"
               >
                 <div className="mb-4 inline-flex rounded-md border border-border bg-muted/50 p-3 text-primary transition-all group-hover:border-glow group-hover:box-glow">
