@@ -7,6 +7,8 @@ import AboutSection from "@/components/react/AboutSection";
 import TechSection from "@/components/react/TechSection";
 import ContactSection from "@/components/react/ContactSection";
 import ToolsSection from "@/components/react/ToolsSection";
+import FAQSection from "@/components/react/FAQSection";
+import { homeFAQ } from "@/data/faq";
 
 const homepageUrl = "https://huntermussel.com/";
 const homepageSchema = [
@@ -54,6 +56,18 @@ const homepageSchema = [
       "technical SEO",
     ],
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homeFAQ.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  },
 ];
 ---
 
@@ -82,5 +96,6 @@ const homepageSchema = [
   <AboutSection client:load />
   <TechSection client:load />
   <ToolsSection client:load />
+  <FAQSection client:load items={homeFAQ} />
   <ContactSection client:load />
 </Layout>
