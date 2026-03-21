@@ -1,6 +1,8 @@
-# Why Do You Need a Chatbot on Your Website?
+---
+image: "https://pasteboard.co/sNbnwNIXCQUE.webp"
+---
 
-![Cover image](https://pasteboard.co/sNbnwNIXCQUE.webp)
+# Why Do You Need a Chatbot on Your Website?
 
 Let's be honest. When most people land on a website, they want answers fast. They don't want to dig through pages of FAQs, wait days for an email response, or sit on hold listening to elevator music. They want help *right now*, and if they don't get it, they'll simply leave and find it somewhere else. That's where a chatbot comes in, and why more and more businesses are adding one to their website. But is it really worth it? Absolutely, and here's why.
 
