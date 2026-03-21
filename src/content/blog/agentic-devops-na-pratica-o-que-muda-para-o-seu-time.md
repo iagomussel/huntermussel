@@ -1,152 +1,152 @@
 ---
-title: "Agentic DevOps na prática: o que muda para o seu time"
+title: "Agentic DevOps in practice: what actually changes for your team"
 date: "2026-03-21"
 authors:
   - iago-mussel
-description: "A maioria dos artigos sobre Agentic DevOps é só hype de vendor. Aqui você encontra onde agentes se encaixam em pipelines reais, onde ainda falham feio, e o que um Tech Lead precisa fazer hoje."
+description: "Most articles on Agentic DevOps are vendor hype. Here's where agents actually fit in real pipelines, where they still fail badly, and what a Tech Lead needs to do this week."
 tags:
   - DevOps
   - Agentic AI
   - CI/CD
   - Tech Lead
-  - Engenharia
+  - Engineering
 keywords:
   - agentic devops
-  - agentes ia devops
-  - ai agentes pipeline cicd
-  - tech lead ia
-  - devops automação ia 2026
-  - agentes autonomos devops
-  - agentic devops falhas
-subtitle: "Onde os agentes encaixam de verdade, onde ainda quebram feio, e o que você precisa fazer essa semana."
+  - ai agents devops
+  - ai agents cicd pipeline
+  - tech lead ai
+  - devops automation ai 2026
+  - autonomous agents devops
+  - agentic devops failures
+subtitle: "Where agents actually fit, where they still break badly, and what you need to do this week."
 status: "published"
 image: "/images/blog/agentic-devops-na-pratica-o-que-muda-para-o-seu-time.webp"
 ---
 
-Todo vendor está vendendo Agentic DevOps agora. Todo artigo promete que agentes vão assumir seus pipelines, resolver incidentes sozinhos, e fazer deploy enquanto você dorme.
+Every vendor is selling Agentic DevOps right now. Every article promises that agents will take over your pipelines, resolve incidents autonomously, and run deployments while you sleep.
 
-A maioria desses artigos foi escrita por quem nunca quebrou um pipeline em produção numa sexta-feira às 22h.
+Most of those articles were written by people who have never broken a production pipeline on a Friday night.
 
-Eu vou fazer diferente. Vou mostrar onde agentes se encaixam em pipelines reais, onde ainda falham de formas que vão te custar caro, e o que um Tech Lead precisa colocar em prática hoje — não depois que o hype passar.
+I'm going to do something different. Show you where agents actually fit in real pipelines, where they still fail in ways that will cost you, and what a Tech Lead needs to put into practice today — not after the hype settles.
 
 <!-- truncate -->
 
-## O que "agentic" significa na prática de DevOps
+## What "agentic" means operationally
 
-Antes de falar sobre onde agentes funcionam, vale alinhar o que o termo significa operacionalmente.
+Before talking about where agents work, it's worth aligning on what the term means in practice.
 
-Um agente não é um LLM com uma boa interface. É um LLM com um **loop de raciocínio, acesso a ferramentas, e capacidade de agir no mundo** — ler logs, chamar APIs, criar PRs, executar comandos. A diferença entre um chatbot de DevOps e um agente de DevOps é a diferença entre alguém que te diz o que fazer e alguém que faz.
+An agent is not an LLM with a nice interface. It's an LLM with a **reasoning loop, tool access, and the ability to act in the world** — read logs, call APIs, open PRs, execute commands. The difference between a DevOps chatbot and a DevOps agent is the difference between someone who tells you what to do and someone who does it.
 
-Isso é poderoso. É também onde a maioria dos problemas começa.
+That's powerful. It's also where most of the problems start.
 
-## Onde os agentes encaixam de verdade
+## Where agents actually fit
 
-Não em tudo. Em pontos específicos onde o custo de erro é tolerável e o volume é alto o suficiente para a automação valer.
+Not everywhere. In specific points where the cost of error is tolerable and the volume is high enough to justify the automation.
 
-**Triagem de alertas e diagnóstico inicial de incidente.**
+**Alert triage and initial incident diagnosis.**
 
-A parte mais cara de um on-call não é resolver o problema — é os primeiros 15 minutos tentando entender o que está errado. Correlacionar logs, ler dashboards, formar hipótese.
+The most expensive part of an on-call rotation isn't resolving the problem — it's the first 15 minutes trying to understand what's wrong. Correlating logs, reading dashboards, forming a hypothesis.
 
-Agentes de observabilidade fazem isso bem. Correlacionam anomalias entre serviços, surfaceiam a causa mais provável com evidências, apresentam uma hipótese estruturada. Um engenheiro experiente que diagnosticaria em 20 minutos agora diagnostica em 5. Um júnior que levaria 90 minutos agora leva 15. Isso muda quem aguenta uma rotação de on-call sem entrar em colapso.
+Observability agents do this well. They correlate anomalies across services, surface the most likely root cause with supporting evidence, and present a structured hypothesis. An experienced engineer who would have diagnosed in 20 minutes now diagnoses in 5. A junior who would have taken 90 minutes now takes 15. That changes who can sustain an on-call rotation without burning out.
 
-**Geração de configuração e IaC.**
+**Configuration generation and IaC.**
 
-Escrever Terraform, Kubernetes manifests, e YAML de GitHub Actions do zero é o tipo de trabalho que AI coding assistants já dominam. O boilerplate sai gerado. O engenheiro revisa, ajusta, aplica julgamento.
+Writing Terraform, Kubernetes manifests, and GitHub Actions YAML from scratch is table stakes for AI coding assistants now. The boilerplate gets generated. The engineer reviews, adjusts, and applies judgment.
 
-O valor migra de "saber digitar o YAML certo" para "saber o que o YAML deveria representar". As duas habilidades são diferentes — e a segunda é mais difícil de contratar.
+The value shifts from "knowing the right YAML syntax" to "knowing what the YAML should represent." Those are different skills — and the second one is harder to hire for.
 
-**Revisão de PR com contexto de segurança.**
+**PR review with security context.**
 
-Agentes que revisam PRs com foco em vulnerabilidades conhecidas (SQL injection, secrets expostos, dependências com CVE recente) conseguem cobrir volume que nenhum time de segurança consegue cobrir manualmente. Não substituem revisão humana em mudanças arquiteturais. Complementam em escala.
+Agents that review PRs focused on known vulnerability patterns — SQL injection, exposed secrets, dependencies with recent CVEs — can cover volume that no security team can cover manually. They don't replace human review on architectural changes. They complement at scale.
 
-**Dry-run de testes e sugestão de casos de borda.**
+**Test gap identification.**
 
-Agentes que leem a diff de um PR e identificam quais paths de código não têm cobertura são genuinamente úteis. Não escrevem os testes certos automaticamente — mas diminuem o custo de achar o que falta.
+Agents that read a PR diff and identify which code paths lack coverage are genuinely useful. They don't automatically write the right tests — but they lower the cost of finding what's missing.
 
-## Onde os agentes ainda falham feio
+## Where agents still fail badly
 
-É aqui que a maioria dos artigos para de ser honesta.
+This is where most articles stop being honest.
 
-**Diagnóstico alucinado.**
+**Hallucinated diagnoses.**
 
-Um agente de incidente lê os logs, analisa os traces, e produz um root cause analysis que parece ter sido escrito por um engenheiro sênior. Estruturado, confiante, bem fundamentado. E completamente errado.
+An incident agent reads the logs, analyzes the traces, and produces a root cause analysis that looks like a senior engineer wrote it. Structured, confident, well-reasoned. And completely wrong.
 
-Isso é pior do que não ter diagnóstico nenhum. Você perde tempo seguindo uma hipótese falsa enquanto o sistema continua degradado. O [relatório State of Software Delivery 2025](https://devops.com/could-agentic-ai-in-devops-create-new-security-flaws/) encontrou que times usando agentes de código passam **67% mais tempo debugando** do que times sem — porque o código gerado falha de formas não-óbvias.
+That's worse than no diagnosis at all. You lose time chasing a false hypothesis while the system stays degraded. The State of Software Delivery 2025 report found that teams using AI coding agents spend **67% more time debugging** than teams without — because the generated code fails in non-obvious ways.
 
-**O gargalo que só se move.**
+**The bottleneck that just moves.**
 
-Times que adotaram GitHub Copilot viram a velocidade de desenvolvimento subir 40%. E o deployment queue ficou maior. O gargalo não desapareceu — migrou. Developers escrevem código mais rápido. O pipeline de infra ainda roda em tickets e filas de aprovação. A crise de velocidade continua, só que agora com mais PRs esperando.
+Teams that adopted GitHub Copilot saw development velocity increase 40%. And the deployment queue got longer. The bottleneck didn't disappear — it shifted. Developers write code faster. The infra pipeline still runs on tickets and approval queues. The velocity crisis continues, just with more PRs waiting.
 
-Isso é importante: **Agentes de desenvolvimento sem agentes de operação criam pressão assimétrica no sistema.** Você precisa pensar no pipeline inteiro.
+This matters: **Development agents without operations agents create asymmetric pressure on the system.** You need to think about the whole pipeline.
 
-**Prompt injection via conteúdo do repositório.**
+**Prompt injection via repository content.**
 
-Esse é o que mais me preocupa em produção. A equipe de segurança do Google demonstrou um exploit real onde comentários HTML ocultos num PR convenceram um agente de build de que um pacote falso era a dependência canônica do projeto — e, como o agente tinha autonomia de publicação, poderia ter enviado código malicioso antes de qualquer revisão humana.
+This is what worries me most in production. Google's security team demonstrated a real exploit where hidden HTML comments in a PR convinced a build agent that a fake package was the project's canonical dependency — and because the agent had publishing autonomy, it could have shipped malicious code before any human review caught it.
 
-Não é uma vulnerabilidade teórica. É um vetor de ataque que qualquer agente com acesso a repositórios externos precisa considerar no threat model.
+This is not a theoretical vulnerability. It's an attack vector that any agent with access to external repositories needs in its threat model.
 
-**Escalada de privilégio silenciosa.**
+**Silent privilege escalation.**
 
-A Microsoft publicou um alerta específico sobre isso: modelos de delegação vagos permitem que um agente de build sobre-privilegiado aprove seu próprio pull request e faça deploy direto para produção. Se um dispositivo de desenvolvedor for comprometido, o atacante herda todas as permissões que os agentes daquele developer já tiveram.
+Microsoft published a specific warning about this: vague delegation models allow an over-privileged build agent to approve its own pull request and deploy straight to production. If a developer's device is compromised, attackers inherit every permission that developer's agents ever held.
 
-Em 2024, um agente de reconciliação foi manipulado para exportar "todos os registros de clientes que correspondem ao padrão X", onde X era uma regex que correspondia a todo o banco de dados. O agente interpretou o pedido como uma tarefa legítima de negócio. O resultado foram [45.000 registros de clientes vazados](https://www.obsidiansecurity.com/blog/ai-agent-market-landscape).
+In 2024, a reconciliation agent was manipulated into exporting "all customer records matching pattern X," where X was a regex that matched the entire database. The agent found the request reasonable because it was phrased as a business task. The result was [45,000 customer records leaked](https://www.obsidiansecurity.com/blog/ai-agent-market-landscape).
 
-**Approval fatigue: o gate humano que virou carimbo.**
+**Approval fatigue: the human gate that became a rubber stamp.**
 
-Agentes que abrem muitos PRs de baixa qualidade treinam os revisores a aprovar sem ler. O gate humano continua existindo formalmente. Na prática, virou teatro. Isso é pior do que não ter revisão nenhuma — porque cria uma falsa sensação de controle.
+Agents that open too many low-quality PRs train reviewers to approve without reading. The human gate still exists formally. In practice it becomes theater. That's worse than no review at all — because it creates a false sense of control.
 
-## O que um Tech Lead precisa fazer hoje
+## What a Tech Lead needs to do today
 
-Não depois que o mercado amadurecer. Hoje.
+Not after the market matures. Today.
 
-**Inventariar os agentes que já estão no seu ambiente.**
+**Inventory the agents already in your environment.**
 
-Provavelmente você já tem mais do que pensa. GitHub Copilot com acesso a repositórios, Dependabot, ferramentas de scanning que chamam APIs externas, integrações de Slack que têm acesso de escrita. Você não pode governar o que não enxerga. Comece mapeando o que existe, quais permissões cada agente tem, e o que cada um pode fazer sem aprovação humana.
+You probably have more than you think. GitHub Copilot with repository access, Dependabot, scanning tools calling external APIs, Slack integrations with write access. You can't govern what you can't see. Start by mapping what exists, what permissions each agent has, and what each one can do without human approval.
 
-**Aplicar least privilege de verdade.**
+**Apply least privilege for real.**
 
-Um agente de revisão de PR não precisa de permissão de merge. Um agente de diagnóstico de incidente não precisa de permissão de deploy. Parece óbvio escrito assim — mas a maioria dos setups não aplica isso porque é mais fácil dar permissão ampla e "ajustar depois". Depois não chega. Defina o escopo mínimo necessário antes de colocar em produção.
+A PR review agent doesn't need merge permissions. An incident diagnosis agent doesn't need deploy permissions. This seems obvious written out — but most setups don't enforce it because it's easier to grant broad permissions and "adjust later." Later never comes. Define the minimum necessary scope before going to production.
 
-**Separar "saída recomendada" de "ação direta".**
+**Separate "recommended output" from "direct action."**
 
-A distinção operacional mais útil que encontrei: agentes que **propõem** são diferentes de agentes que **executam**. Um agente pode analisar logs e sugerir um rollback. Outro pode executar o rollback diretamente. O primeiro tem custo de erro baixo. O segundo tem custo de erro alto.
+The most useful operational distinction I've found: agents that **propose** are different from agents that **execute**. An agent can analyze logs and suggest a rollback. Another can execute the rollback directly. The first has a low cost of error. The second has a high cost of error.
 
-Comece com agentes de saída recomendada. Promova para ação direta só depois de estabelecer baseline de confiabilidade no seu contexto específico — não no benchmark do vendor.
+Start with recommended-output agents. Promote to direct-action only after establishing a reliability baseline in your specific context — not the vendor's benchmark.
 
-**Construir observabilidade para os agentes, não só com eles.**
+**Build observability for agents, not just with them.**
 
-Você monitora seus serviços. Precisa monitorar seus agentes da mesma forma. Quais ações eles tomaram? Com qual confiança? Quais decidiram escalar para humano e por quê? Sem isso, quando algo quebrar — e vai quebrar — você vai estar debugando uma caixa preta.
+You monitor your services. You need to monitor your agents the same way. What actions did they take? With what confidence? Which ones escalated to human and why? Without this, when something breaks — and it will — you'll be debugging a black box.
 
-**Definir os gates que não podem ser ultrapassados de forma autônoma.**
+**Define the gates that can't be crossed autonomously.**
 
-Merge em main. Deploy em produção. Criação de credenciais. Modificação de políticas de IAM. Essa lista vai ser diferente para cada time, mas precisa existir explicitamente. O padrão que vejo funcionar: qualquer ação com impacto irreversível requer aprovação humana, sem exceção.
+Merge to main. Deploy to production. Credential creation. IAM policy modification. This list will be different for every team, but it needs to exist explicitly. The pattern I see work: any action with irreversible impact requires human approval, no exceptions.
 
-**Preparar o time para o shift de skills, não para substituição.**
+**Prepare the team for the skills shift, not replacement.**
 
-Os engenheiros que vão ter dificuldade são os que tinham como principal valor executar tarefas mecânicas: escrever configs repetitivas, rodar deploys manuais, seguir procedures definidas.
+The engineers who will struggle are the ones whose primary value was executing mechanical tasks: writing repetitive configs, running manual deploys, following defined procedures.
 
-Os que vão se sair melhor são os que sempre foram valiosos pelo julgamento: diagnosticar falhas ambíguas, fazer tradeoffs arquiteturais, manter sistemas complexos rodando sob pressão.
+The ones who will do better are the ones who were always most valuable for their judgment: diagnosing ambiguous failures, making architectural tradeoffs, keeping complex systems running under pressure.
 
-Isso não é confortante para todo mundo. Mas é o mapa real do que está acontecendo. **O papel do Tech Lead hoje inclui ter essa conversa com o time antes que o mercado tenha por você.**
+That's not comfortable for everyone. But it's the real map of what's happening. **The Tech Lead's job today includes having that conversation with the team before the market has it for you.**
 
-## O que o GitHub sinalizou em fevereiro de 2025
+## What GitHub signaled in February 2025
 
-Quando o GitHub lançou a tech preview de "Agentic Workflows" em fevereiro de 2025 — runners com agentes embutidos diretamente no modelo de execução de CI/CD — isso não foi uma feature nova. Foi uma sinalização de plataforma.
+When GitHub launched the tech preview of "Agentic Workflows" in February 2025 — runners with agents embedded directly into the CI/CD execution model — that wasn't a new feature. It was a platform signal.
 
-Quando seu provedor de CI/CD começa a embeddar agentes nativamente, agentes deixam de ser um projeto lateral e passam a ser infraestrutura. Ignorar isso é como ignorar a chegada dos containers em 2015 e se surpreender com Kubernetes em 2018.
+When your CI/CD provider starts embedding agents natively, agents stop being a clever side project and start looking like infrastructure. Ignoring that is like ignoring containers arriving in 2015 and being surprised by Kubernetes in 2018.
 
-Você não precisa adotar tudo agora. Precisa entender o que está chegando e começar a preparar o modelo de governança, permissões, e observabilidade antes que chegue no seu ambiente pela porta dos fundos — via um desenvolvedor do time que ativou uma integração sem avisar ninguém.
+You don't need to adopt everything now. You need to understand what's coming and start building the governance model, permissions, and observability before it arrives in your environment through the back door — via a developer on your team who enabled an integration without telling anyone.
 
-## A conclusão honesta
+## The honest conclusion
 
-Agentic DevOps não é hype. É real, está em produção em times de referência, e vai mudar a forma como engenharia de plataforma funciona nos próximos dois anos.
+Agentic DevOps is not hype. It's real, it's in production at reference teams, and it will change how platform engineering works over the next two years.
 
-Mas a maioria dos artigos sobre o tema foi escrita por quem tem produto para vender, não por quem tem sistema para manter.
+But most articles about it were written by people with a product to sell, not a system to maintain.
 
-A realidade operacional é: agentes são multiplicadores assimétricos. Amplificam tanto a produtividade quanto os riscos. Times que adotam sem governança vão criar exatamente o tipo de incidente que o hype prometeu que os agentes iriam prevenir.
+The operational reality: agents are asymmetric multipliers. They amplify productivity and risks in equal measure. Teams that adopt without governance will create exactly the kind of incident the hype promised agents would prevent.
 
-Comece pequeno. Governe bem. Meça tudo. E não deixe nenhum agente fazer deploy em produção sem que alguém no time consiga explicar exatamente o que ele pode e não pode fazer.
+Start small. Govern well. Measure everything. And don't let any agent deploy to production unless someone on your team can explain exactly what it can and cannot do.
 
 ---
 
-_Trabalho com times construindo sistemas de produção e ferramentas para desenvolvedores. Se esse tema ressoa, você encontra mais do meu trabalho em [huntermussel.com](https://huntermussel.com)._
+_I work with teams building production systems and developer tooling. If this topic resonates, you can find more of my work at [huntermussel.com](https://huntermussel.com)._
