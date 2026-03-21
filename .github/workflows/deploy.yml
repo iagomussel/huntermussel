@@ -3,13 +3,12 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches:
-      - main
       - '**'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+    environment: production
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
