@@ -10,7 +10,7 @@ import FAQSection from '@/components/react/FAQSection';
 import { blogDevOpsFAQ, blogAIFAQ, blogCloudFAQ, blogGeneralFAQ } from '@/data/faq';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => data.status !== 'draft');
+  const posts = await getCollection('blog', ({ data }) => data.status === 'published');
   return posts.map(entry => ({
     params: { slug: entry.slug },
     props: { entry },

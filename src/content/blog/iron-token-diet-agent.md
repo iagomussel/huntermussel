@@ -20,6 +20,7 @@ keywords:
   - dbml to sql
   - laravel blueprint
 image: "/images/blog/iron.webp"
+status: "published"
 ---
 You know the pattern:
 
