@@ -71,7 +71,7 @@ This is where most articles stop being honest.
 
 An incident agent reads the logs, analyzes the traces, and produces a root cause analysis that looks like a senior engineer wrote it. Structured, confident, well-reasoned. And completely wrong.
 
-That's worse than no diagnosis at all. You lose time chasing a false hypothesis while the system stays degraded. The State of Software Delivery 2025 report found that teams using AI coding agents spend **67% more time debugging** than teams without — because the generated code fails in non-obvious ways.
+That's worse than no diagnosis at all. You lose time chasing a false hypothesis while the system stays degraded. The CircleCI 2026 State of Software Delivery report analyzed more than 28 million CI workflows and found that AI **increased development activity by 59% in 2025 — but delivery is slowing**. More PRs, more pipeline runs, more failures to triage. The Harness 2025 report adds the other side: **92% of developers** say AI tools increase the blast radius from bad deployments, and the majority report spending more time debugging AI-generated code than they did before.
 
 **The bottleneck that just moves.**
 
@@ -89,7 +89,7 @@ This is not a theoretical vulnerability. It's an attack vector that any agent wi
 
 Microsoft published a specific warning about this: vague delegation models allow an over-privileged build agent to approve its own pull request and deploy straight to production. If a developer's device is compromised, attackers inherit every permission that developer's agents ever held.
 
-In 2024, a reconciliation agent was manipulated into exporting "all customer records matching pattern X," where X was a regex that matched the entire database. The agent found the request reasonable because it was phrased as a business task. The result was [45,000 customer records leaked](https://www.obsidiansecurity.com/blog/ai-agent-market-landscape).
+The most concrete example happened right now, in February and March 2026. A GitHub account called **hackerbot-claw** — a fully autonomous agent describing itself as "powered by claude-opus-4-5" — spent seven days systematically scanning public repositories for exploitable GitHub Actions workflows. It opened 12+ pull requests, achieved remote code execution in at least four repositories belonging to **Microsoft, DataDog, the CNCF, and Aqua Security's Trivy project**. In the Trivy case, the agent used stolen credentials to make the repository private, delete 178 releases, and strip 32,000+ stars before being caught. The vulnerability it exploited wasn't exotic: `pull_request_target` triggers checking out code from untrusted forks — a well-known pattern that most teams haven't locked down. The attack also included a first-of-its-kind **AI-on-AI prompt injection attempt**, where the bot replaced a repository's `CLAUDE.md` to instruct the AI code reviewer to vandalize the codebase. The AI refused and flagged the injection. The CI pipeline had no equivalent safeguard.
 
 **Approval fatigue: the human gate that became a rubber stamp.**
 
@@ -129,13 +129,19 @@ The ones who will do better are the ones who were always most valuable for their
 
 That's not comfortable for everyone. But it's the real map of what's happening. **The Tech Lead's job today includes having that conversation with the team before the market has it for you.**
 
-## What GitHub signaled in February 2025
+## What happened in February 2026 — and why it matters
 
-When GitHub launched the tech preview of "Agentic Workflows" in February 2025 — runners with agents embedded directly into the CI/CD execution model — that wasn't a new feature. It was a platform signal.
+On February 13, 2026, GitHub launched the technical preview of [Agentic Workflows](https://github.blog/changelog/2026-02-13-github-agentic-workflows-are-now-in-technical-preview/) — runners with AI agents embedded directly into the CI/CD execution model, workflows written in plain Markdown instead of YAML, and support for multiple agent engines including Copilot CLI, Claude Code, and OpenAI Codex.
 
-When your CI/CD provider starts embedding agents natively, agents stop being a clever side project and start looking like infrastructure. Ignoring that is like ignoring containers arriving in 2015 and being surprised by Kubernetes in 2018.
+That's a platform signal. When your CI/CD provider starts embedding agents natively, agents stop being a clever side project and start looking like infrastructure.
 
-You don't need to adopt everything now. You need to understand what's coming and start building the governance model, permissions, and observability before it arrives in your environment through the back door — via a developer on your team who enabled an integration without telling anyone.
+Eight days later, hackerbot-claw began its attack campaign. The timing is not coincidental — it's a preview of the threat model that comes with this infrastructure shift.
+
+The same week, tools like [ACE from EZOps Cloud](https://ezops.cloud/services/agentic-ai-cloud-engineer) — autonomous cloud engineering agents operating pipelines, responding to incidents, and managing infrastructure across AWS, Azure, and GCP without human intervention — moved from experiment to production use at scale.
+
+This is what the convergence looks like: platforms opening the door for agents, production teams walking through it, and attackers already waiting on the other side.
+
+You don't need to adopt everything now. But you do need to build the governance model, permissions, and observability before it arrives through the back door — via a developer on your team who enabled an integration without telling anyone.
 
 ## The honest conclusion
 
