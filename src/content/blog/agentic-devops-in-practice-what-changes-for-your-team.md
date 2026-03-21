@@ -143,6 +143,56 @@ This is what the convergence looks like: platforms opening the door for agents, 
 
 You don't need to adopt everything now. But you do need to build the governance model, permissions, and observability before it arrives through the back door — via a developer on your team who enabled an integration without telling anyone.
 
+## Rules and guardrails: the operational framework that makes this safe
+
+Most teams adopting agentic tooling skip this step. They enable the agent, configure the happy path, and discover the guardrail problem only when something breaks in production. That's backwards. The governance model needs to exist before the agent runs in any environment that matters.
+
+**The permission boundary is the first line of defense.**
+
+Every agent needs an explicit, minimal permission set defined before it goes to production — not after. A PR review agent needs read access to repositories and comment permissions. Nothing else. An incident triage agent needs read access to logs, metrics, and traces. It does not need the ability to restart services, roll back deployments, or modify infrastructure state. The moment you grant permissions "just in case," you've created an attack surface that attackers and accidents will eventually find.
+
+The practical way to enforce this: define the agent's permission set as code, version it, and require the same review process as any IAM change. If someone wants to extend an agent's permissions, the request goes through the same scrutiny as "I want to give a new engineer root access to production."
+
+**The trigger model determines the blast radius.**
+
+Agents triggered by external events — new issues, incoming PRs, repository pushes — inherit the trust level of whatever event fired them. A PR from an untrusted fork should never trigger a workflow that has write permissions or access to secrets. GitHub's own documentation warns against this, and hackerbot-claw proved in February 2026 that the warning is not theoretical.
+
+The safe pattern: external triggers run in sandboxed environments with read-only permissions. Any write operation — commenting, merging, deploying — happens in a separate, explicitly scoped workflow that only fires after the sandboxed phase completes and passes validation. Separate the "observe" phase from the "act" phase. Never combine them in a single workflow triggered by external input.
+
+**Prompt injection is a CI/CD attack vector now.**
+
+Traditional injection attacks target SQL parsers and shell interpreters. Prompt injection targets the reasoning layer of an LLM. An agent that reads a PR diff, an issue description, a config file, or a commit message is reading attacker-controlled input. Any of those surfaces can contain instructions designed to redirect the agent's behavior.
+
+The defense is architectural, not filtering-based. Agents should operate on structured data extracted from external inputs, not raw text fed directly into the reasoning loop. When an agent needs to read a file from an untrusted fork, that file's content should be treated as data to be analyzed, not as instructions to be followed. The distinction matters: "summarize the changes in this diff" is safe; "here is a diff that also happens to contain instructions in HTML comments" is not safe if the agent is processing both as one undifferentiated context.
+
+CLAUDE.md and equivalent agent configuration files deserve particular attention. They are high-trust inputs that most agents process with elevated authority. Any workflow that grants a PR the ability to modify these files while also running the agent that reads them has a serious security problem. Lock configuration files to trusted branches only.
+
+**The audit trail is not optional.**
+
+When an agent acts in your system — creates a PR, modifies a file, restarts a service, calls an external API — that action needs to be logged with enough context to reconstruct exactly what happened: what input the agent received, what reasoning it performed, what action it took, and under what permissions. Without this, incident response becomes guesswork.
+
+The audit trail serves three functions. First, it enables forensic investigation when something goes wrong. Second, it creates accountability — you can trace any system change back to the agent action that caused it. Third, it generates the data you need to evaluate whether an agent is actually performing reliably in your specific environment, independent of vendor benchmarks.
+
+Build this observability into the agent infrastructure from day one. Adding it retroactively, after an incident, is like adding monitoring to a service after it has already failed and the logs are gone.
+
+**Human gates need to be designed, not assumed.**
+
+The worst governance model is one where humans are supposed to review agent actions but the process makes that review impossible in practice. If an agent opens 50 PRs per day and each takes meaningful effort to evaluate, reviewers will start approving without reading. The human gate becomes a rubber stamp, which is worse than no gate at all because it creates false confidence.
+
+Design human gates around reversibility and blast radius. Any action that cannot be undone in under five minutes requires a human decision, no exceptions. Any action that affects more than one service simultaneously requires a human decision. Any action in a production environment during peak traffic requires a human decision. These thresholds will be different for every team — the important thing is that they exist explicitly and are enforced in the workflow architecture, not just in team norms.
+
+**The incident response plan for agents is different from the plan for services.**
+
+When a service fails, you know exactly what failed: the service. When an agent acts incorrectly, the failure surface is harder to bound. Did the agent hallucinate a root cause and take the wrong remediation? Did it get prompt-injected and execute an attacker's instructions? Did it have a permission scope wider than intended and do something that was never part of its design?
+
+The incident response plan needs to include: how to immediately revoke the agent's credentials, how to enumerate every action the agent took in the relevant time window, how to determine whether those actions were part of a compromise or a model failure, and how to communicate to affected parties. None of this can be improvised during an incident. It needs to be documented, rehearsed, and owned by someone specific on the team.
+
+**Supply chain integrity applies to agents too.**
+
+Your CI/CD pipeline probably pins dependency versions and verifies package signatures. Your agent infrastructure needs the same treatment. If your workflow pulls an agent image, a model endpoint configuration, or a tool definition from an external source at runtime, that external source becomes part of your trust chain. A compromised tool definition, an unpinned agent version that gets silently updated, or a model endpoint that changes behavior without notice are all supply chain risks.
+
+Pin everything. Use SHA-based references instead of tags for agent components. Verify signatures where they exist. Treat the agent stack with the same supply chain discipline you apply to application dependencies.
+
 ## The honest conclusion
 
 Agentic DevOps is not hype. It's real, it's in production at reference teams, and it will change how platform engineering works over the next two years.
