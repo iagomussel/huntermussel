@@ -2,13 +2,34 @@
 import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import { ArrowRight } from 'lucide-react';
+import { breadcrumbSchema } from '@/lib/schema';
 
 const posts = (await getCollection('blog'))
   .filter(post => post.data.status !== 'draft')
   .sort((a, b) => b.data.date?.valueOf() - a.data.date?.valueOf());
+const blogUrl = "https://huntermussel.com/blog/";
+const blogSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "HunterMussel Blog",
+    url: blogUrl,
+    description: "Articles on process management, AI automation, and DevOps.",
+  },
+  breadcrumbSchema([
+    { name: "Home", item: "https://huntermussel.com/" },
+    { name: "Blog", item: blogUrl },
+  ]),
+];
 ---
 
-<Layout title="Blog">
+<Layout
+  title="Blog"
+  description="Articles on process management, AI automation, and DevOps."
+  canonicalUrl={blogUrl}
+  keywords={["ai automation blog", "devops blog", "process management articles", "technical seo insights"]}
+  schema={blogSchema}
+>
   <div class="min-h-screen bg-background">
     <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
     <main class="container relative z-10 px-6 pt-32 pb-24">

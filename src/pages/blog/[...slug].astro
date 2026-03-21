@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import DisqusComments from '@/components/react/DisqusComments';
 import BlogShareSection from '@/components/react/BlogShareSection';
 import authors from '@/data/authors.json';
+import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => data.status !== 'draft');
@@ -24,12 +25,42 @@ const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateSt
   year: "numeric",
 }) : null;
 
-const url = `https://huntermussel.com/blog/${entry.slug}`;
+const url = `https://huntermussel.com/blog/${entry.slug}/`;
 const authorKey = entry.data.authors?.[0];
 const author = authorKey && authors[authorKey];
+const blogSchema = [
+  articleSchema({
+    headline: entry.data.title,
+    description: entry.data.description,
+    url,
+    image: entry.data.image,
+    datePublished: entry.data.date?.toISOString(),
+    author: author
+      ? {
+          name: author.name,
+          url: author.url,
+        }
+      : undefined,
+    articleSection: entry.data.tags?.[0] ?? "Blog",
+    keywords: entry.data.keywords,
+  }),
+  breadcrumbSchema([
+    { name: "Home", item: "https://huntermussel.com/" },
+    { name: "Blog", item: "https://huntermussel.com/blog/" },
+    { name: entry.data.title, item: url },
+  ]),
+];
 ---
 
-<Layout title={entry.data.title} description={entry.data.description} image={entry.data.image} canonicalUrl={url} type="article" keywords={entry.data.keywords}>
+<Layout
+  title={entry.data.title}
+  description={entry.data.description}
+  image={entry.data.image}
+  canonicalUrl={url}
+  type="article"
+  keywords={entry.data.keywords}
+  schema={blogSchema}
+>
   <div class="min-h-screen bg-background">
      <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
 

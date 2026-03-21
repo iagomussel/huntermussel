@@ -7,15 +7,14 @@ import AboutSection from "@/components/react/AboutSection";
 import TechSection from "@/components/react/TechSection";
 import ContactSection from "@/components/react/ContactSection";
 import ToolsSection from "@/components/react/ToolsSection";
+import { ORGANIZATION_ID, WEBSITE_ID, organizationSchema, websiteSchema } from "@/lib/schema";
 
 const homepageUrl = "https://huntermussel.com/";
 const homepageSchema = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "HunterMussel",
-    url: homepageUrl,
-    logo: "https://huntermussel.com/img/logo.svg",
+  organizationSchema({
+    description:
+      "HunterMussel helps companies build scalable software, AI automation workflows, cloud infrastructure, and technical SEO systems.",
+    email: "contact@huntermussel.com",
     founder: {
       "@type": "Person",
       name: "Iago Mussel",
@@ -33,13 +32,14 @@ const homepageSchema = [
       "cloud infrastructure",
       "technical SEO",
     ],
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "HunterMussel",
-    url: homepageUrl,
-  },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      email: "contact@huntermussel.com",
+      availableLanguage: ["English", "Portuguese"],
+    },
+  }),
+  websiteSchema(),
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -47,6 +47,12 @@ const homepageSchema = [
     url: homepageUrl,
     description:
       "HunterMussel helps companies build scalable software, AI automation workflows, cloud infrastructure, and technical SEO systems.",
+    isPartOf: {
+      "@id": WEBSITE_ID,
+    },
+    mainEntity: {
+      "@id": ORGANIZATION_ID,
+    },
     about: [
       "AI automation",
       "DevOps engineering",
