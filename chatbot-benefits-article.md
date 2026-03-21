@@ -68,6 +68,38 @@ When visitors know they can get help instantly, they feel more comfortable explo
 
 ---
 
+## But Let's Be Honest — There Are Trade-Offs
+
+A chatbot isn't a magic wand, and it's worth going in with realistic expectations. Here are the most common challenges you'll want to think through before diving in.
+
+**It's not a replacement for real human connection.** Chatbots are great for handling structured, predictable questions, but they can fall short in emotionally sensitive or highly complex situations. A customer who's frustrated, confused, or dealing with a serious issue often needs a human — someone who can read between the lines, empathize, and exercise judgment. A good chatbot setup always includes a clear, easy handoff to a live agent when things get complicated.
+
+**Setup takes real effort.** A chatbot is only as good as the information and logic you put into it. If it's poorly trained, gives wrong answers, or gets stuck in awkward loops, it can damage your brand rather than help it. Building a genuinely useful chatbot requires time, planning, and ongoing maintenance — it's not a one-and-done project.
+
+**Some users simply don't like them.** There's a segment of customers who find chatbots impersonal or frustrating, especially if they've had bad experiences with clunky bots in the past. Always make it easy for these visitors to bypass the bot and reach a human directly. Forcing someone into an automated conversation they don't want is a sure way to lose them.
+
+**Privacy and data considerations matter.** Chatbots collect conversation data, and depending on your audience and industry, you'll need to be thoughtful about how that data is stored, used, and disclosed. Make sure your chatbot setup complies with applicable privacy laws like GDPR or CCPA, and be transparent with users about what's being collected.
+
+---
+
+## What Does It Actually Cost?
+
+Chatbot pricing varies widely depending on the platform, features, and scale — so there's genuinely something for every budget. Here's a rough breakdown of what to expect:
+
+**Free and low-cost options ($0–$50/month)** are a great starting point for small businesses or anyone who wants to test the waters. Tools like Tidio, HubSpot's free chat, or basic Intercom plans let you set up a simple chatbot without a big upfront commitment. You'll get limited customization and message volumes, but it's more than enough to see whether a chatbot makes sense for your site.
+
+**Mid-tier platforms ($50–$500/month)** offer significantly more capability — better AI, more integrations, analytics dashboards, multi-channel support, and higher conversation limits. This is where most growing businesses land once they've validated the concept and want to do more with it. Platforms like Drift, Freshchat, or Intercom's paid tiers fall into this range.
+
+**Enterprise-level solutions ($500+/month)** are built for businesses with complex needs — high traffic volumes, deep CRM integrations, advanced AI training, custom workflows, and dedicated support. If you're running a large e-commerce operation or a high-volume B2B sales process, this is where the real ROI starts to show clearly.
+
+**Custom-built chatbots** are an option for businesses with very specific needs that off-the-shelf platforms can't meet. Development costs vary enormously — from a few thousand dollars for a basic custom bot to six figures for a sophisticated AI-powered assistant — and you'll also need ongoing engineering resources to maintain it.
+
+Beyond the platform cost, don't forget to factor in the time investment for setup and training, content creation for your bot's responses, staff time for monitoring conversations and handling escalations, and periodic review and updates as your business evolves.
+
+The bottom line: a chatbot doesn't have to be expensive to be effective. Start small, prove the value, and scale up from there.
+
+---
+
 ## So, Do You Really Need One?
 
 If your website is where you do business — and for most companies today, it absolutely is — then yes, a chatbot isn't just a nice-to-have anymore. It's quickly becoming a baseline expectation. Customers are used to instant, on-demand support, and businesses that can deliver it have a real competitive edge.
