@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import {
   Binary,
   Hash,
-  FileJson,
   Image,
   FileText,
   ChartBar,
@@ -37,13 +36,6 @@ const tools = [
     slug: "hash-generator",
     category: "hashing",
     description: "Generate and verify MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.",
-  },
-  {
-    icon: FileJson,
-    title: "JSON Formatter",
-    slug: "json-formatter",
-    category: "json",
-    description: "Format, validate, and minify JSON payloads with syntax highlighting.",
   },
   {
     icon: Image,
