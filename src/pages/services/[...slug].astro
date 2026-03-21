@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import MermaidRenderer from '@/components/MermaidRenderer.astro';
 import { ArrowLeft } from 'lucide-react';
+import FAQSection from '@/components/react/FAQSection';
+import { serviceFAQ, homeFAQ } from '@/data/faq';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -17,6 +19,7 @@ const { Content } = await entry.render();
 const services = await getCollection('services');
 const url = `https://huntermussel.com/services/${entry.slug}/`;
 const relatedServices = services.filter((item) => item.slug !== entry.slug).slice(0, 3);
+const faqItems = serviceFAQ[entry.slug] ?? homeFAQ.slice(0, 5);
 const serviceSchema = [
   {
     "@context": "https://schema.org",
@@ -56,6 +59,18 @@ const serviceSchema = [
         item: url,
       },
     ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   },
 ];
 ---
@@ -104,7 +119,7 @@ const serviceSchema = [
             {relatedServices.map((item) => (
               <article class="rounded-lg border border-border bg-card/40 p-5 transition-all hover:border-primary/30 hover:bg-card">
                 <h3 class="font-heading text-lg font-semibold">
-                  <a href={`/services/${item.slug}`} class="transition-colors hover:text-primary">
+                  <a href={`/services/${item.slug}/`} class="transition-colors hover:text-primary">
                     {item.data.title}
                   </a>
                 </h3>
@@ -134,5 +149,6 @@ const serviceSchema = [
       </article>
     </main>
   </div>
+  <FAQSection client:load items={faqItems} title="Common Questions About This Service" />
   <MermaidRenderer />
 </Layout>

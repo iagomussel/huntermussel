@@ -1,0 +1,331 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="SLA Downtime Calculator | HunterMussel Tools"
+  description="Calculate allowed downtime from an SLA uptime percentage. Comparison table for 99% through 99.9999%. Copy as Markdown for architecture docs."
+  canonicalPath="/tools/sla-calculator/"
+  keywords={[
+    "sla calculator",
+    "uptime calculator",
+    "sla downtime calculator",
+    "99.9 uptime calculator",
+    "availability calculator",
+    "sla nines calculator",
+    "five nines uptime",
+    "devops sla tool",
+    "service level agreement calculator",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / devops</p>
+      <h1>SLA Downtime Calculator</h1>
+      <p class="lead">
+        Enter an uptime percentage and see exactly how many minutes of downtime
+        that allows per day, week, month, and year. Copy the table as Markdown
+        for architecture docs.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <!-- Input -->
+    <div class="card sla-input-card">
+      <div class="sla-input-row">
+        <input id="slaInput" class="sla-input" type="number" min="0" max="100" step="0.0001" value="99.9" placeholder="99.9" spellcheck="false" />
+        <span class="sla-pct-sign">%</span>
+        <span class="sla-uptime-label">uptime</span>
+      </div>
+      <div id="slaResult" class="sla-result-row">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="card sla-table-card">
+      <div class="sla-table-head">
+        <span class="sla-table-title">Standard SLA Comparison</span>
+        <button id="copyMd" type="button" class="secondary">Copy as Markdown</button>
+      </div>
+      <div class="sla-table-wrap">
+        <table id="slaTable" class="sla-table">
+          <thead>
+            <tr>
+              <th>Uptime</th>
+              <th>Downtime / day</th>
+              <th>Downtime / week</th>
+              <th>Downtime / month</th>
+              <th>Downtime / year</th>
+            </tr>
+          </thead>
+          <tbody id="slaTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <section class="article">
+      <article class="card">
+        <h2>How It's Calculated</h2>
+        <p>
+          <code>downtime = (1 − uptime%) × period_in_minutes</code><br />
+          Periods used: 1440 min/day · 10080 min/week · 43800 min/month · 525960 min/year.
+        </p>
+      </article>
+      <article class="card">
+        <h2>The "Nines"</h2>
+        <ul>
+          <li><strong>99%</strong> — "two nines" — ~7.3 h/month. Consumer grade.</li>
+          <li><strong>99.9%</strong> — "three nines" — ~43.8 min/month. Typical SaaS commitment.</li>
+          <li><strong>99.95%</strong> — ~21.9 min/month. Common for managed cloud services.</li>
+          <li><strong>99.99%</strong> — "four nines" — ~4.4 min/month. High-availability target.</li>
+          <li><strong>99.999%</strong> — "five nines" — ~26 sec/month. Carrier-grade.</li>
+        </ul>
+      </article>
+      <ServiceCTA
+        service="cloud-infrastructure-ai"
+        title="Need to hit 99.9% uptime in production?"
+        description="HunterMussel architects high-availability cloud systems with multi-region deployments, auto-scaling, automated failover, and SLA-driven infrastructure design."
+        linkLabel="Explore Cloud Infrastructure & AI"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .sla-input-card {
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .sla-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .sla-input {
+    width: 180px;
+    font-family: "JetBrains Mono", monospace !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    text-align: right;
+  }
+
+  .sla-pct-sign {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: hsl(var(--primary));
+  }
+
+  .sla-uptime-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: hsl(var(--muted-foreground));
+    margin-left: 0.25rem;
+  }
+
+  .sla-result-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .sla-result-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .sla-result-period {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .sla-result-value {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .sla-result-value.zero {
+    color: hsl(145 70% 55%);
+  }
+
+  /* ── Table ── */
+  .sla-table-card {
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 1.4rem;
+  }
+
+  .sla-table-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid hsl(var(--border));
+    background: hsl(var(--muted) / 0.5);
+  }
+
+  .sla-table-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .sla-table-wrap {
+    overflow-x: auto;
+  }
+
+  .sla-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .sla-table th {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground));
+    padding: 0.5rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid hsl(var(--border));
+    white-space: nowrap;
+  }
+
+  .sla-table td {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    color: hsl(var(--foreground));
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid hsl(var(--border) / 0.4);
+    white-space: nowrap;
+  }
+
+  .sla-table tbody tr.sla-row-highlight {
+    background: hsl(var(--primary) / 0.08);
+    outline: 1px solid hsl(var(--primary) / 0.3);
+  }
+
+  .sla-table tbody tr.sla-row-highlight td:first-child {
+    color: hsl(var(--primary));
+    font-weight: 700;
+  }
+
+  .sla-table tbody tr:hover {
+    background: hsl(var(--muted) / 0.4);
+  }
+</style>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  const NINES = [99, 99.9, 99.95, 99.99, 99.999, 99.9999];
+  const PERIODS = [
+    { label: "day",   minutes: 1440 },
+    { label: "week",  minutes: 10080 },
+    { label: "month", minutes: 43800 },
+    { label: "year",  minutes: 525960 },
+  ];
+
+  function downtime(uptimePct, minutes) {
+    return (1 - uptimePct / 100) * minutes;
+  }
+
+  function fmtMinutes(m) {
+    if (m < 0.01) return "< 1 sec";
+    if (m < 1) {
+      const s = Math.round(m * 60);
+      return `${s} sec`;
+    }
+    if (m < 60) {
+      return `${m.toFixed(1)} min`;
+    }
+    if (m < 1440) {
+      const h = m / 60;
+      return `${h.toFixed(1)} h`;
+    }
+    const d = m / 1440;
+    return `${d.toFixed(1)} d`;
+  }
+
+  function buildTable(highlight) {
+    const rows = NINES.map(pct => {
+      const cells = PERIODS.map(p => `<td>${fmtMinutes(downtime(pct, p.minutes))}</td>`).join("");
+      const cls = highlight === pct ? ' class="sla-row-highlight"' : "";
+      return `<tr${cls}><td>${pct}%</td>${cells}</tr>`;
+    });
+    $("slaTableBody").innerHTML = rows.join("");
+  }
+
+  function updateResult(pct) {
+    const items = PERIODS.map(p => {
+      const dt = downtime(pct, p.minutes);
+      const fmt = fmtMinutes(dt);
+      return `<div class="sla-result-item">
+        <span class="sla-result-period">/ ${p.label}</span>
+        <span class="sla-result-value${dt < 0.1 ? " zero" : ""}">${fmt}</span>
+      </div>`;
+    });
+    $("slaResult").innerHTML = items.join("");
+  }
+
+  function getHighlightPct(pct) {
+    for (const n of NINES) {
+      if (Math.abs(n - pct) < 0.00005) return n;
+    }
+    return null;
+  }
+
+  function run() {
+    const raw = $("slaInput").value.trim();
+    const pct = parseFloat(raw);
+    if (isNaN(pct) || pct < 0 || pct > 100) {
+      $("slaResult").innerHTML = "";
+      buildTable(null);
+      return;
+    }
+    updateResult(pct);
+    buildTable(getHighlightPct(pct));
+  }
+
+  $("slaInput").addEventListener("input", run);
+
+  $("copyMd").addEventListener("click", async () => {
+    const headers = ["Uptime", ...PERIODS.map(p => `Downtime / ${p.label}`)];
+    const sep = headers.map(() => "---");
+    const rows = NINES.map(pct => {
+      const cells = PERIODS.map(p => fmtMinutes(downtime(pct, p.minutes)));
+      return [pct + "%", ...cells].join(" | ");
+    });
+    const md = [
+      "| " + headers.join(" | ") + " |",
+      "| " + sep.join(" | ") + " |",
+      ...rows.map(r => "| " + r + " |"),
+    ].join("\n");
+    await navigator.clipboard.writeText(md);
+    const btn = $("copyMd");
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = "Copy as Markdown"; }, 1800);
+  });
+
+  run();
+</script>

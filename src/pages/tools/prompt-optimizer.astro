@@ -1,0 +1,827 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="Prompt Optimizer | HunterMussel Tools"
+  description="Free prompt engineering wizard for Claude, GPT-4, Gemini, and open-source models. Answer 5 questions and get a production-ready AI prompt — deterministic, no API calls, runs entirely in your browser."
+  canonicalPath="/tools/prompt-optimizer/"
+  keywords={[
+    "prompt optimizer",
+    "ai prompt generator",
+    "prompt engineering tool",
+    "chatgpt prompt builder",
+    "claude prompt optimizer",
+    "gpt-4 prompt template",
+    "better ai prompts",
+    "prompt engineering wizard",
+    "ai prompt best practices",
+    "free prompt optimizer online",
+    "llm prompt builder",
+    "system prompt generator",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / ai</p>
+      <h1>Prompt Optimizer</h1>
+      <p class="lead">
+        A 5-step wizard that assembles production-ready AI prompts using proven prompt engineering
+        techniques. Choose your target model, task type, output format, and detail level — we
+        handle the rest. Fully deterministic: no API calls, no data leaves your browser.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <!-- Wizard container -->
+    <div class="card po-wizard">
+      <!-- Progress bar -->
+      <div class="po-progress-wrap">
+        <div class="po-progress-header">
+          <span id="stepLabel" class="po-step-label">Step 1 of 5</span>
+          <span id="stepTitle" class="po-step-title-sm">Which AI platform?</span>
+        </div>
+        <div class="po-progress-bar">
+          <div class="po-progress-fill" id="progressFill" style="width: 20%"></div>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <div id="stepsContainer">
+
+        <!-- Step 1: Platform -->
+        <div class="po-step" data-step="1">
+          <h2 class="po-question">Which AI platform are you targeting?</h2>
+          <p class="po-hint">Each model has distinct strengths. We apply model-specific formatting techniques automatically.</p>
+          <div class="po-chips">
+            <button class="po-chip" data-key="platform" data-value="claude">
+              <span class="po-chip-icon">✦</span>
+              <span class="po-chip-main">Claude (Anthropic)</span>
+              <span class="po-chip-sub">Claude 3.5 Sonnet, Haiku, Opus</span>
+            </button>
+            <button class="po-chip" data-key="platform" data-value="gpt">
+              <span class="po-chip-icon">⬡</span>
+              <span class="po-chip-main">GPT-4 / ChatGPT</span>
+              <span class="po-chip-sub">GPT-4o, GPT-4 Turbo, o1</span>
+            </button>
+            <button class="po-chip" data-key="platform" data-value="gemini">
+              <span class="po-chip-icon">◈</span>
+              <span class="po-chip-main">Gemini (Google)</span>
+              <span class="po-chip-sub">Gemini 2.0 Flash, 1.5 Pro</span>
+            </button>
+            <button class="po-chip" data-key="platform" data-value="opensource">
+              <span class="po-chip-icon">⊞</span>
+              <span class="po-chip-main">Open-source model</span>
+              <span class="po-chip-sub">Llama 3, Mistral, Phi, Qwen</span>
+            </button>
+            <button class="po-chip" data-key="platform" data-value="generic">
+              <span class="po-chip-icon">◯</span>
+              <span class="po-chip-main">Generic / Unknown</span>
+              <span class="po-chip-sub">Universal best practices</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Task type -->
+        <div class="po-step" data-step="2" style="display:none">
+          <h2 class="po-question">What type of task?</h2>
+          <p class="po-hint">The task type determines the role, expertise, and quality criteria assigned to the model.</p>
+          <div class="po-chips po-chips--wide">
+            <button class="po-chip" data-key="taskType" data-value="code">
+              <span class="po-chip-icon">{ }</span>
+              <span class="po-chip-main">Write / Review Code</span>
+              <span class="po-chip-sub">Generate, debug, explain, refactor code</span>
+            </button>
+            <button class="po-chip" data-key="taskType" data-value="content">
+              <span class="po-chip-icon">✍</span>
+              <span class="po-chip-main">Write Content</span>
+              <span class="po-chip-sub">Blog posts, emails, copy, documentation</span>
+            </button>
+            <button class="po-chip" data-key="taskType" data-value="analysis">
+              <span class="po-chip-icon">↗</span>
+              <span class="po-chip-main">Analyze Data / Text</span>
+              <span class="po-chip-sub">Insights, patterns, interpretation</span>
+            </button>
+            <button class="po-chip" data-key="taskType" data-value="qa">
+              <span class="po-chip-icon">?</span>
+              <span class="po-chip-main">Answer Questions</span>
+              <span class="po-chip-sub">Research, factual Q&A, explanations</span>
+            </button>
+            <button class="po-chip" data-key="taskType" data-value="summarize">
+              <span class="po-chip-icon">↓</span>
+              <span class="po-chip-main">Summarize</span>
+              <span class="po-chip-sub">Condense long texts or documents</span>
+            </button>
+            <button class="po-chip" data-key="taskType" data-value="extract">
+              <span class="po-chip-icon">⊡</span>
+              <span class="po-chip-main">Extract Structured Data</span>
+              <span class="po-chip-sub">Pull data into JSON, tables, lists</span>
+            </button>
+            <button class="po-chip" data-key="taskType" data-value="brainstorm">
+              <span class="po-chip-icon">◆</span>
+              <span class="po-chip-main">Brainstorm / Ideate</span>
+              <span class="po-chip-sub">Generate creative ideas or options</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Output format -->
+        <div class="po-step" data-step="3" style="display:none">
+          <h2 class="po-question">How should the response be formatted?</h2>
+          <p class="po-hint">Specifying the output format gives you consistent, predictable results every time.</p>
+          <div class="po-chips">
+            <button class="po-chip" data-key="format" data-value="prose">
+              <span class="po-chip-icon">¶</span>
+              <span class="po-chip-main">Flowing paragraphs</span>
+              <span class="po-chip-sub">Natural, readable prose</span>
+            </button>
+            <button class="po-chip" data-key="format" data-value="bullets">
+              <span class="po-chip-icon">•</span>
+              <span class="po-chip-main">Bullet points</span>
+              <span class="po-chip-sub">Scannable unordered list</span>
+            </button>
+            <button class="po-chip" data-key="format" data-value="steps">
+              <span class="po-chip-icon">1.</span>
+              <span class="po-chip-main">Numbered steps</span>
+              <span class="po-chip-sub">Sequential, how-to format</span>
+            </button>
+            <button class="po-chip" data-key="format" data-value="code">
+              <span class="po-chip-icon">&lt;/&gt;</span>
+              <span class="po-chip-main">Code block</span>
+              <span class="po-chip-sub">Syntax-highlighted code</span>
+            </button>
+            <button class="po-chip" data-key="format" data-value="table">
+              <span class="po-chip-icon">▦</span>
+              <span class="po-chip-main">Markdown table</span>
+              <span class="po-chip-sub">Rows, columns, comparison</span>
+            </button>
+            <button class="po-chip" data-key="format" data-value="json">
+              <span class="po-chip-icon">{ }</span>
+              <span class="po-chip-main">JSON / Structured data</span>
+              <span class="po-chip-sub">Machine-readable output</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Length -->
+        <div class="po-step" data-step="4" style="display:none">
+          <h2 class="po-question">How detailed should the response be?</h2>
+          <p class="po-hint">Length constraints prevent over-padded or truncated responses.</p>
+          <div class="po-chips po-chips--quad">
+            <button class="po-chip" data-key="length" data-value="ultrashort">
+              <span class="po-chip-icon">—</span>
+              <span class="po-chip-main">Ultra-concise</span>
+              <span class="po-chip-sub">3 sentences or fewer</span>
+            </button>
+            <button class="po-chip" data-key="length" data-value="brief">
+              <span class="po-chip-icon">≡</span>
+              <span class="po-chip-main">Brief</span>
+              <span class="po-chip-sub">1–2 short paragraphs</span>
+            </button>
+            <button class="po-chip" data-key="length" data-value="standard">
+              <span class="po-chip-icon">≣</span>
+              <span class="po-chip-main">Standard</span>
+              <span class="po-chip-sub">Balanced, moderately detailed</span>
+            </button>
+            <button class="po-chip" data-key="length" data-value="comprehensive">
+              <span class="po-chip-icon">⊞</span>
+              <span class="po-chip-main">Comprehensive</span>
+              <span class="po-chip-sub">Cover all aspects in depth</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 5: Task description -->
+        <div class="po-step" data-step="5" style="display:none">
+          <h2 class="po-question">Describe your task</h2>
+          <p class="po-hint">Be specific. Include the topic, your audience, key requirements, and any examples you have in mind. The more context you provide, the better the generated prompt.</p>
+          <label class="label" for="taskDescription">Your task description</label>
+          <textarea
+            id="taskDescription"
+            class="po-textarea"
+            rows="5"
+            placeholder='Example: "Write a technical blog post about React Server Components for senior frontend developers. Explain the mental model shift from client-side to server-side rendering, cover practical use cases, and include real code examples."'
+          ></textarea>
+          <label class="label" for="taskConstraints" style="margin-top:1rem">Specific constraints <span class="po-optional">(optional)</span></label>
+          <textarea
+            id="taskConstraints"
+            class="po-textarea"
+            rows="3"
+            placeholder='Example: "Use a friendly but professional tone. Avoid jargon. Write in US English. Do not recommend paid tools."'
+          ></textarea>
+          <div class="actions" style="margin-top:1rem">
+            <button id="backBtn4" type="button" class="secondary">← Back</button>
+            <button id="generateBtn" type="button">Generate Prompt →</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Back nav for chip steps -->
+      <div id="chipBackNav" class="po-back-nav" style="display:none">
+        <button id="chipBackBtn" type="button" class="secondary">← Back</button>
+      </div>
+    </div>
+
+    <!-- Result card (hidden until generated) -->
+    <div id="resultCard" class="card po-result" style="display:none">
+      <div class="po-result-header">
+        <span class="eyebrow" style="margin:0">// generated prompt</span>
+        <button id="copyBtn" type="button" class="secondary">Copy prompt</button>
+      </div>
+      <pre id="resultOutput" class="po-output"></pre>
+      <div class="po-optimizations">
+        <p class="po-opt-title">Optimizations applied:</p>
+        <ul id="optimizationList" class="po-opt-list"></ul>
+      </div>
+      <div class="actions" style="margin-top:1.25rem">
+        <button id="startOverBtn" type="button" class="secondary">Start over</button>
+        <button id="editConstraintsBtn" type="button" class="secondary">Edit constraints</button>
+      </div>
+    </div>
+
+    <!-- Info cards -->
+    <section class="article">
+      <article class="card">
+        <h2>What is prompt engineering?</h2>
+        <p>
+          Prompt engineering is the practice of crafting input instructions that reliably guide AI language models
+          to produce the output you want. Well-engineered prompts specify a role for the model, describe the task
+          precisely, constrain the output format, and set length expectations — reducing hallucinations and
+          improving consistency across runs.
+        </p>
+        <ul>
+          <li><strong>Role assignment:</strong> Telling the model it's a "senior software engineer" or "professional writer" activates relevant knowledge and style.</li>
+          <li><strong>Output format specification:</strong> Saying "respond as a markdown table" eliminates ambiguity and makes downstream parsing easier.</li>
+          <li><strong>Model-specific techniques:</strong> Claude responds well to XML tags; GPT-4 to system/user separation; open-source models to explicit instruction markers.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Why a deterministic prompt optimizer?</h2>
+        <p>
+          Most "AI prompt generators" themselves call an LLM to rewrite your prompt — which introduces variability,
+          API costs, and latency. Our optimizer is fully deterministic: given the same five answers, it always
+          produces the same prompt. This means you can build repeatable workflows, store prompts as artifacts,
+          and version-control your prompt engineering decisions.
+        </p>
+        <p>
+          The wizard applies a curated rulebook of prompt engineering best practices compiled from published
+          research by Anthropic, OpenAI, Google DeepMind, and the open-source community. No AI calls needed.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Model-specific formatting guide</h2>
+        <ul>
+          <li><strong>Claude:</strong> Uses XML tags (<code>&lt;role&gt;</code>, <code>&lt;task&gt;</code>, <code>&lt;guidelines&gt;</code>) for reliable section separation. Ends with "Think carefully before responding."</li>
+          <li><strong>GPT-4 / ChatGPT:</strong> Separates system and user messages with clear <code>[SYSTEM]</code> and <code>[USER]</code> headers. System message carries the persona and constraints.</li>
+          <li><strong>Gemini:</strong> Uses flat instruction + task structure with explicit role and instruction lines.</li>
+          <li><strong>Open-source (Llama, Mistral):</strong> Uses the standard <code>### System / ### Instruction / ### Response</code> format common to instruction-tuned models.</li>
+          <li><strong>Generic:</strong> Natural language structure that works across any model.</li>
+        </ul>
+      </article>
+      <ServiceCTA
+        service="ai-process-management"
+        title="Need AI automation beyond prompting?"
+        description="We design and deploy full AI workflow automation — from prompt orchestration and LLM pipelines to multi-agent systems and CI/CD integration."
+        linkLabel="Explore AI automation"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--primary);
+    background: var(--primary-soft);
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.25rem;
+  }
+
+  /* ── Wizard ── */
+  .po-wizard {
+    padding: 1.5rem;
+  }
+
+  /* Progress */
+  .po-progress-wrap {
+    margin-bottom: 1.5rem;
+  }
+
+  .po-progress-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .po-step-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .po-step-title-sm {
+    font-size: 0.8rem;
+    color: var(--text-2);
+  }
+
+  .po-progress-bar {
+    height: 4px;
+    background: var(--muted);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .po-progress-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+
+  /* Question */
+  .po-question {
+    margin: 0 0 0.35rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-1);
+    line-height: 1.3;
+  }
+
+  .po-hint {
+    margin: 0 0 1.25rem;
+    font-size: 0.875rem;
+    color: var(--text-2);
+    line-height: 1.55;
+  }
+
+  .po-optional {
+    font-size: 0.75rem;
+    color: var(--text-2);
+    font-weight: 400;
+    font-family: "Inter", sans-serif;
+  }
+
+  /* Chips */
+  .po-chips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .po-chips--wide {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .po-chips--quad {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .po-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.65rem;
+    background: var(--card);
+    color: var(--text-2);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    font-family: inherit;
+  }
+
+  .po-chip:hover {
+    border-color: hsl(145 80% 50% / 0.4);
+    background: var(--card-hover);
+    color: var(--text-1);
+    box-shadow: none;
+    opacity: 1;
+  }
+
+  .po-chip.selected {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    color: var(--text-1);
+  }
+
+  .po-chip-icon {
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--primary);
+    font-family: "JetBrains Mono", monospace;
+    margin-bottom: 0.2rem;
+  }
+
+  .po-chip-main {
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-1);
+    line-height: 1.2;
+  }
+
+  .po-chip-sub {
+    font-size: 0.75rem;
+    color: var(--text-2);
+    line-height: 1.3;
+  }
+
+  /* Textarea step */
+  .po-textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 0.65rem 0.8rem;
+    font: inherit;
+    font-size: 0.875rem;
+    background: var(--input-bg);
+    color: var(--text-1);
+    resize: vertical;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
+  }
+
+  .po-textarea:focus {
+    outline: none;
+    border-color: hsl(145 80% 50% / 0.5);
+    box-shadow: 0 0 0 2px hsl(145 80% 50% / 0.1);
+  }
+
+  /* Back nav */
+  .po-back-nav {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  /* Result */
+  .po-result {
+    margin-top: 1rem;
+  }
+
+  .po-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .po-output {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--text-1);
+    background: hsl(220 20% 6%);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 1rem 1.1rem;
+    margin: 0;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .po-optimizations {
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px dashed hsl(145 80% 50% / 0.25);
+    border-radius: 0.5rem;
+    background: hsl(145 80% 3%);
+  }
+
+  .po-opt-title {
+    margin: 0 0 0.5rem;
+    font-size: 0.78rem;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .po-opt-list {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .po-opt-list li {
+    font-size: 0.8rem;
+    color: var(--text-2);
+    line-height: 1.4;
+  }
+
+  .po-opt-list li::before {
+    content: "✓ ";
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .po-chips,
+    .po-chips--wide {
+      grid-template-columns: 1fr;
+    }
+
+    .po-chips--quad {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<script type="module">
+  const state = {
+    step: 1,
+    platform: null,
+    taskType: null,
+    format: null,
+    length: null,
+    description: "",
+    constraints: "",
+  };
+
+  const TOTAL_STEPS = 5;
+  const CHIP_STEPS = [1, 2, 3, 4];
+
+  const stepTitles = {
+    1: "Which AI platform?",
+    2: "What type of task?",
+    3: "Output format?",
+    4: "Response detail level?",
+    5: "Describe your task",
+  };
+
+  const progressFill = document.getElementById("progressFill");
+  const stepLabel = document.getElementById("stepLabel");
+  const stepTitleEl = document.getElementById("stepTitle");
+  const chipBackNav = document.getElementById("chipBackNav");
+  const chipBackBtn = document.getElementById("chipBackBtn");
+  const backBtn4 = document.getElementById("backBtn4");
+  const generateBtn = document.getElementById("generateBtn");
+  const resultCard = document.getElementById("resultCard");
+  const resultOutput = document.getElementById("resultOutput");
+  const optimizationList = document.getElementById("optimizationList");
+  const copyBtn = document.getElementById("copyBtn");
+  const startOverBtn = document.getElementById("startOverBtn");
+  const editConstraintsBtn = document.getElementById("editConstraintsBtn");
+
+  function updateProgress() {
+    const pct = (state.step / TOTAL_STEPS) * 100;
+    progressFill.style.width = pct + "%";
+    stepLabel.textContent = `Step ${state.step} of ${TOTAL_STEPS}`;
+    stepTitleEl.textContent = stepTitles[state.step] || "";
+  }
+
+  function showStep(n) {
+    document.querySelectorAll(".po-step").forEach((el) => {
+      el.style.display = el.dataset.step == n ? "" : "none";
+    });
+    // Re-enable chips on the newly visible step so Back + re-select works
+    document
+      .querySelectorAll(`.po-step[data-step="${n}"] .po-chip`)
+      .forEach((c) => { (c as HTMLButtonElement).disabled = false; });
+    chipBackNav.style.display = CHIP_STEPS.includes(n) && n > 1 ? "" : "none";
+    state.step = n;
+    updateProgress();
+  }
+
+  function goNext() {
+    if (state.step < TOTAL_STEPS) showStep(state.step + 1);
+  }
+
+  function goBack() {
+    if (state.step > 1) showStep(state.step - 1);
+  }
+
+  // Chip selection — at most one pending advance per step
+  let advanceTimer = -1;
+
+  document.querySelectorAll(".po-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const key = chip.dataset.key;
+      const value = chip.dataset.value;
+
+      // Ignore if this step's chips are already locked (first selection wins)
+      if (chip.disabled) return;
+
+      // Lock all sibling chips immediately so a second tap is a no-op
+      document
+        .querySelectorAll(`.po-chip[data-key="${key}"]`)
+        .forEach((c) => {
+          c.classList.remove("selected");
+          (c as HTMLButtonElement).disabled = true;
+        });
+      chip.classList.add("selected");
+      state[key] = value;
+
+      // Cancel any prior pending advance before scheduling a new one
+      clearTimeout(advanceTimer);
+      advanceTimer = setTimeout(goNext, 180);
+    });
+  });
+
+  // Back buttons
+  chipBackBtn.addEventListener("click", goBack);
+  backBtn4.addEventListener("click", goBack);
+
+  // Generate
+  generateBtn.addEventListener("click", () => {
+    const desc = document.getElementById("taskDescription").value.trim();
+    const constraints = document.getElementById("taskConstraints").value.trim();
+
+    if (!desc) {
+      document.getElementById("taskDescription").focus();
+      return;
+    }
+
+    state.description = desc;
+    state.constraints = constraints;
+
+    const { prompt, optimizations } = buildPrompt(state);
+
+    resultOutput.textContent = prompt;
+    optimizationList.innerHTML = optimizations
+      .map((o) => `<li>${o}</li>`)
+      .join("");
+
+    resultCard.style.display = "";
+    resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  // Copy
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(resultOutput.textContent);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => (copyBtn.textContent = "Copy prompt"), 2000);
+    } catch {
+      copyBtn.textContent = "Select & copy";
+    }
+  });
+
+  // Start over
+  startOverBtn.addEventListener("click", () => {
+    Object.assign(state, {
+      step: 1,
+      platform: null,
+      taskType: null,
+      format: null,
+      length: null,
+      description: "",
+      constraints: "",
+    });
+    document
+      .querySelectorAll(".po-chip")
+      .forEach((c) => {
+        c.classList.remove("selected");
+        (c as HTMLButtonElement).disabled = false;
+      });
+    document.getElementById("taskDescription").value = "";
+    document.getElementById("taskConstraints").value = "";
+    resultCard.style.display = "none";
+    showStep(1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // Edit constraints
+  editConstraintsBtn.addEventListener("click", () => {
+    showStep(5);
+    resultCard.style.display = "none";
+    document.querySelector(".po-wizard").scrollIntoView({ behavior: "smooth" });
+  });
+
+  // Init
+  updateProgress();
+
+  // ─── Prompt builder ───────────────────────────────────────────────────────
+
+  function buildPrompt(s) {
+    const roles = {
+      code: "You are an expert software engineer with deep knowledge of software architecture, design patterns, and modern best practices.",
+      content: "You are a professional writer and content strategist skilled at creating clear, engaging, and well-structured content.",
+      analysis: "You are a skilled data analyst and critical thinker with expertise in identifying patterns and drawing actionable conclusions.",
+      qa: "You are a knowledgeable and accurate research assistant. If you are uncertain about something, say so rather than guessing.",
+      summarize: "You are an expert at synthesizing complex information into concise, accurate summaries while preserving key insights.",
+      extract: "You are a precision data extraction specialist focused on structured, complete, and accurate output.",
+      brainstorm: "You are a creative strategist with broad domain knowledge, skilled at generating diverse and actionable ideas.",
+    };
+
+    const taskGuides = {
+      code: "Write clean, functional, well-commented code that follows modern best practices. Include usage examples where helpful.",
+      content: "Create engaging, well-structured content tailored to the audience and purpose. Ensure clarity and logical flow.",
+      analysis: "Analyze the subject systematically. Support all conclusions with specific evidence. Note any assumptions or limitations.",
+      qa: "Provide accurate, well-reasoned answers. Cite your reasoning. Acknowledge uncertainty when it exists.",
+      summarize: "Preserve essential meaning and key points. Remove redundancy while maintaining accuracy and completeness.",
+      extract: "Extract and structure the requested data precisely and completely. Do not infer or fabricate data not present in the source.",
+      brainstorm: "Generate diverse, creative, and actionable ideas. Aim for variety across different approaches and perspectives.",
+    };
+
+    const formatGuides = {
+      prose: "Present your response as flowing, well-structured paragraphs.",
+      bullets: "Structure your entire response using clear bullet points (•). Group related items under sub-headings if needed.",
+      steps: "Structure your response as numbered steps. Include prerequisites or context before step 1.",
+      code: "Provide your answer in a properly formatted code block with the language specified after the opening fence.",
+      table: "Present your response as one or more markdown tables with descriptive column headers.",
+      json: "Return your response as valid, properly formatted JSON only. Use descriptive, camelCase key names.",
+    };
+
+    const lengthGuides = {
+      ultrashort: "Be extremely concise — 3 sentences or fewer in total.",
+      brief: "Be concise — limit your response to 1–2 short paragraphs.",
+      standard: "Provide a moderately detailed response. Include enough context to be genuinely useful without padding.",
+      comprehensive: "Be thorough and comprehensive. Cover all relevant aspects, trade-offs, and edge cases.",
+    };
+
+    const role = roles[s.taskType] ?? "";
+    const taskG = taskGuides[s.taskType] ?? "";
+    const formatG = formatGuides[s.format] ?? "";
+    const lengthG = lengthGuides[s.length] ?? "";
+    const desc = s.description;
+    const constraintBlock = s.constraints ? `\n\nConstraints:\n${s.constraints}` : "";
+
+    const platformLabels = {
+      claude: "Claude (Anthropic)",
+      gpt: "GPT-4 / ChatGPT",
+      gemini: "Gemini",
+      opensource: "Open-source model",
+      generic: "Generic",
+    };
+
+    const taskLabels = {
+      code: "code generation",
+      content: "content writing",
+      analysis: "data analysis",
+      qa: "Q&A / research",
+      summarize: "summarization",
+      extract: "data extraction",
+      brainstorm: "brainstorming",
+    };
+
+    const formatLabels = {
+      prose: "flowing paragraphs",
+      bullets: "bullet points",
+      steps: "numbered steps",
+      code: "code block",
+      table: "markdown table",
+      json: "JSON output",
+    };
+
+    const lengthLabels = {
+      ultrashort: "ultra-concise (3 sentences)",
+      brief: "brief (1–2 paragraphs)",
+      standard: "standard detail",
+      comprehensive: "comprehensive coverage",
+    };
+
+    let prompt = "";
+    const optimizations = [
+      `Target platform: ${platformLabels[s.platform] ?? s.platform}`,
+      `Task role: ${role.split(".")[0]}`,
+      `Format: ${formatLabels[s.format] ?? s.format}`,
+      `Length: ${lengthLabels[s.length] ?? s.length}`,
+    ];
+
+    if (s.platform === "claude") {
+      prompt = `<role>\n${role}\n</role>\n\n<guidelines>\n${taskG}\n${formatG}\n${lengthG}\n</guidelines>\n\n<task>\n${desc}\n</task>${constraintBlock}\n\nThink carefully before responding.`;
+      optimizations.push("Applied Claude XML tag structure for reliable section parsing");
+      optimizations.push('Added "Think carefully before responding" for improved reasoning');
+    } else if (s.platform === "gpt") {
+      const sysMsg = `${role}\n\n${taskG}\n${formatG}\n${lengthG}`;
+      const userMsg = desc + (s.constraints ? `\n\nAdditional constraints: ${s.constraints}` : "");
+      prompt = `[SYSTEM]\n${sysMsg}\n\n---\n\n[USER]\n${userMsg}`;
+      optimizations.push("Separated system and user messages for GPT chat format");
+      optimizations.push("Role and constraints placed in system message for highest influence");
+    } else if (s.platform === "gemini") {
+      prompt = `Role: ${role}\n\nInstructions: ${taskG} ${formatG} ${lengthG}\n\nTask:\n${desc}${constraintBlock}`;
+      optimizations.push("Used flat instruction structure for Gemini");
+    } else if (s.platform === "opensource") {
+      prompt = `### System\n${role}\n\n### Instruction\n${taskG} ${formatG} ${lengthG}\n\n${desc}${constraintBlock}\n\n### Response`;
+      optimizations.push("Applied ### System / ### Instruction / ### Response format for instruction-tuned models");
+    } else {
+      prompt = `${role}\n\n${taskG} ${formatG} ${lengthG}\n\nTask: ${desc}${constraintBlock}`;
+      optimizations.push("Applied universal prompt structure compatible with any model");
+    }
+
+    if (s.constraints) {
+      optimizations.push("Injected custom constraints block");
+    }
+
+    return { prompt, optimizations };
+  }
+</script>

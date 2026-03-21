@@ -4,6 +4,8 @@ import Layout from '@/layouts/Layout.astro';
 import MermaidRenderer from '@/components/MermaidRenderer.astro';
 import { ArrowLeft } from 'lucide-react';
 import authors from '@/data/authors.json';
+import FAQSection from '@/components/react/FAQSection';
+import { caseFAQ } from '@/data/faq';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -79,6 +81,18 @@ const caseSchema = [
         item: url,
       },
     ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: caseFAQ.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   },
 ];
 ---
@@ -165,7 +179,7 @@ const caseSchema = [
             {relatedCases.map((item) => (
               <article class="rounded-lg border border-border bg-card/40 p-5 transition-all hover:border-primary/30 hover:bg-card">
                 <h3 class="font-heading text-lg font-semibold">
-                  <a href={`/cases/${item.slug}`} class="transition-colors hover:text-primary">
+                  <a href={`/cases/${item.slug}/`} class="transition-colors hover:text-primary">
                     {item.data.title}
                   </a>
                 </h3>
@@ -195,5 +209,6 @@ const caseSchema = [
       </article>
     </main>
   </div>
+  <FAQSection client:load items={caseFAQ} title="Common Questions About Our Projects" />
   <MermaidRenderer />
 </Layout>

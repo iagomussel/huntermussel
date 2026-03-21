@@ -1,12 +1,24 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import OnlineLintersWorkbench from "@/components/react/tools/online-linters/OnlineLintersWorkbench";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="Online Linters | HunterMussel Tools"
   description="Run advanced online lint checks for JSON, YAML, JavaScript, and Markdown with a full-featured Monaco editor."
   canonicalPath="/tools/online-linters/"
+  keywords={[
+    "online linter",
+    "javascript linter online",
+    "json linter",
+    "yaml linter online",
+    "markdown linter",
+    "code linter browser",
+    "eslint online",
+    "syntax checker online",
+    "free code linter",
+  ]}
 >
   <main class="page linters-page">
     <section class="hero linters-hero">
@@ -47,6 +59,12 @@ import OnlineLintersWorkbench from "@/components/react/tools/online-linters/Onli
           <li>Real-time markers will show errors and warnings. You can also manually trigger a format or specific linter checks.</li>
         </ul>
       </article>
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Want code quality gates enforced automatically in your CI pipeline?"
+        description="HunterMussel integrates linting, static analysis, and automated quality checks directly into your CI/CD pipelines — catching issues before they ever reach production."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
     </section>
   </main>
 </BaseLayout>

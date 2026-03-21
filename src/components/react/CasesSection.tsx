@@ -109,7 +109,7 @@ const CasesSection = () => {
               variants={item}
               className="group relative overflow-hidden rounded-lg border border-border bg-card/50 transition-all hover:border-primary/30 hover:bg-card"
             >
-              <a href={`/cases/${c.slug}`} className="block p-6 text-current no-underline hover:no-underline">
+              <a href={`/cases/${c.slug}/`} className="block p-6 text-current no-underline hover:no-underline">
                 <div className="mb-4 flex items-center justify-between">
                   <div className="inline-flex rounded-md border border-border bg-muted/50 p-3 text-primary transition-all group-hover:border-glow group-hover:box-glow">
                     <c.icon size={22} />

@@ -2,12 +2,24 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import estimatorsScript from "@/scripts/estimators.js?url";
 import "@/styles/estimators.css";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 ---
 
 <BaseLayout
   title="Infra & Cost Estimator | HunterMussel Tools"
   description="Simple estimator with architecture recommendation, scenario comparison, assumptions, and all-in monthly cost range."
   canonicalPath="/tools/estimators/"
+  keywords={[
+    "cloud cost estimator",
+    "infrastructure cost calculator",
+    "aws cost estimator",
+    "cloud infrastructure pricing",
+    "devops cost tool",
+    "server cost calculator",
+    "cloud architecture estimator",
+    "software project estimator",
+    "monthly cloud cost tool",
+  ]}
 >
   <main class="page estimator-page">
     <section class="hero estimator-hero">
@@ -217,6 +229,15 @@ import "@/styles/estimators.css";
           </div>
         </details>
       </aside>
+    </section>
+
+    <section class="article">
+      <ServiceCTA
+        service="cloud-infrastructure-ai"
+        title="Ready to move from cost estimate to production-grade infrastructure?"
+        description="HunterMussel architects and deploys production cloud infrastructure on AWS, GCP, and multi-cloud environments — from cost modeling and architecture review to go-live."
+        linkLabel="Explore Cloud Infrastructure & AI"
+      />
     </section>
   </main>
 </BaseLayout>

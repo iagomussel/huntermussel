@@ -5,29 +5,55 @@ import { ArrowRight } from 'lucide-react';
 import { breadcrumbSchema } from '@/lib/schema';
 
 const posts = (await getCollection('blog'))
-  .filter(post => post.data.status !== 'draft')
+  .filter(post => post.data.status === 'published')
   .sort((a, b) => b.data.date?.valueOf() - a.data.date?.valueOf());
-const blogUrl = "https://huntermussel.com/blog/";
+
+const blogUrl = 'https://huntermussel.com/blog/';
 const blogSchema = [
   {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: "HunterMussel Blog",
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Blog — HunterMussel',
     url: blogUrl,
-    description: "Articles on process management, AI automation, and DevOps.",
+    description:
+      'Articles on AI automation, process management, DevOps, and cloud infrastructure.',
   },
   breadcrumbSchema([
-    { name: "Home", item: "https://huntermussel.com/" },
-    { name: "Blog", item: blogUrl },
+    { name: 'Home', item: 'https://huntermussel.com/' },
+    { name: 'Blog', item: blogUrl },
   ]),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Blog Posts',
+    url: blogUrl,
+    numberOfItems: posts.length,
+    itemListElement: posts.map((post, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `https://huntermussel.com/blog/${post.slug}/`,
+      name: post.data.title,
+    })),
+  },
 ];
 ---
 
 <Layout
-  title="Blog"
-  description="Articles on process management, AI automation, and DevOps."
+  title="Blog: AI Automation, DevOps & Process Management"
+  description="Articles on AI automation, process management, DevOps engineering, and cloud infrastructure by HunterMussel."
   canonicalUrl={blogUrl}
-  keywords={["ai automation blog", "devops blog", "process management articles", "technical seo insights"]}
+  keywords={[
+    'ai automation blog',
+    'devops articles',
+    'devops best practices',
+    'devops practices',
+    'continuous integration tools',
+    'containerization technologies',
+    'process management blog',
+    'cloud infrastructure blog',
+    'software engineering blog',
+    'technical seo blog',
+  ]}
   schema={blogSchema}
 >
   <div class="min-h-screen bg-background">
@@ -39,7 +65,7 @@ const blogSchema = [
           Latest <span class="gradient-text">Insights</span>
         </h1>
         <p class="font-body text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-          Articles on process management, AI automation, and DevOps.
+          Articles on AI automation, process management, DevOps, and cloud infrastructure.
         </p>
       </header>
 
@@ -73,7 +99,7 @@ const blogSchema = [
                 )}
               </div>
               <h2 class="mb-3 font-heading text-xl font-bold leading-tight group-hover:text-primary transition-colors">
-                <a href={`/blog/${post.slug}`} class="block">
+                <a href={`/blog/${post.slug}/`} class="block">
                   {post.data.title}
                 </a>
               </h2>
@@ -81,7 +107,7 @@ const blogSchema = [
                 {post.data.description}
               </p>
               <a
-                href={`/blog/${post.slug}`}
+                href={`/blog/${post.slug}/`}
                 class="inline-flex items-center gap-1 font-heading text-xs font-semibold text-primary transition-all group-hover:gap-2"
               >
                 Read article

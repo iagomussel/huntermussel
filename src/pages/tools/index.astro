@@ -1,8 +1,286 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+
+const toolsUrl = "https://huntermussel.com/tools/";
+
+const categories = [
+  {
+    id: "ai",
+    label: "AI Tools",
+    badge: "new",
+    description: "Prompt engineering, workflow optimization, and AI-powered utilities for the era of intelligent automation.",
+    tools: [
+      {
+        name: "Prompt Optimizer",
+        slug: "prompt-optimizer",
+        desc: "Multi-step wizard that assembles production-ready prompts for Claude, GPT-4, Gemini and open-source models — deterministic, no API calls.",
+        badge: "new",
+        icon: `<path d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>`,
+      },
+    ],
+  },
+  {
+    id: "encoding",
+    label: "Encoding & Crypto",
+    description: "Encode, decode, hash, and generate unique identifiers for data pipelines and API integrations.",
+    tools: [
+      {
+        name: "Base64 Converter",
+        slug: "base64-converter",
+        desc: "Convert, validate, and repair Base64/Base64URL payloads fully client-side.",
+        icon: `<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/>`,
+      },
+      {
+        name: "Hash Generator",
+        slug: "hash-generator",
+        desc: "Generate and verify MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes instantly.",
+        icon: `<line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>`,
+      },
+      {
+        name: "UUID Generator",
+        slug: "uuid",
+        desc: "Generate up to 100 UUID v4 values instantly. Toggle hyphens, copy all, or download as text.",
+        icon: `<rect x="2" y="7" width="20" height="10" rx="2"/><path d="M7 12h.01M12 12h.01M17 12h.01"/>`,
+      },
+    ],
+  },
+  {
+    id: "data",
+    label: "Data & Formats",
+    description: "Parse, convert, compare, and validate JSON, YAML, and other structured data formats used in APIs and config files.",
+    tools: [
+      {
+        name: "YAML ↔ JSON",
+        slug: "yaml-json",
+        desc: "Bidirectional YAML and JSON converter with real-time validation and inline error reporting. No server, no logs.",
+        icon: `<path d="M7 16V4m0 0L3 8m4-4 4 4M17 8v12m0 0 4-4m-4 4-4-4"/>`,
+      },
+      {
+        name: "Diff Viewer",
+        slug: "diff-viewer",
+        desc: "Compare two texts side-by-side or unified — added, removed, and unchanged lines highlighted instantly.",
+        icon: `<line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="12" y2="18"/>`,
+      },
+    ],
+  },
+  {
+    id: "devops",
+    label: "DevOps",
+    description: "Essential tools for infrastructure engineers — cron scheduling, file permissions, uptime calculations, and log analysis.",
+    tools: [
+      {
+        name: "Cron Parser",
+        slug: "cron-parser",
+        desc: "Translate cron expressions into plain English and preview the next scheduled run times.",
+        icon: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+      },
+      {
+        name: "Timestamp Converter",
+        slug: "timestamp",
+        desc: "Convert Unix timestamps (seconds or ms) to UTC, local time, and relative time — and back.",
+        icon: `<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+      },
+      {
+        name: "chmod Calculator",
+        slug: "chmod",
+        desc: "Click checkboxes or type an octal to get symbolic notation and a ready-to-copy chmod command.",
+        icon: `<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
+      },
+      {
+        name: "SLA Calculator",
+        slug: "sla-calculator",
+        desc: "Enter an uptime percentage and see exact downtime per day, week, month, and year.",
+        icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>`,
+      },
+      {
+        name: "Log Viewer",
+        slug: "log-viewer",
+        desc: "Parse, filter, and inspect structured log files directly in the browser.",
+        icon: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>`,
+      },
+    ],
+  },
+  {
+    id: "security",
+    label: "Security & Auth",
+    description: "Inspect and audit authentication tokens, claims, and access control permissions without sending data to any server.",
+    tools: [
+      {
+        name: "JWT Inspector",
+        slug: "jwt-inspector",
+        desc: "Decode, inspect, and audit JWT tokens — expiry countdown, claim explanations, and security warnings.",
+        icon: `<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
+      },
+    ],
+  },
+  {
+    id: "code",
+    label: "Code & Text",
+    description: "Lint code in real time, test regex patterns, and write formatted documentation with live preview.",
+    tools: [
+      {
+        name: "Regex Tester",
+        slug: "regex-tester",
+        desc: "Live regex matching with coloured capture groups, match positions, and one-click common patterns.",
+        icon: `<path d="M3 3l18 0M3 9l18 0M3 15l10 0"/><circle cx="17" cy="15" r="3"/><path d="m20.2 18.2 1.8 1.8"/>`,
+      },
+      {
+        name: "Online Linters",
+        slug: "online-linters",
+        desc: "Real-time code linter for JSON, YAML, JavaScript, and Markdown powered by Monaco Editor.",
+        icon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>`,
+      },
+      {
+        name: "Markdown Editor",
+        slug: "markdown-editor",
+        desc: "Live Markdown editor with preview, export, and formatting shortcuts.",
+        icon: `<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>`,
+      },
+    ],
+  },
+  {
+    id: "media",
+    label: "Media & Files",
+    description: "Optimize, convert, and process images in the browser — nothing is uploaded to any server.",
+    tools: [
+      {
+        name: "Image Optimizer",
+        slug: "image-optimizer",
+        desc: "Convert images to WebP in-browser. Adjust quality, resize, batch download — zero server uploads.",
+        badge: "popular",
+        icon: `<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>`,
+      },
+    ],
+  },
+  {
+    id: "reference",
+    label: "Reference & Planning",
+    description: "Quick-access reference guides and estimation calculators for software development teams.",
+    tools: [
+      {
+        name: "HTTP Status Codes",
+        slug: "http-status",
+        desc: "Search and filter all HTTP status codes with plain-English descriptions and REST API guidance.",
+        icon: `<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>`,
+      },
+      {
+        name: "Estimators",
+        slug: "estimators",
+        desc: "Project and effort estimation tools including Planning Poker and T-shirt sizing for engineering teams.",
+        icon: `<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>`,
+      },
+    ],
+  },
+];
+
+const allTools = categories.flatMap((c) => c.tools);
+const totalTools = allTools.length;
+const totalCategories = categories.length;
+
+const faqItems = [
+  {
+    q: "What is Base64 encoding and when should I use it?",
+    a: "Base64 is a binary-to-text encoding scheme that converts binary data into ASCII characters. It's widely used to safely transmit binary data (like images or files) over text-based protocols such as HTTP headers, JSON APIs, and email attachments. Use our Base64 Converter to encode or decode instantly in your browser.",
+  },
+  {
+    q: "How do I decode and inspect a JWT token?",
+    a: "A JWT (JSON Web Token) consists of three Base64URL-encoded parts: header, payload, and signature. You can decode the header and payload without the secret key using our JWT Inspector — it also shows claim meanings, expiry countdown, and security warnings like weak algorithms or missing claims.",
+  },
+  {
+    q: "What does a cron expression like '0 9 * * 1-5' mean?",
+    a: "That cron expression means 'run at 09:00 every weekday (Monday through Friday)'. Cron expressions have five fields: minute, hour, day-of-month, month, and day-of-week. Our Cron Parser translates any cron expression into plain English and shows the next 10 upcoming run times.",
+  },
+  {
+    q: "How do I calculate chmod permissions?",
+    a: "Unix chmod permissions use an octal notation (e.g. 755) representing read/write/execute rights for owner, group, and others. Our chmod Calculator lets you click checkboxes to build permissions visually or type an octal to get the symbolic notation (e.g. rwxr-xr-x) and a ready-to-copy chmod command.",
+  },
+  {
+    q: "What is a Prompt Optimizer and how does it work?",
+    a: "A Prompt Optimizer helps you write better prompts for AI models like Claude, GPT-4, and Gemini. Our tool walks you through 5 questions — target platform, task type, output format, response length, and your task description — then assembles a production-ready prompt using proven prompt engineering techniques like role assignment, output format specification, and model-specific formatting. It's entirely deterministic: no AI API calls, runs fully in your browser.",
+  },
+  {
+    q: "How do I convert YAML to JSON (and back)?",
+    a: "YAML and JSON are both widely used data serialization formats. YAML is human-readable and common in DevOps configuration files (Docker, Kubernetes, GitHub Actions), while JSON is the standard for APIs and web data. Our YAML ↔ JSON converter transforms between both formats instantly with real-time validation.",
+  },
+  {
+    q: "Are these developer tools safe? Is my data private?",
+    a: "Yes — every tool on this page runs entirely in your browser using Web APIs. No data is sent to any server. Your code, tokens, files, and text never leave your machine. This includes sensitive tools like the JWT Inspector and Hash Generator.",
+  },
+  {
+    q: "What is SLA uptime and how is downtime calculated?",
+    a: "SLA (Service Level Agreement) uptime refers to the guaranteed percentage of time a service will be available. '99.9% uptime' (three nines) means a maximum of 8.76 hours of downtime per year. Our SLA Calculator shows exact allowed downtime per day, week, month, and year for any uptime percentage.",
+  },
+];
+
+const toolsSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Free Developer Tools — HunterMussel",
+    url: toolsUrl,
+    description:
+      `Free browser-based developer tools organized by category: AI prompt engineering, encoding & crypto, data formats, DevOps, security, code & text, media, and reference. ${totalTools} tools across ${totalCategories} categories. No account, no uploads.`,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://huntermussel.com/" },
+      { "@type": "ListItem", position: 2, name: "Tools", item: toolsUrl },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Free Developer Tools by Category",
+    url: toolsUrl,
+    numberOfItems: totalTools,
+    itemListElement: allTools.map((tool, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `https://huntermussel.com/tools/${tool.slug}/`,
+      name: tool.name,
+    })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  },
+];
 ---
 
-<Layout title="Developer Tools">
+<Layout
+  title="Free Developer Tools by Category: AI, Encoding, DevOps, Security & More"
+  description={`${totalTools} free browser-based developer tools organized by category — AI prompt optimizer, Base64, JWT, JSON, Cron, regex, and more. No account, no uploads, everything runs in your browser.`}
+  canonicalUrl={toolsUrl}
+  keywords={[
+    "free developer tools",
+    "online developer utilities",
+    "prompt optimizer tool",
+    "base64 converter online",
+    "jwt decoder online",
+    "json formatter online",
+    "cron expression parser",
+    "regex tester online",
+    "yaml to json converter",
+    "chmod calculator",
+    "hash generator online",
+    "unix timestamp converter",
+    "uuid generator online",
+    "sla uptime calculator",
+    "http status codes reference",
+    "devops tools online",
+    "ai prompt engineering tool",
+    "browser developer tools",
+    "client side tools no upload",
+  ]}
+  schema={toolsSchema}
+>
   <div class="tools-page">
     <!-- Hero -->
     <div class="tools-hero">
@@ -10,151 +288,114 @@ import Layout from "@/layouts/Layout.astro";
         <span class="tools-eyebrow">// tools</span>
         <h1 class="tools-title">Free Developer Tools</h1>
         <p class="tools-lead">
-          Client-side utilities for encoding, hashing, imaging, and more.
-          No account, no uploads, no tracking — everything runs in your browser.
+          {totalTools} client-side utilities across {totalCategories} categories — AI prompts, encoding, DevOps, security, and more.
+          No account, no uploads, no tracking. Everything runs in your browser.
         </p>
+        <div class="tools-stats">
+          {categories.map((cat) => (
+            <span class="tools-stat">
+              <strong>{cat.tools.length}</strong> {cat.label}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
 
-    <!-- Grid -->
-    <div class="tools-container tools-grid-wrap">
-      <div class="tools-grid">
+    <!-- Filter tabs -->
+    <div class="tools-filter-wrap">
+      <div class="tools-container">
+        <div class="tools-filters" role="tablist" aria-label="Filter tools by category">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">
+            All <span class="filter-count">{totalTools}</span>
+          </button>
+          {categories.map((cat) => (
+            <button class="filter-btn" data-filter={cat.id} role="tab" aria-selected="false">
+              {cat.label}
+              {cat.badge && <span class="filter-badge">{cat.badge}</span>}
+              <span class="filter-count">{cat.tools.length}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
 
-        <a href="/tools/base64-converter" class="tool-card">
-          <span class="tool-cat">// encoding</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/>
-            </svg>
+    <!-- Category sections -->
+    <div class="tools-container tools-body">
+      {categories.map((cat) => (
+        <section class="cat-section" data-category-section={cat.id}>
+          <div class="cat-header">
+            <div class="cat-header-left">
+              <h2 class="cat-title">
+                {cat.label}
+                {cat.badge && <span class="cat-badge">{cat.badge}</span>}
+              </h2>
+              <p class="cat-desc">{cat.description}</p>
+            </div>
+            <span class="cat-count">{cat.tools.length} {cat.tools.length === 1 ? "tool" : "tools"}</span>
           </div>
-          <h2 class="tool-name">Base64 Converter</h2>
-          <p class="tool-desc">Convert, validate, and repair Base64/Base64URL payloads fully client-side.</p>
-        </a>
-
-        <a href="/tools/hash-generator" class="tool-card">
-          <span class="tool-cat">// hashing</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/>
-              <line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>
-            </svg>
+          <div class="tools-grid">
+            {cat.tools.map((tool) => (
+              <a href={`/tools/${tool.slug}`} class={`tool-card${tool.badge ? " tool-card--new" : ""}`}>
+                {tool.badge && <span class="tool-badge">{tool.badge}</span>}
+                <span class="tool-cat">// {cat.id}</span>
+                <div class="tool-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={tool.icon} />
+                </div>
+                <h3 class="tool-name">{tool.name}</h3>
+                <p class="tool-desc">{tool.desc}</p>
+              </a>
+            ))}
           </div>
-          <h2 class="tool-name">Hash Generator</h2>
-          <p class="tool-desc">Generate and verify MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes.</p>
-        </a>
+        </section>
+      ))}
+    </div>
 
-        <a href="/tools/json-formatter" class="tool-card">
-          <span class="tool-cat">// json</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">JSON Formatter</h2>
-          <p class="tool-desc">Format, validate, and minify JSON payloads with syntax highlighting.</p>
-        </a>
+    <!-- SEO Article + FAQ -->
+    <div class="tools-article-wrap">
+      <div class="tools-container">
+        <div class="seo-grid">
+          <article class="seo-card">
+            <h2>Why use browser-based developer tools?</h2>
+            <p>
+              Browser-based tools run entirely in your machine using Web APIs like
+              <code>SubtleCrypto</code>, <code>Canvas</code>, <code>FileReader</code>, and <code>TextEncoder</code>.
+              Unlike server-side tools, your code, tokens, and files never leave your device —
+              which is critical when working with JWTs, API keys, sensitive logs, or proprietary source code.
+            </p>
+            <ul>
+              <li><strong>Privacy by design:</strong> Zero data transmission. Zero storage.</li>
+              <li><strong>Works offline:</strong> Once loaded, tools keep working without internet.</li>
+              <li><strong>No rate limits:</strong> Process as much data as your browser allows.</li>
+              <li><strong>Instant:</strong> No round-trip latency. Results appear as you type.</li>
+            </ul>
+          </article>
+          <article class="seo-card">
+            <h2>What is a Prompt Optimizer?</h2>
+            <p>
+              A Prompt Optimizer is a structured tool that helps you apply prompt engineering best practices
+              without having to memorize them. Instead of writing prompts from scratch, you answer 5 targeted
+              questions about your use case and the tool assembles a production-ready prompt.
+            </p>
+            <p>
+              Our Prompt Optimizer supports Claude, GPT-4, Gemini, and open-source models. It applies
+              model-specific techniques: XML tags for Claude, system/user message separation for GPT,
+              and instruction-following format for open-source models. The result is always deterministic —
+              no AI API calls needed.
+            </p>
+          </article>
+        </div>
 
-        <a href="/tools/image-optimizer" class="tool-card tool-card--new">
-          <span class="tool-cat">// imaging</span>
-          <span class="tool-badge">new</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">Image Optimizer</h2>
-          <p class="tool-desc">Convert images to WebP in-browser. Adjust quality, resize, batch download.</p>
-        </a>
-
-        <a href="/tools/markdown-editor" class="tool-card">
-          <span class="tool-cat">// writing</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">Markdown Editor</h2>
-          <p class="tool-desc">Live Markdown editor with preview, export, and formatting shortcuts.</p>
-        </a>
-
-        <a href="/tools/estimators" class="tool-card">
-          <span class="tool-cat">// planning</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
-              <line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">Estimators</h2>
-          <p class="tool-desc">Project and effort estimation tools for engineering teams.</p>
-        </a>
-
-        <a href="/tools/log-viewer" class="tool-card">
-          <span class="tool-cat">// devops</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/>
-              <line x1="8" y1="17" x2="16" y2="17"/><polyline points="10 9 9 9 8 9"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">Log Viewer</h2>
-          <p class="tool-desc">Parse, filter, and inspect structured log files directly in the browser.</p>
-        </a>
-
-        <a href="/tools/jwt-inspector" class="tool-card tool-card--new">
-          <span class="tool-cat">// security</span>
-          <span class="tool-badge">new</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">JWT Inspector</h2>
-          <p class="tool-desc">Decode, inspect, and audit JWT tokens — expiry countdown, claim explanations, and security warnings.</p>
-        </a>
-
-        <a href="/tools/cron-parser" class="tool-card tool-card--new">
-          <span class="tool-cat">// devops</span>
-          <span class="tool-badge">new</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">Cron Parser</h2>
-          <p class="tool-desc">Translate cron expressions into plain English and preview the next scheduled run times.</p>
-        </a>
-
-        <a href="/tools/online-linters" class="tool-card tool-card--new">
-          <span class="tool-cat">// linting</span>
-          <span class="tool-badge">new</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">Online Linters</h2>
-          <p class="tool-desc">A full-featured, real-time code linter for JSON, YAML, JavaScript, and Markdown powered by Monaco Editor.</p>
-        </a>
-
-        <a href="/tools/diff-viewer" class="tool-card tool-card--new">
-          <span class="tool-cat">// text</span>
-          <span class="tool-badge">new</span>
-          <div class="tool-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-              <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-            </svg>
-          </div>
-          <h2 class="tool-name">Diff Viewer</h2>
-          <p class="tool-desc">Compare two texts side-by-side or unified — added, removed, and unchanged lines highlighted instantly.</p>
-        </a>
-
+        <section class="faq-section">
+          <h2 class="faq-title">Frequently Asked Questions</h2>
+          <dl class="faq-list">
+            {faqItems.map((item) => (
+              <div class="faq-item">
+                <dt class="faq-q">{item.q}</dt>
+                <dd class="faq-a">{item.a}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
       </div>
     </div>
   </div>
@@ -165,6 +406,7 @@ import Layout from "@/layouts/Layout.astro";
     min-height: 100vh;
   }
 
+  /* ── Hero ── */
   .tools-hero {
     border-b: 1px solid hsl(var(--border));
     padding: 5rem 0 3rem;
@@ -199,24 +441,180 @@ import Layout from "@/layouts/Layout.astro";
   }
 
   .tools-lead {
-    margin: 0;
-    max-width: 56ch;
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
     font-size: 1rem;
     line-height: 1.6;
     color: hsl(var(--muted-foreground));
   }
 
-  .tools-grid-wrap {
-    padding-top: 3rem;
-    padding-bottom: 5rem;
+  .tools-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
   }
 
+  .tools-stat {
+    font-size: 0.78rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .tools-stat strong {
+    color: hsl(var(--primary));
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+  }
+
+  /* ── Filter tabs ── */
+  .tools-filter-wrap {
+    position: sticky;
+    top: 4rem;
+    z-index: 10;
+    background: hsl(var(--background) / 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid hsl(var(--border));
+    padding: 0.6rem 0;
+  }
+
+  .tools-filters {
+    display: flex;
+    gap: 0.35rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .tools-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: hsl(var(--muted-foreground));
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover {
+    border-color: hsl(var(--primary) / 0.4);
+    color: hsl(var(--foreground));
+    background: transparent;
+    box-shadow: none;
+    opacity: 1;
+  }
+
+  .filter-btn.active {
+    border-color: hsl(var(--primary));
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.08);
+  }
+
+  .filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+    background: hsl(var(--muted));
+    font-size: 0.6rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .filter-badge {
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.12);
+    padding: 0.05rem 0.3rem;
+    border-radius: 999px;
+  }
+
+  /* ── Body / category sections ── */
+  .tools-body {
+    padding-top: 2.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .cat-section {
+    margin-bottom: 3rem;
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  .cat-header-left {
+    flex: 1;
+  }
+
+  .cat-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.25rem;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 1rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .cat-badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--primary-foreground));
+    background: hsl(var(--primary));
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+  }
+
+  .cat-desc {
+    margin: 0;
+    font-size: 0.82rem;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.5;
+    max-width: 70ch;
+  }
+
+  .cat-count {
+    flex-shrink: 0;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.7rem;
+    color: hsl(var(--muted-foreground));
+    white-space: nowrap;
+    padding-top: 0.15rem;
+  }
+
+  /* ── Grid ── */
   .tools-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 1rem;
   }
 
+  /* ── Tool card ── */
   .tool-card {
     position: relative;
     display: flex;
@@ -296,9 +694,158 @@ import Layout from "@/layouts/Layout.astro";
     color: hsl(var(--muted-foreground));
   }
 
+  /* ── SEO Article ── */
+  .tools-article-wrap {
+    border-top: 1px solid hsl(var(--border));
+    padding: 3rem 0 5rem;
+    background: hsl(var(--card) / 0.2);
+  }
+
+  .seo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .seo-card {
+    padding: 1.5rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.75rem;
+    background: hsl(var(--card) / 0.5);
+  }
+
+  .seo-card h2 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .seo-card p {
+    margin: 0 0 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .seo-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .seo-card ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.25rem;
+  }
+
+  .seo-card li {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 0.35rem;
+  }
+
+  .seo-card li strong {
+    color: hsl(var(--foreground));
+  }
+
+  .seo-card code {
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.8rem;
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.08);
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.25rem;
+  }
+
+  /* ── FAQ ── */
+  .faq-section {
+    max-width: 800px;
+  }
+
+  .faq-title {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 1rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  .faq-list {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .faq-item {
+    padding: 1.1rem 1.25rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.65rem;
+    background: hsl(var(--card) / 0.4);
+  }
+
+  .faq-q {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-heading, "JetBrains Mono", monospace);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    line-height: 1.4;
+  }
+
+  .faq-a {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .seo-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cat-header {
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .cat-count {
+      align-self: flex-start;
+    }
+  }
+
   @media (max-width: 480px) {
     .tools-grid {
       grid-template-columns: 1fr;
     }
   }
 </style>
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+  const catSections = document.querySelectorAll<HTMLElement>("[data-category-section]");
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const filter = btn.dataset.filter;
+
+      filterBtns.forEach((b) => {
+        b.classList.remove("active");
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.classList.add("active");
+      btn.setAttribute("aria-selected", "true");
+
+      catSections.forEach((section) => {
+        if (filter === "all" || section.dataset.categorySection === filter) {
+          section.style.display = "";
+        } else {
+          section.style.display = "none";
+        }
+      });
+    });
+  });
+</script>

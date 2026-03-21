@@ -7,6 +7,8 @@ import AboutSection from "@/components/react/AboutSection";
 import TechSection from "@/components/react/TechSection";
 import ContactSection from "@/components/react/ContactSection";
 import ToolsSection from "@/components/react/ToolsSection";
+import FAQSection from "@/components/react/FAQSection";
+import { homeFAQ } from "@/data/faq";
 import { ORGANIZATION_ID, WEBSITE_ID, organizationSchema, websiteSchema } from "@/lib/schema";
 
 const homepageUrl = "https://huntermussel.com/";
@@ -60,6 +62,18 @@ const homepageSchema = [
       "technical SEO",
     ],
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homeFAQ.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  },
 ];
 ---
 
@@ -71,6 +85,8 @@ const homepageSchema = [
     "ai automation agency",
     "custom software development company",
     "devops consulting",
+    "devops practices",
+    "devops best practices",
     "cloud infrastructure engineering",
     "technical seo services",
     "ai integration company",
@@ -78,6 +94,9 @@ const homepageSchema = [
     "scalable software architecture",
     "custom software development",
     "devops engineering",
+    "continuous integration tools",
+    "containerization technologies",
+    "best it firms to work for",
     "HunterMussel",
   ]}
   schema={homepageSchema}
@@ -88,5 +107,6 @@ const homepageSchema = [
   <AboutSection client:load />
   <TechSection client:load />
   <ToolsSection client:load />
+  <FAQSection client:load items={homeFAQ} />
   <ContactSection client:load />
 </Layout>

@@ -6,10 +6,12 @@ import { ArrowLeft } from 'lucide-react';
 import DisqusComments from '@/components/react/DisqusComments';
 import BlogShareSection from '@/components/react/BlogShareSection';
 import authors from '@/data/authors.json';
+import FAQSection from '@/components/react/FAQSection';
+import { blogDevOpsFAQ, blogAIFAQ, blogCloudFAQ, blogGeneralFAQ } from '@/data/faq';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => data.status !== 'draft');
+  const posts = await getCollection('blog', ({ data }) => data.status === 'published');
   return posts.map(entry => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -28,6 +30,17 @@ const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateSt
 const url = `https://huntermussel.com/blog/${entry.slug}/`;
 const authorKey = entry.data.authors?.[0];
 const author = authorKey && authors[authorKey];
+
+const tags = entry.data.tags ?? [];
+const tagStr = tags.join(' ').toLowerCase();
+const faqItems = tagStr.match(/\b(cloud|aws|gcp|azure|infrastructure|terraform)\b/)
+  ? blogCloudFAQ
+  : tagStr.match(/\b(ai|llm|rag|automation|agent|openai|langchain)\b/)
+  ? blogAIFAQ
+  : tagStr.match(/\b(devops|cicd|ci\/cd|pipeline|kubernetes|docker|sre)\b/)
+  ? blogDevOpsFAQ
+  : blogGeneralFAQ;
+
 const blogSchema = [
   articleSchema({
     headline: entry.data.title,
@@ -49,6 +62,15 @@ const blogSchema = [
     { name: "Blog", item: "https://huntermussel.com/blog/" },
     { name: entry.data.title, item: url },
   ]),
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  },
 ];
 ---
 
@@ -67,7 +89,7 @@ const blogSchema = [
      <main class="container relative z-10 px-6 pt-32 pb-24">
        <article class="mx-auto max-w-3xl">
           <a
-            href="/blog"
+            href="/blog/"
             class="mb-8 inline-flex items-center gap-2 font-body text-sm text-muted-foreground transition-colors hover:text-primary"
           >
             <ArrowLeft size={16} />
@@ -119,6 +141,8 @@ const blogSchema = [
           </div>
 
           <BlogShareSection client:load title={entry.data.title} url={url} />
+
+          <FAQSection client:load items={faqItems} title="Frequently Asked Questions" />
 
           <DisqusComments client:only="react" title={entry.data.title} identifier={entry.slug} url={url} />
        </article>

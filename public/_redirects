@@ -1,0 +1,6 @@
+# Cloudflare Pages redirect rules
+# Format: source destination statusCode
+
+# Tool consolidations — SEO redirects
+/tools/json-formatter     /tools/online-linters 301
+/tools/json-formatter/    /tools/online-linters/ 301
