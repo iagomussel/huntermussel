@@ -1,0 +1,32 @@
+name = "huntermussel-chat-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[ai]
+binding = "AI"
+
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "huntermussel-content"
+
+[[r2_buckets]]
+binding = "CONTENT_STORE"
+bucket_name = "huntermussel-content"
+
+[[kv_namespaces]]
+binding = "CONFIG"
+id = "" # Fill after: npx wrangler kv namespace create CONFIG
+
+[[d1_databases]]
+binding = "DB"
+database_name = "huntermussel-chat"
+database_id = "" # Fill after: npx wrangler d1 create huntermussel-chat
+
+[vars]
+CORS_ORIGIN = "https://huntermussel.com"
+MAX_MESSAGES_PER_SESSION = "20"
+MAX_SESSIONS_PER_HOUR = "100"
+
+# Secrets (set via `npx wrangler secret put OPENAI_API_KEY`):
+# - OPENAI_API_KEY
