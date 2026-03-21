@@ -11,6 +11,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
+      filter: (page) => !page.includes('/robots.txt'),
       serialize(item) {
         const url = item.url;
         let priority = 0.7;

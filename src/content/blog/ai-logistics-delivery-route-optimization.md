@@ -18,6 +18,7 @@ keywords:
   - fleet management software
 image: "/images/blog/ai-logistics-delivery-route-optimization.webp"
 subtitle: "Transforming manual logistics into a data-driven competitive advantage"
+status: "published"
 ---
 
 Efficiency in logistics is no longer just about moving items from point A to point B; it’s about doing so with the least amount of friction, cost, and human intervention possible. 
