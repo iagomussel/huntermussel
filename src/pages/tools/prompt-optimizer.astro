@@ -592,6 +592,10 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     document.querySelectorAll(".po-step").forEach((el) => {
       el.style.display = el.dataset.step == n ? "" : "none";
     });
+    // Re-enable chips on the newly visible step so Back + re-select works
+    document
+      .querySelectorAll(`.po-step[data-step="${n}"] .po-chip`)
+      .forEach((c) => { (c as HTMLButtonElement).disabled = false; });
     chipBackNav.style.display = CHIP_STEPS.includes(n) && n > 1 ? "" : "none";
     state.step = n;
     updateProgress();
@@ -605,21 +609,30 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     if (state.step > 1) showStep(state.step - 1);
   }
 
-  // Chip selection
+  // Chip selection — at most one pending advance per step
+  let advanceTimer = -1;
+
   document.querySelectorAll(".po-chip").forEach((chip) => {
     chip.addEventListener("click", () => {
       const key = chip.dataset.key;
       const value = chip.dataset.value;
 
-      // Deselect siblings
+      // Ignore if this step's chips are already locked (first selection wins)
+      if (chip.disabled) return;
+
+      // Lock all sibling chips immediately so a second tap is a no-op
       document
         .querySelectorAll(`.po-chip[data-key="${key}"]`)
-        .forEach((c) => c.classList.remove("selected"));
+        .forEach((c) => {
+          c.classList.remove("selected");
+          (c as HTMLButtonElement).disabled = true;
+        });
       chip.classList.add("selected");
       state[key] = value;
 
-      // Auto-advance for chip steps
-      setTimeout(goNext, 180);
+      // Cancel any prior pending advance before scheduling a new one
+      clearTimeout(advanceTimer);
+      advanceTimer = setTimeout(goNext, 180);
     });
   });
 
@@ -675,7 +688,10 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     });
     document
       .querySelectorAll(".po-chip")
-      .forEach((c) => c.classList.remove("selected"));
+      .forEach((c) => {
+        c.classList.remove("selected");
+        (c as HTMLButtonElement).disabled = false;
+      });
     document.getElementById("taskDescription").value = "";
     document.getElementById("taskConstraints").value = "";
     resultCard.style.display = "none";
