@@ -10,9 +10,20 @@ import {
   Lock,
   Clock,
   GitCompare,
+  Sparkles,
+  ShieldCheck,
+  ArrowLeftRight,
 } from "lucide-react";
 
 const tools = [
+  {
+    icon: Sparkles,
+    title: "Prompt Optimizer",
+    slug: "prompt-optimizer",
+    category: "ai",
+    description: "5-step wizard that assembles production-ready prompts for Claude, GPT-4, Gemini and open-source models. Fully deterministic.",
+    badge: "new",
+  },
   {
     icon: Binary,
     title: "Base64 Converter",
@@ -70,11 +81,18 @@ const tools = [
     description: "Decode JWT tokens, inspect claims, and get live expiry countdown with security warnings.",
   },
   {
-    icon: Clock,
-    title: "Cron Parser",
-    slug: "cron-parser",
+    icon: ArrowLeftRight,
+    title: "YAML ↔ JSON",
+    slug: "yaml-json",
     category: "devops",
-    description: "Translate cron expressions into plain English and preview next scheduled run times.",
+    description: "Bidirectional YAML and JSON converter with real-time validation. No server, no logs.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Online Linters",
+    slug: "online-linters",
+    category: "linting",
+    description: "Real-time linter for JSON, YAML, JavaScript, and Markdown powered by Monaco Editor.",
   },
   {
     icon: GitCompare,
@@ -130,8 +148,13 @@ const ToolsSection = () => {
               key={tool.slug}
               variants={item}
               href={`/tools/${tool.slug}`}
-              className="group flex flex-col gap-3 rounded-lg border border-border bg-card/50 p-5 text-current no-underline transition-all hover:border-primary/30 hover:bg-card hover:shadow-[0_0_20px_hsl(145_80%_50%/0.08)]"
+              className="group relative flex flex-col gap-3 rounded-lg border border-border bg-card/50 p-5 text-current no-underline transition-all hover:border-primary/30 hover:bg-card hover:shadow-[0_0_20px_hsl(145_80%_50%/0.08)]"
             >
+              {tool.badge && (
+                <span className="absolute right-3 top-3 rounded-full bg-primary px-2 py-0.5 font-heading text-[0.58rem] font-bold uppercase tracking-wide text-primary-foreground">
+                  {tool.badge}
+                </span>
+              )}
               <div className="inline-flex rounded-md border border-border bg-muted/50 p-2.5 text-primary transition-all group-hover:border-glow group-hover:box-glow w-fit">
                 <tool.icon size={18} />
               </div>
