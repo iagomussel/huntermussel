@@ -1,0 +1,110 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import AIModelPickerWorkbench from "@/components/react/tools/ai-model-picker/AIModelPickerWorkbench";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="AI Model Picker | HunterMussel Tools"
+  description="Answer 5 questions about your use case and instantly get the top 3 AI models ranked by fit — with strengths, trade-offs, context windows, and pricing. Fully client-side."
+  canonicalPath="/tools/ai-model-picker/"
+  keywords={[
+    "ai model picker",
+    "best ai model for my use case",
+    "compare ai models",
+    "gpt vs claude vs gemini",
+    "which ai model should I use",
+    "llm comparison tool",
+    "openai vs anthropic vs google",
+    "ai model selector",
+    "best llm for coding",
+    "best llm for chatbot",
+    "claude vs gpt4",
+    "llama vs gpt",
+  ]}
+>
+  <main class="page amp-page">
+    <section class="hero">
+      <p class="eyebrow">tool / ai</p>
+      <h1>AI Model Picker</h1>
+      <p class="lead">
+        Not sure which AI model to use? Answer 5 questions about your use case, budget,
+        context needs, and deployment preference — and get your top 3 recommendations with
+        strengths, trade-offs, and pricing.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <div class="card">
+      <AIModelPickerWorkbench client:load />
+    </div>
+
+    <section class="article">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>Models covered</h3>
+          <p>
+            This tool compares Claude 3.5 Sonnet & Haiku (Anthropic), GPT-4o & GPT-4o mini (OpenAI),
+            Gemini 1.5 Pro & 2.0 Flash (Google), Llama 3.1 70B (Meta), Mistral Large, and Phi-3 Mini
+            (Microsoft).
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Scoring methodology</h3>
+          <p>
+            Recommendations are scored based on task-model fit, budget tier, context window match,
+            speed requirement, and deployment preference. Results are deterministic — no AI is used
+            to generate them.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Prices may vary</h3>
+          <p>
+            Pricing shown is approximate based on public provider pages as of early 2026. Always
+            check the official pricing pages before committing to a model in production — prices
+            and capabilities change frequently.
+          </p>
+        </div>
+      </div>
+
+      <ServiceCTA
+        service="ai-automation"
+        title="Need help choosing and integrating the right AI model for your product?"
+        description="HunterMussel designs and builds AI-powered systems — from model selection and prompt engineering to RAG pipelines, agent workflows, and production deployment on your infrastructure."
+        linkLabel="Explore AI Automation Services"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .amp-page {
+    max-width: 860px;
+    padding-bottom: 5rem;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .info-card {
+    padding: 1.25rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    background: hsl(var(--card) / 0.5);
+  }
+  .info-card h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    margin: 0 0 0.5rem;
+    color: hsl(var(--foreground));
+  }
+  .info-card p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+  }
+</style>

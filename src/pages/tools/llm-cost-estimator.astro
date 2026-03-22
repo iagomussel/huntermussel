@@ -1,0 +1,118 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import LLMCostEstimatorWorkbench from "@/components/react/tools/llm-cost-estimator/LLMCostEstimatorWorkbench";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="LLM Cost Estimator | HunterMussel Tools"
+  description="Compare real-time API pricing across 300+ AI models from OpenRouter. Enter your token counts and instantly see input cost, output cost, and total for every model — sorted by price."
+  canonicalPath="/tools/llm-cost-estimator/"
+  keywords={[
+    "llm cost estimator",
+    "openrouter pricing",
+    "ai api cost calculator",
+    "llm pricing comparison",
+    "gpt-4 cost calculator",
+    "claude api pricing",
+    "cheapest llm api",
+    "openai vs anthropic cost",
+    "token cost estimator",
+    "ai model pricing tool",
+    "llm comparison pricing",
+    "openrouter models",
+  ]}
+>
+  <main class="page lce-page">
+    <section class="hero">
+      <p class="eyebrow">tool / ai</p>
+      <h1>LLM Cost Estimator</h1>
+      <p class="lead">
+        Enter your expected token counts and compare real-time API costs across 300+ models
+        from OpenRouter — GPT-4o, Claude, Gemini, Llama, Mistral, and hundreds more. Prices
+        fetched live, no API key required.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <div class="card">
+      <LLMCostEstimatorWorkbench client:load />
+    </div>
+
+    <section class="article">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>Live pricing data</h3>
+          <p>
+            Model prices are fetched directly from the
+            <a href="https://openrouter.ai/models" target="_blank" rel="noopener noreferrer">OpenRouter public API</a>
+            at page load. OpenRouter aggregates pricing from OpenAI, Anthropic, Google, Meta,
+            Mistral, and many other providers — so you get one place to compare them all.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>How to use it</h3>
+          <p>
+            Enter your expected <strong>input tokens</strong> (your prompt + context) and
+            <strong>output tokens</strong> (the model response). Use the search box to filter
+            by model name or provider. Click any column header to sort. The "Total" column
+            is your estimated cost per API call.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Estimating token counts</h3>
+          <p>
+            Not sure how many tokens your text is? Use the
+            <a href="/tools/token-counter/">Token Counter</a> tool to count tokens in your
+            prompt before estimating costs. As a rough guide: 1,000 English words ≈ 750 tokens.
+          </p>
+        </div>
+      </div>
+
+      <ServiceCTA
+        service="ai-automation"
+        title="Need to optimize your LLM spend in production?"
+        description="HunterMussel designs cost-efficient AI pipelines with intelligent model routing, prompt caching, context compression, and fallback strategies — so you scale without the runaway API bills."
+        linkLabel="Explore AI Automation Services"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .lce-page {
+    max-width: 1100px;
+    padding-bottom: 5rem;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .info-card {
+    padding: 1.25rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    background: hsl(var(--card) / 0.5);
+  }
+  .info-card h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    margin: 0 0 0.5rem;
+    color: hsl(var(--foreground));
+  }
+  .info-card p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+  }
+  .info-card a {
+    color: hsl(var(--primary));
+    text-decoration: none;
+  }
+  .info-card a:hover { text-decoration: underline; }
+  .info-card strong { color: hsl(var(--foreground)); font-weight: 600; }
+</style>
