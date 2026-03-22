@@ -602,7 +602,7 @@
     if (result.staticEligible) {
       safeSetHidden("freePath", false);
       safeSetHTML("freePath",
-        "<strong>Eligible for $0-$5 hosting path:</strong> Cloudflare Pages / GitHub Pages / S3+CloudFront can work here if backend needs stay minimal and traffic remains moderate.";
+        "<strong>Eligible for $0-$5 hosting path:</strong> Cloudflare Pages / GitHub Pages / S3+CloudFront can work here if backend needs stay minimal and traffic remains moderate."
       );
     } else {
       safeSetHidden("freePath", true);
