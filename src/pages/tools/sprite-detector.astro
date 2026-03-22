@@ -80,6 +80,16 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         </div>
 
         <div>
+          <label class="label" for="edgeSmooth">
+            Edge smoothing: <span id="edgeSmoothValue">3</span>px
+          </label>
+          <input id="edgeSmooth" type="range" min="0" max="32" value="3" />
+          <p class="small" style="color:var(--text-2); margin-top:0.25rem;">
+            Fades border pixels to transparent when downloading assets.
+          </p>
+        </div>
+
+        <div>
           <label class="label">Overlay Color</label>
           <input id="overlayColor" type="color" value="#00ff88" style="width:40px; height:32px; border:none; padding:0; border-radius:0.35rem; cursor:pointer;" />
         </div>
@@ -141,6 +151,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Click the canvas to sample a background color when using color-key mode.</li>
           <li>Set a minimum sprite size to filter out noise.</li>
           <li>Click <strong>Detect Sprites</strong> to see overlaid bounding boxes.</li>
+          <li>Adjust <strong>Edge smoothing</strong> — downloaded assets will have the background removed with a soft alpha falloff at the border.</li>
           <li>Export the annotated image or the JSON atlas for use in your game engine.</li>
         </ul>
       </article>
@@ -337,6 +348,8 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
   const toleranceValue = $("toleranceValue");
   const minSizeInput = $("minSizeInput");
   const minSizeValue = $("minSizeValue");
+  const edgeSmooth = $("edgeSmooth");
+  const edgeSmoothValue = $("edgeSmoothValue");
   const overlayColor = $("overlayColor");
   const statusBox = $("statusBox");
   const statusText = $("statusText");
@@ -361,6 +374,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
 
   colorTolerance.addEventListener("input", () => { toleranceValue.textContent = `±${colorTolerance.value}`; });
   minSizeInput.addEventListener("input", () => { minSizeValue.textContent = minSizeInput.value; });
+  edgeSmooth.addEventListener("input", () => { edgeSmoothValue.textContent = edgeSmooth.value; });
 
   dropZone.addEventListener("click", (e) => {
     if (!e.target.closest("button")) fileInput.click();
@@ -497,13 +511,54 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     });
   }
 
+  // Crop a rect from sourceCanvas and remove the background with alpha smoothing.
+  // Returns a new canvas with the background cut out.
+  function cropWithBgRemoval(sourceCanvas, rect) {
+    const alphaMode = modeAlpha.checked;
+    const tol = parseInt(colorTolerance.value, 10);
+    const smooth = parseInt(edgeSmooth.value, 10);
+    const [kr, kg, kb] = hexToRgb(colorKey.value);
+
+    const sc = document.createElement("canvas");
+    sc.width = rect.w; sc.height = rect.h;
+    const sctx = sc.getContext("2d");
+    sctx.drawImage(sourceCanvas, rect.x, rect.y, rect.w, rect.h, 0, 0, rect.w, rect.h);
+
+    const imgData = sctx.getImageData(0, 0, rect.w, rect.h);
+    const { data } = imgData;
+
+    for (let i = 0; i < data.length; i += 4) {
+      if (alphaMode) {
+        // Preserve original alpha; apply smooth falloff near the transparent edge
+        const a = data[i + 3];
+        if (a <= 10) {
+          data[i + 3] = 0;
+        } else if (smooth > 0 && a < 10 + smooth * 8) {
+          // Remap [10 .. 10+smooth*8] → [0 .. original]
+          data[i + 3] = Math.round(((a - 10) / (smooth * 8)) * a);
+        }
+        // else keep as-is
+      } else {
+        const dist = colorDistance(data[i], data[i + 1], data[i + 2], kr, kg, kb);
+        if (dist <= tol) {
+          data[i + 3] = 0;
+        } else if (smooth > 0 && dist <= tol + smooth) {
+          // Linear ramp: 0 at the hard edge, full at smooth distance out
+          data[i + 3] = Math.round(((dist - tol) / smooth) * 255);
+        }
+        // else fully opaque — leave data[i+3] as-is
+      }
+    }
+
+    sctx.putImageData(imgData, 0, 0);
+    return sc;
+  }
+
   function renderAssetGrid(sourceCanvas, rects) {
     assetGrid.innerHTML = "";
     rects.forEach((r, i) => {
-      const sc = document.createElement("canvas");
-      sc.width = r.w; sc.height = r.h;
-      sc.getContext("2d").drawImage(sourceCanvas, r.x, r.y, r.w, r.h, 0, 0, r.w, r.h);
-      sc.toBlob((blob) => {
+      const cropped = cropWithBgRemoval(sourceCanvas, r);
+      cropped.toBlob((blob) => {
         const url = URL.createObjectURL(blob);
         spriteBlobs[i] = { blob, url };
 
