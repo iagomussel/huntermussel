@@ -12,6 +12,9 @@ import {
   Sparkles,
   ShieldCheck,
   ArrowLeftRight,
+  Calculator,
+  GitCommitHorizontal,
+  Cpu,
 } from "lucide-react";
 
 const tools = [
@@ -21,6 +24,29 @@ const tools = [
     slug: "prompt-optimizer",
     category: "ai",
     description: "5-step wizard that assembles production-ready prompts for Claude, GPT-4, Gemini and open-source models. Fully deterministic.",
+  },
+  {
+    icon: Calculator,
+    title: "Token Counter",
+    slug: "token-counter",
+    category: "ai",
+    description: "Count tokens and estimate API costs for GPT-4o, Claude, Gemini and more — in real-time, right in your browser.",
+    badge: "new",
+  },
+  {
+    icon: GitCommitHorizontal,
+    title: "Commit Message Generator",
+    slug: "commit-message-generator",
+    category: "ai",
+    description: "Step-by-step wizard to craft conventional commit messages with scope, breaking changes, and branch name suggestions.",
+    badge: "new",
+  },
+  {
+    icon: Cpu,
+    title: "AI Model Picker",
+    slug: "ai-model-picker",
+    category: "ai",
+    description: "Answer 5 questions about your use case and get the top 3 AI models ranked by fit — with pros, cons, and pricing.",
     badge: "new",
   },
   {

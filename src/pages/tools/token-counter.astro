@@ -1,0 +1,110 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import TokenCounterWorkbench from "@/components/react/tools/token-counter/TokenCounterWorkbench";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="Token Counter | HunterMussel Tools"
+  description="Count tokens and estimate API costs for GPT-4o, Claude 3.5, Gemini, and more — in real-time, right in your browser. No API calls, no data leaves your device."
+  canonicalPath="/tools/token-counter/"
+  keywords={[
+    "token counter",
+    "llm token counter",
+    "openai token counter",
+    "claude token counter",
+    "gpt token calculator",
+    "ai api cost estimator",
+    "token cost calculator",
+    "count tokens online",
+    "prompt token counter",
+    "tiktoken online",
+    "gpt4 token count",
+    "claude token count",
+  ]}
+>
+  <main class="page tc-page">
+    <section class="hero">
+      <p class="eyebrow">tool / ai</p>
+      <h1>Token Counter</h1>
+      <p class="lead">
+        Paste any text to instantly count tokens and estimate API costs across GPT-4o,
+        Claude 3.5, Gemini, and more. Uses a cl100k_base approximation — no API calls,
+        no data leaves your browser.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <div class="card">
+      <TokenCounterWorkbench client:load />
+    </div>
+
+    <section class="article">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>What are tokens?</h3>
+          <p>
+            Language models don't read text character by character — they process <em>tokens</em>,
+            which are chunks of text roughly 4 characters long for English. A word like "hello"
+            is 1 token; "unbelievable" might be 3–4 tokens.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Why does it matter?</h3>
+          <p>
+            LLM APIs charge per token — for both input (your prompt + context) and output (the
+            response). Knowing your token count helps you optimize prompts, choose the right model,
+            and predict costs before running large batches.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Approximation accuracy</h3>
+          <p>
+            This tool uses a regex-based approximation of cl100k_base encoding. Results are
+            typically within 5–10% of the actual count. For exact counts, use the official
+            tiktoken library or the provider's tokenizer API.
+          </p>
+        </div>
+      </div>
+
+      <ServiceCTA
+        service="ai-automation"
+        title="Building something with LLMs and need help with cost optimization?"
+        description="HunterMussel designs production AI pipelines with intelligent caching, context compression, and model routing strategies — so you ship faster and spend less on API costs."
+        linkLabel="Explore AI Automation Services"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .tc-page {
+    max-width: 900px;
+    padding-bottom: 5rem;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .info-card {
+    padding: 1.25rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    background: hsl(var(--card) / 0.5);
+  }
+  .info-card h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    margin: 0 0 0.5rem;
+    color: hsl(var(--foreground));
+  }
+  .info-card p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+  }
+</style>
