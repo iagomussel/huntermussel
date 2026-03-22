@@ -15,6 +15,8 @@ import {
   Calculator,
   GitCommitHorizontal,
   Cpu,
+  DollarSign,
+  Users,
 } from "lucide-react";
 
 const tools = [
@@ -47,6 +49,22 @@ const tools = [
     slug: "ai-model-picker",
     category: "ai",
     description: "Answer 5 questions about your use case and get the top 3 AI models ranked by fit — with pros, cons, and pricing.",
+    badge: "new",
+  },
+  {
+    icon: DollarSign,
+    title: "LLM Cost Estimator",
+    slug: "llm-cost-estimator",
+    category: "ai",
+    description: "Compare live API costs across 300+ models from OpenRouter. Enter token counts, sort by price, filter by provider.",
+    badge: "new",
+  },
+  {
+    icon: Users,
+    title: "AI Persona Picker",
+    slug: "persona-picker",
+    category: "ai",
+    description: "20 ready-made system prompt personas for engineers, writers, and analysts. Copy in one click or save your own.",
     badge: "new",
   },
   {
