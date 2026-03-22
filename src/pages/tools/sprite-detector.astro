@@ -69,7 +69,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
             <input id="colorTolerance" type="range" min="0" max="128" value="15" />
             <span id="toleranceValue" class="small">±15</span>
           </div>
-          <p class="small" style="color:var(--text-2); margin-top:0.3rem;">Click image to sample color.</p>
+          <p class="small" style="color:var(--text-2); margin-top:0.3rem;">Click the preview image to sample a color.</p>
         </div>
 
         <div>
@@ -109,7 +109,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     <!-- Canvas preview -->
     <section id="canvasSection" style="display:none">
       <div class="canvas-header">
-        <h2 class="results-title">Annotated Preview</h2>
+        <h2 id="canvasTitle" class="results-title">Image Preview</h2>
         <div class="actions">
           <button id="exportImageBtn" type="button" class="secondary">Export annotated PNG</button>
           <button id="exportJsonBtn" type="button" class="secondary">Export JSON atlas</button>
@@ -125,7 +125,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
       <div class="results-header">
         <h2 class="results-title">Detected Assets</h2>
         <div class="actions">
-          <button id="downloadAllSpritesBtn" type="button" class="secondary">Download all sprites</button>
+          <button id="downloadAllSpritesBtn" type="button" class="secondary">Download all as ZIP</button>
         </div>
       </div>
       <div id="assetGrid" class="asset-grid"></div>
@@ -239,6 +239,10 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     margin-bottom: 1.4rem;
   }
 
+  .canvas-wrap.picker-mode canvas {
+    cursor: crosshair;
+  }
+
   .results-header {
     display: flex;
     align-items: center;
@@ -333,6 +337,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
   tr:nth-child(even) td { background: hsl(145 5% 8%); }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script type="module">
   const $ = (id) => document.getElementById(id);
 
@@ -362,15 +367,21 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
   const exportImageBtn = $("exportImageBtn");
   const exportJsonBtn = $("exportJsonBtn");
   const downloadAllSpritesBtn = $("downloadAllSpritesBtn");
+  const canvasTitle = $("canvasTitle");
 
   let currentImage = null;
   let detectedRects = [];
   let spriteBlobs = [];
   let sourceFileName = "sheet";
 
-  [modeAlpha, modeColor].forEach((r) => r.addEventListener("change", () => {
+  const canvasWrap = annotatedCanvas.closest(".canvas-wrap");
+
+  function syncColorMode() {
     colorKeyGroup.style.display = modeColor.checked ? "" : "none";
-  }));
+    canvasWrap.classList.toggle("picker-mode", modeColor.checked);
+  }
+
+  [modeAlpha, modeColor].forEach((r) => r.addEventListener("change", syncColorMode));
 
   colorTolerance.addEventListener("input", () => { toleranceValue.textContent = `±${colorTolerance.value}`; });
   minSizeInput.addEventListener("input", () => { minSizeValue.textContent = minSizeInput.value; });
@@ -393,6 +404,12 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
       img.onload = () => {
         currentImage = img;
         detectBtn.disabled = false;
+        // Show raw preview immediately
+        annotatedCanvas.width = img.naturalWidth;
+        annotatedCanvas.height = img.naturalHeight;
+        annotatedCanvas.getContext("2d").drawImage(img, 0, 0);
+        canvasTitle.textContent = "Image Preview";
+        canvasSection.style.display = "";
         setStatus("Image loaded", `${img.naturalWidth} × ${img.naturalHeight} px`);
       };
       img.src = e.target.result;
@@ -485,6 +502,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     renderAssetGrid(offscreen, rects);
     renderTable(rects, width, height);
     setStatus(`Found ${rects.length} sprites`, `${width} × ${height} px source`);
+    canvasTitle.textContent = "Annotated Preview";
     canvasSection.style.display = "";
     assetListSection.style.display = rects.length > 0 ? "" : "none";
   });
@@ -589,10 +607,30 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   }
 
-  downloadAllSpritesBtn.addEventListener("click", () => {
-    spriteBlobs.forEach((s, i) => {
-      if (s) setTimeout(() => downloadBlob(s.blob, `${sourceFileName}_sprite_${String(i).padStart(3, "0")}.png`), i * 120);
-    });
+  downloadAllSpritesBtn.addEventListener("click", async () => {
+    const ready = spriteBlobs.filter(Boolean);
+    if (!ready.length) return;
+
+    downloadAllSpritesBtn.disabled = true;
+    downloadAllSpritesBtn.textContent = "Packing ZIP…";
+
+    const zip = new JSZip();
+    const folder = zip.folder(sourceFileName);
+
+    await Promise.all(
+      spriteBlobs.map((s, i) => {
+        if (!s) return;
+        return s.blob.arrayBuffer().then((buf) => {
+          folder.file(`sprite_${String(i).padStart(3, "0")}.png`, buf);
+        });
+      })
+    );
+
+    const zipBlob = await zip.generateAsync({ type: "blob", compression: "STORE" });
+    downloadBlob(zipBlob, `${sourceFileName}_sprites.zip`);
+
+    downloadAllSpritesBtn.disabled = false;
+    downloadAllSpritesBtn.textContent = "Download all as ZIP";
   });
 
   function renderTable(rects, sw, sh) {
@@ -649,6 +687,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     spriteBlobs.forEach((s) => s && URL.revokeObjectURL(s.url));
     spriteBlobs = [];
     detectBtn.disabled = true;
+    canvasTitle.textContent = "Image Preview";
     canvasSection.style.display = "none";
     assetListSection.style.display = "none";
     assetGrid.innerHTML = "";
