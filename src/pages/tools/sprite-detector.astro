@@ -80,6 +80,16 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         </div>
 
         <div>
+          <label class="label" for="edgeSmooth">
+            Edge smoothing: <span id="edgeSmoothValue">3</span>px
+          </label>
+          <input id="edgeSmooth" type="range" min="0" max="32" value="3" />
+          <p class="small" style="color:var(--text-2); margin-top:0.25rem;">
+            Fades border pixels to transparent when downloading assets.
+          </p>
+        </div>
+
+        <div>
           <label class="label">Overlay Color</label>
           <input id="overlayColor" type="color" value="#00ff88" style="width:40px; height:32px; border:none; padding:0; border-radius:0.35rem; cursor:pointer;" />
         </div>
@@ -112,7 +122,13 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
 
     <!-- Asset list -->
     <section id="assetListSection" style="display:none">
-      <h2 class="results-title" style="margin-bottom:0.75rem;">Asset List</h2>
+      <div class="results-header">
+        <h2 class="results-title">Detected Assets</h2>
+        <div class="actions">
+          <button id="downloadAllSpritesBtn" type="button" class="secondary">Download all sprites</button>
+        </div>
+      </div>
+      <div id="assetGrid" class="asset-grid"></div>
       <div id="assetTable" class="asset-table"></div>
     </section>
 
@@ -135,6 +151,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Click the canvas to sample a background color when using color-key mode.</li>
           <li>Set a minimum sprite size to filter out noise.</li>
           <li>Click <strong>Detect Sprites</strong> to see overlaid bounding boxes.</li>
+          <li>Adjust <strong>Edge smoothing</strong> — downloaded assets will have the background removed with a soft alpha falloff at the border.</li>
           <li>Export the annotated image or the JSON atlas for use in your game engine.</li>
         </ul>
       </article>
@@ -222,6 +239,68 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     margin-bottom: 1.4rem;
   }
 
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .asset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .asset-card {
+    border: 1px solid var(--line);
+    border-radius: 0.65rem;
+    background: var(--card);
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .asset-card:hover {
+    border-color: hsl(145 80% 50% / 0.25);
+    box-shadow: 0 0 14px var(--glow);
+  }
+
+  .asset-thumb-wrap {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: repeating-conic-gradient(#3a3a3a 0% 25%, #2a2a2a 0% 50%) 0 0 / 12px 12px;
+  }
+
+  .asset-thumb { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+
+  .asset-info {
+    padding: 0.4rem 0.6rem;
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .asset-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-1);
+  }
+
+  .asset-dims {
+    font-size: 0.68rem;
+    color: var(--text-2);
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .asset-actions { padding: 0 0.6rem 0.6rem; }
+  .asset-actions button { width: 100%; font-size: 0.78rem; padding: 0.3rem 0.4rem; }
+
   .asset-table {
     margin-bottom: 1.4rem;
     overflow-x: auto;
@@ -269,6 +348,8 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
   const toleranceValue = $("toleranceValue");
   const minSizeInput = $("minSizeInput");
   const minSizeValue = $("minSizeValue");
+  const edgeSmooth = $("edgeSmooth");
+  const edgeSmoothValue = $("edgeSmoothValue");
   const overlayColor = $("overlayColor");
   const statusBox = $("statusBox");
   const statusText = $("statusText");
@@ -276,12 +357,15 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
   const canvasSection = $("canvasSection");
   const annotatedCanvas = $("annotatedCanvas");
   const assetListSection = $("assetListSection");
+  const assetGrid = $("assetGrid");
   const assetTable = $("assetTable");
   const exportImageBtn = $("exportImageBtn");
   const exportJsonBtn = $("exportJsonBtn");
+  const downloadAllSpritesBtn = $("downloadAllSpritesBtn");
 
   let currentImage = null;
   let detectedRects = [];
+  let spriteBlobs = [];
   let sourceFileName = "sheet";
 
   [modeAlpha, modeColor].forEach((r) => r.addEventListener("change", () => {
@@ -290,6 +374,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
 
   colorTolerance.addEventListener("input", () => { toleranceValue.textContent = `±${colorTolerance.value}`; });
   minSizeInput.addEventListener("input", () => { minSizeValue.textContent = minSizeInput.value; });
+  edgeSmooth.addEventListener("input", () => { edgeSmoothValue.textContent = edgeSmooth.value; });
 
   dropZone.addEventListener("click", (e) => {
     if (!e.target.closest("button")) fileInput.click();
@@ -395,7 +480,9 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     }
 
     detectedRects = rects;
+    spriteBlobs = new Array(rects.length).fill(null);
     drawAnnotated(offscreen, rects);
+    renderAssetGrid(offscreen, rects);
     renderTable(rects, width, height);
     setStatus(`Found ${rects.length} sprites`, `${width} × ${height} px source`);
     canvasSection.style.display = "";
@@ -423,6 +510,90 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
       ctx.fillStyle = oc + "22";
     });
   }
+
+  // Crop a rect from sourceCanvas and remove the background with alpha smoothing.
+  // Returns a new canvas with the background cut out.
+  function cropWithBgRemoval(sourceCanvas, rect) {
+    const alphaMode = modeAlpha.checked;
+    const tol = parseInt(colorTolerance.value, 10);
+    const smooth = parseInt(edgeSmooth.value, 10);
+    const [kr, kg, kb] = hexToRgb(colorKey.value);
+
+    const sc = document.createElement("canvas");
+    sc.width = rect.w; sc.height = rect.h;
+    const sctx = sc.getContext("2d");
+    sctx.drawImage(sourceCanvas, rect.x, rect.y, rect.w, rect.h, 0, 0, rect.w, rect.h);
+
+    const imgData = sctx.getImageData(0, 0, rect.w, rect.h);
+    const { data } = imgData;
+
+    for (let i = 0; i < data.length; i += 4) {
+      if (alphaMode) {
+        // Preserve original alpha; apply smooth falloff near the transparent edge
+        const a = data[i + 3];
+        if (a <= 10) {
+          data[i + 3] = 0;
+        } else if (smooth > 0 && a < 10 + smooth * 8) {
+          // Remap [10 .. 10+smooth*8] → [0 .. original]
+          data[i + 3] = Math.round(((a - 10) / (smooth * 8)) * a);
+        }
+        // else keep as-is
+      } else {
+        const dist = colorDistance(data[i], data[i + 1], data[i + 2], kr, kg, kb);
+        if (dist <= tol) {
+          data[i + 3] = 0;
+        } else if (smooth > 0 && dist <= tol + smooth) {
+          // Linear ramp: 0 at the hard edge, full at smooth distance out
+          data[i + 3] = Math.round(((dist - tol) / smooth) * 255);
+        }
+        // else fully opaque — leave data[i+3] as-is
+      }
+    }
+
+    sctx.putImageData(imgData, 0, 0);
+    return sc;
+  }
+
+  function renderAssetGrid(sourceCanvas, rects) {
+    assetGrid.innerHTML = "";
+    rects.forEach((r, i) => {
+      const cropped = cropWithBgRemoval(sourceCanvas, r);
+      cropped.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        spriteBlobs[i] = { blob, url };
+
+        const card = document.createElement("div");
+        card.className = "asset-card";
+        card.innerHTML = `
+          <div class="asset-thumb-wrap"><img class="asset-thumb" src="${url}" loading="lazy" /></div>
+          <div class="asset-info">
+            <div class="asset-label">#${i}</div>
+            <div class="asset-dims">${r.w} × ${r.h} px</div>
+            <div class="asset-dims">${r.x}, ${r.y}</div>
+          </div>
+          <div class="asset-actions"><button type="button" class="dl-btn secondary">Download</button></div>
+        `;
+        card.querySelector(".dl-btn").addEventListener("click", () => {
+          downloadBlob(blob, `${sourceFileName}_sprite_${String(i).padStart(3, "0")}.png`);
+        });
+        assetGrid.appendChild(card);
+      }, "image/png");
+    });
+  }
+
+  function downloadBlob(blob, name) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }
+
+  downloadAllSpritesBtn.addEventListener("click", () => {
+    spriteBlobs.forEach((s, i) => {
+      if (s) setTimeout(() => downloadBlob(s.blob, `${sourceFileName}_sprite_${String(i).padStart(3, "0")}.png`), i * 120);
+    });
+  });
 
   function renderTable(rects, sw, sh) {
     if (rects.length === 0) { assetTable.innerHTML = ""; return; }
@@ -475,9 +646,12 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
   clearBtn.addEventListener("click", () => {
     currentImage = null;
     detectedRects = [];
+    spriteBlobs.forEach((s) => s && URL.revokeObjectURL(s.url));
+    spriteBlobs = [];
     detectBtn.disabled = true;
     canvasSection.style.display = "none";
     assetListSection.style.display = "none";
+    assetGrid.innerHTML = "";
     assetTable.innerHTML = "";
     setStatus("", "", false);
   });
