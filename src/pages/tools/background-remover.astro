@@ -1,0 +1,416 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="Background Color Remover | HunterMussel Tools"
+  description="Remove or replace a solid background color from images in your browser. Pick a color, set tolerance, and export a transparent PNG or swap the background — no uploads, no server."
+  canonicalPath="/tools/background-remover/"
+  keywords={[
+    "background color remover online",
+    "remove background color browser",
+    "color to alpha tool",
+    "replace background color image",
+    "color key to transparency",
+    "chroma key tool online",
+    "remove green screen browser",
+    "transparent background png",
+    "client side background remover",
+    "background color replace tool",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / imaging</p>
+      <h1>Background Color Remover</h1>
+      <p class="lead">
+        Pick a background color (or click directly on the image to sample it), adjust
+        tolerance, and convert matching pixels to transparent or replace them with a new
+        color. Export as PNG — runs entirely in your browser.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+    </section>
+
+    <section class="bg-top">
+      <!-- Canvas area -->
+      <div class="card canvas-card" id="canvasCard">
+        <input id="fileInput" type="file" accept="image/*" style="display:none" />
+        <div id="dropZone" class="drop-zone-inner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <p class="drop-label">Drop an image here or <span class="drop-link" id="browseBtn">browse</span></p>
+          <p class="small">Click the image preview to sample a background color</p>
+        </div>
+        <div id="previewArea" style="display:none;">
+          <div class="canvas-tabs">
+            <button id="tabOriginal" class="tab-btn active" type="button">Original</button>
+            <button id="tabResult" class="tab-btn" type="button">Result</button>
+          </div>
+          <div class="checker-wrap">
+            <canvas id="displayCanvas" style="max-width:100%; display:block; cursor:crosshair;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <aside class="card stack">
+        <div>
+          <label class="label" for="bgColor">Background Color</label>
+          <div class="color-row">
+            <input id="bgColor" type="color" value="#00ff00" />
+            <input id="hexInput" type="text" placeholder="#00ff00" value="#00ff00" style="font-family:'JetBrains Mono',monospace; font-size:0.85rem;" />
+          </div>
+          <p class="small" style="color:var(--text-2); margin-top:0.35rem;">
+            Click the image to pick a color.
+          </p>
+        </div>
+
+        <div>
+          <label class="label" for="tolerance">
+            Tolerance: <span id="toleranceDisplay">30</span>
+          </label>
+          <input id="tolerance" type="range" min="0" max="200" value="30" />
+        </div>
+
+        <div>
+          <label class="label">Replace With</label>
+          <div class="mode-row">
+            <label class="mode-opt">
+              <input type="radio" name="replaceMode" value="transparent" id="modeTransparent" checked />
+              <span>Transparent</span>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="replaceMode" value="color" id="modeReplaceColor" />
+              <span>Color</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="replaceColorGroup" style="display:none">
+          <label class="label" for="replaceColor">Replacement Color</label>
+          <input id="replaceColor" type="color" value="#ffffff" style="width:40px; height:32px; border:none; padding:0; border-radius:0.35rem; cursor:pointer;" />
+        </div>
+
+        <div>
+          <label class="label" for="smoothing">
+            Edge smoothing: <span id="smoothingDisplay">0</span>px
+          </label>
+          <input id="smoothing" type="range" min="0" max="5" value="0" step="1" />
+        </div>
+
+        <div id="statusBox" class="result" style="display:none">
+          <strong id="statusText">Idle</strong>
+          <span id="statusHint" class="small"></span>
+        </div>
+
+        <div class="actions">
+          <button id="applyBtn" type="button" disabled>Apply</button>
+          <button id="downloadBtn" type="button" class="secondary" disabled>Download PNG</button>
+          <button id="clearBtn" type="button" class="secondary">Clear</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Reads every pixel from the uploaded image and compares it to the chosen background
+          color using Euclidean distance in RGB space. Pixels within the tolerance range are
+          either set to fully transparent or replaced with a new color. Pixels just outside
+          the tolerance range receive proportional alpha blending for smoother edges.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Common Use Cases</h2>
+        <ul>
+          <li><strong>Green screen:</strong> Remove chroma key backgrounds from photos or game sprites.</li>
+          <li><strong>Sprite sheets:</strong> Convert solid-color sprite backgrounds to transparency.</li>
+          <li><strong>Logo cleanup:</strong> Remove white or black backgrounds from logos.</li>
+          <li><strong>Background swap:</strong> Replace one background color with another in batch.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Drop an image or browse for a file.</li>
+          <li>Click directly on the image to sample the background color automatically.</li>
+          <li>Adjust tolerance — higher values remove more similar shades.</li>
+          <li>Choose <strong>Transparent</strong> to export a PNG with alpha, or <strong>Color</strong> to swap the background.</li>
+          <li>Click <strong>Apply</strong> to preview, then <strong>Download PNG</strong>.</li>
+        </ul>
+      </article>
+      <ServiceCTA
+        service="workflows-bpm"
+        title="Need automated background removal at scale?"
+        description="HunterMussel designs workflow automation that handles bulk image processing, chroma-key removal, and delivery pipelines — eliminating manual steps entirely."
+        linkLabel="Explore Workflows & BPM"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .bg-top {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 720px) {
+    .bg-top { grid-template-columns: 1fr; }
+  }
+
+  .canvas-card {
+    padding: 0.75rem;
+    min-height: 200px;
+  }
+
+  .drop-zone-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 2.5rem 1rem;
+    color: var(--text-2);
+    text-align: center;
+    cursor: pointer;
+    border: 2px dashed hsl(145 80% 50% / 0.3);
+    border-radius: 0.5rem;
+    transition: border-color 0.15s;
+  }
+
+  .drop-zone-inner:hover { border-color: var(--primary); }
+  .drop-label { margin: 0; font-weight: 600; color: var(--text-1); }
+  .drop-link { color: var(--primary); text-decoration: underline; cursor: pointer; }
+
+  .canvas-tabs { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+
+  .tab-btn {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 0.8rem;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .tab-btn.active {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-soft);
+  }
+
+  .checker-wrap {
+    background: repeating-conic-gradient(#3a3a3a 0% 25%, #2a2a2a 0% 50%) 0 0 / 16px 16px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  .color-row {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  #bgColor { width: 40px; height: 32px; border: none; padding: 0; border-radius: 0.35rem; cursor: pointer; }
+
+  .mode-row { display: flex; gap: 1rem; margin-top: 0.35rem; }
+  .mode-opt { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.84rem; }
+</style>
+
+<script type="module">
+  const $ = (id) => document.getElementById(id);
+
+  const fileInput = $("fileInput");
+  const browseBtn = $("browseBtn");
+  const dropZone = $("dropZone");
+  const previewArea = $("previewArea");
+  const displayCanvas = $("displayCanvas");
+  const tabOriginal = $("tabOriginal"), tabResult = $("tabResult");
+  const bgColor = $("bgColor"), hexInput = $("hexInput");
+  const tolerance = $("tolerance"), toleranceDisplay = $("toleranceDisplay");
+  const modeTransparent = $("modeTransparent"), modeReplaceColor = $("modeReplaceColor");
+  const replaceColorGroup = $("replaceColorGroup"), replaceColor = $("replaceColor");
+  const smoothing = $("smoothing"), smoothingDisplay = $("smoothingDisplay");
+  const statusBox = $("statusBox"), statusText = $("statusText"), statusHint = $("statusHint");
+  const applyBtn = $("applyBtn"), downloadBtn = $("downloadBtn"), clearBtn = $("clearBtn");
+
+  let originalImage = null;
+  let resultImageData = null;
+  let showingResult = false;
+
+  browseBtn.addEventListener("click", () => fileInput.click());
+  dropZone.addEventListener("click", () => fileInput.click());
+  document.addEventListener("dragover", (e) => e.preventDefault());
+  document.addEventListener("drop", (e) => { e.preventDefault(); if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+  fileInput.addEventListener("change", () => { loadFile(fileInput.files[0]); fileInput.value = ""; });
+
+  [modeTransparent, modeReplaceColor].forEach((r) => r.addEventListener("change", () => {
+    replaceColorGroup.style.display = modeReplaceColor.checked ? "" : "none";
+  }));
+
+  tolerance.addEventListener("input", () => { toleranceDisplay.textContent = tolerance.value; });
+  smoothing.addEventListener("input", () => { smoothingDisplay.textContent = smoothing.value; });
+
+  bgColor.addEventListener("input", () => { hexInput.value = bgColor.value; });
+  hexInput.addEventListener("input", () => {
+    const v = hexInput.value.trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(v)) bgColor.value = v;
+  });
+
+  function loadFile(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        originalImage = img;
+        displayCanvas.width = img.naturalWidth;
+        displayCanvas.height = img.naturalHeight;
+        displayCanvas.getContext("2d").drawImage(img, 0, 0);
+        dropZone.style.display = "none";
+        previewArea.style.display = "";
+        applyBtn.disabled = false;
+        showingResult = false;
+        tabOriginal.classList.add("active");
+        tabResult.classList.remove("active");
+        resultImageData = null;
+        downloadBtn.disabled = true;
+        setStatus("", "", false);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Click canvas to pick color
+  displayCanvas.addEventListener("click", (e) => {
+    const rect = displayCanvas.getBoundingClientRect();
+    const scaleX = displayCanvas.width / rect.width;
+    const scaleY = displayCanvas.height / rect.height;
+    const x = Math.floor((e.clientX - rect.left) * scaleX);
+    const y = Math.floor((e.clientY - rect.top) * scaleY);
+
+    const ctx = displayCanvas.getContext("2d");
+    // Always sample from original
+    if (originalImage) {
+      const tmp = document.createElement("canvas");
+      tmp.width = originalImage.naturalWidth; tmp.height = originalImage.naturalHeight;
+      tmp.getContext("2d").drawImage(originalImage, 0, 0);
+      const [r, g, b] = tmp.getContext("2d").getImageData(x, y, 1, 1).data;
+      const hex = "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
+      bgColor.value = hex;
+      hexInput.value = hex;
+      setStatus(`Sampled ${hex}`, "Click Apply to process.");
+    }
+  });
+
+  // Tabs
+  tabOriginal.addEventListener("click", () => {
+    showingResult = false;
+    tabOriginal.classList.add("active"); tabResult.classList.remove("active");
+    if (originalImage) { displayCanvas.getContext("2d").drawImage(originalImage, 0, 0); }
+  });
+
+  tabResult.addEventListener("click", () => {
+    if (!resultImageData) return;
+    showingResult = true;
+    tabResult.classList.add("active"); tabOriginal.classList.remove("active");
+    displayCanvas.getContext("2d").putImageData(resultImageData, 0, 0);
+  });
+
+  function hexToRgb(hex) {
+    const n = parseInt(hex.slice(1), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  applyBtn.addEventListener("click", () => {
+    if (!originalImage) return;
+
+    const offscreen = document.createElement("canvas");
+    offscreen.width = originalImage.naturalWidth;
+    offscreen.height = originalImage.naturalHeight;
+    const ctx = offscreen.getContext("2d");
+    ctx.drawImage(originalImage, 0, 0);
+    const imgData = ctx.getImageData(0, 0, offscreen.width, offscreen.height);
+    const { data } = imgData;
+
+    const [tr, tg, tb] = hexToRgb(bgColor.value);
+    const tol = parseInt(tolerance.value, 10);
+    const sm = parseInt(smoothing.value, 10);
+    const replaceMode = modeReplaceColor.checked;
+    const [rr, rg, rb] = hexToRgb(replaceColor.value);
+
+    for (let i = 0; i < data.length; i += 4) {
+      const dr = data[i] - tr, dg = data[i + 1] - tg, db = data[i + 2] - tb;
+      const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+
+      if (dist <= tol) {
+        if (replaceMode) {
+          data[i] = rr; data[i + 1] = rg; data[i + 2] = rb;
+        } else {
+          data[i + 3] = 0;
+        }
+      } else if (sm > 0 && dist <= tol + sm) {
+        // Smooth falloff
+        const alpha = (dist - tol) / sm;
+        if (replaceMode) {
+          data[i] = Math.round(data[i] * alpha + rr * (1 - alpha));
+          data[i + 1] = Math.round(data[i + 1] * alpha + rg * (1 - alpha));
+          data[i + 2] = Math.round(data[i + 2] * alpha + rb * (1 - alpha));
+        } else {
+          data[i + 3] = Math.round(data[i + 3] * alpha);
+        }
+      }
+    }
+
+    resultImageData = imgData;
+    displayCanvas.getContext("2d").putImageData(imgData, 0, 0);
+    showingResult = true;
+    tabResult.classList.add("active"); tabOriginal.classList.remove("active");
+    downloadBtn.disabled = false;
+    setStatus("Applied", `Processed ${offscreen.width}×${offscreen.height} px`);
+  });
+
+  downloadBtn.addEventListener("click", () => {
+    if (!resultImageData) return;
+    const out = document.createElement("canvas");
+    out.width = displayCanvas.width; out.height = displayCanvas.height;
+    out.getContext("2d").putImageData(resultImageData, 0, 0);
+    out.toBlob((blob) => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "background_removed.png";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }, "image/png");
+  });
+
+  function setStatus(text, hint, show = true) {
+    statusBox.style.display = show ? "" : "none";
+    statusText.textContent = text;
+    statusHint.textContent = hint;
+  }
+
+  clearBtn.addEventListener("click", () => {
+    originalImage = null;
+    resultImageData = null;
+    previewArea.style.display = "none";
+    dropZone.style.display = "";
+    applyBtn.disabled = true;
+    downloadBtn.disabled = true;
+    showingResult = false;
+    setStatus("", "", false);
+  });
+</script>
