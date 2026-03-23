@@ -82,6 +82,14 @@ const blogSchema = [
   type="article"
   keywords={entry.data.keywords}
   schema={blogSchema}
+  pageData={{
+    pageType: 'blog_post',
+    pageTitle: entry.data.title,
+    pageUrl: url,
+    pageCategory: entry.data.tags?.[0] ?? 'Blog',
+    pageTags: entry.data.tags ?? [],
+    publishDate: entry.data.date?.toISOString() ?? null,
+  }}
 >
   <div class="min-h-screen bg-background">
      <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />

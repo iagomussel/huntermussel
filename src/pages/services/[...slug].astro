@@ -82,6 +82,11 @@ const serviceSchema = [
   canonicalUrl={url}
   keywords={entry.data.keywords}
   schema={serviceSchema}
+  pageData={{
+    pageType: 'service',
+    pageTitle: entry.data.title,
+    pageUrl: url,
+  }}
 >
   <div class="min-h-screen bg-background">
     <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
