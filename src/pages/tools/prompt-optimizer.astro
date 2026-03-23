@@ -595,7 +595,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     // Re-enable chips on the newly visible step so Back + re-select works
     document
       .querySelectorAll(`.po-step[data-step="${n}"] .po-chip`)
-      .forEach((c) => { (c as HTMLButtonElement).disabled = false; });
+      .forEach((c) => { c.disabled = false; });
     chipBackNav.style.display = CHIP_STEPS.includes(n) && n > 1 ? "" : "none";
     state.step = n;
     updateProgress();
@@ -625,7 +625,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         .querySelectorAll(`.po-chip[data-key="${key}"]`)
         .forEach((c) => {
           c.classList.remove("selected");
-          (c as HTMLButtonElement).disabled = true;
+          c.disabled = true;
         });
       chip.classList.add("selected");
       state[key] = value;
@@ -690,7 +690,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
       .querySelectorAll(".po-chip")
       .forEach((c) => {
         c.classList.remove("selected");
-        (c as HTMLButtonElement).disabled = false;
+        c.disabled = false;
       });
     document.getElementById("taskDescription").value = "";
     document.getElementById("taskConstraints").value = "";
