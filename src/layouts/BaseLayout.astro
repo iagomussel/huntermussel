@@ -12,6 +12,7 @@ interface Props {
   keywords?: string | string[];
   robots?: string;
   schemaType?: "WebPage" | "WebApplication";
+  pageData?: Record<string, unknown>;
 }
 
 const {
@@ -22,7 +23,14 @@ const {
   keywords,
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
   schemaType = canonicalPath === "/tools/" ? "WebPage" : "WebApplication",
+  pageData,
 } = Astro.props;
+
+const resolvedPageData = pageData ?? {
+  pageType: 'tool',
+  pageTitle: title,
+  pageUrl: `https://huntermussel.com${canonicalPath}`,
+};
 const canonicalUrl = `https://huntermussel.com${canonicalPath}`;
 const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
 const pathParts = canonicalPath.split("/").filter(Boolean);
@@ -72,6 +80,7 @@ const pageSchema =
 <!doctype html>
 <html lang="en" class="dark">
   <head>
+    <script is:inline define:vars={{ resolvedPageData }}>window.dataLayer=window.dataLayer||[];window.dataLayer.push(resolvedPageData);</script>
     <!-- Google Tag Manager -->
     <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
