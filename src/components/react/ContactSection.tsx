@@ -47,6 +47,11 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       setEmail("");
       setPhone("");
       setMessage("");
+      if (typeof window !== "undefined" && typeof (window as Window & { gtag?: (...args: unknown[]) => void }).gtag === "function") {
+        (window as Window & { gtag: (...args: unknown[]) => void }).gtag("event", "conversion", {
+          send_to: "AW-16916178576/contact_form_lead",
+        });
+      }
     } catch (err) {
       console.error("Contact form: Connection error:", err);
       setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
@@ -203,7 +208,19 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MessageCircle size={14} className="text-primary" />
-                  <a href="https://wa.me/5521995775689" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-primary">
+                  <a
+                    href="https://wa.me/5521995775689"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-primary"
+                    onClick={() => {
+                      if (typeof window !== "undefined" && typeof (window as Window & { gtag?: (...args: unknown[]) => void }).gtag === "function") {
+                        (window as Window & { gtag: (...args: unknown[]) => void }).gtag("event", "conversion", {
+                          send_to: "AW-16916178576/whatsapp_click_lead",
+                        });
+                      }
+                    }}
+                  >
                     WhatsApp
                   </a>
                 </div>
