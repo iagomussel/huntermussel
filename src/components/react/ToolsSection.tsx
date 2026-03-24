@@ -7,11 +7,12 @@ import {
   ChartBar,
   ScrollText,
   Lock,
-  Clock,
   GitCompare,
   Sparkles,
   ShieldCheck,
   ArrowLeftRight,
+  Layers,
+  Grid3x3,
 } from "lucide-react";
 
 const tools = [
@@ -43,6 +44,22 @@ const tools = [
     slug: "image-optimizer",
     category: "imaging",
     description: "Convert images to WebP in-browser. Control quality and resize — zero uploads.",
+  },
+  {
+    icon: Layers,
+    title: "Alpha Channel Splitter",
+    slug: "alpha-channel-splitter",
+    category: "imaging",
+    description: "Split PNG/WebP into a grayscale alpha mask and an opaque RGB plate — all local.",
+    badge: "new",
+  },
+  {
+    icon: Grid3x3,
+    title: "Sprite Sheet Slicer",
+    slug: "sprite-slicer",
+    category: "imaging",
+    description: "Slice sprite sheets into a grid of PNG tiles with rows×columns or fixed tile size.",
+    badge: "new",
   },
   {
     icon: FileText,
@@ -139,7 +156,7 @@ const ToolsSection = () => {
             <motion.a
               key={tool.slug}
               variants={item}
-              href={`/tools/${tool.slug}`}
+              href={`/tools/${tool.slug}/`}
               className="group relative flex flex-col gap-3 rounded-lg border border-border bg-card/50 p-5 text-current no-underline transition-all hover:border-primary/30 hover:bg-card hover:shadow-[0_0_20px_hsl(145_80%_50%/0.08)]"
             >
               {tool.badge && (

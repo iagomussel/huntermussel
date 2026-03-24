@@ -14,6 +14,7 @@ const STATIC_PAGES = [
 ];
 
 const TOOLS = [
+  "alpha-channel-splitter",
   "base64-converter",
   "chmod",
   "cron-parser",
@@ -21,6 +22,8 @@ const TOOLS = [
   "estimators",
   "hash-generator",
   "http-status",
+  "image-color-palette",
+  "image-format-converter",
   "image-optimizer",
   "json-formatter",
   "jwt-inspector",
@@ -30,6 +33,8 @@ const TOOLS = [
   "prompt-optimizer",
   "regex-tester",
   "sla-calculator",
+  "sprite-slicer",
+  "svg-to-png",
   "timestamp",
   "uuid",
   "yaml-json",

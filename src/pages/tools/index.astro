@@ -141,7 +141,7 @@ const categories = [
   {
     id: "media",
     label: "Media & Files",
-    description: "Optimize, convert, and process images in the browser — nothing is uploaded to any server.",
+    description: "Optimize, convert, slice, rasterize, and analyze images in the browser — nothing is uploaded to any server.",
     tools: [
       {
         name: "Image Optimizer",
@@ -149,6 +149,41 @@ const categories = [
         desc: "Convert images to WebP in-browser. Adjust quality, resize, batch download — zero server uploads.",
         badge: "popular",
         icon: `<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>`,
+      },
+      {
+        name: "Alpha Channel Splitter",
+        slug: "alpha-channel-splitter",
+        desc: "Extract transparency as a grayscale mask PNG plus a fully opaque RGB plate from PNG or WebP.",
+        badge: "new",
+        icon: `<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>`,
+      },
+      {
+        name: "SVG to PNG",
+        slug: "svg-to-png",
+        desc: "Paste or upload SVG and rasterize to PNG at any width — transparent or solid background.",
+        badge: "new",
+        icon: `<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><circle cx="10" cy="13" r="2"/><path d="m20 17-1.5-1.5a2 2 0 0 0-2.82 0L10 22"/>`,
+      },
+      {
+        name: "Sprite Sheet Slicer",
+        slug: "sprite-slicer",
+        desc: "Cut a uniform grid from sprite sheets using rows×columns or fixed tile size — PNG tiles only.",
+        badge: "new",
+        icon: `<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>`,
+      },
+      {
+        name: "Image Format Converter",
+        slug: "image-format-converter",
+        desc: "Batch convert between PNG, JPEG, and WebP with quality control — all client-side.",
+        badge: "new",
+        icon: `<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>`,
+      },
+      {
+        name: "Image Color Palette",
+        slug: "image-color-palette",
+        desc: "Extract dominant colors with hex codes, copy to clipboard, download a palette strip PNG.",
+        badge: "new",
+        icon: `<circle cx="9" cy="9" r="2"/><circle cx="15" cy="9" r="2"/><circle cx="12" cy="15" r="2"/><path d="M12 3v2M5.6 5.6l1.4 1.4M3 12h2m14 0h2m-3.2-5.8L18.4 5.8"/>`,
       },
     ],
   },
@@ -210,6 +245,10 @@ const faqItems = [
     q: "What is SLA uptime and how is downtime calculated?",
     a: "SLA (Service Level Agreement) uptime refers to the guaranteed percentage of time a service will be available. '99.9% uptime' (three nines) means a maximum of 8.76 hours of downtime per year. Our SLA Calculator shows exact allowed downtime per day, week, month, and year for any uptime percentage.",
   },
+  {
+    q: "Can I process images in the browser without uploading them?",
+    a: "Yes. HunterMussel's Media & Files tools — including the WebP Image Optimizer, Alpha Channel Splitter, SVG to PNG rasterizer, Sprite Sheet Slicer, Image Format Converter, and Image Color Palette — run entirely client-side using Canvas and File APIs. Files never leave your device unless you save downloads locally.",
+  },
 ];
 
 const toolsSchema = [
@@ -256,7 +295,7 @@ const toolsSchema = [
 
 <Layout
   title="Free Developer Tools by Category: AI, Encoding, DevOps, Security & More"
-  description={`${totalTools} free browser-based developer tools organized by category — AI prompt optimizer, Base64, JWT, JSON, Cron, regex, and more. No account, no uploads, everything runs in your browser.`}
+  description={`${totalTools} free browser-based developer tools: AI prompt optimizer, encoding, JWT, YAML/JSON, Cron, regex, media (WebP, alpha split, SVG→PNG, sprites, palettes), DevOps, and more. No account, no uploads.`}
   canonicalUrl={toolsUrl}
   keywords={[
     "free developer tools",
@@ -278,6 +317,12 @@ const toolsSchema = [
     "ai prompt engineering tool",
     "browser developer tools",
     "client side tools no upload",
+    "alpha channel splitter online",
+    "svg to png converter",
+    "sprite sheet slicer",
+    "image format converter png jpeg webp",
+    "image color palette extractor",
+    "webp optimizer browser",
   ]}
   schema={toolsSchema}
 >
@@ -335,7 +380,7 @@ const toolsSchema = [
           </div>
           <div class="tools-grid">
             {cat.tools.map((tool) => (
-              <a href={`/tools/${tool.slug}`} class={`tool-card${tool.badge ? " tool-card--new" : ""}`}>
+              <a href={`/tools/${tool.slug}/`} class={`tool-card${tool.badge ? " tool-card--new" : ""}`}>
                 {tool.badge && <span class="tool-badge">{tool.badge}</span>}
                 <span class="tool-cat">// {cat.id}</span>
                 <div class="tool-icon">

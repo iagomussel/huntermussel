@@ -1,0 +1,296 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+
+const faqItems = [
+  {
+    q: "Are sprite tiles uploaded anywhere?",
+    a: "No. The sheet is read locally, sliced with canvas, and each PNG is generated in your browser. Downloads save to your device only.",
+  },
+  {
+    q: "Why does it say the grid does not divide evenly?",
+    a: "Rows × columns must produce integer tile widths and heights. If image width is not divisible by column count (or height by row count), adjust the counts or trim the sheet. Fixed tile mode uses only full tiles; partial edge strips are skipped.",
+  },
+  {
+    q: "Why did my browser block some downloads?",
+    a: "Many browsers limit rapid automatic downloads. This tool staggers each file by ~100 ms. If a browser still blocks, allow downloads for this site or save tiles in smaller batches by cropping the sheet first.",
+  },
+  {
+    q: "Does this support non-uniform sprite sheets?",
+    a: "Only uniform grids. For variable layouts, slice manually in an image editor or preprocess into a regular grid.",
+  },
+];
+---
+
+<BaseLayout
+  title="Sprite Sheet Slicer — Grid PNG Tile Export | HunterMussel Tools"
+  description="Slice sprite sheets into PNG tiles in the browser: rows×columns or fixed tile size. Staggered downloads, no server upload, ideal for pixel art and game assets."
+  canonicalPath="/tools/sprite-slicer/"
+  breadcrumbName="Sprite Sheet Slicer"
+  faqItems={faqItems}
+  keywords={[
+    "sprite sheet slicer online",
+    "split sprite sheet png",
+    "tile sheet cutter browser",
+    "game sprite grid export",
+    "pixel art tile splitter",
+    "spritesheet to tiles",
+    "uniform grid image slicer",
+    "no upload sprite tool",
+    "png tiles from spritesheet",
+    "2d game asset slicer",
+    "rows columns image split",
+    "client side image grid",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / imaging</p>
+      <h1>Sprite Sheet Slicer</h1>
+      <p class="lead">
+        Cut one image into a uniform grid. Choose <strong>rows × columns</strong> or a fixed <strong>tile width and height</strong>
+        in pixels. Each cell becomes its own PNG download.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+      <nav class="related-tools" aria-label="Related imaging tools">
+        <span class="related-tools__label">Related</span>
+        <a href="/tools/image-optimizer/">WebP optimizer</a>
+        <a href="/tools/alpha-channel-splitter/">Alpha splitter</a>
+        <a href="/tools/image-format-converter/">Format converter</a>
+      </nav>
+    </section>
+
+    <section class="media-tool-grid">
+      <div id="dropZone" class="card media-drop">
+        <input id="fileInput" type="file" accept="image/*" style="display:none" />
+        <div class="media-drop-inner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <p class="media-drop-label">Drop an image or <span class="media-drop-link">browse</span></p>
+          <p class="small">PNG, WebP, JPEG, GIF, BMP — one sheet at a time.</p>
+        </div>
+        <p id="fileLabel" class="small mono media-file-meta"></p>
+      </div>
+
+      <aside class="card stack">
+        <div>
+          <label class="label">Mode</label>
+          <select id="mode">
+            <option value="grid">Rows × columns</option>
+            <option value="tile">Fixed tile size (px)</option>
+          </select>
+        </div>
+        <div id="gridOpts" class="media-form-row">
+          <div>
+            <label class="label" for="rows">Rows</label>
+            <input id="rows" type="number" min="1" max="64" value="4" />
+          </div>
+          <div>
+            <label class="label" for="cols">Columns</label>
+            <input id="cols" type="number" min="1" max="64" value="4" />
+          </div>
+        </div>
+        <div id="tileOpts" class="media-form-row" style="display:none">
+          <div>
+            <label class="label" for="tileW">Tile width</label>
+            <input id="tileW" type="number" min="1" max="4096" value="32" />
+          </div>
+          <div>
+            <label class="label" for="tileH">Tile height</label>
+            <input id="tileH" type="number" min="1" max="4096" value="32" />
+          </div>
+        </div>
+        <p id="dims" class="small mono" style="margin:0;"></p>
+        <div class="actions">
+          <button id="sliceBtn" type="button" disabled>Slice & download all</button>
+        </div>
+        <p id="status" class="small" style="margin:0;"></p>
+      </aside>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What it does</h2>
+        <p>
+          Divides a single bitmap into equal rectangles and saves each as PNG. Use it for texture atlases, pixel-art tilesets,
+          and UI strips after you have aligned art to a strict grid.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why browser-only slicing</h2>
+        <p>
+          Sprite sheets often contain unreleased game or product art. Processing locally avoids cloud OCR and converter
+          retention policies. Pair with our <a href="/tools/image-optimizer/">WebP optimizer</a> if you need lighter tiles after slicing.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to use</h2>
+        <ul>
+          <li>Load one image that already lines up to a uniform grid.</li>
+          <li>Choose <strong>Rows × columns</strong> (tile size is derived) or <strong>Fixed tile size</strong> (full tiles only).</li>
+          <li>Click <strong>Slice & download all</strong> and allow multiple downloads if the browser prompts.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Frequently asked questions</h2>
+        <dl class="tool-faq-list">
+          {faqItems.map((item) => (
+            <div class="tool-faq-item">
+              <dt>{item.q}</dt>
+              <dd>{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </article>
+      <ServiceCTA
+        service="workflows-bpm"
+        title="Shipping a game or content tool?"
+        description="HunterMussel designs automation for asset pipelines, approvals, and releases — so creative files move from art to production without manual bottlenecks."
+        linkLabel="Explore Workflows & BPM"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<script type="module">
+  const dropZone = document.getElementById("dropZone");
+  const fileInput = document.getElementById("fileInput");
+  const fileLabel = document.getElementById("fileLabel");
+  const mode = document.getElementById("mode");
+  const gridOpts = document.getElementById("gridOpts");
+  const tileOpts = document.getElementById("tileOpts");
+  const rows = document.getElementById("rows");
+  const cols = document.getElementById("cols");
+  const tileW = document.getElementById("tileW");
+  const tileH = document.getElementById("tileH");
+  const dims = document.getElementById("dims");
+  const sliceBtn = document.getElementById("sliceBtn");
+  const status = document.getElementById("status");
+
+  let loadedImg = null;
+  let baseName = "sprite";
+
+  mode.addEventListener("change", () => {
+    const g = mode.value === "grid";
+    gridOpts.style.display = g ? "" : "none";
+    tileOpts.style.display = g ? "none" : "";
+  });
+
+  dropZone.addEventListener("click", (e) => {
+    if (e.target.closest("button")) return;
+    fileInput.click();
+  });
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+  });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith("image/")) loadFile(f);
+  });
+  fileInput.addEventListener("change", () => {
+    const f = fileInput.files?.[0];
+    if (f) loadFile(f);
+    fileInput.value = "";
+  });
+
+  function loadFile(file) {
+    loadedImg = null;
+    baseName = file.name.replace(/\.[^.]+$/, "");
+    fileLabel.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedImg = img;
+        dims.textContent = `${img.naturalWidth}×${img.naturalHeight} px`;
+        sliceBtn.disabled = false;
+        status.textContent = "";
+      };
+      img.onerror = () => {
+        status.textContent = "Could not decode image.";
+        sliceBtn.disabled = true;
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function downloadBlob(blob, name, delay) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const a = document.createElement("a");
+        const u = URL.createObjectURL(blob);
+        a.href = u;
+        a.download = name;
+        a.click();
+        setTimeout(() => {
+          URL.revokeObjectURL(u);
+          resolve();
+        }, 800);
+      }, delay);
+    });
+  }
+
+  sliceBtn.addEventListener("click", async () => {
+    if (!loadedImg) return;
+    const W = loadedImg.naturalWidth;
+    const H = loadedImg.naturalHeight;
+    let numRows;
+    let numCols;
+    let tw;
+    let th;
+
+    if (mode.value === "grid") {
+      numRows = Math.min(64, Math.max(1, parseInt(rows.value, 10) || 1));
+      numCols = Math.min(64, Math.max(1, parseInt(cols.value, 10) || 1));
+      tw = W / numCols;
+      th = H / numRows;
+    } else {
+      tw = Math.max(1, parseInt(tileW.value, 10) || 32);
+      th = Math.max(1, parseInt(tileH.value, 10) || 32);
+      numCols = Math.floor(W / tw);
+      numRows = Math.floor(H / th);
+      if (numCols < 1 || numRows < 1) {
+        status.textContent = "Tile size is larger than the image.";
+        return;
+      }
+    }
+
+    if (tw !== Math.floor(tw) || th !== Math.floor(th)) {
+      status.textContent = "Grid does not divide evenly — fractional tile size. Adjust rows/columns or tile size.";
+      return;
+    }
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const twi = Math.floor(tw);
+    const thi = Math.floor(th);
+    let count = 0;
+    const total = numRows * numCols;
+
+    sliceBtn.disabled = true;
+    status.textContent = `Exporting ${total} tiles…`;
+
+    for (let row = 0; row < numRows; row++) {
+      for (let col = 0; col < numCols; col++) {
+        canvas.width = twi;
+        canvas.height = thi;
+        ctx.clearRect(0, 0, twi, thi);
+        ctx.drawImage(loadedImg, col * twi, row * thi, twi, thi, 0, 0, twi, thi);
+        const blob = await new Promise((res) => canvas.toBlob(res, "image/png"));
+        if (!blob) continue;
+        const name = `${baseName}_r${row}_c${col}.png`;
+        await downloadBlob(blob, name, count * 100);
+        count++;
+      }
+    }
+
+    status.textContent = `Done — ${count} PNG files.`;
+    sliceBtn.disabled = false;
+  });
+</script>

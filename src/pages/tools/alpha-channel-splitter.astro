@@ -1,0 +1,320 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+
+const faqItems = [
+  {
+    q: "Does the alpha channel splitter upload my image to a server?",
+    a: "No. The file never leaves your device. The browser reads it with the File API, draws pixels to a canvas, and builds PNG downloads locally with toBlob.",
+  },
+  {
+    q: "Why is my mask solid white?",
+    a: "JPEG and opaque PNGs have no transparency — every pixel has alpha 255. The mask image encodes alpha in the RGB channels, so a fully opaque source produces a white mask. Use PNG or WebP that actually has transparency.",
+  },
+  {
+    q: "What is the difference between the mask and the RGB plate?",
+    a: "The mask is grayscale where each pixel’s value equals the original alpha (white = opaque, black = transparent). The RGB plate keeps the original red, green, and blue but forces alpha to 255 so you can edit color without transparency in another app.",
+  },
+  {
+    q: "Can I recombine the mask and RGB plate?",
+    a: "Yes, in Photoshop, GIMP, Krita, or game engines: use the mask as an alpha channel or as a layer mask on the RGB plate. This tool only splits; it does not merge layers back.",
+  },
+];
+---
+
+<BaseLayout
+  title="Alpha Channel Splitter — Extract PNG & WebP Transparency | HunterMussel Tools"
+  description="Free browser tool: split PNG or WebP transparency into a grayscale alpha mask PNG and an opaque RGB plate. Checkerboard preview, zero uploads, private processing."
+  canonicalPath="/tools/alpha-channel-splitter/"
+  breadcrumbName="Alpha Channel Splitter"
+  faqItems={faqItems}
+  keywords={[
+    "alpha channel splitter online",
+    "extract alpha mask from png",
+    "png transparency split",
+    "webp alpha mask export",
+    "separate alpha channel tool",
+    "grayscale alpha mask generator",
+    "rgb plate from transparent image",
+    "game texture alpha split",
+    "client side image processing",
+    "private png channel extractor",
+    "no upload image tool",
+    "canvas getImageData alpha",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / imaging</p>
+      <h1>Alpha Channel Splitter</h1>
+      <p class="lead">
+        Separate transparency into a grayscale <strong>mask</strong> (white = opaque, black = transparent)
+        and a fully opaque <strong>RGB plate</strong> with the original colors. Everything runs locally in your browser.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+      <nav class="related-tools" aria-label="Related imaging tools">
+        <span class="related-tools__label">Related</span>
+        <a href="/tools/image-optimizer/">WebP optimizer</a>
+        <a href="/tools/image-format-converter/">Format converter</a>
+        <a href="/tools/sprite-slicer/">Sprite slicer</a>
+      </nav>
+    </section>
+
+    <section class="media-tool-grid">
+      <div id="dropZone" class="card media-drop">
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/png,image/webp"
+          style="display:none"
+        />
+        <div class="media-drop-inner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>
+          </svg>
+          <p class="media-drop-label">Drop a PNG or WebP or <span class="media-drop-link">browse</span></p>
+          <p class="small">Images with an alpha channel work best. JPEG has no alpha — use PNG or WebP.</p>
+        </div>
+        <p id="fileName" class="small mono media-file-meta"></p>
+      </div>
+
+      <aside class="card stack">
+        <div id="previewWrap" style="display:none">
+          <p class="label">Preview (checkerboard)</p>
+          <div class="checker-preview">
+            <canvas id="previewCanvas" class="preview-canvas"></canvas>
+          </div>
+        </div>
+        <p id="statusMsg" class="small" style="margin:0;"></p>
+        <div class="actions">
+          <button id="dlMask" type="button" disabled>Download mask PNG</button>
+          <button id="dlRgb" type="button" class="secondary" disabled>Download RGB plate PNG</button>
+        </div>
+        <button id="clearBtn" type="button" class="secondary">Clear</button>
+      </aside>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What it does</h2>
+        <p>
+          Game pipelines, compositing, and texture authoring often need the alpha channel as its own grayscale map,
+          separate from color. This tool reads each pixel, writes the alpha value into all RGB channels of the mask image,
+          and builds an opaque RGB-only plate (alpha forced to 255) so you can edit or recombine layers in other apps.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why use a browser-only splitter?</h2>
+        <p>
+          NDA art, unreleased UI, and production textures should not be uploaded to random converters. This page uses
+          the same privacy model as our <a href="/tools/image-optimizer/">WebP Image Optimizer</a>: your file stays on your machine,
+          and only you trigger downloads.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How it works</h2>
+        <p>
+          Your file is drawn to a <code class="mono">canvas</code>, then <code class="mono">getImageData</code> walks the bitmap.
+          Two new bitmaps are produced and exported as PNG via <code class="mono">toBlob</code>. No network requests.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to use</h2>
+        <ul>
+          <li>Drop or select one PNG or WebP file (with or without transparency).</li>
+          <li>Review the checkerboard preview and the status line (dimensions and alpha range).</li>
+          <li>Download <strong>mask PNG</strong> and/or <strong>RGB plate PNG</strong> with the suggested filenames.</li>
+          <li>Recombine or composite in your DCC or engine using the mask as alpha or layer mask.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Frequently asked questions</h2>
+        <dl class="tool-faq-list">
+          {faqItems.map((item) => (
+            <div class="tool-faq-item">
+              <dt>{item.q}</dt>
+              <dd>{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </article>
+      <ServiceCTA
+        service="workflows-bpm"
+        title="Automate media prep in your delivery pipeline?"
+        description="HunterMussel builds workflow automation for asset processing, QA gates, and publishing — so teams stop doing repetitive file prep by hand."
+        linkLabel="Explore Workflows & BPM"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .preview-canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  @media (min-width: 721px) {
+    .preview-canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+  }
+</style>
+
+<script type="module">
+  const $ = (id) => document.getElementById(id);
+  const dropZone = $("dropZone");
+  const fileInput = $("fileInput");
+  const fileName = $("fileName");
+  const previewWrap = $("previewWrap");
+  const previewCanvas = $("previewCanvas");
+  const statusMsg = $("statusMsg");
+  const dlMask = $("dlMask");
+  const dlRgb = $("dlRgb");
+  const clearBtn = $("clearBtn");
+
+  let sourceName = "";
+  let maskBlob = null;
+  let rgbBlob = null;
+  let objectUrls = [];
+
+  function revokeAll() {
+    objectUrls.forEach(URL.revokeObjectURL);
+    objectUrls = [];
+    maskBlob = null;
+    rgbBlob = null;
+  }
+
+  dropZone.addEventListener("click", (e) => {
+    if (e.target.closest("button")) return;
+    fileInput.click();
+  });
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+  });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+    const f = e.dataTransfer.files[0];
+    if (f) processFile(f);
+  });
+  fileInput.addEventListener("change", () => {
+    const f = fileInput.files?.[0];
+    if (f) processFile(f);
+    fileInput.value = "";
+  });
+
+  function processFile(file) {
+    if (!["image/png", "image/webp"].includes(file.type)) {
+      statusMsg.textContent = "Please use PNG or WebP.";
+      return;
+    }
+    dlMask.disabled = true;
+    dlRgb.disabled = true;
+    revokeAll();
+    sourceName = file.name.replace(/\.[^.]+$/, "");
+    fileName.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const w = img.naturalWidth;
+        const h = img.naturalHeight;
+        const maxPreview = 560;
+        let pw = w;
+        let ph = h;
+        if (w > maxPreview) {
+          pw = maxPreview;
+          ph = Math.round((h * maxPreview) / w);
+        }
+        previewCanvas.width = pw;
+        previewCanvas.height = ph;
+        const pctx = previewCanvas.getContext("2d");
+        pctx.drawImage(img, 0, 0, pw, ph);
+
+        const full = document.createElement("canvas");
+        full.width = w;
+        full.height = h;
+        const ctx = full.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        const src = ctx.getImageData(0, 0, w, h);
+        const maskData = ctx.createImageData(w, h);
+        const rgbData = ctx.createImageData(w, h);
+        let minA = 255;
+        let maxA = 0;
+        for (let i = 0; i < src.data.length; i += 4) {
+          const a = src.data[i + 3];
+          minA = Math.min(minA, a);
+          maxA = Math.max(maxA, a);
+          maskData.data[i] = maskData.data[i + 1] = maskData.data[i + 2] = a;
+          maskData.data[i + 3] = 255;
+          rgbData.data[i] = src.data[i];
+          rgbData.data[i + 1] = src.data[i + 1];
+          rgbData.data[i + 2] = src.data[i + 2];
+          rgbData.data[i + 3] = 255;
+        }
+
+        const maskCanvas = document.createElement("canvas");
+        maskCanvas.width = w;
+        maskCanvas.height = h;
+        maskCanvas.getContext("2d").putImageData(maskData, 0, 0);
+        const rgbCanvas = document.createElement("canvas");
+        rgbCanvas.width = w;
+        rgbCanvas.height = h;
+        rgbCanvas.getContext("2d").putImageData(rgbData, 0, 0);
+
+        const blobFrom = (canvas) =>
+          new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+
+        Promise.all([blobFrom(maskCanvas), blobFrom(rgbCanvas)]).then(([m, r]) => {
+          maskBlob = m;
+          rgbBlob = r;
+          dlMask.disabled = !m;
+          dlRgb.disabled = !r;
+        });
+
+        if (minA === 255 && maxA === 255) {
+          statusMsg.textContent =
+            "No transparency detected (alpha is 255 everywhere). Mask will be solid white — still downloadable.";
+        } else {
+          statusMsg.textContent = `${w}×${h} px — alpha range ${minA}–${maxA}.`;
+        }
+        previewWrap.style.display = "";
+      };
+      img.onerror = () => {
+        statusMsg.textContent = "Could not decode image.";
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function download(blob, name) {
+    if (!blob) return;
+    const a = document.createElement("a");
+    const u = URL.createObjectURL(blob);
+    objectUrls.push(u);
+    a.href = u;
+    a.download = name;
+    a.click();
+    setTimeout(() => {
+      URL.revokeObjectURL(u);
+      objectUrls = objectUrls.filter((x) => x !== u);
+    }, 4000);
+  }
+
+  dlMask.addEventListener("click", () => download(maskBlob, `${sourceName}-alpha-mask.png`));
+  dlRgb.addEventListener("click", () => download(rgbBlob, `${sourceName}-rgb-plate.png`));
+
+  clearBtn.addEventListener("click", () => {
+    revokeAll();
+    fileName.textContent = "";
+    previewWrap.style.display = "none";
+    statusMsg.textContent = "";
+    dlMask.disabled = true;
+    dlRgb.disabled = true;
+  });
+</script>

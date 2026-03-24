@@ -1,0 +1,271 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+
+const faqItems = [
+  {
+    q: "Is SVG to PNG conversion private?",
+    a: "Yes. SVG text and files are processed only inside your browser. Nothing is sent to HunterMussel or any third party.",
+  },
+  {
+    q: "Why does my SVG fail to render?",
+    a: "Common causes: missing xmlns on the root svg, malformed XML, or references to external images/fonts blocked by browser security. Fix the markup or embed assets as data URLs.",
+  },
+  {
+    q: "How is output height determined?",
+    a: "You set output width in pixels. Height is computed from the SVG’s intrinsic aspect ratio (natural width/height or viewBox) so the raster is not stretched.",
+  },
+  {
+    q: "Can I get a transparent PNG?",
+    a: "Choose Transparent as the background before rendering. The canvas is cleared to transparency before the vector is drawn.",
+  },
+];
+---
+
+<BaseLayout
+  title="SVG to PNG Rasterizer — Convert Vector to Bitmap Online | HunterMussel Tools"
+  description="Paste or upload SVG, pick output width and background (transparent, white, or dark), and download PNG. Rasterization runs entirely in your browser with no uploads."
+  canonicalPath="/tools/svg-to-png/"
+  breadcrumbName="SVG to PNG"
+  faqItems={faqItems}
+  keywords={[
+    "svg to png online free",
+    "rasterize svg browser",
+    "convert svg to png transparent",
+    "vector to bitmap tool",
+    "svg png export client side",
+    "icon svg to png",
+    "logo svg rasterize",
+    "high resolution svg png",
+    "no upload svg converter",
+    "canvas svg to image",
+    "svg xmlns png export",
+    "developer svg raster tool",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / imaging</p>
+      <h1>SVG to PNG</h1>
+      <p class="lead">
+        Turn vector SVG into a raster PNG at the pixel width you need. Paste markup or load a file — useful for icons,
+        logos, and assets that must be bitmaps for older pipelines.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+      <nav class="related-tools" aria-label="Related imaging tools">
+        <span class="related-tools__label">Related</span>
+        <a href="/tools/image-optimizer/">WebP optimizer</a>
+        <a href="/tools/image-format-converter/">Format converter</a>
+        <a href="/tools/alpha-channel-splitter/">Alpha splitter</a>
+      </nav>
+    </section>
+
+    <section class="media-tool-grid">
+      <div class="card stack">
+        <div>
+          <label class="label" for="svgInput">SVG markup</label>
+          <textarea id="svgInput" placeholder='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">...</svg>'></textarea>
+        </div>
+        <div>
+          <label class="label" for="svgFile">Or upload .svg</label>
+          <input id="svgFile" type="file" accept=".svg,image/svg+xml" />
+        </div>
+      </div>
+
+      <aside class="card stack">
+        <div class="media-form-row">
+          <div>
+            <label class="label" for="outWidth">Output width (px)</label>
+            <input id="outWidth" type="number" min="1" max="8192" value="512" />
+          </div>
+          <div>
+            <label class="label" for="bgMode">Background</label>
+            <select id="bgMode">
+              <option value="transparent">Transparent</option>
+              <option value="white">White</option>
+              <option value="dark">Dark (#0a0c10)</option>
+            </select>
+          </div>
+        </div>
+        <div id="statusBox" class="result" style="display:none">
+          Output
+          <strong id="statusStrong">—</strong>
+          <span id="status" class="small"></span>
+        </div>
+        <div class="actions">
+          <button id="renderBtn" type="button">Render PNG</button>
+          <button id="dlBtn" type="button" class="secondary" disabled>Download PNG</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="card" id="previewSection" style="display:none;margin-bottom:1.4rem">
+      <p class="label">Preview</p>
+      <div class="checker-preview">
+        <canvas id="outCanvas"></canvas>
+      </div>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What it does</h2>
+        <p>
+          Loads your SVG as an image source, draws it to a canvas at the width you specify, and exports lossless PNG.
+          Use it when you need fixed-pixel assets for social templates, legacy CMS fields, or game UI that does not accept SVG.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Security and trust</h2>
+        <p>
+          SVG loaded via blob URL and drawn as an image does not execute embedded scripts the way inline DOM SVG can.
+          Still, only paste SVG from sources you trust. External images or fonts may not load if the browser blocks them.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to use</h2>
+        <ul>
+          <li>Paste valid SVG (include <code class="mono">xmlns</code> on the root) or upload an <code class="mono">.svg</code> file.</li>
+          <li>Set target width (1–8192 px) and pick a background mode.</li>
+          <li>Click <strong>Render PNG</strong>, review the preview, then <strong>Download PNG</strong>.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Frequently asked questions</h2>
+        <dl class="tool-faq-list">
+          {faqItems.map((item) => (
+            <div class="tool-faq-item">
+              <dt>{item.q}</dt>
+              <dd>{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </article>
+      <ServiceCTA
+        service="intelligent-automation"
+        title="Need SVG or asset generation in your product?"
+        description="HunterMussel ships intelligent automation and custom software for document and media workflows — from templating to batch rendering."
+        linkLabel="Explore Intelligent Automation"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  #outCanvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+
+<script type="module">
+  const svgInput = document.getElementById("svgInput");
+  const svgFile = document.getElementById("svgFile");
+  const outWidth = document.getElementById("outWidth");
+  const bgMode = document.getElementById("bgMode");
+  const renderBtn = document.getElementById("renderBtn");
+  const dlBtn = document.getElementById("dlBtn");
+  const status = document.getElementById("status");
+  const statusBox = document.getElementById("statusBox");
+  const statusStrong = document.getElementById("statusStrong");
+  const previewSection = document.getElementById("previewSection");
+  const outCanvas = document.getElementById("outCanvas");
+
+  let lastBlob = null;
+
+  svgFile.addEventListener("change", async () => {
+    const f = svgFile.files?.[0];
+    if (!f) return;
+    const text = await f.text();
+    svgInput.value = text;
+  });
+
+  function svgBlobUrl(svgText) {
+    const blob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+    return URL.createObjectURL(blob);
+  }
+
+  renderBtn.addEventListener("click", () => {
+    dlBtn.disabled = true;
+    lastBlob = null;
+    const raw = svgInput.value.trim();
+    if (!raw) {
+      statusBox.style.display = "";
+      statusStrong.textContent = "Input needed";
+      status.textContent = "Paste SVG markup or upload a file.";
+      previewSection.style.display = "none";
+      return;
+    }
+    if (!raw.includes("<svg")) {
+      statusBox.style.display = "";
+      statusStrong.textContent = "Invalid markup";
+      status.textContent = "Markup should include an <svg> root element.";
+      previewSection.style.display = "none";
+      return;
+    }
+
+    const w = Math.min(8192, Math.max(1, parseInt(outWidth.value, 10) || 512));
+    const url = svgBlobUrl(raw);
+    const img = new Image();
+
+    img.onload = () => {
+      const vw = img.naturalWidth || 300;
+      const vh = img.naturalHeight || 150;
+      const scale = w / vw;
+      const h = Math.max(1, Math.round(vh * scale));
+
+      outCanvas.width = w;
+      outCanvas.height = h;
+      const ctx = outCanvas.getContext("2d");
+      const mode = bgMode.value;
+      if (mode === "white") {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, w, h);
+      } else if (mode === "dark") {
+        ctx.fillStyle = "#0a0c10";
+        ctx.fillRect(0, 0, w, h);
+      } else {
+        ctx.clearRect(0, 0, w, h);
+      }
+      ctx.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+
+      outCanvas.toBlob(
+        (blob) => {
+          lastBlob = blob;
+          statusBox.style.display = "";
+          if (blob) {
+            dlBtn.disabled = false;
+            statusStrong.textContent = "Ready";
+            status.textContent = `${w}×${h} px PNG — download when satisfied.`;
+          } else {
+            statusStrong.textContent = "Failed";
+            status.textContent = "Export failed (canvas tainted or empty).";
+          }
+        },
+        "image/png"
+      );
+      previewSection.style.display = "";
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      statusBox.style.display = "";
+      statusStrong.textContent = "Error";
+      status.textContent = "Could not load SVG — check markup and namespaces (xmlns).";
+      previewSection.style.display = "none";
+    };
+
+    img.src = url;
+  });
+
+  dlBtn.addEventListener("click", () => {
+    if (!lastBlob) return;
+    const a = document.createElement("a");
+    const u = URL.createObjectURL(lastBlob);
+    a.href = u;
+    a.download = "export.png";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(u), 4000);
+  });
+</script>

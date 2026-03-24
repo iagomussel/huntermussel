@@ -4,6 +4,11 @@ import Footer from "@/components/react/Footer";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
 
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
 interface Props {
   title: string;
   description: string;
@@ -12,6 +17,10 @@ interface Props {
   keywords?: string | string[];
   robots?: string;
   schemaType?: "WebPage" | "WebApplication";
+  /** Shorter label for BreadcrumbList (omit site suffix from `title`). */
+  breadcrumbName?: string;
+  /** Renders matching FAQPage JSON-LD; pair with visible FAQ copy on the page. */
+  faqItems?: FaqItem[];
 }
 
 const {
@@ -22,6 +31,8 @@ const {
   keywords,
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
   schemaType = canonicalPath === "/tools/" ? "WebPage" : "WebApplication",
+  breadcrumbName,
+  faqItems,
 } = Astro.props;
 const canonicalUrl = `https://huntermussel.com${canonicalPath}`;
 const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
@@ -31,7 +42,7 @@ const breadcrumbItems = [
   { name: "Tools", item: "https://huntermussel.com/tools/" },
 ];
 if (canonicalPath !== "/tools/" && pathParts.length > 1) {
-  breadcrumbItems.push({ name: title, item: canonicalUrl });
+  breadcrumbItems.push({ name: breadcrumbName ?? title, item: canonicalUrl });
 }
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -43,6 +54,19 @@ const breadcrumbSchema = {
     item: entry.item,
   })),
 };
+const faqSchema =
+  faqItems && faqItems.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqItems.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: { "@type": "Answer", text: item.a },
+        })),
+      }
+    : null;
+
 const pageSchema =
   schemaType === "WebApplication"
     ? {
@@ -116,6 +140,7 @@ const pageSchema =
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
   </head>
   <body class="bg-background text-foreground min-h-screen flex flex-col font-sans antialiased selection:bg-primary/20 selection:text-primary">
     <!-- Google Tag Manager (noscript) -->
