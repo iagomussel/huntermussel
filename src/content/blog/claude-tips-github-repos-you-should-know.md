@@ -72,7 +72,7 @@ Connects Claude to n8n through the Model Context Protocol. Instead of describing
 
 ## 7. Obsidian Skills
 
-**[github.com/nextlevelbuild/obsidian-skills](https://github.com/nextlevelbuild/obsidian-skills)**
+**[github.com/kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)**
 
 Lets Claude interact with your Obsidian vault — pull notes, read architecture docs, reference meeting decisions before it starts writing code. Works well for teams that keep their thinking in Obsidian and want Claude to actually use it rather than starting from a blank context every time.
 
@@ -85,9 +85,9 @@ When your codebase or documentation is bigger than what fits in context, LightRA
 
 ## 9. Everything Claude Code
 
-**[github.com/kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)**
+**[github.com/affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code)**
 
-Kepano's reference for Claude Code patterns — CLAUDE.md templates, workflow recipes, and multi-agent setups. It's the closest thing to a real manual for Claude Code that exists right now. Covers a lot of ground and gets updated as the tooling evolves.
+A comprehensive reference for Claude Code patterns — CLAUDE.md templates, workflow recipes, and multi-agent setups. It's the closest thing to a real manual for Claude Code that exists right now. Covers a lot of ground and gets updated as the tooling evolves.
 
 ---
 
