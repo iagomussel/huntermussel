@@ -59,7 +59,7 @@ Claude's memory resets completely every session. Claude Mem gives you a simple l
 
 ## 5. UI UX Pro Max
 
-**[github.com/thedotmack/claude-ui-ux-pro-max](https://github.com/thedotmack/claude-ui-ux-pro-max)**
+**[github.com/nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)**
 
 A set of conventions that gets Claude producing more consistent frontend output — better component naming, tighter structure, less drift between what you described and what gets generated. If you're using Claude for UI work and keep having to correct the same things, this acts as a standing style guide so you stop repeating yourself.
 
