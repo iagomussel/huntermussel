@@ -56,7 +56,6 @@ Claude has a tendency to explore when you need it to ship. GSD pushes back again
 
 Claude's memory resets completely every session. Claude Mem gives you a simple layer that persists facts, decisions, and preferences across conversations. It's not a full knowledge base — it's closer to a shared notepad that Claude actually reads before answering. Solves the most common complaint people have after the first week of daily use.
 
-> Pairs well with: **Obsidian** (if you want your memory to live in markdown files you can also edit manually) or a simple **Postgres table** if you're building a team-wide memory that multiple people share.
 
 ## 5. UI UX Pro Max
 
@@ -70,7 +69,6 @@ A set of conventions that gets Claude producing more consistent frontend output 
 
 Connects Claude to n8n through the Model Context Protocol. Instead of describing the workflow you want and then building it yourself, Claude reads your existing workflows, creates new ones, and modifies nodes directly. If n8n is already central to your automation setup, this changes the dynamic pretty significantly.
 
-> Pairs well with: **n8n** (self-hosted or cloud), **Make.com** for simpler flows, or **Zapier** if your team is already there. The MCP layer is what makes Claude a participant in the workflow instead of just an advisor.
 
 ## 7. Obsidian Skills
 
@@ -84,7 +82,6 @@ Lets Claude interact with your Obsidian vault — pull notes, read architecture 
 
 When your codebase or documentation is bigger than what fits in context, LightRAG indexes it and retrieves the relevant pieces at query time. You stop pasting long files manually and start asking questions against a properly indexed knowledge base. The retrieval quality is solid for a project this lightweight. Before building an indexing pipeline, use the [Token Counter](/tools/token-counter/) to check whether your content actually exceeds Claude's context — you might not need RAG yet.
 
-> Pairs well with: **ChromaDB** or **Qdrant** as the vector store underneath. If you're running this in production against company docs, add a lightweight auth layer — you don't want the whole knowledge base exposed through a shared Claude session.
 
 ## 9. Everything Claude Code
 
