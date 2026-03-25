@@ -36,7 +36,7 @@ The open-source community has been quietly solving these issues for months. Here
 
 **[github.com/obra/superpowers](https://github.com/obra/superpowers)**
 
-Adds slash commands on top of Claude Code — things like structured planning flows, code review protocols, and debugging routines you can invoke by name. The idea is simple: instead of writing the same long prompts every time, you codify them once and call them like commands. Start here if you've ever caught yourself copy-pasting the same instructions into a new session.
+Adds slash commands on top of Claude Code — things like structured planning flows, code review protocols, and debugging routines you can invoke by name. The idea is simple: instead of writing the same long prompts every time, you codify them once and call them like commands. Start here if you've ever caught yourself copy-pasting the same instructions into a new session. Before committing anything to a CLAUDE.md, run your prompts through the [Prompt Optimizer](/tools/prompt-optimizer/) first.
 
 ## 2. Awesome Claude Code
 
@@ -82,7 +82,7 @@ Lets Claude interact with your Obsidian vault — pull notes, read architecture 
 
 **[github.com/hkuds/lightrag](https://github.com/hkuds/lightrag)**
 
-When your codebase or documentation is bigger than what fits in context, LightRAG indexes it and retrieves the relevant pieces at query time. You stop pasting long files manually and start asking questions against a properly indexed knowledge base. The retrieval quality is solid for a project this lightweight.
+When your codebase or documentation is bigger than what fits in context, LightRAG indexes it and retrieves the relevant pieces at query time. You stop pasting long files manually and start asking questions against a properly indexed knowledge base. The retrieval quality is solid for a project this lightweight. Before building an indexing pipeline, use the [Token Counter](/tools/token-counter/) to check whether your content actually exceeds Claude's context — you might not need RAG yet.
 
 > Pairs well with: **ChromaDB** or **Qdrant** as the vector store underneath. If you're running this in production against company docs, add a lightweight auth layer — you don't want the whole knowledge base exposed through a shared Claude session.
 
