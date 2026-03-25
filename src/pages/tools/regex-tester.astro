@@ -412,15 +412,33 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
       return;
     }
 
-    // Collect matches — always add 'd' flag for exact group indices; respect user's 'g' choice
+    // Collect matches — try 'd' flag for exact group indices; fall back if unsupported
     const matches = [];
     const userFlags = getFlags();
-    const execFlags = userFlags.includes("d") ? userFlags : userFlags + "d";
-    const execRe = new RegExp(pattern, execFlags);
+    let supportsD = true;
+    try { new RegExp("x", "d"); } catch { supportsD = false; }
+    const execFlags = supportsD
+      ? (userFlags.includes("d") ? userFlags : userFlags + "d")
+      : userFlags;
+    let execRe;
+    try {
+      execRe = new RegExp(pattern, execFlags);
+    } catch {
+      // Shouldn't happen since we already validated above, but guard anyway
+      return;
+    }
     let m;
+    const MAX_EXEC_MS = 400;
+    const t0 = Date.now();
+    let timedOut = false;
     while ((m = execRe.exec(text)) !== null) {
       matches.push({ index: m.index, value: m[0], groups: Array.from(m).slice(1), indices: m.indices ? Array.from(m.indices).slice(1) : null });
       if (!userFlags.includes("g")) break;
+      if (Date.now() - t0 > MAX_EXEC_MS) { timedOut = true; break; }
+    }
+    if (timedOut) {
+      errEl.textContent = "⚠ Regex timed out — pattern may have catastrophic backtracking";
+      errEl.style.display = "";
     }
 
     // Build highlighted HTML
@@ -481,7 +499,7 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
 
   function scheduleRun() {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(run, 150);
+    debounceTimer = setTimeout(run, 250);
   }
 
   $("patternInput").addEventListener("input", scheduleRun);
