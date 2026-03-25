@@ -56,6 +56,8 @@ Claude has a tendency to explore when you need it to ship. GSD pushes back again
 
 Claude's memory resets completely every session. Claude Mem gives you a simple layer that persists facts, decisions, and preferences across conversations. It's not a full knowledge base — it's closer to a shared notepad that Claude actually reads before answering. Solves the most common complaint people have after the first week of daily use.
 
+> Pairs well with: **Obsidian** (if you want your memory to live in markdown files you can also edit manually) or a simple **Postgres table** if you're building a team-wide memory that multiple people share.
+
 ## 5. UI UX Pro Max
 
 **[github.com/thedotmack/claude-ui-ux-pro-max](https://github.com/thedotmack/claude-ui-ux-pro-max)**
@@ -68,6 +70,8 @@ A set of conventions that gets Claude producing more consistent frontend output 
 
 Connects Claude to n8n through the Model Context Protocol. Instead of describing the workflow you want and then building it yourself, Claude reads your existing workflows, creates new ones, and modifies nodes directly. If n8n is already central to your automation setup, this changes the dynamic pretty significantly.
 
+> Pairs well with: **n8n** (self-hosted or cloud), **Make.com** for simpler flows, or **Zapier** if your team is already there. The MCP layer is what makes Claude a participant in the workflow instead of just an advisor.
+
 ## 7. Obsidian Skills
 
 **[github.com/nextlevelbuild/obsidian-skills](https://github.com/nextlevelbuild/obsidian-skills)**
@@ -79,6 +83,8 @@ Lets Claude interact with your Obsidian vault — pull notes, read architecture 
 **[github.com/hkuds/lightrag](https://github.com/hkuds/lightrag)**
 
 When your codebase or documentation is bigger than what fits in context, LightRAG indexes it and retrieves the relevant pieces at query time. You stop pasting long files manually and start asking questions against a properly indexed knowledge base. The retrieval quality is solid for a project this lightweight.
+
+> Pairs well with: **ChromaDB** or **Qdrant** as the vector store underneath. If you're running this in production against company docs, add a lightweight auth layer — you don't want the whole knowledge base exposed through a shared Claude session.
 
 ## 9. Everything Claude Code
 
@@ -95,3 +101,11 @@ Don't install all nine at once.
 If session memory is your biggest frustration, start with **Claude Mem**. If you want to see how others have set things up before building your own config, start with **Awesome Claude Code**. If your team runs on n8n, go straight to **n8n-MCP**.
 
 The rest can wait until you have a clear reason for them. Tools you don't actually need just add maintenance overhead.
+
+---
+
+## Want this set up for your team?
+
+Installing repos is one thing. Wiring them into a workflow your team will actually use — with persistent memory, n8n integrations, and a RAG layer on your own codebase — is a different kind of work.
+
+That's exactly what we do at HunterMussel. If you want Claude properly integrated into how your team builds, [let's talk](https://huntermussel.com/#contact).
