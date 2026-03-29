@@ -18,6 +18,7 @@ keywords:
   - restaurant ordering software
   - multi-tenant delivery platform
   - food delivery app development
+image: "/images/cases/horadolanche-dashboard.png"
 subtitle: "A multi-tenant SaaS ordering platform built for restaurants that don't want to pay 28% to iFood or Rappi"
 ---
 
@@ -31,17 +32,18 @@ That's the problem [Horadolanche](https://horadolanche.com) was built to solve. 
 **Built by:** HunterMussel (our own product, not a client project)
 **Target:** Restaurants and food businesses that want a direct ordering channel
 **Stack:** Next.js (App Router), React, Node.js, PostgreSQL, Stripe
+**Infra:** Vercel, Cloudflare R2
 **Status:** In production and actively onboarding restaurants
 
 ## Development Investment
 
 | | |
 |---|---|
-| **Total Estimated Hours** | ~380 h |
+| **Total Estimated Hours** | ~365 h |
 | **Rate** | $55 / hour |
-| **Total Investment** | ~$20,900 |
-| **Timeline at 20 h/week** | ~19 weeks |
-| **Timeline at 40 h/week** | ~9.5 weeks |
+| **Total Investment** | ~$20,075 |
+| **Timeline at 20 h/week** | ~18 weeks |
+| **Timeline at 40 h/week** | ~9 weeks |
 
 **Phase breakdown:**
 
@@ -53,10 +55,10 @@ That's the problem [Horadolanche](https://horadolanche.com) was built to solve. 
 | Real-time layer (WebSockets) — live order status | 30 h |
 | Stripe payment integration & webhook handling | 25 h |
 | Admin & kitchen dashboards | 45 h |
-| AWS infrastructure (Terraform, ECS, RDS, ElastiCache) | 35 h |
+| Vercel deployment, R2 storage setup, database & Redis provisioning | 20 h |
 | CI/CD pipeline, observability setup | 20 h |
 | QA, integration testing & production launch | 15 h |
-| **Total** | **380 h** |
+| **Total** | **365 h** |
 
 ## The Problem: Third-Party Platforms Own Your Customer
 
@@ -76,13 +78,17 @@ Instead of building another aggregator, we built the infrastructure restaurants 
 
 ### 1. Multi-Tenant Branded Storefronts
 
-Each restaurant on Horadolanche gets their own storefront — their own URL, their own colors, their own menu structure. Customers order directly from the restaurant's branded page, not from a marketplace listing.
+Each restaurant on Horadolanche gets their own storefront — their own URL path, their own colors, their own menu structure. Customers order directly from the restaurant's branded page, not from a marketplace listing.
 
-Multi-tenancy is handled at the routing layer in Next.js App Router. Each subdomain resolves to a specific restaurant's configuration, and all pages are server-side rendered for SEO — so a restaurant's storefront can rank in Google for local searches like "pizza delivery [neighborhood]".
+![Storefront view on mobile — AçaíShow menu](/images/cases/horadolanche-storefront.png)
+
+Multi-tenancy is handled via path params in Next.js App Router: `horadolanche.com/[tenant]`. Each slug maps to a specific restaurant's configuration at the routing layer, and all pages are server-side rendered for SEO — so a restaurant's storefront can rank in Google for local searches like "açaí delivery [neighborhood]". No subdomain DNS setup required; onboarding a new restaurant means adding a record to the database, not touching infrastructure.
 
 ### 2. Real-Time Order Management
 
 When an order comes in, the kitchen sees it immediately. The platform pushes live updates via WebSockets — new orders appear on the kitchen dashboard without polling, and order status changes (confirmed, preparing, out for delivery) propagate back to the customer in real time.
+
+![Orders dashboard — real-time kitchen view](/images/cases/horadolanche-dashboard.png)
 
 Restaurant owners get a separate management interface to control menu items, categories, availability, and operating hours — no developer needed.
 
@@ -101,9 +107,10 @@ Stripe webhooks handle payment confirmation and feed the order pipeline. Failed 
 - Real-time: WebSocket server — live order status for kitchen and customer
 - Payments: Stripe — checkout sessions, webhooks, payout management
 - Cache: Redis — session storage, menu caching, rate limiting
+- Storage: Cloudflare R2 — restaurant logos and menu item photos
 
 **Request Flow: Customer Placing an Order**
-1. Customer visits restaurant subdomain — Next.js SSR renders storefront from cached restaurant config
+1. Customer visits `horadolanche.com/[tenant]` — Next.js SSR resolves restaurant config from path param
 2. Customer builds cart and proceeds to checkout
 3. Stripe checkout session created via Node.js API
 4. Payment confirmed via Stripe webhook
@@ -112,29 +119,27 @@ Stripe webhooks handle payment confirmation and feed the order pipeline. Failed 
 
 ## Infrastructure & Deployment
 
-**Cloud Provider:** AWS
-**Compute:** ECS Fargate for the Next.js app and Node.js API as separate services; independent autoscaling per service
-**Database:** Amazon RDS (PostgreSQL Multi-AZ); connection pooling via PgBouncer on the API service
-**Cache & Sessions:** Amazon ElastiCache (Redis) for menu caching, session management, and WebSocket state
-**Object Storage:** S3 for restaurant assets — logos, menu item photos; served through CloudFront
-**CDN:** CloudFront for storefront static assets and menu images; edge caching reduces latency for restaurant storefronts
-**Networking:** VPC with private subnets for database and cache tiers; Application Load Balancer handles subdomain routing to the Next.js service
-**Secrets:** AWS Secrets Manager for database credentials, Stripe API keys, and JWT signing secrets
+**Hosting:** Vercel — Next.js app deployed to Vercel's edge network; automatic preview deployments per branch; zero-config SSL
+**Serverless API:** Node.js API routes deployed as Vercel Functions; scales to zero between requests, no idle compute cost
+**Database:** PostgreSQL (managed) with connection pooling via PgBouncer; accessed from Vercel Functions over private networking
+**Cache & Sessions:** Redis for menu caching, session management, and WebSocket state
+**Object Storage:** Cloudflare R2 for restaurant assets — logos, menu item photos; served directly from R2's public bucket with no egress fees
+**Multi-Tenancy Routing:** Path param routing (`/[tenant]`) in Next.js App Router middleware; tenant slug resolved to restaurant config before any page component runs; no DNS changes needed to onboard a restaurant
+**Secrets:** Vercel environment variables for database credentials, Stripe API keys, and JWT signing secrets
 
 **Deployment Pipeline**
 - GitHub Actions CI/CD with Jest unit tests and Playwright end-to-end tests covering the order placement flow
-- Docker images built and pushed to ECR; ECS rolling deployments with health checks
-- Terraform manages all infrastructure per environment (staging mirrors production)
-- Database migrations run as a pre-deploy ECS task before traffic shifts
+- Push to main triggers Vercel production deployment automatically; pull requests get preview URLs
+- Database migrations run as a pre-deploy step before traffic shifts
 
 ## Observability & Monitoring
 
 A failed order is the worst user experience a delivery platform can produce. The observability setup prioritizes order pipeline failures above everything else.
 
-**Metrics:** CloudWatch custom metrics for order creation rate, payment success rate, WebSocket connection count, and Stripe webhook processing latency
+**Metrics:** Vercel Analytics + custom metrics for order creation rate, payment success rate, WebSocket connection count, and Stripe webhook processing latency
 **Error Tracking:** Sentry for Next.js server errors, Node.js API exceptions, and Stripe webhook failures
 **Dashboards:** Grafana panels for order throughput, API response times (p50, p95), WebSocket connection health, and Redis cache hit rates
-**Log Aggregation:** CloudWatch Logs with structured JSON; order lifecycle events logged with restaurant ID, order ID, and status transitions for debugging
+**Log Aggregation:** Vercel Log Drains with structured JSON output; order lifecycle events logged with restaurant ID, order ID, and status transitions for debugging
 **Alerting:** PagerDuty for payment webhook failures, API error rate spikes, and database connection pool exhaustion
 
 Key dashboards tracked:
@@ -148,40 +153,31 @@ Key dashboards tracked:
 
 ```mermaid
 graph TD
-    Customer["Customer Browser"]
+    Customer["Customer Browser<br/>/[tenant]"]
     Kitchen["Kitchen Dashboard"]
     Owner["Restaurant Owner"]
-    CF["CloudFront CDN"]
-    ALB["Application Load Balancer"]
-    NextApp["Next.js App<br/>(ECS Fargate — SSR + API Routes)"]
-    NodeAPI["Node.js API<br/>(ECS Fargate)"]
-    WSServer["WebSocket Server<br/>(ECS Fargate)"]
+    Vercel["Vercel Edge Network<br/>(Next.js SSR + Serverless Functions)"]
+    WSServer["WebSocket Server<br/>(Vercel Functions)"]
     Stripe["Stripe<br/>(Payments + Webhooks)"]
-    Redis["ElastiCache Redis<br/>(Cache / Sessions)"]
-    RDS["RDS PostgreSQL<br/>(Multi-AZ)"]
-    S3["S3<br/>(Menu Images / Assets)"]
-    CW["CloudWatch + Grafana"]
+    Redis["Redis<br/>(Cache / Sessions)"]
+    PG["PostgreSQL<br/>(Managed DB)"]
+    R2["Cloudflare R2<br/>(Menu Images / Assets)"]
     Sentry["Sentry"]
+    Grafana["Grafana + Vercel Analytics"]
 
-    Customer --> CF
-    Kitchen --> CF
-    Owner --> CF
-    CF --> ALB
-    ALB --> NextApp
-    ALB --> NodeAPI
-    ALB --> WSServer
-    NextApp --> NodeAPI
-    NodeAPI --> RDS
-    NodeAPI --> Redis
-    NodeAPI --> Stripe
-    Stripe -->|Webhooks| NodeAPI
+    Customer --> Vercel
+    Kitchen --> Vercel
+    Owner --> Vercel
+    Vercel -->|path param resolved| Vercel
+    Vercel --> PG
+    Vercel --> Redis
+    Vercel --> Stripe
+    Stripe -->|Webhooks| Vercel
     WSServer --> Redis
-    NodeAPI -->|Order Events| WSServer
-    NextApp --> S3
-    CF --> S3
-    NodeAPI --> CW
-    NodeAPI --> Sentry
-    NextApp --> Sentry
+    Vercel -->|Order Events| WSServer
+    Vercel --> R2
+    Vercel --> Sentry
+    Vercel --> Grafana
 ```
 
 ## Platform Capabilities
@@ -202,7 +198,7 @@ Restaurant storefronts have a specific SEO requirement that rules out pure clien
 
 Three specific reasons it fit this product:
 
-- **Subdomain-based multi-tenancy** works cleanly with Next.js middleware — each subdomain resolves to the correct restaurant configuration before the request hits a page component, with no runtime overhead per request.
+- **Path-param multi-tenancy** works cleanly with Next.js App Router — `[tenant]` dynamic segments resolve to the correct restaurant configuration before the request hits a page component. Vercel handles routing without any DNS or infrastructure changes per tenant.
 - **React Server Components** let us fetch menu data on the server and stream it to the client, which means the first paint of a restaurant's storefront is fast even on slow connections. Restaurant customers aren't on fiber.
 - **Built-in image optimization** handles menu photos automatically — resizing, converting to WebP, and lazy-loading. Restaurants upload whatever photo they have; the platform handles the rest.
 
