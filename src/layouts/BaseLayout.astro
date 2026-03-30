@@ -1,6 +1,7 @@
 ---
 import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
+import AdUnit from "@/components/AdUnit.astro";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
 
@@ -126,6 +127,9 @@ const pageSchema =
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    <!-- Google AdSense -->
+    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <!-- End Google AdSense -->
   </head>
   <body class="bg-background text-foreground min-h-screen flex flex-col font-sans antialiased selection:bg-primary/20 selection:text-primary">
     <!-- Google Tag Manager (noscript) -->
@@ -135,6 +139,9 @@ const pageSchema =
     <Navbar client:load />
     <main class="flex-1 pt-16">
       <slot />
+      <div class="container mx-auto px-6 pb-8 max-w-4xl">
+        <AdUnit adSlot="XXXXXXXXXX" format="horizontal" />
+      </div>
     </main>
     <Footer />
     <script src="/chat-widget.js" defer></script>
