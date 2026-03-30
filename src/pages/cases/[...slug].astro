@@ -105,6 +105,14 @@ const caseSchema = [
   type="article"
   keywords={entry.data.keywords}
   schema={caseSchema}
+  pageData={{
+    pageType: 'case_study',
+    pageTitle: entry.data.title,
+    pageUrl: url,
+    pageCategory: entry.data.tags?.[0] ?? 'Case Study',
+    pageTags: entry.data.tags ?? [],
+    publishDate: entry.data.date?.toISOString() ?? null,
+  }}
 >
   <div class="min-h-screen bg-background">
     <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />

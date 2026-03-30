@@ -1,0 +1,125 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import CommitMessageWorkbench from "@/components/react/tools/commit-message-generator/CommitMessageWorkbench";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="Commit Message Generator | HunterMussel Tools"
+  description="Generate conventional commit messages step by step. Choose type, scope, description, breaking changes, and issue refs — get a properly formatted commit and a branch name suggestion."
+  canonicalPath="/tools/commit-message-generator/"
+  keywords={[
+    "commit message generator",
+    "conventional commits",
+    "git commit message",
+    "semantic commit",
+    "conventional commit builder",
+    "git branch name generator",
+    "commit message wizard",
+    "feat fix docs git",
+    "angular commit convention",
+    "commit lint",
+    "git workflow tools",
+  ]}
+>
+  <main class="page cmg-page">
+    <section class="hero">
+      <p class="eyebrow">tool / ai</p>
+      <h1>Commit Message Generator</h1>
+      <p class="lead">
+        Build Conventional Commit messages step by step — pick type, add scope,
+        write a short description, flag breaking changes, and reference issues.
+        Get a git branch name suggestion as a bonus.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <div class="card">
+      <CommitMessageWorkbench client:load />
+    </div>
+
+    <section class="article">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>Conventional Commits</h3>
+          <p>
+            The <a href="https://www.conventionalcommits.org" target="_blank" rel="noopener noreferrer">Conventional Commits</a> spec
+            is a standard for writing human- and machine-readable commit messages. It powers
+            automated changelogs, semantic versioning, and release pipelines.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Format reference</h3>
+          <p>
+            <code>type(scope)!: description</code><br />
+            <br />
+            Optional body explains the <em>why</em>.<br />
+            Footer holds <code>BREAKING CHANGE:</code> and issue refs.<br />
+            The <code>!</code> signals a breaking change.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Tips for good commits</h3>
+          <p>
+            Keep the header under 72 characters. Use the imperative mood ("add", not "added").
+            A well-scoped commit is easier to review, revert, and cherry-pick — especially in
+            fast-moving monorepos.
+          </p>
+        </div>
+      </div>
+
+      <ServiceCTA
+        service="ci-cd-devops"
+        title="Want to enforce commit conventions and automate releases in your pipeline?"
+        description="HunterMussel sets up commitlint, semantic-release, and changelog generation so every merge produces a clean, versioned release — automatically."
+        linkLabel="Explore CI/CD & DevOps Engineering"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .cmg-page {
+    max-width: 820px;
+    padding-bottom: 5rem;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .info-card {
+    padding: 1.25rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    background: hsl(var(--card) / 0.5);
+  }
+  .info-card h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    margin: 0 0 0.5rem;
+    color: hsl(var(--foreground));
+  }
+  .info-card p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+  }
+  .info-card a {
+    color: hsl(var(--primary));
+    text-decoration: none;
+  }
+  .info-card a:hover {
+    text-decoration: underline;
+  }
+  .info-card code {
+    font-size: 0.75rem;
+    background: hsl(var(--muted) / 0.5);
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+    font-family: ui-monospace, monospace;
+  }
+</style>

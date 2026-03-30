@@ -2,10 +2,8 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Mail, MapPin, MessageCircle } from "lucide-react";
 import CalSchedulerEmbed from "@/components/react/CalSchedulerEmbed";
-import { trackEvent } from "@/lib/analytics";
 
 const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
-  const surface = hideHeader ? "contact_page" : "homepage";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -68,11 +66,6 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       } else {
         const text = await res.text();
         console.error("Contact form: Received non-JSON response:", text);
-        trackEvent("contact_form_error", {
-          form_id: "contact",
-          form_surface: surface,
-          error_type: "non_json_response",
-        });
         setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
         setStatus("error");
         return;
@@ -80,11 +73,6 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
 
       if (!res.ok) {
         console.error("Contact form: API Error:", data);
-        trackEvent("contact_form_error", {
-          form_id: "contact",
-          form_surface: surface,
-          error_type: "request_failed",
-        });
         setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
         setStatus("error");
         return;
@@ -103,13 +91,13 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       setEmail("");
       setPhone("");
       setMessage("");
+      if (typeof window !== "undefined" && typeof (window as Window & { gtag?: (...args: unknown[]) => void }).gtag === "function") {
+        (window as Window & { gtag: (...args: unknown[]) => void }).gtag("event", "conversion", {
+          send_to: "AW-16916178576/contact_form_lead",
+        });
+      }
     } catch (err) {
       console.error("Contact form: Connection error:", err);
-      trackEvent("contact_form_error", {
-        form_id: "contact",
-        form_surface: surface,
-        error_type: "network_error",
-      });
       setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
       setStatus("error");
     }
@@ -132,14 +120,14 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
               className="mx-auto max-w-2xl text-center"
             >
               <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
-                // contact
+                {T.label}
               </span>
               <h2 className="mb-4 font-heading text-3xl font-bold tracking-tight md:text-4xl">
-                Let's Build{" "}
-                <span className="gradient-text">Together?</span>
+                {T.headingPre}
+                <span className="gradient-text">{T.headingHighlight}</span>
               </h2>
               <p className="mb-10 font-body text-base text-muted-foreground">
-                Tell us about your project. We'll respond within 24 hours.
+                {T.subtitle}
               </p>
             </motion.div>
           )}
@@ -154,12 +142,10 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
             >
               <div className="space-y-3 text-left">
                 <p className="font-heading text-lg font-semibold text-foreground">
-                  Prefer writing first?
+                  {T.preferWriting}
                 </p>
                 <p className="font-body text-sm leading-6 text-muted-foreground">
-                  Send the project context, current constraints, and what kind of
-                  outcome you need. If scheduling is easier, the live calendar is
-                  available on the right.
+                  {T.formDescription}
                 </p>
               </div>
 
@@ -171,7 +157,7 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
               >
                 {status === "success" && (
                   <p className="rounded-md border border-primary/30 bg-primary/10 px-4 py-2.5 font-body text-sm text-primary">
-                    Thank you for contacting us! Message sent. We'll respond shortly.
+                    {T.successMsg}
                   </p>
                 )}
                 {status === "error" && errorMsg && (
@@ -182,13 +168,13 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="sm:col-span-2">
                     <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                      Name
+                      {T.labelName}
                     </label>
                     <input
                       type="text"
                       id="name"
                       name="name"
-                      placeholder="Your name"
+                      placeholder={T.placeholderName}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
@@ -200,7 +186,7 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                   </div>
                   <div>
                     <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                      Email
+                      {T.labelEmail}
                     </label>
                     <input
                       type="email"
@@ -218,13 +204,13 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                   </div>
                   <div>
                     <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                      Phone (Optional)
+                      {T.labelPhone}
                     </label>
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder={T.placeholderPhone}
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       disabled={status === "loading"}
@@ -236,13 +222,13 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                 </div>
                 <div>
                   <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                    Message
+                    {T.labelMessage}
                   </label>
                   <textarea
                     rows={4}
                     id="message"
                     name="message"
-                    placeholder="Describe your project..."
+                    placeholder={T.placeholderMessage}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
@@ -260,7 +246,7 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                   data-analytics-destination="/contact"
                   className="group inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 font-heading text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)] disabled:pointer-events-none disabled:opacity-60"
                 >
-                  {status === "loading" ? "Sending..." : "Send Message"}
+                  {status === "loading" ? T.btnSending : T.btnSend}
                   <ArrowRight
                     size={16}
                     className="transition-transform group-hover:translate-x-1"
@@ -277,7 +263,19 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MessageCircle size={14} className="text-primary" />
-                  <a href="https://wa.me/5521995775689" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-primary">
+                  <a
+                    href="https://wa.me/5521995775689"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-primary"
+                    onClick={() => {
+                      if (typeof window !== "undefined" && typeof (window as Window & { gtag?: (...args: unknown[]) => void }).gtag === "function") {
+                        (window as Window & { gtag: (...args: unknown[]) => void }).gtag("event", "conversion", {
+                          send_to: "AW-16916178576/whatsapp_click_lead",
+                        });
+                      }
+                    }}
+                  >
                     WhatsApp
                   </a>
                 </div>

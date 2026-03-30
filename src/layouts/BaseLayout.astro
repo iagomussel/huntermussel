@@ -2,6 +2,7 @@
 import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
 import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
+import AdUnit from "@/components/AdUnit.astro";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
 
@@ -18,6 +19,7 @@ interface Props {
   keywords?: string | string[];
   robots?: string;
   schemaType?: "WebPage" | "WebApplication";
+  pageData?: Record<string, unknown>;
   /** Shorter label for BreadcrumbList (omit site suffix from `title`). */
   breadcrumbName?: string;
   /** Renders matching FAQPage JSON-LD; pair with visible FAQ copy on the page. */
@@ -32,9 +34,16 @@ const {
   keywords,
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
   schemaType = canonicalPath === "/tools/" ? "WebPage" : "WebApplication",
+  pageData,
   breadcrumbName,
   faqItems,
 } = Astro.props;
+
+const resolvedPageData = pageData ?? {
+  pageType: 'tool',
+  pageTitle: title,
+  pageUrl: `https://huntermussel.com${canonicalPath}`,
+};
 const canonicalUrl = `https://huntermussel.com${canonicalPath}`;
 const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
 const pathParts = canonicalPath.split("/").filter(Boolean);
@@ -97,6 +106,7 @@ const pageSchema =
 <!doctype html>
 <html lang="en" class="dark">
   <head>
+    <script is:inline define:vars={{ resolvedPageData }}>window.dataLayer=window.dataLayer||[];window.dataLayer.push(resolvedPageData);</script>
     <!-- Google Tag Manager -->
     <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -131,9 +141,22 @@ const pageSchema =
     <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />
     <AnalyticsBootstrap />
     <title>{title}</title>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-NENC1CBCTS"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-NENC1CBCTS");
+      gtag("config", "AW-16916178576");
+    </script>
     <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+    <!-- Google AdSense -->
+    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5924413044488831" crossorigin="anonymous"></script>
+    <!-- End Google AdSense -->
   </head>
   <body class="bg-background text-foreground min-h-screen flex flex-col font-sans antialiased selection:bg-primary/20 selection:text-primary">
     <!-- Google Tag Manager (noscript) -->
@@ -143,7 +166,11 @@ const pageSchema =
     <Navbar client:load />
     <main class="flex-1 pt-16">
       <slot />
+      <div class="container mx-auto px-6 pb-8 max-w-4xl">
+        <AdUnit adSlot="XXXXXXXXXX" format="horizontal" />
+      </div>
     </main>
     <Footer />
+    <script src="/chat-widget.js" defer></script>
   </body>
 </html>

@@ -13,6 +13,8 @@ interface Props {
   keywords?: string | string[];
   robots?: string;
   schema?: Record<string, unknown> | Array<Record<string, unknown>>;
+  pageData?: Record<string, unknown>;
+  htmlLang?: string;
 }
 
 const {
@@ -24,14 +26,17 @@ const {
   keywords,
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
   schema,
+  pageData,
+  htmlLang = "en",
 } = Astro.props;
 
 const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
 const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
 ---
 
-<html lang="en" class="dark">
+<html lang={htmlLang} class="dark">
   <head>
+    {pageData && <script is:inline define:vars={{ pageData }}>window.dataLayer=window.dataLayer||[];window.dataLayer.push(pageData);</script>}
     <!-- Google Tag Manager -->
     <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -39,6 +44,16 @@ const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-K8THDL4C');</script>
     <!-- End Google Tag Manager -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-NENC1CBCTS"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-NENC1CBCTS");
+      gtag("config", "AW-16916178576");
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
@@ -65,6 +80,9 @@ const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
     <meta name="twitter:image" content={new URL(image, Astro.site || 'https://huntermussel.com')} />
     <meta name="twitter:site" content="@huntermussel" />
 
+    <!-- Google AdSense -->
+    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5924413044488831" crossorigin="anonymous"></script>
+    <!-- End Google AdSense -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
@@ -84,5 +102,6 @@ const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
       <slot />
     </main>
     <Footer />
+    <script src="/chat-widget.js" defer></script>
   </body>
 </html>

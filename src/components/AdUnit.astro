@@ -1,0 +1,51 @@
+---
+/**
+ * AdUnit — discrete Google AdSense ad slot.
+ *
+ * Replace ADSENSE_PUBLISHER_ID and the data-ad-slot values with your real
+ * AdSense publisher ID (ca-pub-XXXXXXXXXXXXXXXX) and slot IDs from your
+ * AdSense dashboard.
+ */
+interface Props {
+  adSlot?: string;
+  format?: "auto" | "horizontal" | "rectangle" | "vertical";
+  class?: string;
+}
+
+const {
+  adSlot = "XXXXXXXXXX",
+  format = "auto",
+  class: className = "",
+} = Astro.props;
+
+const publisherId = "ca-pub-XXXXXXXXXXXXXXXX";
+---
+
+<div class={`ad-unit ${className}`}>
+  <p class="ad-label">Advertisement · Publicidade</p>
+  <ins
+    class="adsbygoogle"
+    style="display:block"
+    data-ad-client={publisherId}
+    data-ad-slot={adSlot}
+    data-ad-format={format}
+    data-full-width-responsive="true"
+  ></ins>
+  <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<style>
+  .ad-unit {
+    width: 100%;
+    text-align: center;
+    margin: 2rem auto;
+  }
+  .ad-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground) / 0.4);
+    margin: 0 0 0.25rem;
+    user-select: none;
+  }
+</style>

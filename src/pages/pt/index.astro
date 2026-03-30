@@ -1,0 +1,99 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import HomePage from "@/components/react/HomePage";
+import { homeFAQ_pt } from "@/data/faq";
+import { ORGANIZATION_ID, WEBSITE_ID, organizationSchema, websiteSchema } from "@/lib/schema";
+
+const homepageUrl = "https://huntermussel.com/pt/";
+const homepageSchema = [
+  organizationSchema({
+    description:
+      "HunterMussel ajuda empresas a construir software escalável, workflows de automação com IA, infraestrutura em nuvem e sistemas de SEO técnico.",
+    email: "contact@huntermussel.com",
+    founder: {
+      "@type": "Person",
+      name: "Iago Mussel",
+      url: "https://huntermussel.com/about/",
+    },
+    sameAs: [
+      "https://www.linkedin.com/in/iago-mussel/",
+      "https://github.com/iagomussel",
+    ],
+    areaServed: "BR",
+    knowsAbout: [
+      "automação com IA",
+      "desenvolvimento de software personalizado",
+      "engenharia DevOps",
+      "infraestrutura em nuvem",
+      "SEO técnico",
+    ],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      email: "contact@huntermussel.com",
+      availableLanguage: ["Portuguese", "English"],
+    },
+  }),
+  websiteSchema(),
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "Automação com IA, DevOps e Desenvolvimento de Software Personalizado",
+    url: homepageUrl,
+    description:
+      "HunterMussel ajuda empresas a construir software escalável, workflows de automação com IA, infraestrutura em nuvem e sistemas de SEO técnico.",
+    isPartOf: {
+      "@id": WEBSITE_ID,
+    },
+    mainEntity: {
+      "@id": ORGANIZATION_ID,
+    },
+    about: [
+      "automação com IA",
+      "engenharia DevOps",
+      "desenvolvimento de software personalizado",
+      "SEO técnico",
+    ],
+    inLanguage: "pt-BR",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homeFAQ_pt.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  },
+];
+---
+
+<Layout
+  title="Automação com IA, DevOps & Desenvolvimento de Software"
+  description="HunterMussel ajuda empresas a construir software escalável, workflows de automação com IA, infraestrutura em nuvem e sistemas de SEO técnico."
+  canonicalUrl={homepageUrl}
+  htmlLang="pt-BR"
+  keywords={[
+    "agência de automação com IA",
+    "empresa de desenvolvimento de software",
+    "consultoria DevOps",
+    "infraestrutura em nuvem",
+    "SEO técnico",
+    "integração de IA",
+    "automação de workflows",
+    "arquitetura de software escalável",
+    "engenharia DevOps Brasil",
+    "HunterMussel",
+    "software house Brasil",
+    "agentes de IA",
+    "LLMOps",
+    "LGPD compliance",
+  ]}
+  schema={homepageSchema}
+  pageData={{ pageType: 'home', lang: 'pt' }}
+>
+  <HomePage lang="pt" client:load />
+</Layout>

@@ -1,0 +1,516 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="Sprite Sheet Splitter | HunterMussel Tools"
+  description="Split sprite sheets into individual assets using alpha transparency or a color key. Export all detected sprites as separate PNG files — fully client-side, no uploads."
+  canonicalPath="/tools/sprite-splitter/"
+  keywords={[
+    "sprite sheet splitter",
+    "sprite extractor online",
+    "split sprite sheet",
+    "extract sprites from sheet",
+    "alpha based sprite detection",
+    "color key sprite splitter",
+    "sprite atlas extractor",
+    "game asset extractor",
+    "png sprite splitter browser",
+    "client side sprite tool",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / imaging</p>
+      <h1>Sprite Sheet Splitter</h1>
+      <p class="lead">
+        Detect and extract individual sprites from a sheet using alpha transparency
+        or a color key background. Download all sprites as separate PNGs — zero server, zero uploads.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+    </section>
+
+    <section class="ss-top">
+      <!-- Drop zone -->
+      <div id="dropZone" class="card drop-zone">
+        <input id="fileInput" type="file" accept="image/png,image/gif,image/webp,image/bmp" style="display:none" />
+        <div class="drop-inner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <p class="drop-label">Drop a sprite sheet here or <span class="drop-link">browse</span></p>
+          <p class="small">PNG, GIF, WebP, BMP — transparency or color-key supported</p>
+        </div>
+        <canvas id="previewCanvas" style="display:none; max-width:100%; border-radius:0.5rem; margin-top:0.5rem;"></canvas>
+      </div>
+
+      <!-- Settings -->
+      <aside class="card stack">
+        <div>
+          <label class="label">Detection Mode</label>
+          <div class="mode-row">
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="alpha" checked id="modeAlpha" />
+              <span>Alpha transparency</span>
+            </label>
+            <label class="mode-opt">
+              <input type="radio" name="mode" value="color" id="modeColor" />
+              <span>Color key</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="colorKeyGroup" style="display:none">
+          <label class="label" for="colorKey">Background Color</label>
+          <div class="color-row">
+            <input id="colorKey" type="color" value="#00ff00" />
+            <input id="colorTolerance" type="range" min="0" max="128" value="15" />
+            <span id="toleranceValue" class="small">±15</span>
+          </div>
+          <p class="small" style="color:var(--text-2); margin-top:0.3rem;">
+            Click on the image to pick a color, or choose manually.
+          </p>
+        </div>
+
+        <div>
+          <label class="label" for="paddingInput">
+            Padding: <span id="paddingValue">2</span>px
+          </label>
+          <input id="paddingInput" type="range" min="0" max="32" value="2" />
+        </div>
+
+        <div>
+          <label class="label" for="minSizeInput">
+            Min asset size: <span id="minSizeValue">4</span>px
+          </label>
+          <input id="minSizeInput" type="range" min="1" max="64" value="4" />
+        </div>
+
+        <div id="statusBox" class="result" style="display:none">
+          <strong id="statusText">Idle</strong>
+          <span id="statusHint" class="small"></span>
+        </div>
+
+        <div class="actions">
+          <button id="detectBtn" type="button" disabled>Detect Sprites</button>
+          <button id="clearBtn" type="button" class="secondary">Clear</button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Results -->
+    <section id="resultsSection" style="display:none">
+      <div class="results-header">
+        <h2 class="results-title">Detected sprites</h2>
+        <div class="actions">
+          <button id="downloadAllBtn" type="button" class="secondary">Download all PNGs</button>
+        </div>
+      </div>
+      <div id="resultsGrid" class="results-grid"></div>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Scans the uploaded image for distinct non-background regions using a
+          connected-component flood-fill algorithm. Each isolated region is treated as
+          one sprite and cropped into its own PNG. It supports two modes: alpha transparency
+          (pixels with alpha &lt; threshold are background) and color key (pixels within
+          a color distance of the chosen background color are background).
+        </p>
+      </article>
+      <article class="card">
+        <h2>How It Works</h2>
+        <p>
+          The tool reads every pixel via the Canvas API. For each unvisited foreground pixel
+          it performs a 4-directional BFS to find all connected pixels, records the bounding
+          box, then skips boxes smaller than the minimum size. The padding value expands each
+          bounding box outward before cropping. Nothing leaves your browser.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Drop or browse a sprite sheet image.</li>
+          <li>Choose <strong>Alpha transparency</strong> for sheets with transparent backgrounds (PNG).</li>
+          <li>Choose <strong>Color key</strong> for solid background colors (e.g. magenta <code>#FF00FF</code>) and set tolerance.</li>
+          <li>Click the image preview to sample a background color automatically.</li>
+          <li>Adjust padding and minimum size, then click <strong>Detect Sprites</strong>.</li>
+          <li>Download individual sprites or all at once.</li>
+        </ul>
+      </article>
+      <ServiceCTA
+        service="workflows-bpm"
+        title="Need automated sprite processing in your game pipeline?"
+        description="HunterMussel designs workflow automation systems that handle asset extraction, format conversion, and batch delivery at scale."
+        linkLabel="Explore Workflows & BPM"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .ss-top {
+    display: grid;
+    grid-template-columns: 1.4fr 0.6fr;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  @media (max-width: 720px) {
+    .ss-top { grid-template-columns: 1fr; }
+  }
+
+  .drop-zone {
+    border: 2px dashed hsl(145 80% 50% / 0.3);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .drop-zone.drag-over {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    box-shadow: 0 0 20px var(--glow);
+  }
+
+  .drop-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 1.5rem 1rem;
+    color: var(--text-2);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .drop-label { margin: 0; font-weight: 600; color: var(--text-1); }
+  .drop-link { color: var(--primary); text-decoration: underline; cursor: pointer; pointer-events: auto; }
+
+  .mode-row { display: flex; gap: 1rem; margin-top: 0.35rem; }
+  .mode-opt { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.85rem; }
+
+  .color-row {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  #colorKey { width: 40px; height: 32px; border: none; padding: 0; border-radius: 0.35rem; cursor: pointer; }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .results-title {
+    margin: 0;
+    font-size: 1rem;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-1);
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .result-card {
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--card);
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .result-card:hover {
+    border-color: hsl(145 80% 50% / 0.25);
+    box-shadow: 0 0 16px var(--glow);
+  }
+
+  .result-thumb-wrap {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: repeating-conic-gradient(#3a3a3a 0% 25%, #2a2a2a 0% 50%) 0 0 / 12px 12px;
+  }
+
+  .result-thumb { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+
+  .result-info {
+    padding: 0.6rem 0.75rem;
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .result-name {
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-1);
+  }
+
+  .result-dims {
+    font-size: 0.72rem;
+    color: var(--text-2);
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .result-actions { padding: 0 0.75rem 0.75rem; }
+  .result-actions button { width: 100%; font-size: 0.82rem; padding: 0.35rem 0.5rem; }
+</style>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  const dropZone = $("dropZone");
+  const fileInput = $("fileInput");
+  const previewCanvas = $("previewCanvas");
+  const detectBtn = $("detectBtn");
+  const clearBtn = $("clearBtn");
+  const modeAlpha = $("modeAlpha");
+  const modeColor = $("modeColor");
+  const colorKeyGroup = $("colorKeyGroup");
+  const colorKey = $("colorKey");
+  const colorTolerance = $("colorTolerance");
+  const toleranceValue = $("toleranceValue");
+  const paddingInput = $("paddingInput");
+  const paddingValue = $("paddingValue");
+  const minSizeInput = $("minSizeInput");
+  const minSizeValue = $("minSizeValue");
+  const statusBox = $("statusBox");
+  const statusText = $("statusText");
+  const statusHint = $("statusHint");
+  const resultsSection = $("resultsSection");
+  const resultsGrid = $("resultsGrid");
+  const downloadAllBtn = $("downloadAllBtn");
+
+  let currentImage = null;
+  let spriteBlobs = [];
+
+  // Mode toggle
+  [modeAlpha, modeColor].forEach((r) => {
+    r.addEventListener("change", () => {
+      colorKeyGroup.style.display = modeColor.checked ? "" : "none";
+    });
+  });
+
+  // Sliders
+  colorTolerance.addEventListener("input", () => { toleranceValue.textContent = `±${colorTolerance.value}`; });
+  paddingInput.addEventListener("input", () => { paddingValue.textContent = paddingInput.value; });
+  minSizeInput.addEventListener("input", () => { minSizeValue.textContent = minSizeInput.value; });
+
+  // Drop zone
+  dropZone.addEventListener("click", (e) => {
+    if (!e.target.closest("button") && !e.target.closest("canvas")) fileInput.click();
+  });
+  dropZone.addEventListener("dragover", (e) => { e.preventDefault(); dropZone.classList.add("drag-over"); });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+  dropZone.addEventListener("drop", (e) => { e.preventDefault(); dropZone.classList.remove("drag-over"); loadFile(e.dataTransfer.files[0]); });
+  fileInput.addEventListener("change", () => { loadFile(fileInput.files[0]); fileInput.value = ""; });
+
+  function loadFile(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        currentImage = img;
+        previewCanvas.width = img.naturalWidth;
+        previewCanvas.height = img.naturalHeight;
+        const ctx = previewCanvas.getContext("2d");
+        ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+        ctx.drawImage(img, 0, 0);
+        previewCanvas.style.display = "block";
+        dropZone.querySelector(".drop-inner").style.display = "none";
+        detectBtn.disabled = false;
+        setStatus("", "", false);
+        resultsSection.style.display = "none";
+        resultsGrid.innerHTML = "";
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Click image to pick color
+  previewCanvas.addEventListener("click", (e) => {
+    if (!modeColor.checked || !currentImage) return;
+    const rect = previewCanvas.getBoundingClientRect();
+    const scaleX = previewCanvas.width / rect.width;
+    const scaleY = previewCanvas.height / rect.height;
+    const x = Math.floor((e.clientX - rect.left) * scaleX);
+    const y = Math.floor((e.clientY - rect.top) * scaleY);
+    const ctx = previewCanvas.getContext("2d");
+    const [r, g, b] = ctx.getImageData(x, y, 1, 1).data;
+    colorKey.value = "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
+    setStatus(`Picked color ${colorKey.value}`, "Adjust tolerance if needed.");
+  });
+
+  function setStatus(text, hint, show = true) {
+    statusBox.style.display = show ? "" : "none";
+    statusText.textContent = text;
+    statusHint.textContent = hint;
+  }
+
+  function hexToRgb(hex) {
+    const n = parseInt(hex.slice(1), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  function colorDistance(r1, g1, b1, r2, g2, b2) {
+    return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2);
+  }
+
+  detectBtn.addEventListener("click", () => {
+    if (!currentImage) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = currentImage.naturalWidth;
+    canvas.height = currentImage.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(currentImage, 0, 0);
+    const { data, width, height } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    const alphaMode = modeAlpha.checked;
+    const tolerance = parseInt(colorTolerance.value, 10);
+    const pad = parseInt(paddingInput.value, 10);
+    const minSize = parseInt(minSizeInput.value, 10);
+    const [kr, kg, kb] = hexToRgb(colorKey.value);
+
+    setStatus("Detecting…", "Scanning pixels");
+
+    function isForeground(x, y) {
+      const i = (y * width + x) * 4;
+      if (alphaMode) return data[i + 3] > 10;
+      const d = colorDistance(data[i], data[i + 1], data[i + 2], kr, kg, kb);
+      return d > tolerance;
+    }
+
+    const visited = new Uint8Array(width * height);
+    const rects = [];
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const idx = y * width + x;
+        if (visited[idx] || !isForeground(x, y)) continue;
+
+        let minX = x, minY = y, maxX = x, maxY = y;
+        const stack = [idx];
+        visited[idx] = 1;
+
+        while (stack.length) {
+          const cur = stack.pop();
+          const cx = cur % width;
+          const cy = (cur / width) | 0;
+          if (cx < minX) minX = cx;
+          if (cx > maxX) maxX = cx;
+          if (cy < minY) minY = cy;
+          if (cy > maxY) maxY = cy;
+
+          for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+            const nx = cx + dx, ny = cy + dy;
+            if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+            const ni = ny * width + nx;
+            if (!visited[ni] && isForeground(nx, ny)) {
+              visited[ni] = 1;
+              stack.push(ni);
+            }
+          }
+        }
+
+        const w = maxX - minX + 1;
+        const h = maxY - minY + 1;
+        if (w >= minSize && h >= minSize) {
+          rects.push({
+            x: Math.max(0, minX - pad),
+            y: Math.max(0, minY - pad),
+            w: Math.min(width, maxX + 1 + pad) - Math.max(0, minX - pad),
+            h: Math.min(height, maxY + 1 + pad) - Math.max(0, minY - pad),
+          });
+        }
+      }
+    }
+
+    setStatus(`Found ${rects.length} sprites`, "Ready to download");
+    spriteBlobs = [];
+    resultsGrid.innerHTML = "";
+
+    if (rects.length === 0) {
+      resultsSection.style.display = "none";
+      return;
+    }
+
+    rects.forEach((rect, i) => {
+      const sc = document.createElement("canvas");
+      sc.width = rect.w;
+      sc.height = rect.h;
+      sc.getContext("2d").drawImage(canvas, rect.x, rect.y, rect.w, rect.h, 0, 0, rect.w, rect.h);
+      sc.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        spriteBlobs[i] = { blob, url, w: rect.w, h: rect.h };
+        renderCard(i, url, rect.w, rect.h);
+      }, "image/png");
+    });
+
+    resultsSection.style.display = "";
+  });
+
+  function renderCard(i, url, w, h) {
+    const card = document.createElement("div");
+    card.className = "result-card";
+    card.innerHTML = `
+      <div class="result-thumb-wrap"><img class="result-thumb" src="${url}" loading="lazy" /></div>
+      <div class="result-info">
+        <div class="result-name">sprite_${String(i).padStart(3, "0")}.png</div>
+        <div class="result-dims">${w} × ${h} px</div>
+      </div>
+      <div class="result-actions"><button type="button" class="dl-btn secondary">Download</button></div>
+    `;
+    card.querySelector(".dl-btn").addEventListener("click", () => {
+      if (spriteBlobs[i]) downloadBlob(spriteBlobs[i].blob, `sprite_${String(i).padStart(3, "0")}.png`);
+    });
+    resultsGrid.appendChild(card);
+  }
+
+  function downloadBlob(blob, name) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }
+
+  downloadAllBtn.addEventListener("click", () => {
+    spriteBlobs.forEach((s, i) => {
+      if (s) setTimeout(() => downloadBlob(s.blob, `sprite_${String(i).padStart(3, "0")}.png`), i * 120);
+    });
+  });
+
+  clearBtn.addEventListener("click", () => {
+    currentImage = null;
+    spriteBlobs = [];
+    previewCanvas.style.display = "none";
+    previewCanvas.getContext("2d").clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+    dropZone.querySelector(".drop-inner").style.display = "";
+    detectBtn.disabled = true;
+    resultsGrid.innerHTML = "";
+    resultsSection.style.display = "none";
+    setStatus("", "", false);
+  });
+</script>

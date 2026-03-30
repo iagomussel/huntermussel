@@ -1,0 +1,114 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PersonaPickerWorkbench from "@/components/react/tools/persona-picker/PersonaPickerWorkbench";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+---
+
+<BaseLayout
+  title="AI Persona Picker | HunterMussel Tools"
+  description="Browse 20 ready-made AI system prompt personas — Senior Engineer, DevOps, Code Reviewer, Technical Writer, and more. Copy any persona's system prompt with one click, or save your own to localStorage."
+  canonicalPath="/tools/persona-picker/"
+  keywords={[
+    "ai persona picker",
+    "system prompt templates",
+    "ai persona library",
+    "chatgpt system prompt",
+    "claude system prompt",
+    "llm persona generator",
+    "ai role prompts",
+    "system prompt examples",
+    "ai assistant personas",
+    "prompt engineering personas",
+    "custom ai personas",
+    "senior engineer prompt",
+  ]}
+>
+  <main class="page pp-page">
+    <section class="hero">
+      <p class="eyebrow">tool / ai</p>
+      <h1>AI Persona Picker</h1>
+      <p class="lead">
+        20 hand-crafted system prompt personas for software engineers, DevOps, writers, and
+        more. Browse by category, preview the system prompt, copy it with one click, and add
+        your own custom personas — saved locally in your browser.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <div class="card">
+      <PersonaPickerWorkbench client:load />
+    </div>
+
+    <section class="article">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>What is a system prompt?</h3>
+          <p>
+            A system prompt is the instruction given to an AI model before the conversation starts.
+            It sets the model's role, tone, constraints, and behavior — making it act as a
+            Senior Engineer, Code Reviewer, or any other persona you need.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>How to use a persona</h3>
+          <p>
+            Click <strong>Copy prompt</strong> on any persona, then paste it as the system prompt
+            in Claude, ChatGPT, Gemini, or any other LLM interface. The model will adopt that
+            persona for the conversation.
+          </p>
+        </div>
+        <div class="info-card">
+          <h3>Custom personas</h3>
+          <p>
+            Click <strong>Add custom</strong> to create your own persona with a name, description,
+            and system prompt. Custom personas are saved in your browser's localStorage — they
+            persist across sessions and never leave your device.
+          </p>
+        </div>
+      </div>
+
+      <ServiceCTA
+        service="ai-automation"
+        title="Need to build a custom AI assistant with a specific persona for your product?"
+        description="HunterMussel designs and ships production AI agents with custom personas, RAG pipelines, and guardrails — tailored to your brand, audience, and use case."
+        linkLabel="Explore AI Automation Services"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .pp-page {
+    max-width: 900px;
+    padding-bottom: 5rem;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .info-card {
+    padding: 1.25rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    background: hsl(var(--card) / 0.5);
+  }
+  .info-card h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    margin: 0 0 0.5rem;
+    color: hsl(var(--foreground));
+  }
+  .info-card p {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+  }
+  .info-card strong {
+    color: hsl(var(--foreground));
+    font-weight: 600;
+  }
+</style>
