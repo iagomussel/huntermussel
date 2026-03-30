@@ -1,6 +1,7 @@
 ---
 import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
+import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
 import "@/styles/globals.css";
 
 interface Props {
@@ -68,6 +69,7 @@ const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
     <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />
+    <AnalyticsBootstrap />
     {schemaItems.map((item) => (
       <script type="application/ld+json" set:html={JSON.stringify(item)} />
     ))}

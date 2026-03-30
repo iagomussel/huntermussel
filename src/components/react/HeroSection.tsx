@@ -4,7 +4,10 @@ import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section
+      data-analytics-section="hero"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+    >
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30"
@@ -50,6 +53,10 @@ const HeroSection = () => {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               href="#contact"
+              data-analytics-event="lead_cta_click"
+              data-analytics-label="start_project"
+              data-analytics-location="hero_primary"
+              data-analytics-destination="#contact"
               className="group inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3.5 font-heading text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)]"
             >
               Start Project

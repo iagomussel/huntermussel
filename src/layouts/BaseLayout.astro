@@ -1,6 +1,7 @@
 ---
 import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
+import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
 
@@ -128,16 +129,8 @@ const pageSchema =
     <link rel="sitemap" type="application/xml" href="https://huntermussel.com/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
     <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />
+    <AnalyticsBootstrap />
     <title>{title}</title>
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-NENC1CBCTS"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-NENC1CBCTS");
-    </script>
     <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}

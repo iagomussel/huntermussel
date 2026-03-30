@@ -1,6 +1,10 @@
 const Footer = () => {
   return (
-    <footer className="border-t border-border py-8" role="contentinfo">
+    <footer
+      data-analytics-section="site_footer"
+      className="border-t border-border py-8"
+      role="contentinfo"
+    >
       <div className="container flex flex-col gap-5 px-6">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <span className="font-heading text-sm text-muted-foreground">
