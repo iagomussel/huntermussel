@@ -1,13 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import HeroSection from "@/components/react/HeroSection";
-import ServicesSection from "@/components/react/ServicesSection";
-import CasesSection from "@/components/react/CasesSection";
-import AboutSection from "@/components/react/AboutSection";
-import TechSection from "@/components/react/TechSection";
-import ContactSection from "@/components/react/ContactSection";
-import ToolsSection from "@/components/react/ToolsSection";
-import FAQSection from "@/components/react/FAQSection";
+import HomePage from "@/components/react/HomePage";
 import { homeFAQ } from "@/data/faq";
 import { ORGANIZATION_ID, WEBSITE_ID, organizationSchema, websiteSchema } from "@/lib/schema";
 
@@ -102,12 +95,5 @@ const homepageSchema = [
   schema={homepageSchema}
   pageData={{ pageType: 'home' }}
 >
-  <HeroSection client:load />
-  <ServicesSection client:load />
-  <CasesSection client:load />
-  <AboutSection client:load />
-  <TechSection client:load />
-  <ToolsSection client:load />
-  <FAQSection client:load items={homeFAQ} />
-  <ContactSection client:load />
+  <HomePage lang="en" client:load />
 </Layout>

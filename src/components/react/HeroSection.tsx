@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
 import { Terminal, ArrowRight } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
+import { useLang } from "@/context/LangContext";
+import { heroT } from "@/data/translations";
 
 const HeroSection = () => {
+  const T = heroT[useLang()];
+
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
       {/* Background image */}
@@ -29,22 +33,18 @@ const HeroSection = () => {
           >
             <Terminal size={14} className="text-primary" />
             <span className="font-heading text-xs text-muted-foreground">
-              AI Automation, DevOps & Software Delivery
+              {T.badge}
             </span>
           </motion.div>
 
           <h1 className="mb-6 font-heading text-4xl font-bold leading-tight tracking-tight md:text-6xl lg:text-7xl">
-            AI automation, DevOps, &
+            {T.h1a}
             <br />
-            <span className="gradient-text text-glow">
-              scalable software engineering
-            </span>
+            <span className="gradient-text text-glow">{T.h1b}</span>
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl font-body text-lg leading-relaxed text-muted-foreground md:text-xl">
-            HunterMussel designs custom software, cloud infrastructure, and AI
-            automation systems for teams that need reliable delivery, faster
-            operations, and measurable growth.
+            {T.subtitle}
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -52,7 +52,7 @@ const HeroSection = () => {
               href="#contact"
               className="group inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3.5 font-heading text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)]"
             >
-              Start Project
+              {T.cta1}
               <ArrowRight
                 size={16}
                 className="transition-transform group-hover:translate-x-1"
@@ -62,7 +62,7 @@ const HeroSection = () => {
               href="/cases"
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-8 py-3.5 font-heading text-sm font-medium text-foreground transition-all hover:border-primary/30 hover:bg-card"
             >
-              View Case Studies
+              {T.cta2}
             </a>
           </div>
         </motion.div>
@@ -82,16 +82,12 @@ const HeroSection = () => {
           <pre className="font-heading text-xs leading-relaxed text-muted-foreground md:text-sm">
             <span className="text-primary">$</span> huntermussel system --scale
             {"\n"}
-            <span className="text-muted-foreground/60">
-              ▸ Provisioning cloud infrastructure...
-            </span>
+            <span className="text-muted-foreground/60">{T.terminal1}</span>
             {"\n"}
-            <span className="text-muted-foreground/60">
-              ▸ Deploying scalable architecture...
-            </span>
+            <span className="text-muted-foreground/60">{T.terminal2}</span>
             {"\n"}
-            <span className="text-primary">✓</span> System online with seamless
-            AI integrations 🚀
+            <span className="text-primary">✓</span>{" "}
+            {T.terminal3.replace("✓ ", "")}
           </pre>
         </motion.div>
       </div>
