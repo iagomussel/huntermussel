@@ -20,6 +20,7 @@ const Navbar = () => {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
+      data-analytics-section="site_nav"
       className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl"
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
@@ -48,6 +49,10 @@ const Navbar = () => {
           ))}
           <a
             href="/contact"
+            data-analytics-event="lead_cta_click"
+            data-analytics-label="contact_us"
+            data-analytics-location="site_nav_desktop"
+            data-analytics-destination="/contact"
             className="rounded-md border border-primary bg-primary/10 px-4 py-2 font-heading text-xs font-medium text-primary transition-all hover:bg-primary hover:text-primary-foreground box-glow"
           >
             Contact Us
@@ -86,6 +91,10 @@ const Navbar = () => {
               <a
                 href="/contact"
                 onClick={() => setIsOpen(false)}
+                data-analytics-event="lead_cta_click"
+                data-analytics-label="contact_us"
+                data-analytics-location="site_nav_mobile"
+                data-analytics-destination="/contact"
                 className="mt-2 rounded-md border border-primary bg-primary/10 px-4 py-2 text-center font-heading text-xs font-medium text-primary"
               >
                 Contact Us

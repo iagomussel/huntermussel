@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 declare global {
   interface Window {
@@ -74,6 +75,46 @@ const CalSchedulerEmbed = () => {
     }
 
     window.Cal?.("init", CAL_NAMESPACE, { origin: CAL_ORIGIN });
+    window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
+      action: "bookerReady",
+      callback: () => {
+        trackEvent("scheduler_embed_ready", {
+          scheduler_vendor: "cal",
+          scheduler_surface: "contact",
+        });
+      },
+    });
+    window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
+      action: "bookerViewed",
+      callback: () => {
+        trackEvent("scheduler_embed_view", {
+          scheduler_vendor: "cal",
+          scheduler_surface: "contact",
+        });
+      },
+    });
+    window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
+      action: "bookingSuccessfulV2",
+      callback: () => {
+        trackEvent("scheduler_booking_success", {
+          scheduler_vendor: "cal",
+          scheduler_surface: "contact",
+        });
+        trackEvent("generate_lead", {
+          lead_method: "scheduled_call",
+          scheduler_vendor: "cal",
+        });
+      },
+    });
+    window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
+      action: "linkFailed",
+      callback: () => {
+        trackEvent("scheduler_embed_error", {
+          scheduler_vendor: "cal",
+          scheduler_surface: "contact",
+        });
+      },
+    });
     window.Cal?.ns?.[CAL_NAMESPACE]?.("inline", {
       elementOrSelector: `#${CAL_CONTAINER_ID}`,
       config: {
@@ -116,6 +157,10 @@ const CalSchedulerEmbed = () => {
           href={`https://cal.com/${CAL_LINK}`}
           target="_blank"
           rel="noopener noreferrer"
+          data-analytics-event="scheduler_open_external"
+          data-analytics-label="open_in_cal"
+          data-analytics-location="contact_scheduler"
+          data-analytics-destination={`https://cal.com/${CAL_LINK}`}
           className="shrink-0 rounded-md border border-border bg-muted/40 px-3 py-2 font-heading text-xs uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
         >
           Open in Cal

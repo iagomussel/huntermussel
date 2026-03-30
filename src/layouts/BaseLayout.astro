@@ -1,9 +1,15 @@
 ---
 import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
+import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
 import AdUnit from "@/components/AdUnit.astro";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
+
+interface FaqItem {
+  q: string;
+  a: string;
+}
 
 interface Props {
   title: string;
@@ -14,6 +20,10 @@ interface Props {
   robots?: string;
   schemaType?: "WebPage" | "WebApplication";
   pageData?: Record<string, unknown>;
+  /** Shorter label for BreadcrumbList (omit site suffix from `title`). */
+  breadcrumbName?: string;
+  /** Renders matching FAQPage JSON-LD; pair with visible FAQ copy on the page. */
+  faqItems?: FaqItem[];
 }
 
 const {
@@ -25,6 +35,8 @@ const {
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
   schemaType = canonicalPath === "/tools/" ? "WebPage" : "WebApplication",
   pageData,
+  breadcrumbName,
+  faqItems,
 } = Astro.props;
 
 const resolvedPageData = pageData ?? {
@@ -40,7 +52,7 @@ const breadcrumbItems = [
   { name: "Tools", item: "https://huntermussel.com/tools/" },
 ];
 if (canonicalPath !== "/tools/" && pathParts.length > 1) {
-  breadcrumbItems.push({ name: title, item: canonicalUrl });
+  breadcrumbItems.push({ name: breadcrumbName ?? title, item: canonicalUrl });
 }
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -52,6 +64,19 @@ const breadcrumbSchema = {
     item: entry.item,
   })),
 };
+const faqSchema =
+  faqItems && faqItems.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqItems.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: { "@type": "Answer", text: item.a },
+        })),
+      }
+    : null;
+
 const pageSchema =
   schemaType === "WebApplication"
     ? {
@@ -114,6 +139,7 @@ const pageSchema =
     <link rel="sitemap" type="application/xml" href="https://huntermussel.com/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
     <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />
+    <AnalyticsBootstrap />
     <title>{title}</title>
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-NENC1CBCTS"></script>
     <script is:inline>
@@ -127,6 +153,7 @@ const pageSchema =
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
     <!-- Google AdSense -->
     <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5924413044488831" crossorigin="anonymous"></script>
     <!-- End Google AdSense -->

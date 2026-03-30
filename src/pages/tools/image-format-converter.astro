@@ -1,0 +1,420 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+
+const faqItems = [
+  {
+    q: "Are my images uploaded when I convert formats?",
+    a: "No. Files are read with the File API and processed with canvas in your browser. Output blobs download directly to your device.",
+  },
+  {
+    q: "What happens to transparency when I choose JPEG?",
+    a: "JPEG does not support alpha. Transparent and semi-transparent pixels are composited on a white background before encoding.",
+  },
+  {
+    q: "Why is PNG quality hidden?",
+    a: "PNG output is lossless in this tool; there is no quality slider. JPEG and WebP use the quality percentage for lossy compression.",
+  },
+  {
+    q: "How does this differ from the WebP Image Optimizer?",
+    a: "The optimizer focuses on WebP exports with resize and size comparison. This converter lets you pick PNG, JPEG, or WebP per batch for mixed delivery needs.",
+  },
+];
+---
+
+<BaseLayout
+  title="Image Format Converter — PNG, JPEG & WebP in Browser | HunterMussel Tools"
+  description="Batch convert images to PNG, JPEG, or WebP locally. Up to 20 files, adjustable quality for lossy formats, JPEG flattens transparency on white. No uploads."
+  canonicalPath="/tools/image-format-converter/"
+  breadcrumbName="Image Format Converter"
+  faqItems={faqItems}
+  keywords={[
+    "png to jpeg online private",
+    "jpeg to webp converter browser",
+    "webp to png client side",
+    "batch image format converter",
+    "convert images no upload",
+    "png jpg webp tool",
+    "lossless png export canvas",
+    "transparent to jpeg flatten white",
+    "developer image converter",
+    "local image transcoding",
+    "multiformat image export",
+    "free image format tool",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / imaging</p>
+      <h1>Image Format Converter</h1>
+      <p class="lead">
+        Export the same pixels as <strong>PNG</strong> (lossless), <strong>JPEG</strong> (lossy, no transparency),
+        or <strong>WebP</strong> (lossy or lossless). Pick up to 20 files, choose output format and quality, download individually or all.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+      <nav class="related-tools" aria-label="Related imaging tools">
+        <span class="related-tools__label">Related</span>
+        <a href="/tools/image-optimizer/">WebP optimizer</a>
+        <a href="/tools/svg-to-png/">SVG to PNG</a>
+        <a href="/tools/alpha-channel-splitter/">Alpha splitter</a>
+      </nav>
+    </section>
+
+    <section class="media-tool-grid">
+      <div id="dropZone" class="card media-drop">
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/bmp,image/webp,image/tiff"
+          multiple
+          style="display:none"
+        />
+        <div class="media-drop-inner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <p class="media-drop-label">Drop images or <span class="media-drop-link">browse</span></p>
+          <p class="small">JPG, PNG, GIF, BMP, TIFF, WebP · up to 20 files</p>
+        </div>
+        <div id="fileList" class="file-chips"></div>
+      </div>
+
+      <aside class="card stack">
+        <div>
+          <label class="label" for="formatSel">Output format</label>
+          <select id="formatSel">
+            <option value="image/png">PNG (lossless)</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+        <div id="qualityWrap">
+          <label class="label" for="qualitySlider">Quality: <span id="qualityValue">85</span>%</label>
+          <input id="qualitySlider" type="range" min="1" max="100" value="85" />
+        </div>
+        <div id="statusBox" class="result" style="display:none">
+          Status
+          <strong id="statusText">Idle</strong>
+          <span id="statusHint" class="small"></span>
+        </div>
+        <div class="actions">
+          <button id="convertBtn" type="button">Convert</button>
+          <button id="clearBtn" type="button" class="secondary">Clear</button>
+        </div>
+      </aside>
+    </section>
+
+    <section id="resultsSection" style="display:none">
+      <div class="results-header results-header--wrap">
+        <h2 class="results-title">Output</h2>
+        <button id="downloadAllBtn" type="button" class="secondary">Download all</button>
+      </div>
+      <div id="resultsGrid" class="results-grid"></div>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What it does</h2>
+        <p>
+          Re-encodes raster images to your chosen format using the browser canvas. Dimensions stay the same unless the decoder
+          applies color profile quirks — for most web assets the pixel grid is preserved.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Format notes</h2>
+        <p>
+          JPEG does not support transparency — semi-transparent areas are flattened on a white background before encoding.
+          PNG preserves alpha. WebP can preserve alpha when the source has it; quality applies to lossy WebP only.
+          For WebP-only workflows with size stats, use the <a href="/tools/image-optimizer/">WebP Image Optimizer</a>.
+        </p>
+        <p>
+          Serving modern formats helps performance and SEO; see
+          <a href="/blog/webp-for-seo-how-image-format-affects-rankings/">WebP for SEO: How Your Image Format Affects Google Rankings</a>
+          and
+          <a href="/blog/why-use-webp-format-90-percent-compression/">Why Use WebP Format? The 90% Compression Advantage Explained</a>.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to use</h2>
+        <ul>
+          <li>Drop or select up to 20 images.</li>
+          <li>Pick PNG, JPEG, or WebP and set quality when available.</li>
+          <li>Click <strong>Convert</strong>, then download files individually or use <strong>Download all</strong>.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Frequently asked questions</h2>
+        <dl class="tool-faq-list">
+          {faqItems.map((item) => (
+            <div class="tool-faq-item">
+              <dt>{item.q}</dt>
+              <dd>{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </article>
+      <ServiceCTA
+        service="cloud-infrastructure-ai"
+        title="Serving images at scale?"
+        description="HunterMussel designs cloud and CDN-friendly delivery pipelines — caching, formats, and automation so media stays fast globally."
+        linkLabel="Explore Cloud & Infrastructure"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .file-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0 0.25rem 0.25rem;
+  }
+  .chip {
+    font-size: 0.78rem;
+    background: var(--primary-soft);
+    border: 1px solid hsl(145 80% 50% / 0.2);
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    color: var(--primary);
+    font-family: "JetBrains Mono", monospace;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+  .results-title {
+    margin: 0;
+    font-size: 1rem;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-1);
+  }
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+  .result-card {
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--card);
+    overflow: hidden;
+  }
+  .result-thumb {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+    background: var(--muted);
+  }
+  .result-info {
+    padding: 0.65rem;
+    font-size: 0.78rem;
+    color: var(--text-2);
+    font-family: "JetBrains Mono", monospace;
+    word-break: break-word;
+  }
+  .result-actions {
+    padding: 0 0.65rem 0.65rem;
+  }
+  .result-actions button {
+    width: 100%;
+    font-size: 0.82rem;
+    padding: 0.4rem;
+  }
+</style>
+
+<script type="module">
+  const $ = (id) => document.getElementById(id);
+  const dropZone = $("dropZone");
+  const fileInput = $("fileInput");
+  const fileList = $("fileList");
+  const formatSel = $("formatSel");
+  const qualityWrap = $("qualityWrap");
+  const qualitySlider = $("qualitySlider");
+  const qualityValue = $("qualityValue");
+  const convertBtn = $("convertBtn");
+  const clearBtn = $("clearBtn");
+  const statusBox = $("statusBox");
+  const statusText = $("statusText");
+  const statusHint = $("statusHint");
+  const resultsSection = $("resultsSection");
+  const resultsGrid = $("resultsGrid");
+  const downloadAllBtn = $("downloadAllBtn");
+
+  let selectedFiles = [];
+  let convertedResults = [];
+
+  function updateQualityVisibility() {
+    const mime = formatSel.value;
+    qualityWrap.style.display = mime === "image/png" ? "none" : "";
+  }
+  formatSel.addEventListener("change", updateQualityVisibility);
+  updateQualityVisibility();
+
+  qualitySlider.addEventListener("input", () => {
+    qualityValue.textContent = qualitySlider.value;
+  });
+
+  dropZone.addEventListener("click", (e) => {
+    if (e.target.closest("button")) return;
+    fileInput.click();
+  });
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+  });
+  dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+    addFiles([...e.dataTransfer.files]);
+  });
+  fileInput.addEventListener("change", () => {
+    addFiles([...fileInput.files]);
+    fileInput.value = "";
+  });
+
+  function addFiles(newFiles) {
+    const ok = newFiles.filter((f) => f.type.startsWith("image/"));
+    selectedFiles = [...selectedFiles, ...ok].slice(0, 20);
+    fileList.innerHTML = "";
+    selectedFiles.forEach((f) => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = f.name;
+      fileList.appendChild(chip);
+    });
+  }
+
+  function extFor(mime) {
+    if (mime === "image/jpeg") return ".jpg";
+    if (mime === "image/webp") return ".webp";
+    return ".png";
+  }
+
+  function convertFile(file, mime, quality) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error("read fail"));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error("decode fail"));
+        img.onload = () => {
+          const w = img.naturalWidth;
+          const h = img.naturalHeight;
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          if (mime === "image/jpeg") {
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+          }
+          ctx.drawImage(img, 0, 0);
+          const q = quality / 100;
+          const onBlob = (blob) => {
+            if (!blob) reject(new Error("toBlob null"));
+            else
+              resolve({
+                original: file,
+                blob,
+                url: URL.createObjectURL(blob),
+                w,
+                h,
+              });
+          };
+          if (mime === "image/png") canvas.toBlob(onBlob, mime);
+          else canvas.toBlob(onBlob, mime, q);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function setStatus(text, hint, show = true) {
+    statusBox.style.display = show ? "" : "none";
+    statusText.textContent = text;
+    statusHint.textContent = hint;
+  }
+
+  convertBtn.addEventListener("click", async () => {
+    if (selectedFiles.length === 0) {
+      setStatus("No files", "Add images first.");
+      return;
+    }
+    const mime = formatSel.value;
+    const quality = parseInt(qualitySlider.value, 10);
+    convertBtn.disabled = true;
+    clearBtn.disabled = true;
+    convertedResults.forEach((r) => URL.revokeObjectURL(r.url));
+    convertedResults = [];
+    resultsGrid.innerHTML = "";
+    setStatus("Converting…", `${selectedFiles.length} file(s)`);
+
+    const results = await Promise.allSettled(
+      selectedFiles.map((f) => convertFile(f, mime, quality))
+    );
+
+    let ok = 0;
+    results.forEach((res, i) => {
+      if (res.status === "fulfilled") {
+        ok++;
+        convertedResults.push(res.value);
+        const base = selectedFiles[i].name.replace(/\.[^.]+$/, "");
+        const name = base + extFor(mime);
+        const card = document.createElement("div");
+        card.className = "result-card";
+        card.innerHTML = `
+          <img class="result-thumb" src="${res.value.url}" alt="" loading="lazy" />
+          <div class="result-info">${name}<br/>${res.value.w}×${res.value.h}</div>
+          <div class="result-actions"><button type="button" class="secondary dl">Download</button></div>
+        `;
+        card.querySelector(".dl").addEventListener("click", () => {
+          const a = document.createElement("a");
+          a.href = res.value.url;
+          a.download = name;
+          a.click();
+        });
+        resultsGrid.appendChild(card);
+      }
+    });
+
+    setStatus(`Done`, `${ok}/${selectedFiles.length} converted`);
+    resultsSection.style.display = "";
+    convertBtn.disabled = false;
+    clearBtn.disabled = false;
+  });
+
+  downloadAllBtn.addEventListener("click", () => {
+    const mime = formatSel.value;
+    convertedResults.forEach((r, i) => {
+      const base = r.original.name.replace(/\.[^.]+$/, "");
+      const name = base + extFor(mime);
+      setTimeout(() => {
+        const a = document.createElement("a");
+        a.href = r.url;
+        a.download = name;
+        a.click();
+      }, i * 120);
+    });
+  });
+
+  clearBtn.addEventListener("click", () => {
+    selectedFiles = [];
+    convertedResults.forEach((r) => URL.revokeObjectURL(r.url));
+    convertedResults = [];
+    fileList.innerHTML = "";
+    resultsGrid.innerHTML = "";
+    resultsSection.style.display = "none";
+    setStatus("", "", false);
+  });
+</script>

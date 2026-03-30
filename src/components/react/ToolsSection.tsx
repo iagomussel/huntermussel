@@ -7,7 +7,6 @@ import {
   ChartBar,
   ScrollText,
   Lock,
-  Clock,
   GitCompare,
   Sparkles,
   ShieldCheck,
@@ -17,6 +16,7 @@ import {
   Cpu,
   DollarSign,
   Users,
+  Clock,
 } from "lucide-react";
 import { useLang } from "@/context/LangContext";
 import { toolsT } from "@/data/translations";
@@ -39,6 +39,7 @@ const iconMap: Record<string, React.ElementType> = {
   "online-linters": ShieldCheck,
   "diff-viewer": GitCompare,
 };
+
 
 const container = {
   hidden: {},
