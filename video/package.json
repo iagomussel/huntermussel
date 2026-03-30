@@ -1,0 +1,34 @@
+{
+  "name": "huntermussel-devops-promo",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts BlogPromo out/blog-promo.mp4 --browser-executable=/usr/bin/google-chrome",
+    "still": "remotion still src/index.ts BlogPromo out/blog-promo.png --frame=60 --browser-executable=/usr/bin/google-chrome",
+    "render:blog": "node ./scripts/render-from-blog.mjs"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@remotion/animation-utils": "4.0.441",
+    "@remotion/enable-scss": "4.0.441",
+    "@remotion/fonts": "4.0.441",
+    "@remotion/google-fonts": "4.0.441",
+    "@remotion/lottie": "4.0.441",
+    "@remotion/renderer": "4.0.441",
+    "@remotion/sfx": "4.0.441",
+    "@remotion/studio": "4.0.441",
+    "@remotion/transitions": "^4.0.441",
+    "google-tts-api": "^2.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.365"
+  },
+  "devDependencies": {
+    "@remotion/cli": "^4.0.365",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
+    "typescript": "^5.9.3"
+  }
+}
