@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import { Linkedin, Github, Mail } from "lucide-react";
+import { useLang } from "@/context/LangContext";
+import { aboutT } from "@/data/translations";
 
 const AboutSection = () => {
+  const T = aboutT[useLang()];
+
   return (
     <section id="about" className="relative border-t border-border py-24">
       <div className="container px-6">
@@ -13,27 +17,21 @@ const AboutSection = () => {
             transition={{ duration: 0.6 }}
           >
             <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
-              // about
+              {T.label}
             </span>
             <h2 className="mb-6 font-heading text-3xl font-bold tracking-tight md:text-4xl">
-              Software engineering
+              {T.heading1}
               <br />
-              <span className="gradient-text">built for scale</span>
+              <span className="gradient-text">{T.heading2}</span>
             </h2>
             <p className="mb-6 font-body text-base leading-relaxed text-muted-foreground">
-              HunterMussel is a software house driven by a passion for solving
-              complex problems. We combine robust custom development, cloud
-              operations (Ops), and technical SEO to build highly scalable
-              systems.
+              {T.p1}
             </p>
             <p className="mb-6 font-body text-base leading-relaxed text-muted-foreground">
-              Operating from the Americas (GMT-3), we collaborate in real-time
-              with global teams to deliver high-impact solutions.
+              {T.p2}
             </p>
             <p className="font-body text-base leading-relaxed text-muted-foreground">
-              We don't just build software; we architect scalable infrastructure
-              and integrate AI the right way, ensuring high performance,
-              reliable operations, and strong search engine visibility.
+              {T.p3}
             </p>
           </motion.div>
 
@@ -54,10 +52,7 @@ const AboutSection = () => {
               </div>
             </div>
             <p className="mb-6 font-body text-sm leading-relaxed text-muted-foreground">
-              Software engineer with deep expertise in distributed
-              architectures, cloud operations, and SEO marketing. Passionate
-              about building scalable systems, high-performance teams, and
-              integrating AI seamlessly.
+              {T.bio}
             </p>
             <div className="flex gap-3">
               <a

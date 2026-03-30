@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { useLang } from "@/context/LangContext";
+import { techT } from "@/data/translations";
 
 const techs = [
   "OpenAI", "LangChain", "Python", "TensorFlow", "RAG",
@@ -8,6 +10,8 @@ const techs = [
 ];
 
 const TechSection = () => {
+  const T = techT[useLang()];
+
   return (
     <section id="technologies" className="relative border-t border-border py-24">
       <div className="container px-6">
@@ -22,7 +26,7 @@ const TechSection = () => {
             // stack
           </span>
           <h2 className="font-heading text-3xl font-bold tracking-tight md:text-4xl">
-            Technologies We Master
+            {T.heading}
           </h2>
         </motion.div>
 

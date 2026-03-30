@@ -13,6 +13,7 @@ interface Props {
   robots?: string;
   schema?: Record<string, unknown> | Array<Record<string, unknown>>;
   pageData?: Record<string, unknown>;
+  htmlLang?: string;
 }
 
 const {
@@ -25,13 +26,14 @@ const {
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
   schema,
   pageData,
+  htmlLang = "en",
 } = Astro.props;
 
 const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
 const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
 ---
 
-<html lang="en" class="dark">
+<html lang={htmlLang} class="dark">
   <head>
     {pageData && <script is:inline define:vars={{ pageData }}>window.dataLayer=window.dataLayer||[];window.dataLayer.push(pageData);</script>}
     <!-- Google Tag Manager -->

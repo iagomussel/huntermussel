@@ -56,6 +56,59 @@ export const homeFAQ: FAQItem[] = [
   },
 ];
 
+export const homeFAQ_pt: FAQItem[] = [
+  {
+    question: "O que é a HunterMussel?",
+    answer:
+      "HunterMussel é uma software house especializada em DevOps, automação com IA e engenharia de software escalável. Ajudamos times que precisam de entrega confiável, infraestrutura robusta em nuvem e IA integrada a sistemas reais — não apenas demos.",
+  },
+  {
+    question: "Com quem vocês trabalham?",
+    answer:
+      "Principalmente scale-ups e startups com captação que precisam escalar tecnologia sem montar um grande time interno. Também trabalhamos com equipes de engenharia em empresas consolidadas que buscam modernizar sua infraestrutura e pipelines de entrega.",
+  },
+  {
+    question: "Vocês atendem clientes internacionais?",
+    answer:
+      "Sim. Operamos no GMT-3 e colaboramos em tempo real com times nos EUA, Europa e América Latina. Toda documentação e comunicação de projetos internacionais é entregue em inglês.",
+  },
+  {
+    question: "A HunterMussel é freelancer ou agência?",
+    answer:
+      "Nenhum dos dois no sentido tradicional. Operamos como parceiro técnico — um time pequeno, sênior, que trabalha próximo à sua engenharia. Sem gerentes de conta no meio. Você fala diretamente com quem está construindo.",
+  },
+  {
+    question: "Como começa um novo projeto?",
+    answer:
+      "Começamos com uma sessão diagnóstica gratuita para entender seu contexto técnico, gargalos atuais e objetivos. A partir daí, entregamos uma proposta com escopo, prazo e modelo de engajamento (projeto de escopo fechado ou retainer mensal).",
+  },
+  {
+    question: "Quanto custa contratar a HunterMussel?",
+    answer:
+      "Depende do escopo. Projetos de escopo fechado começam em R$ 8.000. Retainers mensais para DevOps e automação variam de R$ 5.000 a R$ 18.000 dependendo da complexidade e horas dedicadas. Fazemos um diagnóstico gratuito antes de qualquer proposta.",
+  },
+  {
+    question: "Vocês trabalham com projetos fechados ou retainer mensal?",
+    answer:
+      "Os dois. Escopo fechado para entregas definidas como implementação de CI/CD, migração de infraestrutura ou setup de agente de IA. Retainer para times que precisam de suporte contínuo em DevOps, evolução de automações e melhoria contínua de entrega.",
+  },
+  {
+    question: "Com quais tecnologias vocês trabalham?",
+    answer:
+      "AWS, GCP, Docker, Kubernetes, Terraform, GitHub Actions, Python, Go, Node.js, React, OpenAI, LangChain, n8n, Zapier — entre outras. As decisões de stack são guiadas pelo que melhor se adapta ao projeto, não por preferência arbitrária.",
+  },
+  {
+    question: "Vocês trabalham com IA generativa?",
+    answer:
+      "Sim. Construímos agentes autônomos, workflows orquestrados por LLM e integrações de IA em sistemas existentes. Trabalhamos com OpenAI, LangChain, pipelines RAG e práticas de LLMOps para ambientes de produção.",
+  },
+  {
+    question: "Vocês assinam NDA?",
+    answer:
+      "Sim, sempre. Acordos de confidencialidade são padrão antes de qualquer conversa de scoping técnico.",
+  },
+];
+
 export const serviceFAQ: Record<string, FAQItem[]> = {
   "ci-cd-devops": [
     {
