@@ -11,8 +11,9 @@ export type BrandConfig = {
 
 export type Scene = {
   text: string;
-  type: "title" | "bullet" | "image" | "quote" | "call-to-action" | "full-image" | "feature";
+  type: "title" | "bullet" | "image" | "video" | "quote" | "call-to-action" | "full-image" | "feature";
   imageFile?: string;
+  videoFile?: string;
   narration?: string; // Scene-specific narration
   durationFrames?: number; // Calculated or provided duration
   audioFile?: string; // Path to scene audio

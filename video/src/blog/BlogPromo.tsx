@@ -52,7 +52,7 @@ export const BlogPromo: React.FC<BlogPromoProps> = (props) => {
       text: "Find more on HunterMussel",
       type: "call-to-action",
       audioFile: "static/cta.mp3",
-      durationFrames: 90 // 3 seconds
+      durationFrames: 30 // 2 seconds
     });
 
     return baseScenes;
@@ -114,21 +114,16 @@ linear-gradient(180deg, ${bg}, ${bg})`,
       {/* Branded elements (watermark) - MORE VISIBLE NOW */}
       <div style={{
         position: "absolute",
-        top: 80,
-        right: 80,
+        top: 1,
+        right: 1,
         zIndex: 1000,
-        opacity: 0.9,
+        opacity: 1,
         display: "flex",
         alignItems: "center",
         gap: 20,
-        backgroundColor: "#00000044",
-        padding: "12px 24px",
-        borderRadius: 20,
-        backdropFilter: "blur(10px)",
-        border: "1px solid #FFFFFF11"
+        borderRadius: 0,
       }}>
-        <Img src={resolveAsset(props.brand.logoFile) || ""} style={{width: 40, height: 40, filter: "drop-shadow(0 0 10px rgba(255,255,255,0.3))"}} />
-        <span style={{color: props.brand.textColor, fontWeight: 900, fontSize: 24, letterSpacing: 1}}>{props.brand.name}</span>
+        <Img src={resolveAsset(props.brand.logoFile) || ""} style={{width: 500, height: 200, }} />
       </div>
 
       {/* Transition Series for smooth scene switching */}

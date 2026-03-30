@@ -5,9 +5,10 @@ import {
   Img,
   interpolate,
   spring,
+  Video,
 } from "remotion";
-import type {BlogPromoProps, Scene} from "./types";
-import {resolveAsset} from "./utils";
+import type { BlogPromoProps, Scene } from "./types";
+import { resolveAsset } from "./utils";
 
 export const SceneRenderer: React.FC<{
   scene: Scene;
@@ -17,32 +18,55 @@ export const SceneRenderer: React.FC<{
   fps: number;
   url: string;
   defaultImage?: string;
-}> = ({scene, brand, isPortrait, frame, fps, url, defaultImage}) => {
+}> = ({ scene, brand, isPortrait, frame, fps, url, defaultImage }) => {
   const primary = brand.primaryColor;
   const text = brand.textColor;
   const bg = brand.backgroundColor;
 
   // Common animation values
-  const springConfig = {damping: 12, mass: 0.5, stiffness: 100};
-  const entrance = spring({fps, frame, config: springConfig});
-  
+  const springConfig = { damping: 12, mass: 0.5, stiffness: 100 };
+  const entrance = spring({ fps, frame, config: springConfig });
+
   // Floating animation
   const float = Math.sin(frame / 20) * 10;
   const rotate = Math.cos(frame / 25) * 1.5;
 
   const resolvedImage = scene.imageFile || defaultImage || "blog/placeholder.jpg";
+  const resolvedVideo = scene.videoFile ? resolveAsset(scene.videoFile) : undefined;
+
+  const videoBackground = resolvedVideo ? (
+    <AbsoluteFill style={{ opacity: 1 }}>
+      <Video
+        src={resolvedVideo}
+        loop
+        muted
+        style={{
+          width: "115%",
+          height: "115%",
+          objectFit: "cover",
+          position: "absolute",
+          top: "-7.5%",
+          left: "-7.5%",
+        }}
+      />
+      <AbsoluteFill style={{
+        background: "linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.85))",
+      }} />
+    </AbsoluteFill>
+  ) : null;
 
   const bgImage = (
-    <AbsoluteFill style={{opacity: 0.4}}>
-      <Img 
-        src={resolveAsset(resolvedImage) || ""} 
+    <AbsoluteFill style={{ opacity: 0.7 }}>
+      <Img
+        src={resolveAsset(resolvedImage) || ""}
         style={{
-          width: "100%", 
-          height: "100%", 
+          width: "115%",
+          height: "115%",
           objectFit: "cover",
-          filter: "blur(4px) brightness(0.5)",
-          transform: `scale(${interpolate(frame, [0, 300], [1.1, 1.3])})`
-        }} 
+          position: "absolute",
+          top: "-7.5%",
+          left: "-7.5%",
+        }}
       />
     </AbsoluteFill>
   );
@@ -52,9 +76,9 @@ export const SceneRenderer: React.FC<{
       {scene.audioFile ? <Audio src={resolveAsset(scene.audioFile) || ""} /> : null}
 
       {scene.type === "title" && (
-        <AbsoluteFill style={{justifyContent: "center", alignItems: "center", padding: 64, opacity: interpolate(frame, [0, 10], [0, 1], {extrapolateRight: "clamp"})}}>
-          {bgImage}
-          <div style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 32, transform: `scale(${interpolate(entrance, [0, 1], [0.8, 1])})`, zIndex: 10}}>
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 64, opacity: interpolate(frame, [0, 10], [0, 1], { extrapolateRight: "clamp" }) }}>
+           {videoBackground || bgImage}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 32, transform: `scale(${interpolate(entrance, [0, 1], [0.8, 1])})`, zIndex: 10 }}>
             <div style={{
               padding: "12px 24px",
               backgroundColor: primary + "33",
@@ -71,13 +95,13 @@ export const SceneRenderer: React.FC<{
               Trending
             </div>
             <h1 style={{
-              margin: 0, 
-              color: text, 
-              fontSize: isPortrait ? 80 : 110, 
-              fontWeight: 950, 
-              lineHeight: 0.95, 
+              margin: 0,
+              color: text,
+              fontSize: isPortrait ? 80 : 110,
+              fontWeight: 950,
+              lineHeight: 0.95,
               textWrap: "balance",
-              textShadow: "0 20px 40px rgba(0,0,0,0.5)"
+              textShadow: "0 20px 40px rgba(0,0,0,0.2)"
             }}>
               {scene.text}
             </h1>
@@ -86,8 +110,8 @@ export const SceneRenderer: React.FC<{
       )}
 
       {scene.type === "bullet" && (
-        <AbsoluteFill style={{justifyContent: "center", alignItems: "center", padding: 80}}>
-          {bgImage}
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 80 }}>
+           {videoBackground || bgImage}
           <div style={{
             display: "flex",
             alignItems: "center",
@@ -102,13 +126,13 @@ export const SceneRenderer: React.FC<{
             zIndex: 10
           }}>
             <div style={{
-              width: 32, 
-              height: 32, 
-              borderRadius: 10, 
+              width: 32,
+              height: 32,
+              borderRadius: 10,
               background: `linear-gradient(45deg, ${primary}, ${brand.secondaryColor})`,
               boxShadow: `0 0 30px ${primary}66`
             }} />
-            <div style={{color: text, fontSize: isPortrait ? 52 : 64, fontWeight: 800, lineHeight: 1.1}}>
+            <div style={{ color: text, fontSize: isPortrait ? 52 : 64, fontWeight: 800, lineHeight: 1.1 }}>
               {scene.text}
             </div>
           </div>
@@ -116,7 +140,7 @@ export const SceneRenderer: React.FC<{
       )}
 
       {(scene.type === "image" || scene.type === "full-image") && (
-        <AbsoluteFill style={{justifyContent: "center", alignItems: "center", padding: scene.type === "full-image" ? 0 : 80}}>
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: scene.type === "full-image" ? 0 : 80 }}>
           <div style={{
             display: "flex",
             flexDirection: isPortrait ? "column" : "row",
@@ -136,8 +160,8 @@ export const SceneRenderer: React.FC<{
               transform: scene.type === "full-image" ? "none" : `translateY(${float}px) rotate(${rotate}deg)`
             }}>
               <Img src={resolveAsset(resolvedImage) || ""} style={{
-                width: "100%", 
-                height: "100%", 
+                width: "100%",
+                height: "100%",
                 objectFit: "cover",
                 transform: `scale(${interpolate(frame, [0, 300], [1, 1.2])})`
               }} />
@@ -148,13 +172,13 @@ export const SceneRenderer: React.FC<{
                   padding: 100
                 }}>
                   <div style={{
-                    color: text, 
-                    fontSize: isPortrait ? 64 : 86, 
-                    fontWeight: 950, 
-                    lineHeight: 1, 
-                    textWrap: "balance", 
+                    color: text,
+                    fontSize: isPortrait ? 64 : 86,
+                    fontWeight: 950,
+                    lineHeight: 1,
+                    textWrap: "balance",
                     maxWidth: 1300,
-                    transform: `translateY(${interpolate(entrance, [0.2, 1], [40, 0], {extrapolateLeft: "clamp"})}px)`
+                    transform: `translateY(${interpolate(entrance, [0.2, 1], [40, 0], { extrapolateLeft: "clamp" })}px)`
                   }}>
                     {scene.text}
                   </div>
@@ -163,13 +187,13 @@ export const SceneRenderer: React.FC<{
             </div>
             {scene.type !== "full-image" && (
               <div style={{
-                flex: 0.8, 
-                color: text, 
-                fontSize: isPortrait ? 42 : 56, 
-                fontWeight: 900, 
-                lineHeight: 1, 
+                flex: 0.8,
+                color: text,
+                fontSize: isPortrait ? 42 : 56,
+                fontWeight: 900,
+                lineHeight: 1,
                 textWrap: "balance",
-                transform: `translateX(${interpolate(entrance, [0.2, 1], [40, 0], {extrapolateLeft: "clamp"})}px)`
+                transform: `translateX(${interpolate(entrance, [0.2, 1], [40, 0], { extrapolateLeft: "clamp" })}px)`
               }}>
                 {scene.text}
               </div>
@@ -178,9 +202,33 @@ export const SceneRenderer: React.FC<{
         </AbsoluteFill>
       )}
 
+      {scene.type === "video" && (
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 80 }}>
+          {videoBackground || bgImage}
+          <div style={{
+            position: "relative",
+            zIndex: 10,
+            maxWidth: 1100,
+            padding: "60px 80px",
+            borderRadius: 40,
+            backgroundColor: "rgba(0,0,0,0.55)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            boxShadow: "0 40px 80px rgba(0,0,0,0.45)",
+            color: text,
+            fontSize: isPortrait ? 52 : 64,
+            fontWeight: 900,
+            lineHeight: 1.1,
+            textAlign: "center",
+            transform: `translateY(${interpolate(entrance, [0, 1], [40, 0])}px)`
+          }}>
+            {scene.text}
+          </div>
+        </AbsoluteFill>
+      )}
+
       {scene.type === "feature" && (
-        <AbsoluteFill style={{justifyContent: "center", alignItems: "center", padding: 80}}>
-          {bgImage}
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 80 }}>
+           {videoBackground || bgImage}
           <div style={{
             display: "flex",
             flexDirection: "column",
@@ -201,14 +249,14 @@ export const SceneRenderer: React.FC<{
               boxShadow: `0 30px 60px ${primary}44`,
               transform: `rotate(${rotate * 5}deg)`
             }}>
-               <div style={{width: 80, height: 80, border: `12px solid ${bg}`, borderRadius: 20}} />
+              <div style={{ width: 80, height: 80, border: `12px solid ${bg}`, borderRadius: 20 }} />
             </div>
             <h2 style={{
-              margin: 0, 
-              color: text, 
-              fontSize: isPortrait ? 64 : 86, 
-              fontWeight: 950, 
-              lineHeight: 0.95, 
+              margin: 0,
+              color: text,
+              fontSize: isPortrait ? 64 : 86,
+              fontWeight: 950,
+              lineHeight: 0.95,
               textWrap: "balance",
               textShadow: "0 20px 40px rgba(0,0,0,0.4)"
             }}>
@@ -219,26 +267,26 @@ export const SceneRenderer: React.FC<{
       )}
 
       {scene.type === "quote" && (
-        <AbsoluteFill style={{justifyContent: "center", alignItems: "center", padding: 120}}>
-          {bgImage}
-          <div style={{textAlign: "center", zIndex: 10}}>
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 120 }}>
+           {videoBackground || bgImage}
+          <div style={{ textAlign: "center", zIndex: 10 }}>
             <div style={{
-              fontSize: 180, 
-              color: primary, 
-              lineHeight: 0.1, 
-              marginBottom: 60, 
+              fontSize: 180,
+              color: primary,
+              lineHeight: 0.1,
+              marginBottom: 60,
               opacity: 0.4,
               fontFamily: "serif"
             }}>"</div>
             <p style={{
-              margin: 0, 
-              color: text, 
-              fontSize: isPortrait ? 48 : 72, 
-              fontWeight: 800, 
-              fontStyle: "italic", 
-              lineHeight: 1.1, 
+              margin: 0,
+              color: text,
+              fontSize: isPortrait ? 48 : 72,
+              fontWeight: 800,
+              fontStyle: "italic",
+              lineHeight: 1.1,
               textWrap: "balance",
-              transform: `translateY(${float/2}px)`
+              transform: `translateY(${float / 2}px)`
             }}>
               {scene.text}
             </p>
@@ -247,13 +295,13 @@ export const SceneRenderer: React.FC<{
       )}
 
       {scene.type === "call-to-action" && (
-        <AbsoluteFill style={{justifyContent: "center", alignItems: "center", padding: 64}}>
-          {bgImage}
-          <div style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 60, zIndex: 10}}>
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", padding: 64 }}>
+           {videoBackground || bgImage}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 60, zIndex: 10 }}>
             <h2 style={{
-              margin: 0, 
-              color: text, 
-              fontSize: isPortrait ? 64 : 86, 
+              margin: 0,
+              color: text,
+              fontSize: isPortrait ? 64 : 86,
               fontWeight: 950,
               textShadow: "0 20px 40px rgba(0,0,0,0.2)"
             }}>{scene.text}</h2>

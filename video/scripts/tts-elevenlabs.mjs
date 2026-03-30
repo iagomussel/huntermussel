@@ -111,35 +111,30 @@ You are a video producer. Based on the blog post below, generate a full storyboa
 
 IMPORTANT: 
 1. Generate a COHERENT full script first.
-2. Then split that script into 5-8 logical scenes.
+2. Then split that script into 5 logical scenes 6 seconds each.
 3. Each scene must have its own 'narration' fragment that, when joined, forms the original full script perfectly.
-
-Rules for narration:
-${writingRules}
 
 Blog Title: ${title}
 Blog Subtitle: ${subtitle}
-Blog URL: ${url}
 
 Content (Sanitized):
 ${content.slice(0, 4000)}
 
 Output format (JSON ONLY):
 {
-  "full_narration": "The complete, coherent 25-second script.",
+  "full_narration": "The complete, coherent 24-30 second script.",
   "optimized_title": "A punchy version of the title",
   "optimized_subtitle": "A punchy version of the subtitle",
   "scenes": [
     {
       "text": "The text to show on screen for this scene.",
       "narration": "The exact fragment of the 'full_narration' for this scene.",
-      "type": "title | bullet | image | full-image | quote | feature",
-      "image_search": "A short, descriptive English keyword for a background image."
+      "type": "video | title | bullet | image | full-image | quote | feature",
+      "search_asset": "A short, descriptive English keyword for a background video/image."
     }
   ]
 }
 
-- Prefer visual scenes ('image', 'full-image', 'feature').
 - Generate only the CONTENT of the video. The closing CTA is handled separately.
 - Do NOT include a "Find more" or "HunterMussel" scene.
 `;
@@ -147,6 +142,8 @@ Output format (JSON ONLY):
   try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
+    console.log("LLM response:", response.text());
+
     return JSON.parse(response.text().trim());
   } catch (err) {
     process.stderr.write(`LLM generation failed: ${err.message}.\n`);
