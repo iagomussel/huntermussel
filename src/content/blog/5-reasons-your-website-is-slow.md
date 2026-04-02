@@ -19,7 +19,7 @@ keywords:
   - slow website fix
   - web performance 2026
   - pagespeed insights
-image: "/images/blog/5-reasons-website-slow.webp"
+image: "https://assets.huntermussel.com/images/blog/5-reasons-website-slow.webp"
 subtitle: "Performance is not a luxury — it's a conversion, SEO, and retention problem"
 status: "published"
 ---

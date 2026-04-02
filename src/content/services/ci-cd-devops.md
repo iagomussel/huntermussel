@@ -16,7 +16,7 @@ keywords:
   - infrastructure as code pipeline
   - continuous deployment system
   - high performance delivery pipeline
-image: "/images/blog/devops-cicd.webp"
+image: "https://assets.huntermussel.com/images/blog/devops-cicd.webp"
 subtitle: "Designing software delivery systems that scale speed, reliability, and engineering productivity"
 ---
 

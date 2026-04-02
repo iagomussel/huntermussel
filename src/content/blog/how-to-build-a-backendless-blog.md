@@ -13,7 +13,7 @@ keywords:
   - cloudflare pages blog
   - static blog architecture
   - vite blog tutorial
-image: "/images/blog/1770685010_image_3.webp"
+image: "https://assets.huntermussel.com/images/blog/1770685010_image_3.webp"
 ---
 # Introduction
 ------------
@@ -154,7 +154,7 @@ Create a markdown file in the `posts` folder with frontmatter:
 ---
 title: "Fast Code, Weak Engineers"
 date: "2026–01–09"
-image: "/images/blog/1770673296_image_2.webp"
+image: "https://assets.huntermussel.com/images/blog/1770673296_image_2.webp"
 subtitle: "The Risk of Becoming an AI-Dependent Developer"
 ---
 your awesome article talking about something great …

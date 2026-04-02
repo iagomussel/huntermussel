@@ -18,7 +18,7 @@ keywords:
   - llm agents
 subtitle: "From Chatbots to Autonomous Workflows: Engineering Trust in Agentic Loops."
 status: "published"
-image: "/images/blog/agentic-ai-why-market-is-moving-there.webp"
+image: "https://assets.huntermussel.com/images/blog/agentic-ai-why-market-is-moving-there.webp"
 ---
 
 For the past three years, AI's main job was to respond.

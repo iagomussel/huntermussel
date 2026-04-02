@@ -20,7 +20,7 @@ keywords:
   - n8n mcp
   - mcp servers
   - claude code productivity
-image: "/images/blog/claude-tips-github-repos.webp"
+image: "https://assets.huntermussel.com/images/blog/claude-tips-github-repos.webp"
 subtitle: "The community built what Anthropic hasn't shipped yet"
 status: "published"
 ---

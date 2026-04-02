@@ -16,7 +16,7 @@ keywords:
   - b2b warehouse software
   - wholesale distribution system
   - stock control automation
-image: "/images/cases/inventory-order-management.webp"
+image: "https://assets.huntermussel.com/images/cases/inventory-order-management.webp"
 subtitle: "Replacing spreadsheets and a legacy desktop app with a real-time inventory and order automation platform"
 ---
 

@@ -20,7 +20,7 @@ keywords:
   - developer productivity
   - ai dependency in programming
   - coding quality
-image: "/images/blog/1770693788_image_1.webp"
+image: "https://assets.huntermussel.com/images/blog/1770693788_image_1.webp"
 subtitle: "The Risk of Becoming an AI-Dependent Developer"
 status: "published"
 ---

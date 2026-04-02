@@ -1,11 +1,13 @@
 ---
 import { WordEditor } from "@/components/playground/examples/word-example/word-editor";
+import { ASSETS_BASE_URL } from "@/lib/assets";
 import "@/styles/word-example.css";
 
 const title = "Rich Text & Markdown Editor | HunterMussel Tools";
 const description = "A fully featured rich text editor with Markdown support — write, format, and export documents directly in your browser.";
 const canonicalUrl = "https://huntermussel.com/tools/markdown-editor/";
 const keywords = "markdown editor online, rich text editor browser, markdown live preview, online markdown tool, free markdown editor, wysiwyg markdown editor, document editor online, markdown formatter";
+const defaultOgImage = `${ASSETS_BASE_URL}/images/blog/rich-content-google-search_16x9_high.webp`;
 ---
 
 <!doctype html>
@@ -30,14 +32,14 @@ const keywords = "markdown editor online, rich text editor browser, markdown liv
     <meta property="og:url" content={canonicalUrl} />
     <meta
       property="og:image"
-      content="https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp"
+      content={defaultOgImage}
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta
       name="twitter:image"
-      content="https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp"
+      content={defaultOgImage}
     />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" type="application/xml" href="https://huntermussel.com/sitemap-index.xml" />

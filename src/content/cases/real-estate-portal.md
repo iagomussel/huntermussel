@@ -16,7 +16,7 @@ keywords:
   - geospatial property search
   - laravel real estate app
   - mls property feed integration
-image: "/images/cases/real-estate-portal.webp"
+image: "https://assets.huntermussel.com/images/cases/real-estate-portal.webp"
 subtitle: "A purpose-built property search platform with PostGIS geospatial search, MLS feed automation, and SEO-first architecture"
 ---
 

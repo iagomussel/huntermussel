@@ -19,7 +19,7 @@ keywords:
   - pm2 cluster mode
   - lean devops
 categories: "DevOps"
-image: "/images/blog/pm2-cluster-diagram.webp"
+image: "https://assets.huntermussel.com/images/blog/pm2-cluster-diagram.webp"
 subtitle: "Professional production control without orchestration overhead"
 status: "published"
 ---
@@ -56,7 +56,7 @@ pm2 start app.js -i max
 
 That is it.
 
-<img src="/images/blog/pm2-cluster-diagram_16x9_med.webp" srcSet="/images/blog/pm2-cluster-diagram_16x9_thumb.webp 320w, /images/blog/pm2-cluster-diagram_16x9_low.webp 640w, /images/blog/pm2-cluster-diagram_16x9_med.webp 1280w, /images/blog/pm2-cluster-diagram_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="PM2 cluster mode compared to single-core pods" className="w-full h-auto object-contain md:aspect-video md:object-cover" loading="lazy" />
+<img src="https://assets.huntermussel.com/images/blog/pm2-cluster-diagram_16x9_med.webp" srcSet="https://assets.huntermussel.com/images/blog/pm2-cluster-diagram_16x9_thumb.webp 320w, https://assets.huntermussel.com/images/blog/pm2-cluster-diagram_16x9_low.webp 640w, https://assets.huntermussel.com/images/blog/pm2-cluster-diagram_16x9_med.webp 1280w, https://assets.huntermussel.com/images/blog/pm2-cluster-diagram_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="PM2 cluster mode compared to single-core pods" className="w-full h-auto object-contain md:aspect-video md:object-cover" loading="lazy" />
 
 PM2 handles:
 - Built-in load balancing

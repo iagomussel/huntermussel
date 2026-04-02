@@ -19,7 +19,7 @@ keywords:
   - 24/7 customer support
   - chatbot vs live chat
   - website chatbot 2026
-image: "/images/blog/why-do-you-need-a-chatbot-on-your-website.webp"
+image: "https://assets.huntermussel.com/images/blog/why-do-you-need-a-chatbot-on-your-website.webp"
 subtitle: "Instant answers, lower costs, and better conversions — all without clocking out"
 status: "published"
 ---

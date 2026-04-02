@@ -3,6 +3,7 @@ import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
 import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
 import AdUnit from "@/components/AdUnit.astro";
+import { ASSETS_BASE_URL } from "@/lib/assets";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
 
@@ -30,7 +31,7 @@ const {
   title,
   description,
   canonicalPath = "/tools/",
-  ogImage = "https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp",
+  ogImage = `${ASSETS_BASE_URL}/images/blog/rich-content-google-search_16x9_high.webp`,
   keywords,
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
   schemaType = canonicalPath === "/tools/" ? "WebPage" : "WebApplication",

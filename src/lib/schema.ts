@@ -1,8 +1,10 @@
+import { ASSETS_BASE_URL } from "./assets";
+
 const SITE_URL = "https://huntermussel.com";
 const ORGANIZATION_NAME = "HunterMussel";
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
-const LOGO_URL = `${SITE_URL}/img/logo.svg`;
+const LOGO_URL = `${ASSETS_BASE_URL}/img/logo.svg`;
 
 type Thing = Record<string, unknown>;
 
@@ -38,6 +40,13 @@ interface ArticleSchemaInput {
 
 export function absoluteUrl(path: string) {
   return new URL(path, SITE_URL).toString();
+}
+
+/** JSON-LD image URL: CDN paths and absolute URLs as-is; other paths on main site. */
+function schemaArticleImage(src: string): string {
+  if (src.startsWith("http://") || src.startsWith("https://")) return src;
+  if (src.startsWith("/images/")) return `${ASSETS_BASE_URL}${src}`;
+  return absoluteUrl(src);
 }
 
 export function organizationSchema(overrides: OrganizationOverrides = {}) {
@@ -87,7 +96,7 @@ export function articleSchema(input: ArticleSchemaInput) {
     "@type": input.type ?? "BlogPosting",
     headline: input.headline,
     description: input.description,
-    image: input.image ? [absoluteUrl(input.image)] : undefined,
+    image: input.image ? [schemaArticleImage(input.image)] : undefined,
     datePublished: input.datePublished,
     dateModified: input.dateModified ?? input.datePublished,
     author: input.author

@@ -1,4 +1,5 @@
 import React from "react";
+import { ASSETS_BASE_URL } from "@/lib/assets";
 
 interface ResponsiveImageProps {
   src: string;
@@ -6,13 +7,15 @@ interface ResponsiveImageProps {
   className?: string;
 }
 
+const blogImagePrefixes = [`/images/blog/`, `${ASSETS_BASE_URL}/images/blog/`];
+
 const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
   src,
   alt,
   className,
 }) => {
   const isBlogImage =
-    src.startsWith("/images/blog/") &&
+    blogImagePrefixes.some((prefix) => src.startsWith(prefix)) &&
     !src.includes("_16x9_") &&
     !src.includes("_1x1_") &&
     !src.includes("_9x16_");

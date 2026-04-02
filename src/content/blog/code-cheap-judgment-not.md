@@ -19,7 +19,7 @@ keywords:
   - human led technical analysis
 subtitle: "Why human-led technical analysis matters more than ever"
 status: "published"
-image: "/images/blog/code-cheap-judgment-not.webp"
+image: "https://assets.huntermussel.com/images/blog/code-cheap-judgment-not.webp"
 
 ---
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { assetUrl } from "@/lib/assets";
 
 const navItems = [
   { label: "Services", href: "/services" },
@@ -27,7 +28,7 @@ const Navbar = () => {
         <a href="/" className="font-heading text-xl font-bold tracking-tight">
           <span className="inline-flex items-center gap-2">
             <img
-              src="/img/logo.svg"
+              src={assetUrl("/img/logo.svg")}
               alt="HunterMussel Target Logo"
               className="h-8 w-8"
             />

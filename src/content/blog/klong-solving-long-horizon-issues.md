@@ -16,7 +16,7 @@ keywords:
   - trajectory splitting sft
   - progressive reinforcement learning
   - paperbench benchmark
-image: "/images/blog/klong-trajectory-splitting.webp"
+image: "https://assets.huntermussel.com/images/blog/klong-trajectory-splitting.webp"
 subtitle: "A compact analysis of KLong's training strategy and benchmark gains"
 status: "published"
 ---
@@ -44,7 +44,7 @@ These tasks demand planning continuity, memory of prior decisions, and stable al
 
 Standard SFT on full, very long trajectories can exceed context limits. KLong splits expert trajectories into overlapping sub-trajectories, preserving key early context while keeping training windows tractable.
 
-<img src="/images/blog/klong-trajectory-splitting_16x9_med.webp" srcSet="/images/blog/klong-trajectory-splitting_16x9_thumb.webp 320w, /images/blog/klong-trajectory-splitting_16x9_low.webp 640w, /images/blog/klong-trajectory-splitting_16x9_med.webp 1280w, /images/blog/klong-trajectory-splitting_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="KLong trajectory-splitting setup for long-horizon supervised fine-tuning" className="w-full h-auto object-contain md:aspect-video md:object-cover" loading="lazy" />
+<img src="https://assets.huntermussel.com/images/blog/klong-trajectory-splitting_16x9_med.webp" srcSet="https://assets.huntermussel.com/images/blog/klong-trajectory-splitting_16x9_thumb.webp 320w, https://assets.huntermussel.com/images/blog/klong-trajectory-splitting_16x9_low.webp 640w, https://assets.huntermussel.com/images/blog/klong-trajectory-splitting_16x9_med.webp 1280w, https://assets.huntermussel.com/images/blog/klong-trajectory-splitting_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="KLong trajectory-splitting setup for long-horizon supervised fine-tuning" className="w-full h-auto object-contain md:aspect-video md:object-cover" loading="lazy" />
 
 ### 2. Progressive Reinforcement Learning
 
@@ -54,7 +54,7 @@ Long tasks have delayed rewards. KLong addresses this with a progressive curricu
 
 The paper reports that KLong (106B) outperforms Kimi K2 Thinking (1T) by +11.28% on PaperBench, with transfer gains to SWE-bench Verified and MLE-bench.
 
-<img src="/images/blog/klong-paperbench-results_16x9_med.webp" srcSet="/images/blog/klong-paperbench-results_16x9_thumb.webp 320w, /images/blog/klong-paperbench-results_16x9_low.webp 640w, /images/blog/klong-paperbench-results_16x9_med.webp 1280w, /images/blog/klong-paperbench-results_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="KLong benchmark results across PaperBench and engineering evaluations" className="w-full h-auto object-contain md:aspect-video md:object-cover" loading="lazy" />
+<img src="https://assets.huntermussel.com/images/blog/klong-paperbench-results_16x9_med.webp" srcSet="https://assets.huntermussel.com/images/blog/klong-paperbench-results_16x9_thumb.webp 320w, https://assets.huntermussel.com/images/blog/klong-paperbench-results_16x9_low.webp 640w, https://assets.huntermussel.com/images/blog/klong-paperbench-results_16x9_med.webp 1280w, https://assets.huntermussel.com/images/blog/klong-paperbench-results_16x9_high.webp 1920w" sizes="(max-width: 1280px) 100vw, 1280px" alt="KLong benchmark results across PaperBench and engineering evaluations" className="w-full h-auto object-contain md:aspect-video md:object-cover" loading="lazy" />
 
 ## Takeaway
 

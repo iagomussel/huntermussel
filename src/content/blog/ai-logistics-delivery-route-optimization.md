@@ -16,7 +16,7 @@ keywords:
   - predictive delivery systems
   - demand forecasting ai
   - fleet management software
-image: "/images/blog/ai-logistics-delivery-route-optimization.webp"
+image: "https://assets.huntermussel.com/images/blog/ai-logistics-delivery-route-optimization.webp"
 subtitle: "Transforming manual logistics into a data-driven competitive advantage"
 status: "published"
 ---

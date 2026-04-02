@@ -43,5 +43,5 @@ Edit `video/brand.json`.
 
 ## Notes
 
-- Blog images referenced in frontmatter (e.g. `/images/blog/foo.webp`) are copied into `video/public/blog/` automatically during render.
+- Blog cover URLs in site frontmatter now point at `https://assets.huntermussel.com/images/blog/...`. For Remotion, keep local files under `video/public/blog/` (e.g. `blog/foo.webp`) or adjust your ingest script if it used to read relative `/images/` paths.
 - If you want a different layout / animation style, edit `video/src/blog/BlogPromo.tsx`.

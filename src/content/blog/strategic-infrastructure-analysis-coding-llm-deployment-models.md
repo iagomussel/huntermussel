@@ -18,7 +18,7 @@ keywords:
   - hosted api vs local llm
   - inference server architecture
   - engineering leadership ai
-image: "/images/blog/strategic-infrastructure-analysis-coding-llm-deployment-models.webp"
+image: "https://assets.huntermussel.com/images/blog/strategic-infrastructure-analysis-coding-llm-deployment-models.webp"
 ---
 
 *A practical, conversational deep dive for engineering leaders and architects*

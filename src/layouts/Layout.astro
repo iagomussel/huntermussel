@@ -2,6 +2,7 @@
 import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
 import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
+import { ASSETS_BASE_URL } from "@/lib/assets";
 import "@/styles/globals.css";
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
 const {
   title,
   description = "Automate and optimize your company's process management with Artificial Intelligence, intelligent automation, and DevOps.",
-  image = "https://huntermussel.com/images/blog/rich-content-google-search_16x9_high.webp",
+  image = `${ASSETS_BASE_URL}/images/blog/rich-content-google-search_16x9_high.webp`,
   canonicalUrl = Astro.url.href,
   type = "website",
   keywords,

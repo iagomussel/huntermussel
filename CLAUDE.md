@@ -8,8 +8,9 @@ Astro + React blog and tools site deployed to Cloudflare Pages.
 - `npm run build` — production build
 - `npm run test` — run tests
 - `npm run deploy` — build and deploy to Cloudflare Pages
+- `npm run upload:assets` — sync `public/images/` and `public/img/` to R2 (uses `.env` `CLOUDFLARE_R2_*`)
 
-Blog posts live in `src/content/blog/` as `.md` files. Cover images go in `public/images/blog/`.
+Blog posts live in `src/content/blog/` as `.md` files. Cover and inline images use your R2 public URL under `/images/...` (see `CLOUDFLARE_R2_PUBLIC_URL` or `PUBLIC_ASSETS_URL` in `.env`).
 
 ## Writing articles
 

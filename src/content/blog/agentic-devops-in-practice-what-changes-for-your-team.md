@@ -20,7 +20,7 @@ keywords:
   - agentic devops failures
 subtitle: "Where agents actually fit, where they still break badly, and what you need to do this week."
 status: "published"
-image: "/images/blog/agentic-devops-in-practice-what-changes-for-your-team.webp"
+image: "https://assets.huntermussel.com/images/blog/agentic-devops-in-practice-what-changes-for-your-team.webp"
 ---
 
 Every vendor is selling Agentic DevOps right now. Every article promises that agents will take over your pipelines, resolve incidents autonomously, and run deployments while you sleep.

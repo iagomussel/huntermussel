@@ -19,7 +19,7 @@ keywords:
   - emmet html compression
   - dbml to sql
   - laravel blueprint
-image: "/images/blog/iron.webp"
+image: "https://assets.huntermussel.com/images/blog/iron.webp"
 status: "published"
 ---
 You know the pattern:

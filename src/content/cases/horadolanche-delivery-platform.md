@@ -18,7 +18,7 @@ keywords:
   - restaurant ordering software
   - multi-tenant delivery platform
   - food delivery app development
-image: "/images/cases/horadolanche-dashboard.png"
+image: "https://assets.huntermussel.com/images/cases/horadolanche-dashboard.png"
 subtitle: "A multi-tenant SaaS ordering platform built for restaurants that don't want to pay 28% to iFood or Rappi"
 ---
 
@@ -80,7 +80,7 @@ Instead of building another aggregator, we built the infrastructure restaurants 
 
 Each restaurant on Horadolanche gets their own storefront — their own URL path, their own colors, their own menu structure. Customers order directly from the restaurant's branded page, not from a marketplace listing.
 
-![Storefront view on mobile — AçaíShow menu](/images/cases/horadolanche-storefront.png)
+![Storefront view on mobile — AçaíShow menu](https://assets.huntermussel.com/images/cases/horadolanche-storefront.png)
 
 Multi-tenancy is handled via path params in Next.js App Router: `horadolanche.com/[tenant]`. Each slug maps to a specific restaurant's configuration at the routing layer, and all pages are server-side rendered for SEO — so a restaurant's storefront can rank in Google for local searches like "açaí delivery [neighborhood]". No subdomain DNS setup required; onboarding a new restaurant means adding a record to the database, not touching infrastructure.
 
@@ -88,7 +88,7 @@ Multi-tenancy is handled via path params in Next.js App Router: `horadolanche.co
 
 When an order comes in, the kitchen sees it immediately. The platform pushes live updates via WebSockets — new orders appear on the kitchen dashboard without polling, and order status changes (confirmed, preparing, out for delivery) propagate back to the customer in real time.
 
-![Orders dashboard — real-time kitchen view](/images/cases/horadolanche-dashboard.png)
+![Orders dashboard — real-time kitchen view](https://assets.huntermussel.com/images/cases/horadolanche-dashboard.png)
 
 Restaurant owners get a separate management interface to control menu items, categories, availability, and operating hours — no developer needed.
 

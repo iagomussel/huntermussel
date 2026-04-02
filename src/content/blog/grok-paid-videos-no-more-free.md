@@ -19,7 +19,7 @@ keywords:
   - grok limits 2026
 subtitle: "The free ride is over. xAI's silent move to paywalled AI is louder than any announcement."
 status: "published"
-image: "/images/blog/grok-paid-videos-no-more-free.webp"
+image: "https://assets.huntermussel.com/images/blog/grok-paid-videos-no-more-free.webp"
 ---
 
 If you opened Grok today and hit a "limit reached" warning — or got slapped with a subscription prompt before you could generate a single image — you are not alone, and it is not a bug.

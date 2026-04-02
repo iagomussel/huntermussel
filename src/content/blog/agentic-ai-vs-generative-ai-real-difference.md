@@ -18,7 +18,7 @@ keywords:
   - generative ai limitations
 subtitle: "One responds. The other acts. The difference matters when you're building."
 status: "published"
-image: "/images/blog/agentic-ai-vs-generative-ai-real-difference.webp"
+image: "https://assets.huntermussel.com/images/blog/agentic-ai-vs-generative-ai-real-difference.webp"
 ---
 
 Both terms appear in the same conversations, the same vendor decks, and the same budget requests. Most teams use them interchangeably.

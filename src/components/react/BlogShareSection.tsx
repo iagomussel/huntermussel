@@ -1,5 +1,6 @@
 import React from "react";
 import { Copy, Mail } from "lucide-react";
+import { assetUrl } from "@/lib/assets";
 
 type Props = {
   title: string;
@@ -34,32 +35,32 @@ export default function BlogShareSection({ title, url }: Props) {
     {
       label: "LinkedIn",
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-      icon: <BrandIcon src="/img/logos/social/linkedin.svg" alt="LinkedIn" />,
+      icon: <BrandIcon src={assetUrl("/img/logos/social/linkedin.svg")} alt="LinkedIn" />,
     },
     {
       label: "Twitter",
       href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
-      icon: <BrandIcon src="/img/logos/social/twitter.svg" alt="Twitter" />,
+      icon: <BrandIcon src={assetUrl("/img/logos/social/twitter.svg")} alt="Twitter" />,
     },
     {
       label: "Facebook",
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-      icon: <BrandIcon src="/img/logos/social/facebook.svg" alt="Facebook" />,
+      icon: <BrandIcon src={assetUrl("/img/logos/social/facebook.svg")} alt="Facebook" />,
     },
     {
       label: "WhatsApp",
       href: `https://api.whatsapp.com/send?text=${shareText}`,
-      icon: <BrandIcon src="/img/logos/social/whatsapp.png" alt="WhatsApp" />,
+      icon: <BrandIcon src={assetUrl("/img/logos/social/whatsapp.png")} alt="WhatsApp" />,
     },
     {
       label: "Telegram",
       href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
-      icon: <BrandIcon src="/img/logos/social/telegram.svg" alt="Telegram" />,
+      icon: <BrandIcon src={assetUrl("/img/logos/social/telegram.svg")} alt="Telegram" />,
     },
     {
       label: "Reddit",
       href: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
-      icon: <BrandIcon src="/img/logos/social/reddit.svg" alt="Reddit" />,
+      icon: <BrandIcon src={assetUrl("/img/logos/social/reddit.svg")} alt="Reddit" />,
     },
     {
       label: "Email",

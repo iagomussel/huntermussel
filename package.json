@@ -10,7 +10,10 @@
     "deploy": "npm run build && npx wrangler pages deploy dist",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "verify:assets": "node scripts/verify-assets.mjs",
+    "upload:assets": "node scripts/upload-assets-to-r2.mjs",
+    "upload:assets:dry": "node scripts/upload-assets-to-r2.mjs --dry-run"
   },
   "overrides": {
     "devalue": "5.6.4",
@@ -101,6 +104,7 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1022.0",
     "@vitest/coverage-v8": "^4.1.0",
     "vitest": "^4.1.0"
   }

@@ -6,6 +6,8 @@ import { ArrowLeft } from 'lucide-react';
 import authors from '@/data/authors.json';
 import FAQSection from '@/components/react/FAQSection';
 import { caseFAQ } from '@/data/faq';
+import { assetUrl } from '@/lib/assets';
+import { LOGO_URL } from '@/lib/schema';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -36,7 +38,7 @@ const caseSchema = [
     "@type": "Article",
     headline: entry.data.title,
     description: entry.data.description,
-    image: entry.data.image ? `https://huntermussel.com${entry.data.image}` : undefined,
+    image: entry.data.image ? assetUrl(entry.data.image) : undefined,
     datePublished: entry.data.date?.toISOString(),
     dateModified: entry.data.date?.toISOString(),
     author: author
@@ -51,7 +53,7 @@ const caseSchema = [
       name: "HunterMussel",
       logo: {
         "@type": "ImageObject",
-        url: "https://huntermussel.com/img/logo.svg",
+        url: LOGO_URL,
       },
     },
     mainEntityOfPage: url,
