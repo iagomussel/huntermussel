@@ -1,0 +1,792 @@
+﻿2026-04-02T23:17:22.3991718Z Current runner version: '2.333.1'
+2026-04-02T23:17:22.4027250Z ##[group]Runner Image Provisioner
+2026-04-02T23:17:22.4028725Z Hosted Compute Agent
+2026-04-02T23:17:22.4029959Z Version: 20260213.493
+2026-04-02T23:17:22.4030994Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-04-02T23:17:22.4032419Z Build Date: 2026-02-13T00:28:41Z
+2026-04-02T23:17:22.4033784Z Worker ID: {08a9e2f9-dd3c-4164-808d-a460052663a4}
+2026-04-02T23:17:22.4035284Z Azure Region: northcentralus
+2026-04-02T23:17:22.4036338Z ##[endgroup]
+2026-04-02T23:17:22.4038718Z ##[group]Operating System
+2026-04-02T23:17:22.4039680Z Ubuntu
+2026-04-02T23:17:22.4040587Z 24.04.4
+2026-04-02T23:17:22.4041553Z LTS
+2026-04-02T23:17:22.4042479Z ##[endgroup]
+2026-04-02T23:17:22.4043399Z ##[group]Runner Image
+2026-04-02T23:17:22.4044795Z Image: ubuntu-24.04
+2026-04-02T23:17:22.4045804Z Version: 20260323.65.1
+2026-04-02T23:17:22.4047943Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260323.65/images/ubuntu/Ubuntu2404-Readme.md
+2026-04-02T23:17:22.4050618Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260323.65
+2026-04-02T23:17:22.4052324Z ##[endgroup]
+2026-04-02T23:17:22.4054996Z ##[group]GITHUB_TOKEN Permissions
+2026-04-02T23:17:22.4057890Z Contents: read
+2026-04-02T23:17:22.4058762Z Metadata: read
+2026-04-02T23:17:22.4059299Z Packages: read
+2026-04-02T23:17:22.4059791Z ##[endgroup]
+2026-04-02T23:17:22.4062196Z Secret source: Actions
+2026-04-02T23:17:22.4063121Z Prepare workflow directory
+2026-04-02T23:17:22.4466376Z Prepare all required actions
+2026-04-02T23:17:22.4521594Z Getting action download info
+2026-04-02T23:17:22.8021302Z Download action repository 'actions/checkout@v3' (SHA:f43a0e5ff2bd294095638e18286ca9a3d1956744)
+2026-04-02T23:17:22.9389389Z Download action repository 'actions/setup-node@v3' (SHA:3235b876344d2a9aa001b8d1453c930bba69e610)
+2026-04-02T23:17:23.0342687Z Download action repository 'cloudflare/wrangler-action@v3' (SHA:da0e0dfe58b7a431659754fdf3f186c529afbe65)
+2026-04-02T23:17:23.4475145Z Complete job name: deploy
+2026-04-02T23:17:23.5158727Z ##[group]Run actions/checkout@v3
+2026-04-02T23:17:23.5159578Z with:
+2026-04-02T23:17:23.5160002Z   repository: iagomussel/huntermussel
+2026-04-02T23:17:23.5160696Z   token: ***
+2026-04-02T23:17:23.5161099Z   ssh-strict: true
+2026-04-02T23:17:23.5161535Z   persist-credentials: true
+2026-04-02T23:17:23.5162013Z   clean: true
+2026-04-02T23:17:23.5162436Z   sparse-checkout-cone-mode: true
+2026-04-02T23:17:23.5162978Z   fetch-depth: 1
+2026-04-02T23:17:23.5163436Z   fetch-tags: false
+2026-04-02T23:17:23.5163891Z   lfs: false
+2026-04-02T23:17:23.5164540Z   submodules: false
+2026-04-02T23:17:23.5165025Z   set-safe-directory: true
+2026-04-02T23:17:23.5165737Z ##[endgroup]
+2026-04-02T23:17:23.5996871Z Syncing repository: iagomussel/huntermussel
+2026-04-02T23:17:23.5998611Z ##[group]Getting Git version info
+2026-04-02T23:17:23.5999377Z Working directory is '/home/runner/work/huntermussel/huntermussel'
+2026-04-02T23:17:23.6000392Z [command]/usr/bin/git version
+2026-04-02T23:17:23.6037555Z git version 2.53.0
+2026-04-02T23:17:23.6064417Z ##[endgroup]
+2026-04-02T23:17:23.6080292Z Temporarily overriding HOME='/home/runner/work/_temp/6fb39369-c109-4bad-9642-5df96e9806a8' before making global git config changes
+2026-04-02T23:17:23.6082691Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-02T23:17:23.6085008Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/huntermussel/huntermussel
+2026-04-02T23:17:23.6114685Z Deleting the contents of '/home/runner/work/huntermussel/huntermussel'
+2026-04-02T23:17:23.6118029Z ##[group]Initializing the repository
+2026-04-02T23:17:23.6121064Z [command]/usr/bin/git init /home/runner/work/huntermussel/huntermussel
+2026-04-02T23:17:23.6225414Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-02T23:17:23.6228015Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-02T23:17:23.6229130Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-02T23:17:23.6230164Z hint: call:
+2026-04-02T23:17:23.6230571Z hint:
+2026-04-02T23:17:23.6231098Z hint: 	git config --global init.defaultBranch <name>
+2026-04-02T23:17:23.6231903Z hint:
+2026-04-02T23:17:23.6232516Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-02T23:17:23.6233840Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-02T23:17:23.6234928Z hint:
+2026-04-02T23:17:23.6235366Z hint: 	git branch -m <name>
+2026-04-02T23:17:23.6235855Z hint:
+2026-04-02T23:17:23.6236521Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-02T23:17:23.6238138Z Initialized empty Git repository in /home/runner/work/huntermussel/huntermussel/.git/
+2026-04-02T23:17:23.6239784Z [command]/usr/bin/git remote add origin https://github.com/iagomussel/huntermussel
+2026-04-02T23:17:23.6267282Z ##[endgroup]
+2026-04-02T23:17:23.6268418Z ##[group]Disabling automatic garbage collection
+2026-04-02T23:17:23.6269518Z [command]/usr/bin/git config --local gc.auto 0
+2026-04-02T23:17:23.6295783Z ##[endgroup]
+2026-04-02T23:17:23.6296832Z ##[group]Setting up auth
+2026-04-02T23:17:23.6300945Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-02T23:17:23.6326097Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-02T23:17:23.6602321Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-02T23:17:23.6627568Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-02T23:17:23.6835491Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-04-02T23:17:23.6866906Z ##[endgroup]
+2026-04-02T23:17:23.6868229Z ##[group]Fetching the repository
+2026-04-02T23:17:23.6876483Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +4f943d33fa2853270148a8f1c4a76dd42796c8ff:refs/remotes/origin/main
+2026-04-02T23:17:23.8862333Z remote: Enumerating objects: 362, done.        
+2026-04-02T23:17:23.8866252Z remote: Counting objects:   0% (1/362)        
+2026-04-02T23:17:23.8866955Z remote: Counting objects:   1% (4/362)        
+2026-04-02T23:17:23.8867605Z remote: Counting objects:   2% (8/362)        
+2026-04-02T23:17:23.8868257Z remote: Counting objects:   3% (11/362)        
+2026-04-02T23:17:23.8868937Z remote: Counting objects:   4% (15/362)        
+2026-04-02T23:17:23.8869585Z remote: Counting objects:   5% (19/362)        
+2026-04-02T23:17:23.8870230Z remote: Counting objects:   6% (22/362)        
+2026-04-02T23:17:23.8870869Z remote: Counting objects:   7% (26/362)        
+2026-04-02T23:17:23.8871568Z remote: Counting objects:   8% (29/362)        
+2026-04-02T23:17:23.8872265Z remote: Counting objects:   9% (33/362)        
+2026-04-02T23:17:23.8872899Z remote: Counting objects:  10% (37/362)        
+2026-04-02T23:17:23.8873530Z remote: Counting objects:  11% (40/362)        
+2026-04-02T23:17:23.8874448Z remote: Counting objects:  12% (44/362)        
+2026-04-02T23:17:23.8875156Z remote: Counting objects:  13% (48/362)        
+2026-04-02T23:17:23.8875868Z remote: Counting objects:  14% (51/362)        
+2026-04-02T23:17:23.8877009Z remote: Counting objects:  15% (55/362)        
+2026-04-02T23:17:23.8878214Z remote: Counting objects:  16% (58/362)        
+2026-04-02T23:17:23.8879316Z remote: Counting objects:  17% (62/362)        
+2026-04-02T23:17:23.8879987Z remote: Counting objects:  18% (66/362)        
+2026-04-02T23:17:23.8880602Z remote: Counting objects:  19% (69/362)        
+2026-04-02T23:17:23.8881207Z remote: Counting objects:  20% (73/362)        
+2026-04-02T23:17:23.8882135Z remote: Counting objects:  21% (77/362)        
+2026-04-02T23:17:23.8882745Z remote: Counting objects:  22% (80/362)        
+2026-04-02T23:17:23.8883366Z remote: Counting objects:  23% (84/362)        
+2026-04-02T23:17:23.8884286Z remote: Counting objects:  24% (87/362)        
+2026-04-02T23:17:23.8885360Z remote: Counting objects:  25% (91/362)        
+2026-04-02T23:17:23.8886552Z remote: Counting objects:  26% (95/362)        
+2026-04-02T23:17:23.8887220Z remote: Counting objects:  27% (98/362)        
+2026-04-02T23:17:23.8887904Z remote: Counting objects:  28% (102/362)        
+2026-04-02T23:17:23.8888586Z remote: Counting objects:  29% (105/362)        
+2026-04-02T23:17:23.8889209Z remote: Counting objects:  30% (109/362)        
+2026-04-02T23:17:23.8889821Z remote: Counting objects:  31% (113/362)        
+2026-04-02T23:17:23.8890426Z remote: Counting objects:  32% (116/362)        
+2026-04-02T23:17:23.8891169Z remote: Counting objects:  33% (120/362)        
+2026-04-02T23:17:23.8891804Z remote: Counting objects:  34% (124/362)        
+2026-04-02T23:17:23.8892451Z remote: Counting objects:  35% (127/362)        
+2026-04-02T23:17:23.8893290Z remote: Counting objects:  36% (131/362)        
+2026-04-02T23:17:23.8894697Z remote: Counting objects:  37% (134/362)        
+2026-04-02T23:17:23.8895577Z remote: Counting objects:  38% (138/362)        
+2026-04-02T23:17:23.8896214Z remote: Counting objects:  39% (142/362)        
+2026-04-02T23:17:23.8896863Z remote: Counting objects:  40% (145/362)        
+2026-04-02T23:17:23.8897514Z remote: Counting objects:  41% (149/362)        
+2026-04-02T23:17:23.8898110Z remote: Counting objects:  42% (153/362)        
+2026-04-02T23:17:23.8898762Z remote: Counting objects:  43% (156/362)        
+2026-04-02T23:17:23.8899376Z remote: Counting objects:  44% (160/362)        
+2026-04-02T23:17:23.8899976Z remote: Counting objects:  45% (163/362)        
+2026-04-02T23:17:23.8900576Z remote: Counting objects:  46% (167/362)        
+2026-04-02T23:17:23.8901178Z remote: Counting objects:  47% (171/362)        
+2026-04-02T23:17:23.8902009Z remote: Counting objects:  48% (174/362)        
+2026-04-02T23:17:23.8902631Z remote: Counting objects:  49% (178/362)        
+2026-04-02T23:17:23.8903240Z remote: Counting objects:  50% (181/362)        
+2026-04-02T23:17:23.8903864Z remote: Counting objects:  51% (185/362)        
+2026-04-02T23:17:23.8904853Z remote: Counting objects:  52% (189/362)        
+2026-04-02T23:17:23.8905467Z remote: Counting objects:  53% (192/362)        
+2026-04-02T23:17:23.8906077Z remote: Counting objects:  54% (196/362)        
+2026-04-02T23:17:23.8906674Z remote: Counting objects:  55% (200/362)        
+2026-04-02T23:17:23.8907289Z remote: Counting objects:  56% (203/362)        
+2026-04-02T23:17:23.8907890Z remote: Counting objects:  57% (207/362)        
+2026-04-02T23:17:23.8908537Z remote: Counting objects:  58% (210/362)        
+2026-04-02T23:17:23.8909195Z remote: Counting objects:  59% (214/362)        
+2026-04-02T23:17:23.8909805Z remote: Counting objects:  60% (218/362)        
+2026-04-02T23:17:23.8910439Z remote: Counting objects:  61% (221/362)        
+2026-04-02T23:17:23.8911129Z remote: Counting objects:  62% (225/362)        
+2026-04-02T23:17:23.8911848Z remote: Counting objects:  63% (229/362)        
+2026-04-02T23:17:23.8912564Z remote: Counting objects:  64% (232/362)        
+2026-04-02T23:17:23.8913206Z remote: Counting objects:  65% (236/362)        
+2026-04-02T23:17:23.8913797Z remote: Counting objects:  66% (239/362)        
+2026-04-02T23:17:23.8914706Z remote: Counting objects:  67% (243/362)        
+2026-04-02T23:17:23.8915331Z remote: Counting objects:  68% (247/362)        
+2026-04-02T23:17:23.8915918Z remote: Counting objects:  69% (250/362)        
+2026-04-02T23:17:23.8916546Z remote: Counting objects:  70% (254/362)        
+2026-04-02T23:17:23.8917151Z remote: Counting objects:  71% (258/362)        
+2026-04-02T23:17:23.8917745Z remote: Counting objects:  72% (261/362)        
+2026-04-02T23:17:23.8918342Z remote: Counting objects:  73% (265/362)        
+2026-04-02T23:17:23.8919121Z remote: Counting objects:  74% (268/362)        
+2026-04-02T23:17:23.8919723Z remote: Counting objects:  75% (272/362)        
+2026-04-02T23:17:23.8920325Z remote: Counting objects:  76% (276/362)        
+2026-04-02T23:17:23.8920918Z remote: Counting objects:  77% (279/362)        
+2026-04-02T23:17:23.8921512Z remote: Counting objects:  78% (283/362)        
+2026-04-02T23:17:23.8922106Z remote: Counting objects:  79% (286/362)        
+2026-04-02T23:17:23.8922704Z remote: Counting objects:  80% (290/362)        
+2026-04-02T23:17:23.8923296Z remote: Counting objects:  81% (294/362)        
+2026-04-02T23:17:23.8923894Z remote: Counting objects:  82% (297/362)        
+2026-04-02T23:17:23.8924681Z remote: Counting objects:  83% (301/362)        
+2026-04-02T23:17:23.8925288Z remote: Counting objects:  84% (305/362)        
+2026-04-02T23:17:23.8925877Z remote: Counting objects:  85% (308/362)        
+2026-04-02T23:17:23.8926478Z remote: Counting objects:  86% (312/362)        
+2026-04-02T23:17:23.8927091Z remote: Counting objects:  87% (315/362)        
+2026-04-02T23:17:23.8927701Z remote: Counting objects:  88% (319/362)        
+2026-04-02T23:17:23.8928298Z remote: Counting objects:  89% (323/362)        
+2026-04-02T23:17:23.8928894Z remote: Counting objects:  90% (326/362)        
+2026-04-02T23:17:23.8929488Z remote: Counting objects:  91% (330/362)        
+2026-04-02T23:17:23.8930084Z remote: Counting objects:  92% (334/362)        
+2026-04-02T23:17:23.8930679Z remote: Counting objects:  93% (337/362)        
+2026-04-02T23:17:23.8931264Z remote: Counting objects:  94% (341/362)        
+2026-04-02T23:17:23.8931858Z remote: Counting objects:  95% (344/362)        
+2026-04-02T23:17:23.8932454Z remote: Counting objects:  96% (348/362)        
+2026-04-02T23:17:23.8933042Z remote: Counting objects:  97% (352/362)        
+2026-04-02T23:17:23.8933662Z remote: Counting objects:  98% (355/362)        
+2026-04-02T23:17:23.8934387Z remote: Counting objects:  99% (359/362)        
+2026-04-02T23:17:23.8935186Z remote: Counting objects: 100% (362/362)        
+2026-04-02T23:17:23.8935825Z remote: Counting objects: 100% (362/362), done.        
+2026-04-02T23:17:23.8936629Z remote: Compressing objects:   0% (1/332)        
+2026-04-02T23:17:23.8937504Z remote: Compressing objects:   1% (4/332)        
+2026-04-02T23:17:23.8938274Z remote: Compressing objects:   2% (7/332)        
+2026-04-02T23:17:23.8939079Z remote: Compressing objects:   3% (10/332)        
+2026-04-02T23:17:23.8939696Z remote: Compressing objects:   4% (14/332)        
+2026-04-02T23:17:23.8940316Z remote: Compressing objects:   5% (17/332)        
+2026-04-02T23:17:23.8940985Z remote: Compressing objects:   6% (20/332)        
+2026-04-02T23:17:23.8941608Z remote: Compressing objects:   7% (24/332)        
+2026-04-02T23:17:23.8942218Z remote: Compressing objects:   8% (27/332)        
+2026-04-02T23:17:23.8942836Z remote: Compressing objects:   9% (30/332)        
+2026-04-02T23:17:23.8943790Z remote: Compressing objects:  10% (34/332)        
+2026-04-02T23:17:23.8945011Z remote: Compressing objects:  11% (37/332)        
+2026-04-02T23:17:23.8946071Z remote: Compressing objects:  12% (40/332)        
+2026-04-02T23:17:23.8947149Z remote: Compressing objects:  13% (44/332)        
+2026-04-02T23:17:23.9020207Z remote: Compressing objects:  14% (47/332)        
+2026-04-02T23:17:23.9021603Z remote: Compressing objects:  15% (50/332)        
+2026-04-02T23:17:23.9022768Z remote: Compressing objects:  16% (54/332)        
+2026-04-02T23:17:23.9023480Z remote: Compressing objects:  17% (57/332)        
+2026-04-02T23:17:23.9024788Z remote: Compressing objects:  18% (60/332)        
+2026-04-02T23:17:23.9025573Z remote: Compressing objects:  19% (64/332)        
+2026-04-02T23:17:23.9026239Z remote: Compressing objects:  20% (67/332)        
+2026-04-02T23:17:23.9026910Z remote: Compressing objects:  21% (70/332)        
+2026-04-02T23:17:23.9027572Z remote: Compressing objects:  22% (74/332)        
+2026-04-02T23:17:23.9028228Z remote: Compressing objects:  23% (77/332)        
+2026-04-02T23:17:23.9029106Z remote: Compressing objects:  24% (80/332)        
+2026-04-02T23:17:23.9029773Z remote: Compressing objects:  25% (83/332)        
+2026-04-02T23:17:23.9030420Z remote: Compressing objects:  26% (87/332)        
+2026-04-02T23:17:23.9031128Z remote: Compressing objects:  27% (90/332)        
+2026-04-02T23:17:23.9032190Z remote: Compressing objects:  28% (93/332)        
+2026-04-02T23:17:23.9033153Z remote: Compressing objects:  29% (97/332)        
+2026-04-02T23:17:23.9034542Z remote: Compressing objects:  30% (100/332)        
+2026-04-02T23:17:23.9035369Z remote: Compressing objects:  31% (103/332)        
+2026-04-02T23:17:23.9036181Z remote: Compressing objects:  32% (107/332)        
+2026-04-02T23:17:23.9036975Z remote: Compressing objects:  33% (110/332)        
+2026-04-02T23:17:23.9037820Z remote: Compressing objects:  34% (113/332)        
+2026-04-02T23:17:23.9038653Z remote: Compressing objects:  35% (117/332)        
+2026-04-02T23:17:23.9039468Z remote: Compressing objects:  36% (120/332)        
+2026-04-02T23:17:23.9040272Z remote: Compressing objects:  37% (123/332)        
+2026-04-02T23:17:23.9041072Z remote: Compressing objects:  38% (127/332)        
+2026-04-02T23:17:23.9041937Z remote: Compressing objects:  39% (130/332)        
+2026-04-02T23:17:23.9043142Z remote: Compressing objects:  40% (133/332)        
+2026-04-02T23:17:23.9044443Z remote: Compressing objects:  41% (137/332)        
+2026-04-02T23:17:23.9045465Z remote: Compressing objects:  42% (140/332)        
+2026-04-02T23:17:23.9046283Z remote: Compressing objects:  43% (143/332)        
+2026-04-02T23:17:23.9047120Z remote: Compressing objects:  44% (147/332)        
+2026-04-02T23:17:23.9055581Z remote: Compressing objects:  45% (150/332)        
+2026-04-02T23:17:23.9076490Z remote: Compressing objects:  46% (153/332)        
+2026-04-02T23:17:23.9083387Z remote: Compressing objects:  47% (157/332)        
+2026-04-02T23:17:23.9109246Z remote: Compressing objects:  48% (160/332)        
+2026-04-02T23:17:23.9127568Z remote: Compressing objects:  49% (163/332)        
+2026-04-02T23:17:23.9167802Z remote: Compressing objects:  50% (166/332)        
+2026-04-02T23:17:23.9189230Z remote: Compressing objects:  51% (170/332)        
+2026-04-02T23:17:23.9195221Z remote: Compressing objects:  52% (173/332)        
+2026-04-02T23:17:23.9210829Z remote: Compressing objects:  53% (176/332)        
+2026-04-02T23:17:23.9227429Z remote: Compressing objects:  54% (180/332)        
+2026-04-02T23:17:23.9246558Z remote: Compressing objects:  55% (183/332)        
+2026-04-02T23:17:23.9258351Z remote: Compressing objects:  56% (186/332)        
+2026-04-02T23:17:23.9262694Z remote: Compressing objects:  57% (190/332)        
+2026-04-02T23:17:23.9265099Z remote: Compressing objects:  58% (193/332)        
+2026-04-02T23:17:23.9319535Z remote: Compressing objects:  59% (196/332)        
+2026-04-02T23:17:23.9320713Z remote: Compressing objects:  60% (200/332)        
+2026-04-02T23:17:23.9335043Z remote: Compressing objects:  61% (203/332)        
+2026-04-02T23:17:23.9336836Z remote: Compressing objects:  62% (206/332)        
+2026-04-02T23:17:23.9338132Z remote: Compressing objects:  63% (210/332)        
+2026-04-02T23:17:23.9342179Z remote: Compressing objects:  64% (213/332)        
+2026-04-02T23:17:23.9343265Z remote: Compressing objects:  65% (216/332)        
+2026-04-02T23:17:23.9380555Z remote: Compressing objects:  66% (220/332)        
+2026-04-02T23:17:23.9389198Z remote: Compressing objects:  67% (223/332)        
+2026-04-02T23:17:23.9403539Z remote: Compressing objects:  68% (226/332)        
+2026-04-02T23:17:23.9417619Z remote: Compressing objects:  69% (230/332)        
+2026-04-02T23:17:23.9430120Z remote: Compressing objects:  70% (233/332)        
+2026-04-02T23:17:23.9457798Z remote: Compressing objects:  71% (236/332)        
+2026-04-02T23:17:23.9474310Z remote: Compressing objects:  72% (240/332)        
+2026-04-02T23:17:23.9489021Z remote: Compressing objects:  73% (243/332)        
+2026-04-02T23:17:23.9508523Z remote: Compressing objects:  74% (246/332)        
+2026-04-02T23:17:23.9523674Z remote: Compressing objects:  75% (249/332)        
+2026-04-02T23:17:23.9540831Z remote: Compressing objects:  76% (253/332)        
+2026-04-02T23:17:23.9554016Z remote: Compressing objects:  77% (256/332)        
+2026-04-02T23:17:23.9576620Z remote: Compressing objects:  78% (259/332)        
+2026-04-02T23:17:23.9600449Z remote: Compressing objects:  79% (263/332)        
+2026-04-02T23:17:23.9618406Z remote: Compressing objects:  80% (266/332)        
+2026-04-02T23:17:23.9640657Z remote: Compressing objects:  81% (269/332)        
+2026-04-02T23:17:23.9647511Z remote: Compressing objects:  82% (273/332)        
+2026-04-02T23:17:23.9664176Z remote: Compressing objects:  83% (276/332)        
+2026-04-02T23:17:23.9671573Z remote: Compressing objects:  84% (279/332)        
+2026-04-02T23:17:23.9673439Z remote: Compressing objects:  85% (283/332)        
+2026-04-02T23:17:23.9674897Z remote: Compressing objects:  86% (286/332)        
+2026-04-02T23:17:23.9675765Z remote: Compressing objects:  87% (289/332)        
+2026-04-02T23:17:23.9676574Z remote: Compressing objects:  88% (293/332)        
+2026-04-02T23:17:23.9677378Z remote: Compressing objects:  89% (296/332)        
+2026-04-02T23:17:23.9679126Z remote: Compressing objects:  90% (299/332)        
+2026-04-02T23:17:23.9681043Z remote: Compressing objects:  91% (303/332)        
+2026-04-02T23:17:23.9682185Z remote: Compressing objects:  92% (306/332)        
+2026-04-02T23:17:23.9682975Z remote: Compressing objects:  93% (309/332)        
+2026-04-02T23:17:23.9683756Z remote: Compressing objects:  94% (313/332)        
+2026-04-02T23:17:23.9684950Z remote: Compressing objects:  95% (316/332)        
+2026-04-02T23:17:23.9685736Z remote: Compressing objects:  96% (319/332)        
+2026-04-02T23:17:23.9686805Z remote: Compressing objects:  97% (323/332)        
+2026-04-02T23:17:23.9687580Z remote: Compressing objects:  98% (326/332)        
+2026-04-02T23:17:23.9688343Z remote: Compressing objects:  99% (329/332)        
+2026-04-02T23:17:23.9689310Z remote: Compressing objects: 100% (332/332)        
+2026-04-02T23:17:23.9690170Z remote: Compressing objects: 100% (332/332), done.        
+2026-04-02T23:17:23.9698729Z Receiving objects:   0% (1/362)
+2026-04-02T23:17:23.9699879Z Receiving objects:   1% (4/362)
+2026-04-02T23:17:23.9701226Z Receiving objects:   2% (8/362)
+2026-04-02T23:17:23.9703526Z Receiving objects:   3% (11/362)
+2026-04-02T23:17:23.9778105Z Receiving objects:   4% (15/362)
+2026-04-02T23:17:23.9994937Z Receiving objects:   5% (19/362)
+2026-04-02T23:17:23.9998708Z Receiving objects:   6% (22/362)
+2026-04-02T23:17:24.0011725Z Receiving objects:   7% (26/362)
+2026-04-02T23:17:24.0012695Z Receiving objects:   8% (29/362)
+2026-04-02T23:17:24.0013749Z Receiving objects:   9% (33/362)
+2026-04-02T23:17:24.0278456Z Receiving objects:  10% (37/362)
+2026-04-02T23:17:24.0280563Z Receiving objects:  11% (40/362)
+2026-04-02T23:17:24.0283323Z Receiving objects:  12% (44/362)
+2026-04-02T23:17:24.0284892Z Receiving objects:  13% (48/362)
+2026-04-02T23:17:24.0472182Z Receiving objects:  14% (51/362)
+2026-04-02T23:17:24.0473132Z Receiving objects:  15% (55/362)
+2026-04-02T23:17:24.0474456Z Receiving objects:  16% (58/362)
+2026-04-02T23:17:24.0592084Z Receiving objects:  17% (62/362)
+2026-04-02T23:17:24.0593197Z Receiving objects:  18% (66/362)
+2026-04-02T23:17:24.0599955Z Receiving objects:  19% (69/362)
+2026-04-02T23:17:24.0602290Z Receiving objects:  20% (73/362)
+2026-04-02T23:17:24.0604388Z Receiving objects:  21% (77/362)
+2026-04-02T23:17:24.0607568Z Receiving objects:  22% (80/362)
+2026-04-02T23:17:24.0608746Z Receiving objects:  23% (84/362)
+2026-04-02T23:17:24.0611579Z Receiving objects:  24% (87/362)
+2026-04-02T23:17:24.0612738Z Receiving objects:  25% (91/362)
+2026-04-02T23:17:24.0614288Z Receiving objects:  26% (95/362)
+2026-04-02T23:17:24.0615583Z Receiving objects:  27% (98/362)
+2026-04-02T23:17:24.0619481Z Receiving objects:  28% (102/362)
+2026-04-02T23:17:24.0622843Z Receiving objects:  29% (105/362)
+2026-04-02T23:17:24.0627505Z Receiving objects:  30% (109/362)
+2026-04-02T23:17:24.0630929Z Receiving objects:  31% (113/362)
+2026-04-02T23:17:24.0633960Z Receiving objects:  32% (116/362)
+2026-04-02T23:17:24.0635743Z Receiving objects:  33% (120/362)
+2026-04-02T23:17:24.0636725Z Receiving objects:  34% (124/362)
+2026-04-02T23:17:24.0638587Z Receiving objects:  35% (127/362)
+2026-04-02T23:17:24.0639791Z Receiving objects:  36% (131/362)
+2026-04-02T23:17:24.0641110Z Receiving objects:  37% (134/362)
+2026-04-02T23:17:24.0642325Z Receiving objects:  38% (138/362)
+2026-04-02T23:17:24.0643007Z Receiving objects:  39% (142/362)
+2026-04-02T23:17:24.0644481Z Receiving objects:  40% (145/362)
+2026-04-02T23:17:24.0645530Z Receiving objects:  41% (149/362)
+2026-04-02T23:17:24.0648587Z Receiving objects:  42% (153/362)
+2026-04-02T23:17:24.0649600Z Receiving objects:  43% (156/362)
+2026-04-02T23:17:24.0650827Z Receiving objects:  44% (160/362)
+2026-04-02T23:17:24.0651738Z Receiving objects:  45% (163/362)
+2026-04-02T23:17:24.0655982Z Receiving objects:  46% (167/362)
+2026-04-02T23:17:24.0656688Z Receiving objects:  47% (171/362)
+2026-04-02T23:17:24.0657280Z Receiving objects:  48% (174/362)
+2026-04-02T23:17:24.0657857Z Receiving objects:  49% (178/362)
+2026-04-02T23:17:24.0659198Z Receiving objects:  50% (181/362)
+2026-04-02T23:17:24.0662726Z Receiving objects:  51% (185/362)
+2026-04-02T23:17:24.0666170Z Receiving objects:  52% (189/362)
+2026-04-02T23:17:24.0670104Z Receiving objects:  53% (192/362)
+2026-04-02T23:17:24.0672830Z Receiving objects:  54% (196/362)
+2026-04-02T23:17:24.0750189Z Receiving objects:  55% (200/362)
+2026-04-02T23:17:24.0753132Z Receiving objects:  56% (203/362)
+2026-04-02T23:17:24.0755950Z Receiving objects:  57% (207/362)
+2026-04-02T23:17:24.0759371Z Receiving objects:  58% (210/362)
+2026-04-02T23:17:24.0763110Z Receiving objects:  59% (214/362)
+2026-04-02T23:17:24.0766729Z Receiving objects:  60% (218/362)
+2026-04-02T23:17:24.0776480Z Receiving objects:  61% (221/362)
+2026-04-02T23:17:24.0780442Z Receiving objects:  62% (225/362)
+2026-04-02T23:17:24.0782992Z Receiving objects:  63% (229/362)
+2026-04-02T23:17:24.0784364Z Receiving objects:  64% (232/362)
+2026-04-02T23:17:24.0785732Z Receiving objects:  65% (236/362)
+2026-04-02T23:17:24.0790198Z Receiving objects:  66% (239/362)
+2026-04-02T23:17:24.0793007Z Receiving objects:  67% (243/362)
+2026-04-02T23:17:24.0794736Z Receiving objects:  68% (247/362)
+2026-04-02T23:17:24.0796190Z Receiving objects:  69% (250/362)
+2026-04-02T23:17:24.0797236Z Receiving objects:  70% (254/362)
+2026-04-02T23:17:24.0798868Z Receiving objects:  71% (258/362)
+2026-04-02T23:17:24.0800274Z Receiving objects:  72% (261/362)
+2026-04-02T23:17:24.0801248Z Receiving objects:  73% (265/362)
+2026-04-02T23:17:24.0803103Z Receiving objects:  74% (268/362)
+2026-04-02T23:17:24.0804725Z Receiving objects:  75% (272/362)
+2026-04-02T23:17:24.0809687Z Receiving objects:  76% (276/362)
+2026-04-02T23:17:24.0814257Z Receiving objects:  77% (279/362)
+2026-04-02T23:17:24.0818466Z Receiving objects:  78% (283/362)
+2026-04-02T23:17:24.0823691Z Receiving objects:  79% (286/362)
+2026-04-02T23:17:24.0830841Z Receiving objects:  80% (290/362)
+2026-04-02T23:17:24.0834474Z Receiving objects:  81% (294/362)
+2026-04-02T23:17:24.0845155Z Receiving objects:  82% (297/362)
+2026-04-02T23:17:24.0847389Z Receiving objects:  83% (301/362)
+2026-04-02T23:17:24.0848859Z Receiving objects:  84% (305/362)
+2026-04-02T23:17:24.0849832Z Receiving objects:  85% (308/362)
+2026-04-02T23:17:24.0865032Z Receiving objects:  86% (312/362)
+2026-04-02T23:17:24.0865832Z Receiving objects:  87% (315/362)
+2026-04-02T23:17:24.0866449Z Receiving objects:  88% (319/362)
+2026-04-02T23:17:24.0867064Z Receiving objects:  89% (323/362)
+2026-04-02T23:17:24.0867665Z Receiving objects:  90% (326/362)
+2026-04-02T23:17:24.0868531Z remote: Total 362 (delta 31), reused 229 (delta 18), pack-reused 0 (from 0)        
+2026-04-02T23:17:24.0869425Z Receiving objects:  91% (330/362)
+2026-04-02T23:17:24.0870003Z Receiving objects:  92% (334/362)
+2026-04-02T23:17:24.0871594Z Receiving objects:  93% (337/362)
+2026-04-02T23:17:24.0872702Z Receiving objects:  94% (341/362)
+2026-04-02T23:17:24.0873742Z Receiving objects:  95% (344/362)
+2026-04-02T23:17:24.0874927Z Receiving objects:  96% (348/362)
+2026-04-02T23:17:24.0953746Z Receiving objects:  97% (352/362)
+2026-04-02T23:17:24.0955100Z Receiving objects:  98% (355/362)
+2026-04-02T23:17:24.0956170Z Receiving objects:  99% (359/362)
+2026-04-02T23:17:24.0957184Z Receiving objects: 100% (362/362)
+2026-04-02T23:17:24.0958451Z Receiving objects: 100% (362/362), 1.14 MiB | 9.72 MiB/s, done.
+2026-04-02T23:17:24.0959803Z Resolving deltas:   0% (0/31)
+2026-04-02T23:17:24.0960724Z Resolving deltas:   3% (1/31)
+2026-04-02T23:17:24.0961621Z Resolving deltas:   6% (2/31)
+2026-04-02T23:17:24.0962529Z Resolving deltas:   9% (3/31)
+2026-04-02T23:17:24.0963427Z Resolving deltas:  12% (4/31)
+2026-04-02T23:17:24.0964538Z Resolving deltas:  16% (5/31)
+2026-04-02T23:17:24.0965466Z Resolving deltas:  19% (6/31)
+2026-04-02T23:17:24.0966365Z Resolving deltas:  22% (7/31)
+2026-04-02T23:17:24.0967243Z Resolving deltas:  25% (8/31)
+2026-04-02T23:17:24.0968122Z Resolving deltas:  29% (9/31)
+2026-04-02T23:17:24.0968994Z Resolving deltas:  32% (10/31)
+2026-04-02T23:17:24.0969864Z Resolving deltas:  35% (11/31)
+2026-04-02T23:17:24.0970728Z Resolving deltas:  38% (12/31)
+2026-04-02T23:17:24.0971610Z Resolving deltas:  41% (13/31)
+2026-04-02T23:17:24.0972496Z Resolving deltas:  45% (14/31)
+2026-04-02T23:17:24.0973371Z Resolving deltas:  48% (15/31)
+2026-04-02T23:17:24.0974440Z Resolving deltas:  51% (16/31)
+2026-04-02T23:17:24.0975318Z Resolving deltas:  54% (17/31)
+2026-04-02T23:17:24.0976188Z Resolving deltas:  58% (18/31)
+2026-04-02T23:17:24.0977066Z Resolving deltas:  61% (19/31)
+2026-04-02T23:17:24.0977945Z Resolving deltas:  64% (20/31)
+2026-04-02T23:17:24.0978816Z Resolving deltas:  67% (21/31)
+2026-04-02T23:17:24.0979695Z Resolving deltas:  70% (22/31)
+2026-04-02T23:17:24.0980589Z Resolving deltas:  74% (23/31)
+2026-04-02T23:17:24.0981451Z Resolving deltas:  77% (24/31)
+2026-04-02T23:17:24.0982620Z Resolving deltas:  80% (25/31)
+2026-04-02T23:17:24.0983556Z Resolving deltas:  83% (26/31)
+2026-04-02T23:17:24.0984711Z Resolving deltas:  87% (27/31)
+2026-04-02T23:17:24.0985601Z Resolving deltas:  90% (28/31)
+2026-04-02T23:17:24.0986488Z Resolving deltas:  93% (29/31)
+2026-04-02T23:17:24.0987361Z Resolving deltas:  96% (30/31)
+2026-04-02T23:17:24.0988230Z Resolving deltas: 100% (31/31)
+2026-04-02T23:17:24.0989129Z Resolving deltas: 100% (31/31), done.
+2026-04-02T23:17:24.1092133Z From https://github.com/iagomussel/huntermussel
+2026-04-02T23:17:24.1093097Z  * [new ref]         4f943d33fa2853270148a8f1c4a76dd42796c8ff -> origin/main
+2026-04-02T23:17:24.1122005Z ##[endgroup]
+2026-04-02T23:17:24.1123246Z ##[group]Determining the checkout info
+2026-04-02T23:17:24.1124923Z ##[endgroup]
+2026-04-02T23:17:24.1126103Z ##[group]Checking out the ref
+2026-04-02T23:17:24.1128839Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-04-02T23:17:24.1413827Z Switched to a new branch 'main'
+2026-04-02T23:17:24.1416816Z branch 'main' set up to track 'origin/main'.
+2026-04-02T23:17:24.1423634Z ##[endgroup]
+2026-04-02T23:17:24.1460516Z [command]/usr/bin/git log -1 --format='%H'
+2026-04-02T23:17:24.1480991Z '4f943d33fa2853270148a8f1c4a76dd42796c8ff'
+2026-04-02T23:17:24.1733822Z ##[group]Run actions/setup-node@v3
+2026-04-02T23:17:24.1734815Z with:
+2026-04-02T23:17:24.1735235Z   node-version: 22
+2026-04-02T23:17:24.1735709Z   always-auth: false
+2026-04-02T23:17:24.1736202Z   check-latest: false
+2026-04-02T23:17:24.1736850Z   token: ***
+2026-04-02T23:17:24.1737279Z ##[endgroup]
+2026-04-02T23:17:24.3760454Z Found in cache @ /opt/hostedtoolcache/node/22.22.1/x64
+2026-04-02T23:17:24.3764424Z ##[group]Environment details
+2026-04-02T23:17:24.6534978Z node: v22.22.1
+2026-04-02T23:17:24.6536516Z npm: 10.9.4
+2026-04-02T23:17:24.6537704Z yarn: 1.22.22
+2026-04-02T23:17:24.6539849Z ##[endgroup]
+2026-04-02T23:17:24.6707980Z ##[group]Run npm ci
+2026-04-02T23:17:24.6709199Z [36;1mnpm ci[0m
+2026-04-02T23:17:24.6750535Z shell: /usr/bin/bash -e {0}
+2026-04-02T23:17:24.6751612Z ##[endgroup]
+2026-04-02T23:17:26.0357022Z npm warn ERESOLVE overriding peer dependency
+2026-04-02T23:17:26.0358002Z npm warn While resolving: lucide-react@0.378.0
+2026-04-02T23:17:26.0358573Z npm warn Found: react@19.2.4
+2026-04-02T23:17:26.0359042Z npm warn node_modules/react
+2026-04-02T23:17:26.0359598Z npm warn   react@"^19.2.4" from the root project
+2026-04-02T23:17:26.0360444Z npm warn   132 more (@alexbruf/react-diff-viewer, @astrojs/react, ...)
+2026-04-02T23:17:26.0361045Z npm warn
+2026-04-02T23:17:26.0361510Z npm warn Could not resolve dependency:
+2026-04-02T23:17:26.0362139Z npm warn peer react@"^16.5.1 || ^17.0.0 || ^18.0.0" from lucide-react@0.378.0
+2026-04-02T23:17:26.0362742Z npm warn node_modules/@yoopta/themes-shadcn/node_modules/lucide-react
+2026-04-02T23:17:26.0363397Z npm warn   lucide-react@"^0.378.0" from @yoopta/themes-shadcn@6.0.0-beta.22
+2026-04-02T23:17:26.0363871Z npm warn   node_modules/@yoopta/themes-shadcn
+2026-04-02T23:17:26.0364332Z npm warn
+2026-04-02T23:17:26.0364640Z npm warn Conflicting peer dependency: react@18.3.1
+2026-04-02T23:17:26.0364987Z npm warn node_modules/react
+2026-04-02T23:17:26.0365441Z npm warn   peer react@"^16.5.1 || ^17.0.0 || ^18.0.0" from lucide-react@0.378.0
+2026-04-02T23:17:26.0365994Z npm warn   node_modules/@yoopta/themes-shadcn/node_modules/lucide-react
+2026-04-02T23:17:26.0366549Z npm warn     lucide-react@"^0.378.0" from @yoopta/themes-shadcn@6.0.0-beta.22
+2026-04-02T23:17:26.0367004Z npm warn     node_modules/@yoopta/themes-shadcn
+2026-04-02T23:17:26.0847552Z npm warn ERESOLVE overriding peer dependency
+2026-04-02T23:17:26.0848350Z npm warn While resolving: lucide-react@0.294.0
+2026-04-02T23:17:26.0849575Z npm warn Found: react@19.2.4
+2026-04-02T23:17:26.0850067Z npm warn node_modules/react
+2026-04-02T23:17:26.0850648Z npm warn   react@"^19.2.4" from the root project
+2026-04-02T23:17:26.0851538Z npm warn   132 more (@alexbruf/react-diff-viewer, @astrojs/react, ...)
+2026-04-02T23:17:26.0852202Z npm warn
+2026-04-02T23:17:26.0852686Z npm warn Could not resolve dependency:
+2026-04-02T23:17:26.0853502Z npm warn peer react@"^16.5.1 || ^17.0.0 || ^18.0.0" from lucide-react@0.294.0
+2026-04-02T23:17:26.0854621Z npm warn node_modules/@yoopta/ui/node_modules/lucide-react
+2026-04-02T23:17:26.0855481Z npm warn   lucide-react@"^0.294.0" from @yoopta/ui@6.0.0-beta.22
+2026-04-02T23:17:26.0856176Z npm warn   node_modules/@yoopta/ui
+2026-04-02T23:17:26.0856593Z npm warn
+2026-04-02T23:17:26.0857099Z npm warn Conflicting peer dependency: react@18.3.1
+2026-04-02T23:17:26.0857665Z npm warn node_modules/react
+2026-04-02T23:17:26.0858421Z npm warn   peer react@"^16.5.1 || ^17.0.0 || ^18.0.0" from lucide-react@0.294.0
+2026-04-02T23:17:26.0859329Z npm warn   node_modules/@yoopta/ui/node_modules/lucide-react
+2026-04-02T23:17:26.0860177Z npm warn     lucide-react@"^0.294.0" from @yoopta/ui@6.0.0-beta.22
+2026-04-02T23:17:26.0860887Z npm warn     node_modules/@yoopta/ui
+2026-04-02T23:17:40.5530694Z 
+2026-04-02T23:17:40.5532663Z added 850 packages, and audited 851 packages in 16s
+2026-04-02T23:17:40.5533423Z 
+2026-04-02T23:17:40.5534288Z 195 packages are looking for funding
+2026-04-02T23:17:40.5534962Z   run `npm fund` for details
+2026-04-02T23:17:40.5662236Z 
+2026-04-02T23:17:40.5663085Z 13 vulnerabilities (1 low, 2 moderate, 10 high)
+2026-04-02T23:17:40.5663497Z 
+2026-04-02T23:17:40.5663890Z To address issues that do not require attention, run:
+2026-04-02T23:17:40.5664698Z   npm audit fix
+2026-04-02T23:17:40.5664927Z 
+2026-04-02T23:17:40.5665358Z To address all issues (including breaking changes), run:
+2026-04-02T23:17:40.5665957Z   npm audit fix --force
+2026-04-02T23:17:40.5666218Z 
+2026-04-02T23:17:40.5666433Z Run `npm audit` for details.
+2026-04-02T23:17:40.6420224Z ##[group]Run npm run build
+2026-04-02T23:17:40.6420524Z [36;1mnpm run build[0m
+2026-04-02T23:17:40.6448658Z shell: /usr/bin/bash -e {0}
+2026-04-02T23:17:40.6448889Z ##[endgroup]
+2026-04-02T23:17:40.7388628Z 
+2026-04-02T23:17:40.7389259Z > huntermussel-tools-astro@0.0.1 build
+2026-04-02T23:17:40.7390031Z > ASTRO_TELEMETRY_DISABLED=1 astro build
+2026-04-02T23:17:40.7390396Z 
+2026-04-02T23:17:42.0682831Z [2m23:17:42[22m [34m[content][39m Syncing content
+2026-04-02T23:17:43.8956838Z [2m23:17:43[22m [34m[content][39m Synced content
+2026-04-02T23:17:43.8963227Z [2m23:17:43[22m [34m[types][39m Generated [2m2.19s[22m
+2026-04-02T23:17:43.8967329Z [2m23:17:43[22m [34m[build][39m output: [34m"static"[39m
+2026-04-02T23:17:43.8968215Z [2m23:17:43[22m [34m[build][39m mode: [34m"static"[39m
+2026-04-02T23:17:43.8969637Z [2m23:17:43[22m [34m[build][39m directory: [34m/home/runner/work/huntermussel/huntermussel/dist/[39m
+2026-04-02T23:17:43.8970790Z [2m23:17:43[22m [34m[build][39m Collecting build info...
+2026-04-02T23:17:43.8978281Z [2m23:17:43[22m [34m[build][39m [32m✓ Completed in 2.23s.[39m
+2026-04-02T23:17:43.8992436Z [2m23:17:43[22m [34m[build][39m Building static entrypoints...
+2026-04-02T23:17:45.4119551Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/playground/examples/word-example/word-editor.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:45.4123582Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/playground/examples/word-example/word-editor.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/playground/examples/word-example/word-editor.tsx" was ignored.[39m
+2026-04-02T23:17:45.4740417Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/react/CalSchedulerEmbed.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:45.4758581Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/react/CalSchedulerEmbed.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/react/CalSchedulerEmbed.tsx" was ignored.[39m
+2026-04-02T23:17:45.4971353Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/scroll-area.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:45.4973864Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/scroll-area.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/scroll-area.tsx" was ignored.[39m
+2026-04-02T23:17:45.4991964Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/dialog.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:45.5006590Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/dialog.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/dialog.tsx" was ignored.[39m
+2026-04-02T23:17:45.5114806Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/playground/examples/word-example/word-toolbar.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:45.5119318Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/playground/examples/word-example/word-toolbar.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/playground/examples/word-example/word-toolbar.tsx" was ignored.[39m
+2026-04-02T23:17:45.5262329Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/popover.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:45.5278735Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/popover.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/popover.tsx" was ignored.[39m
+2026-04-02T23:17:45.5288078Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/separator.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:45.5290455Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/separator.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/separator.tsx" was ignored.[39m
+2026-04-02T23:17:45.5402842Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/dropdown-menu.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:45.5404915Z [33m[1m23:17:45[22m [WARN] [vite][39m [33msrc/components/ui/dropdown-menu.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/dropdown-menu.tsx" was ignored.[39m
+2026-04-02T23:17:46.2241016Z [2m23:17:46[22m [34m[vite][39m [32m✓ built in 2.29s[39m
+2026-04-02T23:17:46.2242072Z [2m23:17:46[22m [34m[build][39m [32m✓ Completed in 2.32s.[39m
+2026-04-02T23:17:46.2247093Z 
+2026-04-02T23:17:46.2247588Z [42m[30m building client (vite) [39m[49m
+2026-04-02T23:17:46.2368052Z [2m23:17:46[22m [34m[vite][39m transforming...
+2026-04-02T23:17:48.3277824Z [33m[1m23:17:48[22m [WARN] [vite][39m [33msrc/components/react/CalSchedulerEmbed.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:48.3283270Z [33m[1m23:17:48[22m [WARN] [vite][39m [33msrc/components/react/CalSchedulerEmbed.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/react/CalSchedulerEmbed.tsx" was ignored.[39m
+2026-04-02T23:17:48.3300507Z [33m[1m23:17:48[22m [WARN] [vite][39m [33msrc/components/playground/examples/word-example/word-editor.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:48.3305970Z [33m[1m23:17:48[22m [WARN] [vite][39m [33msrc/components/playground/examples/word-example/word-editor.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/playground/examples/word-example/word-editor.tsx" was ignored.[39m
+2026-04-02T23:17:48.7726174Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/AnimatePresence/PopChild.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/AnimatePresence/PopChild.mjs" was ignored.[39m
+2026-04-02T23:17:48.7737089Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/LayoutGroup/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/LayoutGroup/index.mjs" was ignored.[39m
+2026-04-02T23:17:48.7745830Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/AnimatePresence/PresenceChild.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/AnimatePresence/PresenceChild.mjs" was ignored.[39m
+2026-04-02T23:17:48.7753237Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/LazyMotion/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/LazyMotion/index.mjs" was ignored.[39m
+2026-04-02T23:17:48.7760391Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/MotionConfig/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/MotionConfig/index.mjs" was ignored.[39m
+2026-04-02T23:17:48.7778778Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/motion/utils/use-visual-state.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/motion/utils/use-visual-state.mjs" was ignored.[39m
+2026-04-02T23:17:48.7936154Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-force-update.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-force-update.mjs" was ignored.[39m
+2026-04-02T23:17:48.7941168Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-unmount-effect.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-unmount-effect.mjs" was ignored.[39m
+2026-04-02T23:17:48.7945962Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/render/dom/features-animation.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/render/dom/features-animation.mjs" was ignored.[39m
+2026-04-02T23:17:48.7950951Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-isomorphic-effect.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-isomorphic-effect.mjs" was ignored.[39m
+2026-04-02T23:17:48.7954713Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/render/dom/features-max.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/render/dom/features-max.mjs" was ignored.[39m
+2026-04-02T23:17:48.7958752Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/render/dom/features-min.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/render/dom/features-min.mjs" was ignored.[39m
+2026-04-02T23:17:48.7962278Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-motion-value-event.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-motion-value-event.mjs" was ignored.[39m
+2026-04-02T23:17:48.7965713Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-motion-value.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-motion-value.mjs" was ignored.[39m
+2026-04-02T23:17:48.7970787Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-motion-template.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-motion-template.mjs" was ignored.[39m
+2026-04-02T23:17:48.7975071Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-scroll.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-scroll.mjs" was ignored.[39m
+2026-04-02T23:17:48.7982912Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-spring.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-spring.mjs" was ignored.[39m
+2026-04-02T23:17:48.7986320Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-time.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-time.mjs" was ignored.[39m
+2026-04-02T23:17:48.7990224Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-follow-value.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-follow-value.mjs" was ignored.[39m
+2026-04-02T23:17:48.7995720Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-transform.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-transform.mjs" was ignored.[39m
+2026-04-02T23:17:48.8001825Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-velocity.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-velocity.mjs" was ignored.[39m
+2026-04-02T23:17:48.8007495Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-will-change/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-will-change/index.mjs" was ignored.[39m
+2026-04-02T23:17:48.8035278Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/reduced-motion/use-reduced-motion-config.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/reduced-motion/use-reduced-motion-config.mjs" was ignored.[39m
+2026-04-02T23:17:48.8039149Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/animation/hooks/use-animate.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/animation/hooks/use-animate.mjs" was ignored.[39m
+2026-04-02T23:17:48.8044981Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/animation/hooks/use-animate-style.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/animation/hooks/use-animate-style.mjs" was ignored.[39m
+2026-04-02T23:17:48.8049445Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/animation/hooks/use-animation.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/animation/hooks/use-animation.mjs" was ignored.[39m
+2026-04-02T23:17:48.8053800Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/AnimatePresence/use-presence.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/AnimatePresence/use-presence.mjs" was ignored.[39m
+2026-04-02T23:17:48.8058310Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/AnimatePresence/use-presence-data.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/AnimatePresence/use-presence-data.mjs" was ignored.[39m
+2026-04-02T23:17:48.8062135Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/events/use-dom-event.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/events/use-dom-event.mjs" was ignored.[39m
+2026-04-02T23:17:48.8078982Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-animation-frame.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-animation-frame.mjs" was ignored.[39m
+2026-04-02T23:17:48.8083355Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-cycle.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-cycle.mjs" was ignored.[39m
+2026-04-02T23:17:48.8087622Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-in-view.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-in-view.mjs" was ignored.[39m
+2026-04-02T23:17:48.8093820Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-page-in-view.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-page-in-view.mjs" was ignored.[39m
+2026-04-02T23:17:48.8097047Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-instant-transition.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-instant-transition.mjs" was ignored.[39m
+2026-04-02T23:17:48.8102737Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/LayoutGroupContext.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/LayoutGroupContext.mjs" was ignored.[39m
+2026-04-02T23:17:48.8114276Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/MotionConfigContext.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/MotionConfigContext.mjs" was ignored.[39m
+2026-04-02T23:17:48.8118685Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/MotionContext/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/MotionContext/index.mjs" was ignored.[39m
+2026-04-02T23:17:48.8123029Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/PresenceContext.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/PresenceContext.mjs" was ignored.[39m
+2026-04-02T23:17:48.8127565Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/SwitchLayoutGroupContext.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/SwitchLayoutGroupContext.mjs" was ignored.[39m
+2026-04-02T23:17:48.8132043Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/animation/hooks/use-animated-state.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/animation/hooks/use-animated-state.mjs" was ignored.[39m
+2026-04-02T23:17:48.8173113Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/AnimateSharedLayout.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/AnimateSharedLayout.mjs" was ignored.[39m
+2026-04-02T23:17:48.8177677Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-inverted-scale.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-inverted-scale.mjs" was ignored.[39m
+2026-04-02T23:17:48.8182140Z [33m[1m23:17:48[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/DeprecatedLayoutGroupContext.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/DeprecatedLayoutGroupContext.mjs" was ignored.[39m
+2026-04-02T23:17:49.1528796Z [33m[1m23:17:49[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/reduced-motion/use-reduced-motion.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/reduced-motion/use-reduced-motion.mjs" was ignored.[39m
+2026-04-02T23:17:49.1548766Z [33m[1m23:17:49[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/AnimatePresence/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/AnimatePresence/index.mjs" was ignored.[39m
+2026-04-02T23:17:50.0575775Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-accordion/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-accordion/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:50.0644227Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-constant.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-constant.mjs" was ignored.[39m
+2026-04-02T23:17:50.0893058Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/LazyContext.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/LazyContext.mjs" was ignored.[39m
+2026-04-02T23:17:50.1742916Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/utils/use-is-mounted.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/utils/use-is-mounted.mjs" was ignored.[39m
+2026-04-02T23:17:50.1760344Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-combine-values.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-combine-values.mjs" was ignored.[39m
+2026-04-02T23:17:50.1765302Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/value/use-computed.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/value/use-computed.mjs" was ignored.[39m
+2026-04-02T23:17:50.1806299Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/Reorder/Group.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/Reorder/Group.mjs" was ignored.[39m
+2026-04-02T23:17:50.1816527Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/components/Reorder/Item.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/components/Reorder/Item.mjs" was ignored.[39m
+2026-04-02T23:17:50.4451251Z [33m[1m23:17:50[22m [WARN] [vite][39m [33msrc/components/playground/examples/word-example/word-toolbar.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:50.4454695Z [33m[1m23:17:50[22m [WARN] [vite][39m [33msrc/components/playground/examples/word-example/word-toolbar.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/playground/examples/word-example/word-toolbar.tsx" was ignored.[39m
+2026-04-02T23:17:50.4571268Z [33m[1m23:17:50[22m [WARN] [vite][39m [33msrc/components/ui/dialog.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:50.4572889Z [33m[1m23:17:50[22m [WARN] [vite][39m [33msrc/components/ui/dialog.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/dialog.tsx" was ignored.[39m
+2026-04-02T23:17:50.4611027Z [33m[1m23:17:50[22m [WARN] [vite][39m [33msrc/components/ui/scroll-area.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:50.4612969Z [33m[1m23:17:50[22m [WARN] [vite][39m [33msrc/components/ui/scroll-area.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/scroll-area.tsx" was ignored.[39m
+2026-04-02T23:17:50.9286540Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-collection/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-collection/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:50.9337713Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-collapsible/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-collapsible/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:50.9587908Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/ReorderContext.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/ReorderContext.mjs" was ignored.[39m
+2026-04-02T23:17:50.9592314Z [33m[1m23:17:50[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/motion/features/layout/MeasureLayout.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/motion/features/layout/MeasureLayout.mjs" was ignored.[39m
+2026-04-02T23:17:51.3015999Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-dialog/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-dialog/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.3078848Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-scroll-area/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-scroll-area/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.3392225Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/motion/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/motion/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.3413825Z [33m[1m23:17:51[22m [WARN] [vite][39m [33msrc/components/ui/separator.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:51.3416645Z [33m[1m23:17:51[22m [WARN] [vite][39m [33msrc/components/ui/separator.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/separator.tsx" was ignored.[39m
+2026-04-02T23:17:51.3427909Z [33m[1m23:17:51[22m [WARN] [vite][39m [33msrc/components/ui/popover.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:51.3430604Z [33m[1m23:17:51[22m [WARN] [vite][39m [33msrc/components/ui/popover.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/popover.tsx" was ignored.[39m
+2026-04-02T23:17:51.3439673Z [33m[1m23:17:51[22m [WARN] [vite][39m [33msrc/components/ui/dropdown-menu.tsx (1:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m
+2026-04-02T23:17:51.3441981Z [33m[1m23:17:51[22m [WARN] [vite][39m [33msrc/components/ui/dropdown-menu.tsx (1:0): Module level directives cause errors when bundled, "use client" in "src/components/ui/dropdown-menu.tsx" was ignored.[39m
+2026-04-02T23:17:51.3893583Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-presence/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-presence/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.4984547Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-portal/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-portal/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.4990239Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-dismissable-layer/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-dismissable-layer/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.5009900Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-focus-guards/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-focus-guards/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.5014800Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-focus-scope/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-focus-scope/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.5113251Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/render/dom/use-render.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/render/dom/use-render.mjs" was ignored.[39m
+2026-04-02T23:17:51.5120217Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/context/MotionContext/create.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/context/MotionContext/create.mjs" was ignored.[39m
+2026-04-02T23:17:51.5124992Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/render/html/use-html-visual-state.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/render/html/use-html-visual-state.mjs" was ignored.[39m
+2026-04-02T23:17:51.5129473Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/render/svg/use-svg-visual-state.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/render/svg/use-svg-visual-state.mjs" was ignored.[39m
+2026-04-02T23:17:51.5133836Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/motion/utils/use-motion-ref.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/motion/utils/use-motion-ref.mjs" was ignored.[39m
+2026-04-02T23:17:51.5225178Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/motion/utils/use-visual-element.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/motion/utils/use-visual-element.mjs" was ignored.[39m
+2026-04-02T23:17:51.5233685Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-popover/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-popover/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.5257376Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-dropdown-menu/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-dropdown-menu/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.6008656Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/render/html/use-props.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/render/html/use-props.mjs" was ignored.[39m
+2026-04-02T23:17:51.6014837Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/framer-motion/dist/es/render/svg/use-props.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/framer-motion/dist/es/render/svg/use-props.mjs" was ignored.[39m
+2026-04-02T23:17:51.6031316Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-popper/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-popper/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.6061397Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-menu/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-menu/dist/index.mjs" was ignored.[39m
+2026-04-02T23:17:51.8829659Z [33m[1m23:17:51[22m [WARN] [vite][39m [33mnode_modules/@radix-ui/react-roving-focus/dist/index.mjs (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/@radix-ui/react-roving-focus/dist/index.mjs" was ignored.[39m
+2026-04-02T23:18:03.1223412Z [2m23:18:03[22m [34m[vite][39m [32m✓[39m 4352 modules transformed.
+2026-04-02T23:18:04.2724956Z [2m23:18:04[22m [34m[vite][39m rendering chunks...
+2026-04-02T23:18:06.4901747Z [2m23:18:06[22m [34m[vite][39m computing gzip size...
+2026-04-02T23:18:07.3107174Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[32mhero-bg.yhF7D-BM.jpg                                                 [39m[1m[2m   305.56 kB[22m[1m[22m
+2026-04-02T23:18:07.3109758Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[35mDiffWorkbench.Bl7fGal7.css                                           [39m[1m[2m    10.35 kB[22m[1m[22m[2m │ gzip:     2.54 kB[22m
+2026-04-02T23:18:07.3112853Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mAnalyticsBootstrap.astro_astro_type_script_index_0_lang.XyxvF2BO.js  [39m[1m[2m     0.04 kB[22m[1m[22m[2m │ gzip:     0.06 kB[22m
+2026-04-02T23:18:07.3116029Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36msprite-detector.astro_astro_type_script_index_1_lang.qm5uya5Z.js     [39m[1m[2m     0.07 kB[22m[1m[22m[2m │ gzip:     0.08 kB[22m
+2026-04-02T23:18:07.3118744Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mclone.DMgLp3tO.js                                                    [39m[1m[2m     0.10 kB[22m[1m[22m[2m │ gzip:     0.11 kB[22m
+2026-04-02T23:18:07.3121230Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36minit.Gi6I4Gst.js                                                     [39m[1m[2m     0.15 kB[22m[1m[22m[2m │ gzip:     0.13 kB[22m
+2026-04-02T23:18:07.3123756Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchannel.D3RtBLa8.js                                                  [39m[1m[2m     0.15 kB[22m[1m[22m[2m │ gzip:     0.15 kB[22m
+2026-04-02T23:18:07.3126487Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36massets.BW3JzPfI.js                                                   [39m[1m[2m     0.20 kB[22m[1m[22m[2m │ gzip:     0.16 kB[22m
+2026-04-02T23:18:07.3129028Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchunk-QZHKN3VN.Bc6t8cUx.js                                           [39m[1m[2m     0.24 kB[22m[1m[22m[2m │ gzip:     0.19 kB[22m
+2026-04-02T23:18:07.3131621Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchunk-4BX2VUAB.DNns-cPx.js                                           [39m[1m[2m     0.27 kB[22m[1m[22m[2m │ gzip:     0.20 kB[22m
+2026-04-02T23:18:07.3134408Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchunk-55IACEB6.CUfkL7CB.js                                           [39m[1m[2m     0.28 kB[22m[1m[22m[2m │ gzip:     0.24 kB[22m
+2026-04-02T23:18:07.3136967Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mcheck.B2ldjww6.js                                                    [39m[1m[2m     0.30 kB[22m[1m[22m[2m │ gzip:     0.25 kB[22m
+2026-04-02T23:18:07.3139073Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchevron-up.C3IDkumM.js                                               [39m[1m[2m     0.31 kB[22m[1m[22m[2m │ gzip:     0.25 kB[22m
+2026-04-02T23:18:07.3141490Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchevron-down.BaaPnbpp.js                                             [39m[1m[2m     0.31 kB[22m[1m[22m[2m │ gzip:     0.25 kB[22m
+2026-04-02T23:18:07.3143912Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchevron-right.BW_5c2kC.js                                            [39m[1m[2m     0.31 kB[22m[1m[22m[2m │ gzip:     0.25 kB[22m
+2026-04-02T23:18:07.3146621Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mx.CdJrJDSs.js                                                        [39m[1m[2m     0.34 kB[22m[1m[22m[2m │ gzip:     0.26 kB[22m
+2026-04-02T23:18:07.3149087Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mrotate-ccw.C--YkPiD.js                                               [39m[1m[2m     0.38 kB[22m[1m[22m[2m │ gzip:     0.29 kB[22m
+2026-04-02T23:18:07.3152137Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mmail.EmR8nfqE.js                                                     [39m[1m[2m     0.40 kB[22m[1m[22m[2m │ gzip:     0.31 kB[22m
+2026-04-02T23:18:07.3154976Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchunk-FMBD7UC4.D9rzTWhF.js                                           [39m[1m[2m     0.41 kB[22m[1m[22m[2m │ gzip:     0.30 kB[22m
+2026-04-02T23:18:07.3157806Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mcopy.Ibj-H21q.js                                                     [39m[1m[2m     0.42 kB[22m[1m[22m[2m │ gzip:     0.32 kB[22m
+2026-04-02T23:18:07.3160331Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mdownload.CbIuUNKa.js                                                 [39m[1m[2m     0.42 kB[22m[1m[22m[2m │ gzip:     0.30 kB[22m
+2026-04-02T23:18:07.3162951Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36marrow-left-right.JBJ2bK2l.js                                         [39m[1m[2m     0.43 kB[22m[1m[22m[2m │ gzip:     0.31 kB[22m
+2026-04-02T23:18:07.3165906Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mcircle-alert.CjCMTp44.js                                             [39m[1m[2m     0.43 kB[22m[1m[22m[2m │ gzip:     0.30 kB[22m
+2026-04-02T23:18:07.3168465Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mexternal-link.DVvqEATU.js                                            [39m[1m[2m     0.44 kB[22m[1m[22m[2m │ gzip:     0.31 kB[22m
+2026-04-02T23:18:07.3171120Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mstateDiagram-v2-FVOUBMTO.D4C7HYES.js                                 [39m[1m[2m     0.48 kB[22m[1m[22m[2m │ gzip:     0.34 kB[22m
+2026-04-02T23:18:07.3173750Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mtrash-2.CS7VrgDx.js                                                  [39m[1m[2m     0.51 kB[22m[1m[22m[2m │ gzip:     0.32 kB[22m
+2026-04-02T23:18:07.3176527Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchunk-KX2RTZJC.C9DdNcrY.js                                           [39m[1m[2m     0.55 kB[22m[1m[22m[2m │ gzip:     0.39 kB[22m
+2026-04-02T23:18:07.3179036Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mclassDiagram-VBA2DB6C.CWMr2oRe.js                                    [39m[1m[2m     0.56 kB[22m[1m[22m[2m │ gzip:     0.37 kB[22m
+2026-04-02T23:18:07.3181629Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mclassDiagram-v2-RAHNMMFH.CWMr2oRe.js                                 [39m[1m[2m     0.56 kB[22m[1m[22m[2m │ gzip:     0.37 kB[22m
+2026-04-02T23:18:07.3184566Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mmessage-circle.B_Agn9E9.js                                           [39m[1m[2m     0.71 kB[22m[1m[22m[2m │ gzip:     0.39 kB[22m
+2026-04-02T23:18:07.3187169Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mjsx-runtime.D_zvdyIk.js                                              [39m[1m[2m     0.73 kB[22m[1m[22m[2m │ gzip:     0.46 kB[22m
+2026-04-02T23:18:07.3189716Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36m_commonjsHelpers.D6-XlEtG.js                                         [39m[1m[2m     0.73 kB[22m[1m[22m[2m │ gzip:     0.39 kB[22m
+2026-04-02T23:18:07.3192277Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36minfoDiagram-LFFYTUFH.ieQzjnnm.js                                     [39m[1m[2m     0.76 kB[22m[1m[22m[2m │ gzip:     0.50 kB[22m
+2026-04-02T23:18:07.3195231Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mgit-commit-horizontal.bUjWvJep.js                                    [39m[1m[2m     0.84 kB[22m[1m[22m[2m │ gzip:     0.41 kB[22m
+2026-04-02T23:18:07.3198178Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mfile-up.Bq_KDZ7V.js                                                  [39m[1m[2m     0.94 kB[22m[1m[22m[2m │ gzip:     0.46 kB[22m
+2026-04-02T23:18:07.3200683Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mlinkedin.CqtmbWNS.js                                                 [39m[1m[2m     1.00 kB[22m[1m[22m[2m │ gzip:     0.53 kB[22m
+2026-04-02T23:18:07.3203421Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mpreload-helper.BlTxHScW.js                                           [39m[1m[2m     1.11 kB[22m[1m[22m[2m │ gzip:     0.65 kB[22m
+2026-04-02T23:18:07.3206087Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mordinal.BYWQX77i.js                                                  [39m[1m[2m     1.19 kB[22m[1m[22m[2m │ gzip:     0.57 kB[22m
+2026-04-02T23:18:07.3208743Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36myaml-json.astro_astro_type_script_index_0_lang.C-ND4CWW.js           [39m[1m[2m     1.63 kB[22m[1m[22m[2m │ gzip:     0.70 kB[22m
+2026-04-02T23:18:07.3211564Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36msparkles.BxbqMuoH.js                                                 [39m[1m[2m     1.91 kB[22m[1m[22m[2m │ gzip:     0.69 kB[22m
+2026-04-02T23:18:07.3213927Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchunk-JSJVCQXG.Cpao8sK3.js                                           [39m[1m[2m     1.92 kB[22m[1m[22m[2m │ gzip:     0.86 kB[22m
+2026-04-02T23:18:07.3216726Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mcreateLucideIcon.CnZ3-b_d.js                                         [39m[1m[2m     2.33 kB[22m[1m[22m[2m │ gzip:     1.07 kB[22m
+2026-04-02T23:18:07.3219005Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mBlogShareSection.BxwEGIa1.js                                         [39m[1m[2m     2.45 kB[22m[1m[22m[2m │ gzip:     0.98 kB[22m
+2026-04-02T23:18:07.3221484Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36m_basePickBy.2YeTlFoq.js                                              [39m[1m[2m     2.63 kB[22m[1m[22m[2m │ gzip:     1.32 kB[22m
+2026-04-02T23:18:07.3223965Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36marc.fqmrhLM4.js                                                      [39m[1m[2m     3.47 kB[22m[1m[22m[2m │ gzip:     1.50 kB[22m
+2026-04-02T23:18:07.3226851Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mimage-crop.astro_astro_type_script_index_0_lang.DdeQvXeb.js          [39m[1m[2m     4.11 kB[22m[1m[22m[2m │ gzip:     1.71 kB[22m
+2026-04-02T23:18:07.3229030Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mimage-optimizer.astro_astro_type_script_index_0_lang.K20ZK0aW.js     [39m[1m[2m     4.29 kB[22m[1m[22m[2m │ gzip:     1.91 kB[22m
+2026-04-02T23:18:07.3230683Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mdiagram-P4PSJMXO.BV9nrLeO.js                                         [39m[1m[2m     4.40 kB[22m[1m[22m[2m │ gzip:     1.94 kB[22m
+2026-04-02T23:18:07.3232865Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mdefaultLocale.DX6XiGOO.js                                            [39m[1m[2m     4.69 kB[22m[1m[22m[2m │ gzip:     2.18 kB[22m
+2026-04-02T23:18:07.3235401Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mimage-resize.astro_astro_type_script_index_0_lang.M09JCsik.js        [39m[1m[2m     4.76 kB[22m[1m[22m[2m │ gzip:     2.03 kB[22m
+2026-04-02T23:18:07.3237616Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36msprite-splitter.astro_astro_type_script_index_0_lang.q3Gugd9Q.js     [39m[1m[2m     4.77 kB[22m[1m[22m[2m │ gzip:     2.12 kB[22m
+2026-04-02T23:18:07.3239991Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mbase64-converter.astro_astro_type_script_index_0_lang.BT8iQhZT.js    [39m[1m[2m     5.29 kB[22m[1m[22m[2m │ gzip:     1.93 kB[22m
+2026-04-02T23:18:07.3243195Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mpieDiagram-SKSYHLDU.CDrZBKYT.js                                      [39m[1m[2m     5.33 kB[22m[1m[22m[2m │ gzip:     2.38 kB[22m
+2026-04-02T23:18:07.3246245Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mlinear.B_WHfTW5.js                                                   [39m[1m[2m     5.70 kB[22m[1m[22m[2m │ gzip:     2.34 kB[22m
+2026-04-02T23:18:07.3248045Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mgraph.BQ3g6o9F.js                                                    [39m[1m[2m     5.96 kB[22m[1m[22m[2m │ gzip:     1.90 kB[22m
+2026-04-02T23:18:07.3250091Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mdiagram-IFDJBPK2.Db_ZFaS5.js                                         [39m[1m[2m     6.00 kB[22m[1m[22m[2m │ gzip:     2.56 kB[22m
+2026-04-02T23:18:07.3251909Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36manalytics.BnNaJtsz.js                                                [39m[1m[2m     6.05 kB[22m[1m[22m[2m │ gzip:     2.12 kB[22m
+2026-04-02T23:18:07.3253740Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mhttp-status.astro_astro_type_script_index_0_lang.Bo6qSG-m.js         [39m[1m[2m     6.69 kB[22m[1m[22m[2m │ gzip:     2.79 kB[22m
+2026-04-02T23:18:07.3256224Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mjwt-inspector.astro_astro_type_script_index_0_lang.CAvcZDNe.js       [39m[1m[2m     6.75 kB[22m[1m[22m[2m │ gzip:     2.83 kB[22m
+2026-04-02T23:18:07.3258155Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mcron-parser.astro_astro_type_script_index_0_lang.kAqhxiUS.js         [39m[1m[2m     6.94 kB[22m[1m[22m[2m │ gzip:     2.67 kB[22m
+2026-04-02T23:18:07.3259924Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mNavbar.DyaMp3uT.js                                                   [39m[1m[2m     7.01 kB[22m[1m[22m[2m │ gzip:     2.93 kB[22m
+2026-04-02T23:18:07.3262440Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36msprite-detector.astro_astro_type_script_index_0_lang.DoA9qd-P.js     [39m[1m[2m     7.19 kB[22m[1m[22m[2m │ gzip:     3.11 kB[22m
+2026-04-02T23:18:07.3265743Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mprompt-optimizer.astro_astro_type_script_index_0_lang.CvvZSkMw.js    [39m[1m[2m     7.43 kB[22m[1m[22m[2m │ gzip:     3.09 kB[22m
+2026-04-02T23:18:07.3268494Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mindex.DMNe2g_Q.js                                                    [39m[1m[2m     7.83 kB[22m[1m[22m[2m │ gzip:     3.04 kB[22m
+2026-04-02T23:18:07.3271029Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mFAQSection.BnitPFbk.js                                               [39m[1m[2m     7.88 kB[22m[1m[22m[2m │ gzip:     2.93 kB[22m
+2026-04-02T23:18:07.3273711Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mstateDiagram-RAJIS63D.BxbiA1n5.js                                    [39m[1m[2m    10.48 kB[22m[1m[22m[2m │ gzip:     3.70 kB[22m
+2026-04-02T23:18:07.3276673Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mdagre-KLK3FWXG.C7D5coIz.js                                           [39m[1m[2m    11.09 kB[22m[1m[22m[2m │ gzip:     4.16 kB[22m
+2026-04-02T23:18:07.3279286Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mContactSection.hj2bQExz.js                                           [39m[1m[2m    11.51 kB[22m[1m[22m[2m │ gzip:     3.51 kB[22m
+2026-04-02T23:18:07.3281397Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36m_baseUniq.DnS4OT_9.js                                                [39m[1m[2m    11.93 kB[22m[1m[22m[2m │ gzip:     4.68 kB[22m
+2026-04-02T23:18:07.3284421Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mAboutPage.CFR7d4fV.js                                                [39m[1m[2m    13.68 kB[22m[1m[22m[2m │ gzip:     4.03 kB[22m
+2026-04-02T23:18:07.3286015Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mTokenCounterWorkbench.C_RK7lKh.js                                    [39m[1m[2m    14.08 kB[22m[1m[22m[2m │ gzip:     3.42 kB[22m
+2026-04-02T23:18:07.3287595Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mLLMCostEstimatorWorkbench.BaQyENx3.js                                [39m[1m[2m    14.24 kB[22m[1m[22m[2m │ gzip:     3.69 kB[22m
+2026-04-02T23:18:07.3289020Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mdiagram-E7M64L7V.DUegLkS6.js                                         [39m[1m[2m    15.95 kB[22m[1m[22m[2m │ gzip:     5.72 kB[22m
+2026-04-02T23:18:07.3290417Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mCommitMessageWorkbench.Dzxp5qBN.js                                   [39m[1m[2m    15.97 kB[22m[1m[22m[2m │ gzip:     3.59 kB[22m
+2026-04-02T23:18:07.3291834Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mishikawaDiagram-PHBUUO56.D3Iy6tnM.js                                 [39m[1m[2m    17.56 kB[22m[1m[22m[2m │ gzip:     6.71 kB[22m
+2026-04-02T23:18:07.3293249Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mAIModelPickerWorkbench.gclZ9q_f.js                                   [39m[1m[2m    19.19 kB[22m[1m[22m[2m │ gzip:     4.83 kB[22m
+2026-04-02T23:18:07.3294970Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mkanban-definition-K7BYSVSG.s9ZIwmsq.js                               [39m[1m[2m    20.33 kB[22m[1m[22m[2m │ gzip:     7.24 kB[22m
+2026-04-02T23:18:07.3296444Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mmindmap-definition-YRQLILUH.DCYPd2-H.js                              [39m[1m[2m    21.04 kB[22m[1m[22m[2m │ gzip:     7.37 kB[22m
+2026-04-02T23:18:07.3297830Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mDisqusComments.CYnBsakk.js                                           [39m[1m[2m    21.72 kB[22m[1m[22m[2m │ gzip:     5.45 kB[22m
+2026-04-02T23:18:07.3299195Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36msankeyDiagram-WA2Y5GQK.bRZgZg4Z.js                                   [39m[1m[2m    22.21 kB[22m[1m[22m[2m │ gzip:     8.18 kB[22m
+2026-04-02T23:18:07.3300590Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mjourneyDiagram-4ABVD52K.C2tcZb6P.js                                  [39m[1m[2m    23.63 kB[22m[1m[22m[2m │ gzip:     8.38 kB[22m
+2026-04-02T23:18:07.3301998Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mtimeline-definition-YZTLITO2.DI-wqvNV.js                             [39m[1m[2m    23.68 kB[22m[1m[22m[2m │ gzip:     8.28 kB[22m
+2026-04-02T23:18:07.3303414Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mgitGraphDiagram-K3NZZRJ6.C7dThOdt.js                                 [39m[1m[2m    24.20 kB[22m[1m[22m[2m │ gzip:     7.50 kB[22m
+2026-04-02T23:18:07.3305089Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mOnlineLintersWorkbench.BqOhqYH9.js                                   [39m[1m[2m    25.20 kB[22m[1m[22m[2m │ gzip:     8.28 kB[22m
+2026-04-02T23:18:07.3306495Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36merDiagram-INFDFZHY.BOD3bV-Q.js                                       [39m[1m[2m    26.03 kB[22m[1m[22m[2m │ gzip:     9.08 kB[22m
+2026-04-02T23:18:07.3307883Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mPersonaPickerWorkbench.BTP4skKG.js                                   [39m[1m[2m    26.65 kB[22m[1m[22m[2m │ gzip:     7.87 kB[22m
+2026-04-02T23:18:07.3309362Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mlayout.B6RPsppQ.js                                                   [39m[1m[2m    27.43 kB[22m[1m[22m[2m │ gzip:     9.75 kB[22m
+2026-04-02T23:18:07.3310735Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mrequirementDiagram-Z7DCOOCP.BfXlJdKv.js                              [39m[1m[2m    30.38 kB[22m[1m[22m[2m │ gzip:     9.51 kB[22m
+2026-04-02T23:18:07.3312257Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mquadrantDiagram-337W2JSQ.CrPx7ybb.js                                 [39m[1m[2m    33.93 kB[22m[1m[22m[2m │ gzip:     9.99 kB[22m
+2026-04-02T23:18:07.3313612Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchunk-NQ4KR5QH.CXUw_yyF.js                                           [39m[1m[2m    36.44 kB[22m[1m[22m[2m │ gzip:    11.88 kB[22m
+2026-04-02T23:18:07.3315196Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mjs-yaml.NcNt3w3V.js                                                  [39m[1m[2m    39.83 kB[22m[1m[22m[2m │ gzip:    13.50 kB[22m
+2026-04-02T23:18:07.3316480Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mutils.BP6__Ttv.js                                                    [39m[1m[2m    40.09 kB[22m[1m[22m[2m │ gzip:    12.96 kB[22m
+2026-04-02T23:18:07.3317804Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mxychartDiagram-JWTSCODW._haV_9ve.js                                  [39m[1m[2m    40.27 kB[22m[1m[22m[2m │ gzip:    11.40 kB[22m
+2026-04-02T23:18:07.3319548Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mvennDiagram-LZ73GAT5.DTTJR74V.js                                     [39m[1m[2m    41.52 kB[22m[1m[22m[2m │ gzip:    15.53 kB[22m
+2026-04-02T23:18:07.3322026Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mHomePage.CpMmHGEA.js                                                 [39m[1m[2m    44.99 kB[22m[1m[22m[2m │ gzip:    12.41 kB[22m
+2026-04-02T23:18:07.3324586Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mDiffWorkbench.CIwjMnZP.js                                            [39m[1m[2m    46.09 kB[22m[1m[22m[2m │ gzip:    15.14 kB[22m
+2026-04-02T23:18:07.3325962Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mchunk-WL4C6EOR.DaFNsS6x.js                                           [39m[1m[2m    46.33 kB[22m[1m[22m[2m │ gzip:    14.94 kB[22m
+2026-04-02T23:18:07.3328065Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mflowDiagram-PKNHOUZH.CAhzWLqJ.js                                     [39m[1m[2m    60.95 kB[22m[1m[22m[2m │ gzip:    19.55 kB[22m
+2026-04-02T23:18:07.3330642Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mganttDiagram-A5KZAMGK.bb1Z0aVh.js                                    [39m[1m[2m    69.34 kB[22m[1m[22m[2m │ gzip:    23.40 kB[22m
+2026-04-02T23:18:07.3333496Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mc4Diagram-IC4MRINW.CaqBqobQ.js                                       [39m[1m[2m    70.23 kB[22m[1m[22m[2m │ gzip:    19.73 kB[22m
+2026-04-02T23:18:07.3335380Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mblockDiagram-WCTKOSBZ.B5nVnJtq.js                                    [39m[1m[2m    70.82 kB[22m[1m[22m[2m │ gzip:    20.22 kB[22m
+2026-04-02T23:18:07.3336878Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mhash-generator.astro_astro_type_script_index_0_lang.DOciZ4r6.js      [39m[1m[2m    71.61 kB[22m[1m[22m[2m │ gzip:    27.04 kB[22m
+2026-04-02T23:18:07.3339139Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mcose-bilkent-S5V4N54A.B6indVc8.js                                    [39m[1m[2m    81.79 kB[22m[1m[22m[2m │ gzip:    22.53 kB[22m
+2026-04-02T23:18:07.3342206Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36msequenceDiagram-2WXFIKYE.BghvrjuI.js                                 [39m[1m[2m   111.33 kB[22m[1m[22m[2m │ gzip:    29.35 kB[22m
+2026-04-02T23:18:07.3345197Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mproxy.CKEQ-XWL.js                                                    [39m[1m[2m   118.89 kB[22m[1m[22m[2m │ gzip:    39.00 kB[22m
+2026-04-02T23:18:07.3348192Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36marchitectureDiagram-2XIMDMQ5.Do49Jlpv.js                             [39m[1m[2m   149.20 kB[22m[1m[22m[2m │ gzip:    42.15 kB[22m
+2026-04-02T23:18:07.3350956Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mkatex.bUPn0yR0.js                                                    [39m[1m[2m   258.67 kB[22m[1m[22m[2m │ gzip:    76.89 kB[22m
+2026-04-02T23:18:07.3353558Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mcytoscape.esm.DtBltrT8.js                                            [39m[1m[2m   442.41 kB[22m[1m[22m[2m │ gzip:   141.91 kB[22m
+2026-04-02T23:18:07.3356529Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mtreemap-KZPCXAKY.DMd7WPtn.js                                         [39m[1m[2m   453.34 kB[22m[1m[22m[2m │ gzip:   107.28 kB[22m
+2026-04-02T23:18:07.3359445Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mMermaidRenderer.astro_astro_type_script_index_0_lang.8ur_ZP55.js     [39m[1m[2m   490.65 kB[22m[1m[22m[2m │ gzip:   137.22 kB[22m
+2026-04-02T23:18:07.3362271Z [2m23:18:07[22m [34m[vite][39m [2mdist/[22m[2m_astro/[22m[36mword-editor.r-Urns5k.js                                              [39m[1m[33m13,222.66 kB[39m[22m[2m │ gzip: 2,719.28 kB[22m
+2026-04-02T23:18:07.3363638Z [33m[1m23:18:07[22m [WARN] [vite][39m [33m
+2026-04-02T23:18:07.3364664Z (!) Some chunks are larger than 500 kB after minification. Consider:
+2026-04-02T23:18:07.3365473Z - Using dynamic import() to code-split the application
+2026-04-02T23:18:07.3366916Z - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+2026-04-02T23:18:07.3368551Z - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+2026-04-02T23:18:07.3369633Z [2m23:18:07[22m [34m[vite][39m [32m✓ built in 21.09s[39m
+2026-04-02T23:18:07.3370058Z 
+2026-04-02T23:18:07.3370436Z [42m[30m generating static routes [39m[49m
+2026-04-02T23:18:07.7095415Z [2m23:18:07[22m [32m▶[39m src/pages/about.astro
+2026-04-02T23:18:07.7184416Z [31m[MiddlewareNoDataOrNextCalled][39m Make sure your middleware returns a `Response` object, either directly or by returning the `Response` from calling the `next` function.
+2026-04-02T23:18:07.7185951Z   [1mError reference:[22m
+2026-04-02T23:18:07.7186887Z     [36m[4mhttps://docs.astro.build/en/reference/errors/middleware-no-data-or-next-called/[24m[39m
+2026-04-02T23:18:07.7187422Z   [1mLocation:[22m
+2026-04-02T23:18:07.7188111Z     [4m/home/runner/work/huntermussel/huntermussel/node_modules/astro/dist/core/middleware/callMiddleware.js:26:13[24m
+2026-04-02T23:18:07.7188710Z   [1mStack trace:[22m
+2026-04-02T23:18:07.7189499Z [2m    at file:///home/runner/work/huntermussel/huntermussel/node_modules/astro/dist/core/middleware/callMiddleware.js:26:13
+2026-04-02T23:18:07.7190546Z     at async RenderContext.render (file:///home/runner/work/huntermussel/huntermussel/node_modules/astro/dist/core/render-context.js:249:22)
+2026-04-02T23:18:07.7191612Z     at async generatePathWithLogs (file:///home/runner/work/huntermussel/huntermussel/node_modules/astro/dist/core/build/generate.js:159:21)
+2026-04-02T23:18:07.7192644Z     at async generatePages (file:///home/runner/work/huntermussel/huntermussel/node_modules/astro/dist/core/build/generate.js:99:7)
+2026-04-02T23:18:07.7193752Z     at async AstroBuilder.build (file:///home/runner/work/huntermussel/huntermussel/node_modules/astro/dist/core/build/index.js:157:5)[22m
+2026-04-02T23:18:07.8577721Z [2m23:18:07[22m   [34m└─[39m [2m/about/index.html[22m
+2026-04-02T23:18:07.8589739Z ##[error]Process completed with exit code 1.
+2026-04-02T23:18:07.8699136Z Post job cleanup.
+2026-04-02T23:18:07.9413474Z [command]/usr/bin/git version
+2026-04-02T23:18:07.9447214Z git version 2.53.0
+2026-04-02T23:18:07.9490194Z Temporarily overriding HOME='/home/runner/work/_temp/90d750a7-3e50-4fdc-ac75-4e814752380e' before making global git config changes
+2026-04-02T23:18:07.9492139Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-02T23:18:07.9494171Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/huntermussel/huntermussel
+2026-04-02T23:18:07.9523260Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-02T23:18:07.9550739Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-02T23:18:07.9764271Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-02T23:18:07.9783095Z http.https://github.com/.extraheader
+2026-04-02T23:18:07.9793939Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-04-02T23:18:07.9821463Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-02T23:18:08.0131998Z Cleaning up orphan processes
+2026-04-02T23:18:08.0528960Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v3, actions/setup-node@v3. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
