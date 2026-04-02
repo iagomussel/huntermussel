@@ -1,0 +1,57 @@
+﻿2026-04-02T23:17:24.6707953Z ##[group]Run npm ci
+2026-04-02T23:17:24.6709193Z [36;1mnpm ci[0m
+2026-04-02T23:17:24.6750519Z shell: /usr/bin/bash -e {0}
+2026-04-02T23:17:24.6751607Z ##[endgroup]
+2026-04-02T23:17:26.0356978Z npm warn ERESOLVE overriding peer dependency
+2026-04-02T23:17:26.0357995Z npm warn While resolving: lucide-react@0.378.0
+2026-04-02T23:17:26.0358567Z npm warn Found: react@19.2.4
+2026-04-02T23:17:26.0359037Z npm warn node_modules/react
+2026-04-02T23:17:26.0359586Z npm warn   react@"^19.2.4" from the root project
+2026-04-02T23:17:26.0360437Z npm warn   132 more (@alexbruf/react-diff-viewer, @astrojs/react, ...)
+2026-04-02T23:17:26.0361032Z npm warn
+2026-04-02T23:17:26.0361504Z npm warn Could not resolve dependency:
+2026-04-02T23:17:26.0362134Z npm warn peer react@"^16.5.1 || ^17.0.0 || ^18.0.0" from lucide-react@0.378.0
+2026-04-02T23:17:26.0362738Z npm warn node_modules/@yoopta/themes-shadcn/node_modules/lucide-react
+2026-04-02T23:17:26.0363309Z npm warn   lucide-react@"^0.378.0" from @yoopta/themes-shadcn@6.0.0-beta.22
+2026-04-02T23:17:26.0363867Z npm warn   node_modules/@yoopta/themes-shadcn
+2026-04-02T23:17:26.0364327Z npm warn
+2026-04-02T23:17:26.0364637Z npm warn Conflicting peer dependency: react@18.3.1
+2026-04-02T23:17:26.0364983Z npm warn node_modules/react
+2026-04-02T23:17:26.0365437Z npm warn   peer react@"^16.5.1 || ^17.0.0 || ^18.0.0" from lucide-react@0.378.0
+2026-04-02T23:17:26.0365990Z npm warn   node_modules/@yoopta/themes-shadcn/node_modules/lucide-react
+2026-04-02T23:17:26.0366545Z npm warn     lucide-react@"^0.378.0" from @yoopta/themes-shadcn@6.0.0-beta.22
+2026-04-02T23:17:26.0367000Z npm warn     node_modules/@yoopta/themes-shadcn
+2026-04-02T23:17:26.0847501Z npm warn ERESOLVE overriding peer dependency
+2026-04-02T23:17:26.0848343Z npm warn While resolving: lucide-react@0.294.0
+2026-04-02T23:17:26.0849568Z npm warn Found: react@19.2.4
+2026-04-02T23:17:26.0850061Z npm warn node_modules/react
+2026-04-02T23:17:26.0850642Z npm warn   react@"^19.2.4" from the root project
+2026-04-02T23:17:26.0851482Z npm warn   132 more (@alexbruf/react-diff-viewer, @astrojs/react, ...)
+2026-04-02T23:17:26.0852195Z npm warn
+2026-04-02T23:17:26.0852680Z npm warn Could not resolve dependency:
+2026-04-02T23:17:26.0853495Z npm warn peer react@"^16.5.1 || ^17.0.0 || ^18.0.0" from lucide-react@0.294.0
+2026-04-02T23:17:26.0854613Z npm warn node_modules/@yoopta/ui/node_modules/lucide-react
+2026-04-02T23:17:26.0855474Z npm warn   lucide-react@"^0.294.0" from @yoopta/ui@6.0.0-beta.22
+2026-04-02T23:17:26.0856169Z npm warn   node_modules/@yoopta/ui
+2026-04-02T23:17:26.0856588Z npm warn
+2026-04-02T23:17:26.0857093Z npm warn Conflicting peer dependency: react@18.3.1
+2026-04-02T23:17:26.0857659Z npm warn node_modules/react
+2026-04-02T23:17:26.0858415Z npm warn   peer react@"^16.5.1 || ^17.0.0 || ^18.0.0" from lucide-react@0.294.0
+2026-04-02T23:17:26.0859323Z npm warn   node_modules/@yoopta/ui/node_modules/lucide-react
+2026-04-02T23:17:26.0860170Z npm warn     lucide-react@"^0.294.0" from @yoopta/ui@6.0.0-beta.22
+2026-04-02T23:17:26.0860860Z npm warn     node_modules/@yoopta/ui
+2026-04-02T23:17:40.5530634Z 
+2026-04-02T23:17:40.5532647Z added 850 packages, and audited 851 packages in 16s
+2026-04-02T23:17:40.5533414Z 
+2026-04-02T23:17:40.5534273Z 195 packages are looking for funding
+2026-04-02T23:17:40.5534954Z   run `npm fund` for details
+2026-04-02T23:17:40.5662216Z 
+2026-04-02T23:17:40.5663068Z 13 vulnerabilities (1 low, 2 moderate, 10 high)
+2026-04-02T23:17:40.5663489Z 
+2026-04-02T23:17:40.5663883Z To address issues that do not require attention, run:
+2026-04-02T23:17:40.5664688Z   npm audit fix
+2026-04-02T23:17:40.5664920Z 
+2026-04-02T23:17:40.5665350Z To address all issues (including breaking changes), run:
+2026-04-02T23:17:40.5665947Z   npm audit fix --force
+2026-04-02T23:17:40.5666212Z 
+2026-04-02T23:17:40.5666427Z Run `npm audit` for details.

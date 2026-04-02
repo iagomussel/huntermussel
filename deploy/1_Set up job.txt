@@ -1,0 +1,33 @@
+﻿2026-04-02T23:17:22.3990567Z Current runner version: '2.333.1'
+2026-04-02T23:17:22.4027217Z ##[group]Runner Image Provisioner
+2026-04-02T23:17:22.4028702Z Hosted Compute Agent
+2026-04-02T23:17:22.4029936Z Version: 20260213.493
+2026-04-02T23:17:22.4030977Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-04-02T23:17:22.4032403Z Build Date: 2026-02-13T00:28:41Z
+2026-04-02T23:17:22.4033758Z Worker ID: {08a9e2f9-dd3c-4164-808d-a460052663a4}
+2026-04-02T23:17:22.4035262Z Azure Region: northcentralus
+2026-04-02T23:17:22.4036324Z ##[endgroup]
+2026-04-02T23:17:22.4038694Z ##[group]Operating System
+2026-04-02T23:17:22.4039663Z Ubuntu
+2026-04-02T23:17:22.4040567Z 24.04.4
+2026-04-02T23:17:22.4041523Z LTS
+2026-04-02T23:17:22.4042457Z ##[endgroup]
+2026-04-02T23:17:22.4043382Z ##[group]Runner Image
+2026-04-02T23:17:22.4044770Z Image: ubuntu-24.04
+2026-04-02T23:17:22.4045784Z Version: 20260323.65.1
+2026-04-02T23:17:22.4047568Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260323.65/images/ubuntu/Ubuntu2404-Readme.md
+2026-04-02T23:17:22.4050592Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260323.65
+2026-04-02T23:17:22.4052300Z ##[endgroup]
+2026-04-02T23:17:22.4054948Z ##[group]GITHUB_TOKEN Permissions
+2026-04-02T23:17:22.4057866Z Contents: read
+2026-04-02T23:17:22.4058755Z Metadata: read
+2026-04-02T23:17:22.4059297Z Packages: read
+2026-04-02T23:17:22.4059788Z ##[endgroup]
+2026-04-02T23:17:22.4062174Z Secret source: Actions
+2026-04-02T23:17:22.4063109Z Prepare workflow directory
+2026-04-02T23:17:22.4466344Z Prepare all required actions
+2026-04-02T23:17:22.4521567Z Getting action download info
+2026-04-02T23:17:22.8021268Z Download action repository 'actions/checkout@v3' (SHA:f43a0e5ff2bd294095638e18286ca9a3d1956744)
+2026-04-02T23:17:22.9389362Z Download action repository 'actions/setup-node@v3' (SHA:3235b876344d2a9aa001b8d1453c930bba69e610)
+2026-04-02T23:17:23.0342645Z Download action repository 'cloudflare/wrangler-action@v3' (SHA:da0e0dfe58b7a431659754fdf3f186c529afbe65)
+2026-04-02T23:17:23.4475118Z Complete job name: deploy
