@@ -1,0 +1,266 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ArrowRight, Bot, Zap, Workflow, Database, LineChart, Shield } from "lucide-react";
+
+const serviceUrl = "https://huntermussel.com/services/ai-automation/";
+
+const serviceSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "AI Automation Services",
+    description: "Transform your business operations with intelligent automation using AI agents, machine learning, and workflow orchestration.",
+    provider: {
+      "@type": "Organization",
+      name: "HunterMussel",
+      url: "https://huntermussel.com",
+    },
+    areaServed: "Worldwide",
+    serviceType: "AI Automation",
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "AI Automation Services",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "AI Agent Development",
+            description: "Custom AI agents for business process automation"
+          }
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Workflow Automation",
+            description: "Intelligent workflow design and implementation"
+          }
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "LLM Integration",
+            description: "Large Language Model integration and fine-tuning"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://huntermussel.com/" },
+      { "@type": "ListItem", position: 2, name: "Services", item: "https://huntermussel.com/services/" },
+      { "@type": "ListItem", position: 3, name: "AI Automation", item: serviceUrl }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What types of processes can be automated with AI?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "AI automation can handle both rule-based tasks (data entry, report generation, email routing) and judgment-based tasks (customer support, anomaly detection, predictive decisions). We assess each process for AI suitability and ROI potential."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "How long does an AI automation project take?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Typical AI automation projects range from 4-12 weeks depending on complexity. We follow an agile approach with rapid prototyping, allowing you to see value within the first sprint."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Do you integrate with existing systems?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, we integrate with all major CRMs (Salesforce, HubSpot), ERPs, communication tools (Slack, Teams), and custom internal systems through APIs, webhooks, and middleware solutions."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout
+  title="AI Automation Services"
+  description="Transform your business with AI-powered automation. HunterMussel delivers custom AI agents, workflow orchestration, and intelligent process automation for enterprises."
+  canonicalUrl={serviceUrl}
+  keywords={[
+    "ai automation services",
+    "artificial intelligence automation",
+    "ai agent development",
+    "workflow automation company",
+    "llm integration services",
+    "RPA alternative ai",
+    "intelligent process automation",
+    "ai chatbot development",
+    "business process automation",
+    "AI integration company"
+  ]}
+  schema={serviceSchema}
+  pageData={{ pageType: 'service_detail', serviceType: 'ai-automation' }}
+>
+  <div class="min-h-screen bg-background">
+    <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
+
+    <main class="container relative z-10 px-6 pt-32 pb-24">
+      <!-- Hero Section -->
+      <header class="mb-20 text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 mb-6">
+          <Bot className="w-5 h-5 text-primary" />
+          <span class="text-sm font-medium text-primary">AI Automation Services</span>
+        </div>
+        <h1 class="font-heading text-4xl font-bold tracking-tight md:text-6xl mb-6">
+          Intelligent Automation for <span class="gradient-text">Modern Enterprises</span>
+        </h1>
+        <p class="mx-auto max-w-3xl font-body text-xl text-muted-foreground leading-relaxed">
+          Move beyond basic RPA. We build AI-powered systems that learn, adapt, and make decisions — transforming how your business operates at scale.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <a href="/contact/" class="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-heading font-semibold text-white transition-all hover:bg-primary/90">
+            Start Your AI Project <ArrowRight className="w-4 h-4" />
+          </a>
+          <a href="/cases/" class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 font-heading font-semibold transition-all hover:border-primary/40">
+            View Case Studies
+          </a>
+        </div>
+      </header>
+
+      <!-- Capabilities Grid -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">Core Capabilities</h2>
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Bot className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">AI Agent Development</h3>
+            <p class="text-muted-foreground">
+              Custom AI agents that understand context, make decisions, and autonomously handle complex business tasks — from customer service to data analysis.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Workflow className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Workflow Orchestration</h3>
+            <p class="text-muted-foreground">
+              Design and implement multi-step workflows that coordinate between humans, AI models, and existing systems with error handling and retry logic.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Zap className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Process Optimization</h3>
+            <p class="text-muted-foreground">
+              Analyze existing processes, identify bottlenecks, and redesign them with AI capabilities for 10x efficiency improvements.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Database className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">RAG & Knowledge Systems</h3>
+            <p class="text-muted-foreground">
+              Build retrieval-augmented generation systems that give your AI access to your proprietary data for accurate, context-aware responses.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <LineChart className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Predictive Analytics</h3>
+            <p class="text-muted-foreground">
+              Implement ML models for demand forecasting, risk assessment, and anomaly detection that enable proactive business decisions.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Shield className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">AI Governance & Safety</h3>
+            <p class="text-muted-foreground">
+              Implement human-in-the-loop systems, output monitoring, and compliance safeguards for responsible AI deployment.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tech Stack -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">Technology Stack</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+          {['LangChain', 'AutoGen', 'CrewAI', 'n8n', 'TensorFlow', 'PyTorch', 'Pinecone', 'OpenAI API', 'Claude API', 'Custom LLMs'].map((tech) => (
+            <span class="rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="max-w-3xl mx-auto">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-6">
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              What types of processes can be automated with AI?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              AI automation can handle both rule-based tasks (data entry, report generation, email routing) and judgment-based tasks (customer support, anomaly detection, predictive decisions). We assess each process for AI suitability and ROI potential before implementation.
+            </div>
+          </details>
+
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              How long does an AI automation project take?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              Typical AI automation projects range from 4-12 weeks depending on complexity. We follow an agile approach with rapid prototyping, allowing you to see value within the first sprint.
+            </div>
+          </details>
+
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              Do you integrate with existing systems?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              Yes, we integrate with all major CRMs (Salesforce, HubSpot), ERPs, communication tools (Slack, Teams), and custom internal systems through APIs, webhooks, and middleware solutions.
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="mt-20 text-center">
+        <div class="rounded-2xl border border-border bg-card/50 p-12">
+          <h2 class="font-heading text-3xl font-bold mb-4">Ready to Automate with AI?</h2>
+          <p class="text-muted-foreground mb-8 max-w-xl mx-auto">
+            Schedule a free consultation to discuss your automation opportunities and get a customized proposal.
+          </p>
+          <a href="/contact/" class="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-4 font-heading font-semibold text-white transition-all hover:bg-primary/90">
+            Schedule Consultation <ArrowRight className="w-5 h-5" />
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>

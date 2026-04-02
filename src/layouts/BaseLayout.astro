@@ -3,6 +3,7 @@ import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
 import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
 import AdUnit from "@/components/AdUnit.astro";
+import HreflangTags from "@/components/HreflangTags.astro";
 import { ASSETS_BASE_URL } from "@/lib/assets";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
@@ -137,6 +138,7 @@ const pageSchema =
     <meta name="twitter:site" content="@huntermussel" />
     <meta name="twitter:creator" content="@huntermussel" />
     <link rel="canonical" href={canonicalUrl} />
+    <HreflangTags />
     <link rel="sitemap" type="application/xml" href="https://huntermussel.com/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
     <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />

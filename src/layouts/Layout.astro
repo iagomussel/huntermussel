@@ -2,6 +2,7 @@
 import Navbar from "@/components/react/Navbar";
 import Footer from "@/components/react/Footer";
 import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
+import HreflangTags from "@/components/HreflangTags.astro";
 import { ASSETS_BASE_URL } from "@/lib/assets";
 import "@/styles/globals.css";
 
@@ -64,6 +65,7 @@ const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
     <meta name="robots" content={robots} />
     <meta name="googlebot" content={robots} />
     <link rel="canonical" href={canonicalUrl} />
+    <HreflangTags />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />

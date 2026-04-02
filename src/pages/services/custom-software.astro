@@ -1,0 +1,312 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ArrowRight, Code, Database, Mobile, Globe, Lock, Zap } from "lucide-react";
+
+const serviceUrl = "https://huntermussel.com/services/custom-software/";
+
+const serviceSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Custom Software Development",
+    description: "Bespoke software solutions built for your specific business needs. From web applications to APIs and integrations, we engineer software that scales.",
+    provider: {
+      "@type": "Organization",
+      name: "HunterMussel",
+      url: "https://huntermussel.com",
+    },
+    areaServed: "Worldwide",
+    serviceType: "Custom Software Development",
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Software Development Services",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Web Application Development",
+            description: "Full-stack web applications with modern frameworks"
+          }
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "API Development",
+            description: "RESTful and GraphQL APIs for system integration"
+          }
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Legacy System Modernization",
+            description: "Refactor and upgrade existing software systems"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://huntermussel.com/" },
+      { "@type": "ListItem", position: 2, name: "Services", item: "https://huntermussel.com/services/" },
+      { "@type": "ListItem", position: 3, name: "Custom Software Development", item: serviceUrl }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "How do you ensure software quality?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "We implement comprehensive testing strategies including unit tests, integration tests, and end-to-end tests. All code goes through peer review, and we use CI/CD pipelines to catch issues before they reach production."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Do you work with legacy systems?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, we specialize in modernizing legacy systems. We can incrementally refactor old codebases, add APIs to existing systems, or completely rebuild with modern architecture while maintaining business continuity."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What's your development methodology?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "We use agile methodologies with 2-week sprints, regular demos, and continuous feedback loops. You'll have visibility into progress through project management tools and weekly updates."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout
+  title="Custom Software Development"
+  description="Expert custom software development services. Build scalable web applications, APIs, and integrations tailored to your business requirements."
+  canonicalUrl={serviceUrl}
+  keywords={[
+    "custom software development",
+    "software development company",
+    "web application development",
+    "api development",
+    "full stack development",
+    "software engineering services",
+    "SaaS development",
+    "product development",
+    "software architecture",
+    "technical consulting"
+  ]}
+  schema={serviceSchema}
+  pageData={{ pageType: 'service_detail', serviceType: 'custom-software' }}
+>
+  <div class="min-h-screen bg-background">
+    <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
+
+    <main class="container relative z-10 px-6 pt-32 pb-24">
+      <!-- Hero Section -->
+      <header class="mb-20 text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 mb-6">
+          <Code className="w-5 h-5 text-primary" />
+          <span class="text-sm font-medium text-primary">Custom Software Development</span>
+        </div>
+        <h1 class="font-heading text-4xl font-bold tracking-tight md:text-6xl mb-6">
+          Software Built for <span class="gradient-text">Your Vision</span>
+        </h1>
+        <p class="mx-auto max-w-3xl font-body text-xl text-muted-foreground leading-relaxed">
+          Off-the-shelf software doesn't fit? We engineer custom solutions that solve your specific problems, integrate with your systems, and scale as you grow.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <a href="/contact/" class="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-heading font-semibold text-white transition-all hover:bg-primary/90">
+            Discuss Your Project <ArrowRight className="w-4 h-4" />
+          </a>
+          <a href="/cases/" class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 font-heading font-semibold transition-all hover:border-primary/40">
+            View Our Work
+          </a>
+        </div>
+      </header>
+
+      <!-- Services Grid -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">What We Build</h2>
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Globe className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Web Applications</h3>
+            <p class="text-muted-foreground">
+              Full-stack web apps with React, Next.js, Astro, or Vue. Server-side rendering, static generation, and real-time features built for performance.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Database className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">APIs & Integrations</h3>
+            <p class="text-muted-foreground">
+              RESTful and GraphQL APIs that connect your systems. Third-party integrations with Stripe, Salesforce, Slack, and any custom requirements.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Mobile className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Responsive Interfaces</h3>
+            <p class="text-muted-foreground">
+              Pixel-perfect, accessible UIs that work on every device. Design systems, component libraries, and conversion-optimized landing pages.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Lock className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Security & Compliance</h3>
+            <p class="text-muted-foreground">
+              SOC 2, HIPAA, GDPR compliance-ready architectures. Secure authentication, encryption at rest and in transit, and vulnerability assessments.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Zap className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Performance Optimization</h3>
+            <p class="text-muted-foreground">
+              Speed up existing applications. Core Web Vitals optimization, database tuning, caching strategies, and lazy loading implementations.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Code className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Legacy Modernization</h3>
+            <p class="text-muted-foreground">
+              Upgrade aging codebases without disrupting business. Incremental refactoring, microservices extraction, and strangler fig patterns.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tech Stack -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">Technology Stack</h2>
+        <div class="space-y-8">
+          <div>
+            <h3 class="font-heading text-lg font-semibold mb-4">Frontend</h3>
+            <div class="flex flex-wrap gap-3">
+              {['React', 'Next.js', 'Astro', 'Vue.js', 'Nuxt', 'TypeScript', 'Tailwind CSS', 'Radix UI'].map((tech) => (
+                <span class="rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium">{tech}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg font-semibold mb-4">Backend</h3>
+            <div class="flex flex-wrap gap-3">
+              {['Node.js', 'Python', 'Go', 'Rust', 'PostgreSQL', 'MongoDB', 'Redis', 'GraphQL'].map((tech) => (
+                <span class="rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium">{tech}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg font-semibold mb-4">Infrastructure</h3>
+            <div class="flex flex-wrap gap-3">
+              {['Cloudflare Pages', 'Vercel', 'AWS', 'Cloudflare Workers', 'Docker', 'GitHub Actions'].map((tech) => (
+                <span class="rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium">{tech}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Process -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">Our Process</h2>
+        <div class="grid gap-6 md:grid-cols-4">
+          <div class="text-center">
+            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">1</div>
+            <h3 class="font-heading text-lg font-bold mb-2">Discovery</h3>
+            <p class="text-sm text-muted-foreground">Understand your requirements, constraints, and goals through collaborative workshops.</p>
+          </div>
+          <div class="text-center">
+            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">2</div>
+            <h3 class="font-heading text-lg font-bold mb-2">Architecture</h3>
+            <p class="text-sm text-muted-foreground">Design the system architecture, data models, and technical approach.</p>
+          </div>
+          <div class="text-center">
+            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">3</div>
+            <h3 class="font-heading text-lg font-bold mb-2">Development</h3>
+            <p class="text-sm text-muted-foreground">Iterative 2-week sprints with continuous integration and regular demos.</p>
+          </div>
+          <div class="text-center">
+            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">4</div>
+            <h3 class="font-heading text-lg font-bold mb-2">Launch & Support</h3>
+            <p class="text-sm text-muted-foreground">Production deployment, monitoring setup, and ongoing maintenance options.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="max-w-3xl mx-auto">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-6">
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              How do you ensure software quality?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              We implement comprehensive testing strategies including unit tests, integration tests, and end-to-end tests. All code goes through peer review, and we use CI/CD pipelines to catch issues before they reach production.
+            </div>
+          </details>
+
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              Do you work with legacy systems?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              Yes, we specialize in modernizing legacy systems. We can incrementally refactor old codebases, add APIs to existing systems, or completely rebuild with modern architecture while maintaining business continuity.
+            </div>
+          </details>
+
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              What's your development methodology?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              We use agile methodologies with 2-week sprints, regular demos, and continuous feedback loops. You'll have visibility into progress through project management tools and weekly updates.
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="mt-20 text-center">
+        <div class="rounded-2xl border border-border bg-card/50 p-12">
+          <h2 class="font-heading text-3xl font-bold mb-4">Have a Software Project in Mind?</h2>
+          <p class="text-muted-foreground mb-8 max-w-xl mx-auto">
+            Let's discuss your requirements and create a custom solution that fits your needs and budget.
+          </p>
+          <a href="/contact/" class="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-4 font-heading font-semibold text-white transition-all hover:bg-primary/90">
+            Start Conversation <ArrowRight className="w-5 h-5" />
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>

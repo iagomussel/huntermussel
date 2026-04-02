@@ -1,0 +1,295 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ArrowRight, Server, GitBranch, Container, Cloud, Shield, Monitor } from "lucide-react";
+
+const serviceUrl = "https://huntermussel.com/services/devops/";
+
+const serviceSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "DevOps Engineering Services",
+    description: "Build high-performance CI/CD pipelines, cloud infrastructure, and containerized deployments with expert DevOps engineering.",
+    provider: {
+      "@type": "Organization",
+      name: "HunterMussel",
+      url: "https://huntermussel.com",
+    },
+    areaServed: "Worldwide",
+    serviceType: "DevOps Engineering",
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "DevOps Services",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "CI/CD Pipeline Development",
+            description: "Automated testing and deployment pipelines"
+          }
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Cloud Infrastructure",
+            description: "AWS, GCP, Azure infrastructure design and management"
+          }
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Kubernetes & Containerization",
+            description: "Container orchestration and microservices architecture"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://huntermussel.com/" },
+      { "@type": "ListItem", position: 2, name: "Services", item: "https://huntermussel.com/services/" },
+      { "@type": "ListItem", position: 3, name: "DevOps Engineering", item: serviceUrl }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What's the difference between DevOps and traditional IT operations?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "DevOps bridges development and operations teams through automation, continuous delivery, and shared responsibility. Traditional IT operations focus on stability with infrequent releases; DevOps prioritizes both speed and reliability through infrastructure as code, automated testing, and monitoring."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "How do you handle infrastructure costs?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "We optimize infrastructure using auto-scaling, reserved instances, spot/preemptible VMs, and cost monitoring dashboards. Our infrastructure is designed for efficiency from day one, not retrofitted for cost savings."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Do you support multi-cloud environments?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, we design for multi-cloud portability using Kubernetes, Terraform, and cloud-agnostic tooling. This prevents vendor lock-in and allows optimal use of each cloud's strengths."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout
+  title="DevOps Engineering Services"
+  description="Expert DevOps engineering for high-performance CI/CD pipelines, cloud infrastructure (AWS/GCP/Azure), Kubernetes, and containerized deployments."
+  canonicalUrl={serviceUrl}
+  keywords={[
+    "devops engineering services",
+    "ci cd pipeline development",
+    "cloud infrastructure services",
+    "kubernetes consulting",
+    "docker containerization",
+    "aws devops",
+    "gcp devops",
+    "azure devops",
+    "infrastructure as code",
+    "terraform devops",
+    "site reliability engineering",
+    "devsecops"
+  ]}
+  schema={serviceSchema}
+  pageData={{ pageType: 'service_detail', serviceType: 'devops' }}
+>
+  <div class="min-h-screen bg-background">
+    <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
+
+    <main class="container relative z-10 px-6 pt-32 pb-24">
+      <!-- Hero Section -->
+      <header class="mb-20 text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 mb-6">
+          <Server className="w-5 h-5 text-primary" />
+          <span class="text-sm font-medium text-primary">DevOps Engineering</span>
+        </div>
+        <h1 class="font-heading text-4xl font-bold tracking-tight md:text-6xl mb-6">
+          Ship Faster with <span class="gradient-text">Confidence</span>
+        </h1>
+        <p class="mx-auto max-w-3xl font-body text-xl text-muted-foreground leading-relaxed">
+          Build the infrastructure and delivery pipelines that let your engineering team focus on product, not plumbing. From GitHub Actions to Kubernetes, we engineer for speed and reliability.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <a href="/contact/" class="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-heading font-semibold text-white transition-all hover:bg-primary/90">
+            Start Your Project <ArrowRight className="w-4 h-4" />
+          </a>
+          <a href="/blog/devops-ai-what-changes-for-engineers-2026/" class="inline-flex items-center gap-2 rounded-lg border border-border px-6 py-3 font-heading font-semibold transition-all hover:border-primary/40">
+            Read Our DevOps Guide
+          </a>
+        </div>
+      </header>
+
+      <!-- Services Grid -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">What We Build</h2>
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <GitBranch className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">CI/CD Pipelines</h3>
+            <p class="text-muted-foreground">
+              Automated build, test, and deployment pipelines using GitHub Actions, GitLab CI, or Azure DevOps. From commit to production in minutes, not days.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Container className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Container Orchestration</h3>
+            <p class="text-muted-foreground">
+              Kubernetes clusters, Docker Compose setups, and Helm charts designed for production reliability and easy scaling.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Cloud className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Cloud Infrastructure</h3>
+            <p class="text-muted-foreground">
+              Terraform and Pulumi infrastructure-as-code for AWS, GCP, or Azure. Version-controlled, auditable, and reproducible environments.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Shield className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">DevSecOps</h3>
+            <p class="text-muted-foreground">
+              Security integrated throughout the pipeline: SAST/DAST scanning, dependency audits, secrets management, and compliance automation.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Monitor className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Observability</h3>
+            <p class="text-muted-foreground">
+              Comprehensive monitoring with Prometheus, Grafana, ELK stack, and distributed tracing for complete visibility into system health.
+            </p>
+          </div>
+
+          <div class="group rounded-lg border border-border bg-card/50 p-6 transition-all hover:border-primary/30">
+            <div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+              <Server className="w-6 h-6 text-primary" />
+            </div>
+            <h3 class="font-heading text-xl font-bold mb-3">Platform Engineering</h3>
+            <p class="text-muted-foreground">
+              Internal developer platforms (IDPs) that provide self-service infrastructure, reducing cognitive load and accelerating team velocity.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tech Stack -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">Technology Stack</h2>
+        <div class="space-y-8">
+          <div>
+            <h3 class="font-heading text-lg font-semibold mb-4">CI/CD & Automation</h3>
+            <div class="flex flex-wrap gap-3">
+              {['GitHub Actions', 'GitLab CI', 'Azure DevOps', 'Jenkins', 'ArgoCD', 'Tekton'].map((tech) => (
+                <span class="rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium">{tech}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg font-semibold mb-4">Containers & Orchestration</h3>
+            <div class="flex flex-wrap gap-3">
+              {['Kubernetes', 'Docker', 'Helm', 'Kustomize', 'Argo Workflows', 'Knative'].map((tech) => (
+                <span class="rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium">{tech}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg font-semibold mb-4">Infrastructure as Code</h3>
+            <div class="flex flex-wrap gap-3">
+              {['Terraform', 'Pulumi', 'AWS CDK', 'Ansible', 'CloudFormation'].map((tech) => (
+                <span class="rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium">{tech}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg font-semibold mb-4">Cloud Platforms</h3>
+            <div class="flex flex-wrap gap-3">
+              {['AWS', 'Google Cloud', 'Azure', 'Cloudflare', 'Vercel', 'Netlify'].map((tech) => (
+                <span class="rounded-full border border-border bg-card/50 px-4 py-2 text-sm font-medium">{tech}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="max-w-3xl mx-auto">
+        <h2 class="font-heading text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <div class="space-y-6">
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              What's the difference between DevOps and traditional IT operations?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              DevOps bridges development and operations teams through automation, continuous delivery, and shared responsibility. Traditional IT operations focus on stability with infrequent releases; DevOps prioritizes both speed and reliability through infrastructure as code, automated testing, and monitoring.
+            </div>
+          </details>
+
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              How do you handle infrastructure costs?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              We optimize infrastructure using auto-scaling, reserved instances, spot/preemptible VMs, and cost monitoring dashboards. Our infrastructure is designed for efficiency from day one, not retrofitted for cost savings.
+            </div>
+          </details>
+
+          <details class="group rounded-lg border border-border bg-card/50 open:border-primary/30">
+            <summary class="flex cursor-pointer items-center justify-between p-6 font-heading text-lg font-semibold">
+              Do you support multi-cloud environments?
+              <span class="text-primary transition-transform group-open:rotate-180">▼</span>
+            </summary>
+            <div class="px-6 pb-6 text-muted-foreground">
+              Yes, we design for multi-cloud portability using Kubernetes, Terraform, and cloud-agnostic tooling. This prevents vendor lock-in and allows optimal use of each cloud's strengths.
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="mt-20 text-center">
+        <div class="rounded-2xl border border-border bg-card/50 p-12">
+          <h2 class="font-heading text-3xl font-bold mb-4">Ready to Upgrade Your Infrastructure?</h2>
+          <p class="text-muted-foreground mb-8 max-w-xl mx-auto">
+            Get a free infrastructure assessment and see how we can accelerate your delivery pipeline.
+          </p>
+          <a href="/contact/" class="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-4 font-heading font-semibold text-white transition-all hover:bg-primary/90">
+            Get Free Assessment <ArrowRight className="w-5 h-5" />
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>

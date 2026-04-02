@@ -1,0 +1,39 @@
+---
+// Hreflang tags for multi-language SEO targeting
+// Supported locales: English (en), Portuguese Brazil (pt-BR), Spanish (es)
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+// Base URLs for each locale
+const locales = {
+  'en': 'https://huntermussel.com',
+  'pt-BR': 'https://huntermussel.com/pt',
+  'es': 'https://huntermussel.com/es',
+};
+
+// Get the path without locale prefix for x-default
+const getPathWithoutLocale = (path: string): string => {
+  // Remove trailing slash except for root
+  let cleanPath = path.replace(/\/$/, '') || '/';
+  
+  // Remove locale prefixes
+  if (cleanPath.startsWith('/pt') || cleanPath.startsWith('/es')) {
+    cleanPath = cleanPath.replace(/^\/(pt|es)/, '') || '/';
+  }
+  
+  return cleanPath;
+};
+
+const pathWithoutLocale = getPathWithoutLocale(currentPath);
+---
+
+<!-- Hreflang tags for international SEO -->
+<link rel="alternate" hreflang="en" href={`https://huntermussel.com${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
+<link rel="alternate" hreflang="en-US" href={`https://huntermussel.com${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
+<link rel="alternate" hreflang="pt-BR" href={`https://huntermussel.com/pt${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
+<link rel="alternate" hreflang="es" href={`https://huntermussel.com/es${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
+<link rel="alternate" hreflang="x-default" href={`https://huntermussel.com${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
