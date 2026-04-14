@@ -4,13 +4,13 @@ import { Menu, X } from "lucide-react";
 import { assetUrl } from "@/lib/assets";
 
 const navItems = [
-  { label: "Services", href: "/services" },
-  { label: "Cases", href: "/cases" },
-  { label: "About", href: "/about" },
+  { label: "Services", href: "/services/" },
+  { label: "Cases", href: "/cases/" },
+  { label: "About", href: "/about/" },
   { label: "Technologies", href: "/#technologies" },
-  { label: "Blog", href: "/blog" },
-  { label: "Tools", href: "/tools" },
-  { label: "Contact", href: "/contact" },
+  { label: "Blog", href: "/blog/" },
+  { label: "Tools", href: "/tools/" },
+  { label: "Contact", href: "/contact/" },
 ];
 
 const Navbar = () => {
@@ -49,7 +49,7 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="/contact"
+            href="/contact/"
             data-analytics-event="lead_cta_click"
             data-analytics-label="contact_us"
             data-analytics-location="site_nav_desktop"
@@ -90,7 +90,7 @@ const Navbar = () => {
                 </a>
               ))}
               <a
-                href="/contact"
+                href="/contact/"
                 onClick={() => setIsOpen(false)}
                 data-analytics-event="lead_cta_click"
                 data-analytics-label="contact_us"

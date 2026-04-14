@@ -7,6 +7,7 @@ import TechSection from "@/components/react/TechSection";
 import ToolsSection from "@/components/react/ToolsSection";
 import FAQSection from "@/components/react/FAQSection";
 import ContactSection from "@/components/react/ContactSection";
+import AnimeBackground from "@/components/react/AnimeBackground";
 import { homeFAQ, homeFAQ_pt } from "@/data/faq";
 import { faqT } from "@/data/translations";
 
@@ -20,6 +21,8 @@ const HomePage = ({ lang = "en" }: HomePageProps) => {
 
   return (
     <LangProvider lang={lang}>
+      {/* Fixed global animated background — controlled by full-page scroll */}
+      <AnimeBackground />
       <HeroSection />
       <ServicesSection />
       <CasesSection />

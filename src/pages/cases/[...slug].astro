@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import MermaidRenderer from '@/components/MermaidRenderer.astro';
 import { ArrowLeft } from 'lucide-react';
@@ -11,14 +11,14 @@ import { LOGO_URL } from '@/lib/schema';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
-  return cases.map(entry => ({
-    params: { slug: entry.slug },
+  return cases.map((entry) => ({
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const cases = await getCollection('cases');
 
 const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateString("en-US", {
@@ -28,10 +28,10 @@ const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateSt
   timeZone: "UTC",
 }) : null;
 
-const url = `https://huntermussel.com/cases/${entry.slug}/`;
+const url = `https://huntermussel.com/cases/${entry.id}/`;
 const authorKey = entry.data.authors?.[0];
 const author = authorKey && authors[authorKey];
-const relatedCases = cases.filter((item) => item.slug !== entry.slug).slice(0, 3);
+const relatedCases = cases.filter((item) => item.id !== entry.id).slice(0, 3);
 const caseSchema = [
   {
     "@context": "https://schema.org",
@@ -121,7 +121,7 @@ const caseSchema = [
 
     <main class="container relative z-10 px-6 pt-32 pb-24">
       <a
-        href="/cases"
+        href="/cases/"
         class="mb-12 inline-flex items-center gap-2 font-body text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft size={16} />
@@ -189,7 +189,7 @@ const caseSchema = [
             {relatedCases.map((item) => (
               <article class="rounded-lg border border-border bg-card/40 p-5 transition-all hover:border-primary/30 hover:bg-card">
                 <h3 class="font-heading text-lg font-semibold">
-                  <a href={`/cases/${item.slug}/`} class="transition-colors hover:text-primary">
+                  <a href={`/cases/${item.id}/`} class="transition-colors hover:text-primary">
                     {item.data.title}
                   </a>
                 </h3>

@@ -51,19 +51,19 @@ function entry(url: string, priority: string): string {
 
 export async function GET() {
   const [blogPosts, services, cases] = await Promise.all([
-    getCollection("blog", ({ data }) => data.status === "published"),
+    getCollection("blog", ({ data }) => data.status !== "draft"),
     getCollection("services"),
     getCollection("cases"),
   ]);
 
   const blogEntries = blogPosts.map((p) =>
-    entry(`${BASE}/blog/${p.slug}/`, "0.7")
+    entry(`${BASE}/blog/${p.id}/`, "0.7")
   );
   const serviceEntries = services.map((s) =>
-    entry(`${BASE}/services/${s.slug}/`, "0.7")
+    entry(`${BASE}/services/${s.id}/`, "0.7")
   );
   const caseEntries = cases.map((c) =>
-    entry(`${BASE}/cases/${c.slug}/`, "0.7")
+    entry(`${BASE}/cases/${c.id}/`, "0.7")
   );
   const staticEntries = STATIC_PAGES.map((p) => entry(p.url, p.priority));
   const toolEntries = TOOLS.map((t) => entry(t.url, t.priority));

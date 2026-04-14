@@ -110,6 +110,12 @@
 }
 
 @layer utilities {
+  /* Tailwind v4 + Vite: theme.container from tailwind.config.ts is not applied unless
+     you @config that file — default .container has max-width but no horizontal centering. */
+  .container {
+    margin-inline: auto;
+  }
+
   .text-glow {
     text-shadow: 0 0 20px hsl(var(--glow-primary) / 0.5),
                  0 0 40px hsl(var(--glow-primary) / 0.2);

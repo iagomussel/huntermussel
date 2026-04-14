@@ -1,9 +1,16 @@
 import { useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { ArrowRight, Mail, MapPin, MessageCircle } from "lucide-react";
+import AnimeScrollSection from "@/components/react/AnimeScrollSection";
 import CalSchedulerEmbed from "@/components/react/CalSchedulerEmbed";
+import { useLang } from "@/context/LangContext";
+import { contactT } from "@/data/translations";
+import { trackEvent } from "@/lib/analytics";
 
 const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
+  const lang = useLang();
+  const T = contactT[lang];
+  const surface = "contact";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -104,7 +111,7 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   };
 
   return (
-    <section
+    <AnimeScrollSection
       id="contact"
       data-analytics-section="contact"
       className="relative border-t border-border py-24"
@@ -112,13 +119,7 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       <div className="container px-6">
         <div className="mx-auto max-w-6xl">
           {!hideHeader && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mx-auto max-w-2xl text-center"
-            >
+            <div className="mx-auto max-w-2xl text-center">
               <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
                 {T.label}
               </span>
@@ -129,17 +130,11 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
               <p className="mb-10 font-body text-base text-muted-foreground">
                 {T.subtitle}
               </p>
-            </motion.div>
+            </div>
           )}
 
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-6 rounded-lg border border-border bg-card/50 p-8"
-            >
+            <div className="space-y-6 rounded-lg border border-border bg-card/50 p-8">
               <div className="space-y-3 text-left">
                 <p className="font-heading text-lg font-semibold text-foreground">
                   {T.preferWriting}
@@ -284,21 +279,15 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                   Americas (GMT-3)
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="rounded-lg border border-border bg-card/50 p-6"
-            >
+            <div className="rounded-lg border border-border bg-card/50 p-6">
               <CalSchedulerEmbed />
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </AnimeScrollSection>
   );
 };
 

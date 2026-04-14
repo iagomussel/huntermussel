@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 import { trackEvent } from "@/lib/analytics";
 
 declare global {
@@ -16,10 +16,10 @@ declare global {
 
 const CAL_SCRIPT_URL = "https://app.cal.com/embed/embed.js";
 const CAL_NAMESPACE = "secret";
-const CAL_CONTAINER_ID = "my-cal-inline-secret";
 const CAL_ORIGIN = "https://app.cal.com";
 const CAL_LINK = "iago-mussel-2zqprh/secret";
 
+/** Cal.com embed queue stub (official pattern). First `Cal(...)` call injects `embed.js`. */
 const initializeCal = () => {
   const C = window;
   const d = C.document;
@@ -32,7 +32,10 @@ const initializeCal = () => {
       if (!cal.loaded) {
         cal.ns = {};
         cal.q = cal.q || [];
-        d.head.appendChild(d.createElement("script")).src = CAL_SCRIPT_URL;
+        const script = d.createElement("script");
+        script.src = CAL_SCRIPT_URL;
+        script.async = true;
+        d.head.appendChild(script);
         cal.loaded = true;
       }
 
@@ -65,80 +68,157 @@ const initializeCal = () => {
     };
 };
 
-const CalSchedulerEmbed = () => {
-  useEffect(() => {
-    initializeCal();
+function getCalScriptElement(): HTMLScriptElement | null {
+  return document.querySelector<HTMLScriptElement>(`script[src="${CAL_SCRIPT_URL}"]`);
+}
 
-    const host = document.getElementById(CAL_CONTAINER_ID);
-    if (host) {
-      host.innerHTML = "";
+function whenScriptReady(script: HTMLScriptElement | null): Promise<void> {
+  if (!script) {
+    return Promise.resolve();
+  }
+  if (script.getAttribute("data-cal-embed-ready") === "1") {
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
+    const done = () => {
+      script.setAttribute("data-cal-embed-ready", "1");
+      resolve();
+    };
+    if (script.complete) {
+      queueMicrotask(done);
+      return;
+    }
+    script.addEventListener("load", done, { once: true });
+    script.addEventListener(
+      "error",
+      () => reject(new Error("Cal embed script failed to load")),
+      { once: true },
+    );
+  });
+}
+
+const CalSchedulerEmbed = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const reactId = useId();
+  const containerDomId = `cal-inline-${reactId.replace(/:/g, "")}`;
+
+  useEffect(() => {
+    const host = containerRef.current;
+    if (!host || typeof window === "undefined") {
+      return;
     }
 
-    window.Cal?.("init", CAL_NAMESPACE, { origin: CAL_ORIGIN });
-    window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
-      action: "bookerReady",
-      callback: () => {
-        trackEvent("scheduler_embed_ready", {
-          scheduler_vendor: "cal",
-          scheduler_surface: "contact",
-        });
-      },
-    });
-    window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
-      action: "bookerViewed",
-      callback: () => {
-        trackEvent("scheduler_embed_view", {
-          scheduler_vendor: "cal",
-          scheduler_surface: "contact",
-        });
-      },
-    });
-    window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
-      action: "bookingSuccessfulV2",
-      callback: () => {
-        trackEvent("scheduler_booking_success", {
-          scheduler_vendor: "cal",
-          scheduler_surface: "contact",
-        });
-        trackEvent("generate_lead", {
-          lead_method: "scheduled_call",
-          scheduler_vendor: "cal",
-        });
-      },
-    });
-    window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
-      action: "linkFailed",
-      callback: () => {
-        trackEvent("scheduler_embed_error", {
-          scheduler_vendor: "cal",
-          scheduler_surface: "contact",
-        });
-      },
-    });
-    window.Cal?.ns?.[CAL_NAMESPACE]?.("inline", {
-      elementOrSelector: `#${CAL_CONTAINER_ID}`,
-      config: {
-        layout: "week_view",
-        useSlotsViewOnSmallScreen: true,
-        theme: "dark",
-      },
-      calLink: CAL_LINK,
-    });
-    window.Cal?.ns?.[CAL_NAMESPACE]?.("ui", {
-      theme: "dark",
-      cssVarsPerTheme: {
-        dark: {
-          "cal-brand": "#ffffff",
+    let cancelled = false;
+
+    const wireEventsAndInline = () => {
+      if (cancelled || !document.body.contains(host)) {
+        return;
+      }
+
+      host.innerHTML = "";
+
+      window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
+        action: "bookerReady",
+        callback: () => {
+          if (cancelled) {
+            return;
+          }
+          trackEvent("scheduler_embed_ready", {
+            scheduler_vendor: "cal",
+            scheduler_surface: "contact",
+          });
         },
-      },
-      hideEventTypeDetails: true,
-      layout: "week_view",
-    });
+      });
+      window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
+        action: "bookerViewed",
+        callback: () => {
+          if (cancelled) {
+            return;
+          }
+          trackEvent("scheduler_embed_view", {
+            scheduler_vendor: "cal",
+            scheduler_surface: "contact",
+          });
+        },
+      });
+      window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
+        action: "bookingSuccessfulV2",
+        callback: () => {
+          if (cancelled) {
+            return;
+          }
+          trackEvent("scheduler_booking_success", {
+            scheduler_vendor: "cal",
+            scheduler_surface: "contact",
+          });
+          trackEvent("generate_lead", {
+            lead_method: "scheduled_call",
+            scheduler_vendor: "cal",
+          });
+        },
+      });
+      window.Cal?.ns?.[CAL_NAMESPACE]?.("on", {
+        action: "linkFailed",
+        callback: () => {
+          if (cancelled) {
+            return;
+          }
+          trackEvent("scheduler_embed_error", {
+            scheduler_vendor: "cal",
+            scheduler_surface: "contact",
+          });
+        },
+      });
+
+      window.Cal?.ns?.[CAL_NAMESPACE]?.("inline", {
+        elementOrSelector: host,
+        config: {
+          layout: "week_view",
+          useSlotsViewOnSmallScreen: true,
+          theme: "dark",
+        },
+        calLink: CAL_LINK,
+      });
+      window.Cal?.ns?.[CAL_NAMESPACE]?.("ui", {
+        theme: "dark",
+        cssVarsPerTheme: {
+          dark: {
+            "cal-brand": "#ffffff",
+          },
+        },
+        hideEventTypeDetails: true,
+        layout: "week_view",
+      });
+    };
+
+    void (async () => {
+      try {
+        initializeCal();
+
+        window.Cal?.("init", CAL_NAMESPACE, { origin: CAL_ORIGIN });
+
+        const script = getCalScriptElement();
+        await whenScriptReady(script);
+
+        requestAnimationFrame(() => {
+          if (!cancelled && document.body.contains(host)) {
+            wireEventsAndInline();
+          }
+        });
+      } catch {
+        if (!cancelled) {
+          trackEvent("scheduler_embed_error", {
+            scheduler_vendor: "cal",
+            scheduler_surface: "contact",
+            load_failed: true,
+          });
+        }
+      }
+    })();
 
     return () => {
-      if (host) {
-        host.innerHTML = "";
-      }
+      cancelled = true;
+      host.innerHTML = "";
     };
   }, []);
 
@@ -169,7 +249,8 @@ const CalSchedulerEmbed = () => {
 
       <div className="overflow-hidden rounded-xl border border-border bg-muted/20">
         <div
-          id={CAL_CONTAINER_ID}
+          id={containerDomId}
+          ref={containerRef}
           className="h-[720px] w-full overflow-y-auto"
         />
       </div>

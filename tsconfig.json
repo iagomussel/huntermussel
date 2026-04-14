@@ -3,6 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@/components/ui": ["src/components/react/ui"],
+      "@/components/ui/*": ["src/components/react/ui/*"],
+      "@/hooks": ["src/hooks"],
+      "@/hooks/*": ["src/hooks/*"],
       "@/*": ["src/*"]
     }
   }

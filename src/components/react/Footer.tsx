@@ -15,11 +15,11 @@ const Footer = () => {
             className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground"
           >
             <a href="/" className="transition-colors hover:text-primary">Home</a>
-            <a href="/services" className="transition-colors hover:text-primary">Services</a>
-            <a href="/cases" className="transition-colors hover:text-primary">Case Studies</a>
-            <a href="/blog" className="transition-colors hover:text-primary">Blog</a>
-            <a href="/tools" className="transition-colors hover:text-primary">Tools</a>
-            <a href="/contact" className="transition-colors hover:text-primary">Contact</a>
+            <a href="/services/" className="transition-colors hover:text-primary">Services</a>
+            <a href="/cases/" className="transition-colors hover:text-primary">Case Studies</a>
+            <a href="/blog/" className="transition-colors hover:text-primary">Blog</a>
+            <a href="/tools/" className="transition-colors hover:text-primary">Tools</a>
+            <a href="/contact/" className="transition-colors hover:text-primary">Contact</a>
           </nav>
         </div>
         <span className="text-center font-body text-xs text-muted-foreground sm:text-left">

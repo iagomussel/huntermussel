@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import AnimeScrollSection from "@/components/react/AnimeScrollSection";
 import { useLang } from "@/context/LangContext";
 import { techT } from "@/data/translations";
 
@@ -13,22 +14,16 @@ const TechSection = () => {
   const T = techT[useLang()];
 
   return (
-    <section id="technologies" className="relative border-t border-border py-24">
+    <AnimeScrollSection id="technologies" className="relative border-t border-border py-24">
       <div className="container px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 text-center"
-        >
+        <div className="mb-12 text-center">
           <span className="mb-4 inline-block font-heading text-xs font-medium uppercase tracking-widest text-primary">
             // stack
           </span>
           <h2 className="font-heading text-3xl font-bold tracking-tight md:text-4xl">
             {T.heading}
           </h2>
-        </motion.div>
+        </div>
 
         <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
           <div className="flex w-full overflow-hidden">
@@ -55,7 +50,7 @@ const TechSection = () => {
           </div>
         </div>
       </div>
-    </section>
+    </AnimeScrollSection>
   );
 };
 

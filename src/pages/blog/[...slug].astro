@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import MermaidRenderer from '@/components/MermaidRenderer.astro';
 import { ArrowLeft } from 'lucide-react';
@@ -12,15 +12,15 @@ import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 import AdUnit from '@/components/AdUnit.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => data.status === 'published');
-  return posts.map(entry => ({
-    params: { slug: entry.slug },
+  const posts = await getCollection("blog", ({ data }) => data.status !== "draft");
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 
 const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateString("en-US", {
   day: "2-digit",
@@ -28,7 +28,7 @@ const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateSt
   year: "numeric",
 }) : null;
 
-const url = `https://huntermussel.com/blog/${entry.slug}/`;
+const url = `https://huntermussel.com/blog/${entry.id}/`;
 const authorKey = entry.data.authors?.[0];
 const author = authorKey && authors[authorKey];
 
@@ -157,7 +157,7 @@ const blogSchema = [
 
           <AdUnit adSlot="XXXXXXXXXX" format="horizontal" class="blog-ad-bottom" />
 
-          <DisqusComments client:only="react" title={entry.data.title} identifier={entry.slug} url={url} />
+          <DisqusComments client:only="react" title={entry.data.title} identifier={entry.id} url={url} />
        </article>
      </main>
   </div>

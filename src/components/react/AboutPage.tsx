@@ -379,7 +379,7 @@ const AboutPage = () => {
               to build something real — let's talk.
             </p>
             <a
-              href="/contact"
+              href="/contact/"
               className="group inline-flex items-center gap-2 rounded-md bg-primary px-8 py-3 font-heading text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)]"
             >
               Get in Touch

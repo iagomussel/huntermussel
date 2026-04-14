@@ -44,7 +44,7 @@ const casesSchema = [
     itemListElement: cases.map((entry, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `https://huntermussel.com/cases/${entry.slug}/`,
+      url: `https://huntermussel.com/cases/${entry.id}/`,
       name: entry.data.title,
     })),
   },
@@ -116,7 +116,7 @@ const casesSchema = [
                 )}
               </div>
               <h2 class="mb-3 font-heading text-xl font-bold leading-tight transition-colors group-hover:text-primary">
-                <a href={`/cases/${entry.slug}/`} class="block">
+                <a href={`/cases/${entry.id}/`} class="block">
                   {entry.data.title}
                 </a>
               </h2>
@@ -124,7 +124,7 @@ const casesSchema = [
                 {entry.data.description}
               </p>
               <a
-                href={`/cases/${entry.slug}/`}
+                href={`/cases/${entry.id}/`}
                 class="inline-flex items-center gap-1 font-heading text-xs font-semibold text-primary transition-all group-hover:gap-2"
               >
                 Read case study
