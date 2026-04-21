@@ -23,9 +23,9 @@ image: "https://assets.huntermussel.com/images/blog/code-cheap-judgment-not.webp
 
 ---
 
-# In 2026, Code Is Cheap. Judgment Is Not.
+## In 2026, Code Is Cheap. Judgment Is Not.
 
-## Why a human-led technical analysis matters more than ever
+### Why a human-led technical analysis matters more than ever
 
 The software market has changed.
 

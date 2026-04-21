@@ -6,7 +6,6 @@ authors:
 status: "published"
 subtitle: ""
 description: "Build a backendless blog with React, markdown, and Cloudflare Pages for fast and low-cost publishing."
-tags: []
 keywords:
   - backendless blog
   - react markdown blog
@@ -15,8 +14,7 @@ keywords:
   - vite blog tutorial
 image: "https://assets.huntermussel.com/images/blog/1770685010_image_3.webp"
 ---
-# Introduction
-------------
+## Introduction
 
 ### The Problem
 

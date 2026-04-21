@@ -37,6 +37,8 @@ I've heard about how to get rich with GPT, or how someone built a fully autonomo
 
 <!-- truncate -->
 
+## If the tools are so good, why is our code getting worse?
+
 Okay, but if those tools are so good and can improve my time by avoiding the need to spend hours reading documentation, forums, and testing ways to do things, then why is my code getting worse?
 
 Because we are getting comfortable.
@@ -45,7 +47,9 @@ We are outsourcing thinking to tools and calling it productivity. Less hands-on 
 
 Over time, this trains us to be operators, not engineers. Our skills atrophy. Our instincts weaken. When something breaks, we are slower, less confident, and more dependent. Speed grows. Competence shrinks.
 
-Over the years, “laziness” was actually one of the best traits a programmer could have.
+## The old laziness was creative
+
+Over the years, "laziness" was actually one of the best traits a programmer could have.
 
 We were lazy about manual work, repetitive tasks, and inefficient processes. That discomfort pushed us to build better systems. We wrote complex software to make life simple. We automated chaos. We replaced paperwork, bureaucracy, and human error with logic, code, and structure.
 
@@ -59,7 +63,9 @@ We are no longer fighting friction. We are avoiding it.
 
 **" A smooth sea never made a skilled sailor. "**
 
-In simple terms, here’s what happened.
+## The paradox of accumulated effort
+
+In simple terms, here's what happened.
 
 For decades, we wrote the code. We documented the systems. We debated architecture. We made mistakes, refactored, rewrote, and shipped again. Byte by byte, we built an enormous body of digital knowledge — patterns, abstractions, frameworks, libraries, discussions. Thousands upon thousands of human decisions embedded in code.
 
