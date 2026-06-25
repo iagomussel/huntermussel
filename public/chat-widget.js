@@ -122,23 +122,27 @@
 
   // --- Render simple markdown (bold, links, lists) ---
   function renderMarkdown(text) {
-    return text
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(
-        /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
-        '<a href="$2" target="_blank" rel="noopener">$1</a>'
-      )
-      .replace(
-        /(^|\n)- (.+)/g,
-        function (_, pre, item) { return pre + "\u2022 " + item; }
-      )
-      .replace(
-        /(?:^|\s)(https?:\/\/[^\s<]+)/g,
-        function (match, url) {
-          // Don't double-link URLs already in anchor tags
-          return ' <a href="' + url + '" target="_blank" rel="noopener">' + url + "</a>";
-        }
-      );
+    var escaped = escapeHtml(text || "");
+
+    escaped = escaped.replace(
+      /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+      function (_, label, url) {
+        return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + label + "</a>";
+      }
+    );
+
+    escaped = escaped.replace(
+      /(^|[^"'>])(https?:\/\/[^\s<]+)/g,
+      function (_, prefix, url) {
+        return prefix + '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + "</a>";
+      }
+    );
+
+    return escaped
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/(^|\n)- (.+)/g, function (_, pre, item) {
+        return pre + "\u2022 " + item;
+      });
   }
 
   function buildWidget() {

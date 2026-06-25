@@ -18,12 +18,37 @@ function corsHeaders(origin: string, allowedOrigin: string): Record<string, stri
   };
 }
 
+const MAX_REQUEST_MESSAGES = 20;
+const SESSION_ID_PATTERN = /^[a-zA-Z0-9_-]{8,80}$/;
+
 function sanitizeInput(text: string): string {
   return text
     .replace(/<[^>]*>/g, "")
     .replace(/[^\p{L}\p{N}\p{P}\p{Z}\p{S}]/gu, "")
     .trim()
     .slice(0, 2000);
+}
+
+function isValidChatRequest(body: unknown): body is ChatRequest {
+  if (!body || typeof body !== "object") return false;
+
+  const requestBody = body as ChatRequest;
+  if (
+    typeof requestBody.sessionId !== "string" ||
+    !SESSION_ID_PATTERN.test(requestBody.sessionId) ||
+    !Array.isArray(requestBody.messages) ||
+    requestBody.messages.length === 0 ||
+    requestBody.messages.length > MAX_REQUEST_MESSAGES
+  ) {
+    return false;
+  }
+
+  return requestBody.messages.every(
+    (message) =>
+      (message.role === "user" || message.role === "assistant") &&
+      typeof message.content === "string" &&
+      message.content.trim().length > 0
+  );
 }
 
 export default {
@@ -65,9 +90,9 @@ async function handleChat(
     });
   }
 
-  if (!body.messages?.length || !body.sessionId) {
+  if (!isValidChatRequest(body)) {
     return new Response(
-      JSON.stringify({ error: "Missing messages or sessionId" }),
+      JSON.stringify({ error: "Invalid chat request" }),
       {
         status: 400,
         headers: { ...headers, "Content-Type": "application/json" },
@@ -76,7 +101,7 @@ async function handleChat(
   }
 
   const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
-  trackSession(clientIp);
+  trackSession(body.sessionId, clientIp);
 
   const rateCheck = checkRateLimit(body.sessionId, clientIp, env);
   if (!rateCheck.allowed) {
