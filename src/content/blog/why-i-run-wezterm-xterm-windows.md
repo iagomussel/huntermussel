@@ -1,112 +1,128 @@
 ---
-title: "Why I Run WezTerm + XTerm on Windows"
+title: "Why I Run WezTerm + tmux on Windows"
 date: "2026-07-02"
 authors:
   - iago-mussel
-description: "Most terminal emulators on Windows claim xterm compatibility and quietly break when it matters. WezTerm is the rare one that actually delivers it."
+description: "Windows terminal workflows fall apart because the emulator and multiplexer don't agree. WezTerm paired with tmux fixes both sides of the problem."
 tags:
   - WezTerm
-  - XTerm
+  - tmux
   - Windows
   - Terminal
   - Developer Tools
   - WSL
 keywords:
   - wezterm windows
-  - xterm terminal emulator
+  - wezterm tmux setup
+  - tmux on windows
+  - wsl terminal setup
   - wezterm vs windows terminal
   - best terminal for windows
-  - wsl terminal setup
-  - wezterm xterm 256color
-subtitle: "Your terminal is probably lying about what it supports"
+subtitle: "Stop letting your terminal and multiplexer fight each other"
 image: "https://assets.huntermussel.com/images/blog/why-i-run-wezterm-xterm-windows.webp"
 status: "published"
 ---
 
-Your terminal is probably lying to you.
+Your terminal and multiplexer are probably fighting.
 
-Most terminal emulators on Windows claim they support `xterm-256color`. They don't — not really. They support enough of it to make `ls --color` look nice, then quietly fall apart the moment you open something serious. Neovim with multiple splits. A tmux status bar. Any TUI that expects the terminal to mean what it says.
+Most Windows terminal emulators claim they play nice with `tmux`. They don't — not really. They render enough to make a split pane look fine, then quietly fall apart when you actually live inside it. Status bars leave ghosts. Mouse selection stops working across panes. Key combinations get intercepted by Windows before they ever reach tmux. Neovim inside a tmux pane inside Windows Terminal is three layers of "almost works."
 
-It's not that Windows is bad for development. It's that the window you type into is pretending to be a better terminal than it is.
+It's not that Windows is bad for development. It's that the window you type into and the multiplexer inside it were never built to agree.
 
 <!-- truncate -->
 
-## What "xterm-compatible" actually means
+## The real problem is the split
 
-XTerm isn't just old software from the X11 era. It's the reference implementation. When a terminal says it's xterm-compatible, applications expect a specific set of escape sequences, key reports, and color behaviors. That's the contract.
+A terminal workflow has two jobs: draw the characters correctly, and manage the sessions/splits/windows. The terminal emulator handles the first. The multiplexer handles the second. When they disagree, every bug looks like tmux's fault but it's actually the emulator lying about what it supports.
 
-Break the contract and you get the small glitches that waste your day: arrow keys that emit the wrong codes, mouse events that never register, colors that render differently across panes, status bars that leave ghost characters behind. Each glitch is tiny. Together they make the terminal feel unreliable.
+Ghost characters, broken mouse support, wrong key codes, colors that shift between panes — those are protocol failures, not tmux failures. tmux is speaking correctly. The terminal just isn't listening.
 
-A lot of Windows terminals sign the contract without reading it. They set `TERM=xterm-256color` because that's what apps want to see, then hope the app doesn't ask for anything complicated. Hope is a bad terminal strategy.
+Windows Terminal is the worst offender. It intercepts keys, renders escape sequences its own way, and has quirks when you mix native Windows shells with WSL. It tries to be everything at once and ends up mediocre at the actual terminal protocol.
 
-## Windows Terminal isn't enough
+If you spend most of your day in a terminal, mediocre isn't acceptable.
 
-Windows Terminal has gotten better. Tabs, decent font rendering, GPU acceleration. For casual PowerShell work or running the occasional WSL command, it's fine.
+## Why WezTerm for the emulator
 
-But fine isn't the same as correct. Windows Terminal still intercepts keys in weird ways, renders some escape sequences differently than xterm, and has quirks when you mix native Windows shells with WSL. It tries to be everything — a shell launcher, a settings UI, a tab manager — and ends up mediocre at the actual terminal protocol.
+WezTerm implements the terminal protocol correctly. It understands the escape sequences tmux depends on, reports itself accurately, and renders text well without looking like a science experiment.
 
-If you spend most of your day in a terminal, mediocre isn't acceptable. You need an emulator that treats the protocol seriously.
+Set `TERM=screen-256color` or `tmux-256color` — or `wezterm` if your terminfo has it — and the sequences land the way tmux expects. Mouse works. Colors stay consistent. Status bars don't leave artifacts. The basics, done right.
 
-## What WezTerm gets right
+It also handles ligatures, high-DPI displays, and real color schemes. Those are nice extras. The real win is that it stops being the weak link in the chain.
 
-WezTerm is a cross-platform terminal emulator written in Rust. That alone isn't why I use it. I use it because it actually implements the terminal protocol correctly.
+## Why tmux for the multiplexer
 
-It understands the same escape sequences xterm does. It reports itself accurately. You can set `TERM=wezterm` and get a terminfo that matches the emulator, or use `xterm-256color` and know the sequences will land the way applications expect. Either way, the contract holds.
+WezTerm has a built-in multiplexer. It's good. For purely local work it can replace tmux entirely.
 
-It also renders text well, supports ligatures, has real color scheme support, and handles high-DPI displays without looking like a science experiment. The basics, done right.
+But tmux has something WezTerm's mux doesn't: persistence. When you disconnect from a remote server, your tmux session keeps running. Reconnect later and everything is exactly where you left it. For anyone who SSHs into boxes regularly — which is most developers — that's non-negotiable.
 
-## You already own a multiplexer
+tmux is also the de facto standard. Learn its key bindings once and they work on every server, every cloud VM, every CI debug session. It doesn't matter what's installed locally; tmux is almost always there.
 
-Here's the part that surprises people: WezTerm has a built-in multiplexer.
-
-Tabs, split panes, workspaces, even remote sessions over SSH. You can do a lot of what tmux gives you without running a separate program inside every window. That means fewer layers, fewer key conflicts, and one less thing to install and configure.
-
-I still use tmux on servers where I need persistence after disconnecting. But for local development, WezTerm's mux is enough. One config file. One process. One set of key bindings that actually work the same on macOS, Linux, and Windows.
+So my setup is simple: WezTerm locally, tmux everywhere I need persistence or portability.
 
 ## Even on Windows
 
-The real argument isn't that WezTerm is good on Unix. It's that WezTerm makes Windows feel like a proper development machine.
+The real argument isn't that WezTerm is good on Unix. It's that WezTerm makes Windows feel like a proper development machine for tmux users.
 
-Install the native Windows build and it just runs. No WSL required. It talks to PowerShell, CMD, Git Bash, MSYS2, and WSL equally well. You can define a launch menu in Lua and pick your shell per tab. Your config file is the same one you use on your MacBook or your Linux box, with small per-platform overrides if you need them.
+Install the native Windows build and it just runs. No WSL required. It talks to PowerShell, CMD, Git Bash, MSYS2, and WSL equally well. I open WezTerm, SSH into a server, attach to tmux, and forget I'm on Windows.
 
-That portability matters. You stop maintaining one terminal setup for work and another for home. You stop explaining to Windows teammates why their terminal "almost" works.
+Your config file is the same one you use on macOS or Linux, with small per-platform overrides if you need them. That portability matters. You stop maintaining one terminal setup for work and another for home. You stop explaining to teammates why your Windows terminal "almost" works.
 
-## Installing it
+## Installing both
 
-The fastest way on Windows is `winget`:
+**WezTerm:**
+
+Windows:
 
 ```powershell
 winget install wez.wezterm
 ```
 
-On macOS, Homebrew has it:
+macOS:
 
 ```bash
 brew install --cask wezterm
 ```
 
-On Linux, most distros package it under `wezterm`. If yours doesn't, the AppImage on the releases page works without fighting your package manager. Just grab it, make it executable, and run it.
+Linux: most distros package it as `wezterm`. If yours doesn't, the AppImage on the releases page works without fighting your package manager.
+
+**tmux:**
+
+Inside WSL or any Linux machine:
+
+```bash
+sudo apt install tmux
+```
+
+macOS:
+
+```bash
+brew install tmux
+```
+
+Windows native? Don't. Run tmux inside WSL or SSH into a box that has it. That's the whole point.
 
 ### Set the right `TERM`
 
-Once WezTerm is open, your shell needs to know it can speak a real terminal protocol. The safest default is:
+Inside tmux, use:
 
 ```bash
-export TERM=xterm-256color
+export TERM=screen-256color
 ```
 
-If you want something more specific, WezTerm ships a `wezterm` terminfo that matches the emulator exactly. Some systems don't have it installed by default. You can install it from WezTerm's docs or use `xterm-256color` and forget about it. Either way, the point is the same: stop letting a terminal claim compatibility it doesn't have.
+Or `tmux-256color` if the host's terminfo supports it. Outside tmux, let WezTerm handle it — `wezterm` if you installed the terminfo, otherwise `xterm-256color` works fine.
+
+The goal is the same in both cases: stop letting the emulator claim compatibility it doesn't have.
 
 ## The config that travels with you
 
-WezTerm is configured in Lua. One file, usually `~/.config/wezterm/wezterm.lua`, copied anywhere.
+WezTerm is configured in Lua. tmux is configured in `.tmux.conf`. Both are plain text you can version control.
 
-You set your font, your color scheme, your leader key, your launch menu, your pane splits. You can detect the platform and adjust paths. After a day of tweaking, you have a terminal that behaves identically across every machine you touch.
+One `wezterm.lua` sets your font, color scheme, launch menu, and key bindings. One `.tmux.conf` sets your prefix, status bar, mouse mode, and pane behavior. After a day of tweaking, you have a terminal that behaves identically across every machine you touch.
 
-There's no registry editing. No JSON settings UI that moved between versions. No mystery checkboxes. Just text you can version control.
+There's no registry editing. No JSON settings UI that moved between versions. No mystery checkboxes.
 
 ## What to do next
 
-Download WezTerm. Set your `TERM` to `xterm-256color` or `wezterm`. Copy your dotfiles over. Open your usual TUI apps and notice how many small annoyances disappear.
+Install WezTerm. Install tmux. SSH into something, start a session, detach, and reconnect. Open a few panes. Click around with your mouse. Notice how nothing breaks.
 
-Stop apologizing for your terminal. Get one that means what it says.
+Stop apologizing for your terminal. Get an emulator and a multiplexer that agree with each other.
