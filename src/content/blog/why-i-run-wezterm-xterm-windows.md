@@ -19,6 +19,7 @@ keywords:
   - wsl terminal setup
   - wezterm xterm 256color
 subtitle: "Your terminal is probably lying about what it supports"
+image: "https://assets.huntermussel.com/images/blog/why-i-run-wezterm-xterm-windows.webp"
 status: "published"
 ---
 
