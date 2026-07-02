@@ -19,7 +19,7 @@ keywords:
   - wsl terminal setup
   - wezterm xterm 256color
 subtitle: "Your terminal is probably lying about what it supports"
-status: "draft"
+status: "published"
 ---
 
 Your terminal is probably lying to you.
