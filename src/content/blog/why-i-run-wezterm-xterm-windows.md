@@ -70,6 +70,32 @@ Install the native Windows build and it just runs. No WSL required. It talks to 
 
 That portability matters. You stop maintaining one terminal setup for work and another for home. You stop explaining to Windows teammates why their terminal "almost" works.
 
+## Installing it
+
+The fastest way on Windows is `winget`:
+
+```powershell
+winget install wez.wezterm
+```
+
+On macOS, Homebrew has it:
+
+```bash
+brew install --cask wezterm
+```
+
+On Linux, most distros package it under `wezterm`. If yours doesn't, the AppImage on the releases page works without fighting your package manager. Just grab it, make it executable, and run it.
+
+### Set the right `TERM`
+
+Once WezTerm is open, your shell needs to know it can speak a real terminal protocol. The safest default is:
+
+```bash
+export TERM=xterm-256color
+```
+
+If you want something more specific, WezTerm ships a `wezterm` terminfo that matches the emulator exactly. Some systems don't have it installed by default. You can install it from WezTerm's docs or use `xterm-256color` and forget about it. Either way, the point is the same: stop letting a terminal claim compatibility it doesn't have.
+
 ## The config that travels with you
 
 WezTerm is configured in Lua. One file, usually `~/.config/wezterm/wezterm.lua`, copied anywhere.
