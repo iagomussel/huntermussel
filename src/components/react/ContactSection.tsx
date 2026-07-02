@@ -73,14 +73,24 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       } else {
         const text = await res.text();
         console.error("Contact form: Received non-JSON response:", text);
-        setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
+        trackEvent("contact_form_error", {
+          form_id: "contact",
+          form_surface: surface,
+          error_type: "non_json_response",
+        });
+        setErrorMsg(T.errorMsg);
         setStatus("error");
         return;
       }
 
       if (!res.ok) {
         console.error("Contact form: API Error:", data);
-        setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
+        trackEvent("contact_form_error", {
+          form_id: "contact",
+          form_surface: surface,
+          error_type: "request_failed",
+        });
+        setErrorMsg(T.errorMsg);
         setStatus("error");
         return;
       }
@@ -105,7 +115,12 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       }
     } catch (err) {
       console.error("Contact form: Connection error:", err);
-      setErrorMsg("I'm sorry, due the high demand we can't meet your request at moment. Hope we can talk soon.");
+      trackEvent("contact_form_error", {
+        form_id: "contact",
+        form_surface: surface,
+        error_type: "network_error",
+      });
+      setErrorMsg(T.errorMsg);
       setStatus("error");
     }
   };
