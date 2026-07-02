@@ -1,0 +1,1236 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
+
+const faqItems = [
+  {
+    q: "Is my data uploaded to a server?",
+    a: "No. Everything runs in your browser using the File API, Canvas API, and MediaRecorder API. Files never leave your device unless you save the cleaned version to your downloads folder.",
+  },
+  {
+    q: "What metadata is removed from images?",
+    a: "All EXIF data is stripped: GPS coordinates, camera make/model, lens info, date/time taken, software, orientation, thumbnail, and any other embedded metadata. The image is re-encoded through the Canvas API, which discards all non-pixel data.",
+  },
+  {
+    q: "What metadata is removed from videos?",
+    a: "The video is re-encoded using the browser's MediaRecorder API, which strips all container-level metadata including creation date, GPS location, device info, and codec-specific metadata tags.",
+  },
+  {
+    q: "Does this actually remove AI watermarks?",
+    a: "This tool removes embedded metadata (EXIF, GPS, camera info) from image and video files. It does not remove visible watermarks overlaid on the image content. For visible watermark removal, you would need a different approach such as inpainting or content-aware fill.",
+  },
+  {
+    q: "What image formats are supported?",
+    a: "JPEG, PNG, WebP, GIF, BMP, TIFF, and AVIF as input. Output can be re-encoded as PNG (lossless), JPEG, or WebP (both with adjustable quality) to strip metadata while preserving visual quality.",
+  },
+  {
+    q: "What video formats are supported?",
+    a: "MP4, MOV, WebM, AVI, and MKV as input. Output re-encoding lets you choose between WebM (VP9 or VP8) and MP4 (H.264), depending on what your browser supports — the tool only offers formats it can actually produce.",
+  },
+  {
+    q: "Can I process multiple files at once?",
+    a: "Yes. You can batch process up to 20 files at a time. Each file's metadata is read and displayed before cleaning, and you can download cleaned files individually or all at once.",
+  },
+  {
+    q: "Will the image or video quality be affected?",
+    a: "For images, PNG output is lossless so quality is preserved. JPEG output uses quality 92 by default (adjustable). For videos, WebM/VP9 re-encoding may result in slight quality changes, but the tool uses a high bitrate to minimize visible differences.",
+  },
+];
+---
+
+<BaseLayout
+  title="AI Watermark Remover for Instagram — GPS &amp; Metadata Stripper | HunterMussel Tools"
+  description="Remove EXIF, GPS location, camera make/model, and hidden metadata from photos and videos in your browser. AI watermark remover for Instagram — 100% private, no uploads."
+  canonicalPath="/tools/metadata-remover/"
+  breadcrumbName="Metadata Remover"
+  faqItems={faqItems}
+  keywords={[
+    "ai watermark remover for instagram",
+    "remove gps from photos online",
+    "exif remover browser",
+    "metadata stripper free",
+    "remove camera info from image",
+    "geolocation remover from video",
+    "instagram watermark remover",
+    "strip exif data online free",
+    "private photo cleaner",
+    "remove hidden data from images",
+    "client side metadata remover",
+    "batch exif remover",
+    "remove location from photos",
+    "video metadata cleaner",
+    "gps data remover from jpg",
+  ]}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / media</p>
+      <h1>Metadata Remover</h1>
+      <p class="lead">
+        Strip EXIF, GPS coordinates, camera make/model, timestamps, and all hidden metadata
+        from <strong>images</strong> and <strong>videos</strong> in your browser. Re-encode clean
+        files with zero uploads — 100% private.
+      </p>
+      <a class="back-link" href="/tools/">Back to tools index</a>
+      <nav class="related-tools" aria-label="Related media tools">
+        <span class="related-tools__label">Related</span>
+        <a href="/tools/image-optimizer/">WebP optimizer</a>
+        <a href="/tools/image-format-converter/">Format converter</a>
+        <a href="/tools/background-remover/">Background remover</a>
+      </nav>
+    </section>
+
+    <section class="media-tool-grid">
+      <!-- Drop zone -->
+      <div id="dropZone" class="card media-drop">
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/bmp,image/webp,image/tiff,image/avif,video/mp4,video/quicktime,video/webm,video/x-msvideo,video/x-matroska"
+          multiple
+          style="display:none"
+        />
+        <div class="media-drop-inner">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="12" y1="9" x2="12" y2="17"/>
+          </svg>
+          <p class="media-drop-label">Drop images or videos here or <span class="media-drop-link">browse files</span></p>
+          <p class="small">JPG, PNG, WebP, GIF, BMP, TIFF, AVIF · MP4, MOV, WebM, AVI, MKV · up to 20 files</p>
+        </div>
+        <div id="fileList" class="file-chips"></div>
+      </div>
+
+      <!-- Settings sidebar -->
+      <aside class="card stack">
+        <div>
+          <label class="label" for="outputFormat">Output format (images)</label>
+          <select id="outputFormat">
+            <option value="image/png">PNG (lossless)</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+        <div id="qualityWrap">
+          <label class="label" for="qualitySlider">Image quality: <span id="qualityValue">92</span>%</label>
+          <input id="qualitySlider" type="range" min="1" max="100" value="92" />
+        </div>
+        <div>
+          <label class="label" for="videoFormat">Output format (videos)</label>
+          <select id="videoFormat"></select>
+          <p class="small" id="videoFormatHint"></p>
+        </div>
+        <div id="statusBox" class="result" style="display:none">
+          Status
+          <strong id="statusText">Idle</strong>
+          <span id="statusHint" class="small"></span>
+        </div>
+        <div class="actions">
+          <button id="processBtn" type="button">Strip Metadata</button>
+          <button id="clearBtn" type="button" class="secondary">Clear all</button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Preview: raw metadata found in the files you just added, before any stripping -->
+    <section id="previewSection" style="display:none">
+      <div class="results-header">
+        <h2 class="results-title">Metadata found (before cleaning)</h2>
+      </div>
+      <div id="previewGrid" class="results-grid"></div>
+    </section>
+
+    <!-- Results -->
+    <section id="resultsSection" style="display:none">
+      <div class="results-header results-header--wrap">
+        <h2 class="results-title">Cleaned files</h2>
+        <button id="downloadAllBtn" type="button" class="secondary">Download all</button>
+      </div>
+      <div id="resultsGrid" class="results-grid"></div>
+    </section>
+
+    <section class="article">
+      <article class="card">
+        <h2>What It Does</h2>
+        <p>
+          Reads every image and video file you drop in, extracts all embedded metadata
+          (EXIF, GPS coordinates, camera make and model, lens info, date/time, software,
+          orientation, thumbnail, and codec-specific tags), then re-encodes the file
+          without any of that data. The result is a clean file that shares pixels but
+          reveals nothing about how, when, or where it was created.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Why Strip Metadata?</h2>
+        <ul>
+          <li><strong>Privacy:</strong> GPS coordinates in vacation photos reveal your home address.</li>
+          <li><strong>Anonymity:</strong> Camera serial numbers and software versions can identify the creator.</li>
+          <li><strong>Social media:</strong> Instagram and other platforms may read EXIF data from uploaded files.</li>
+          <li><strong>Compliance:</strong> GDPR and data protection rules may require stripping location data from shared media.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>How It Works</h2>
+        <p>
+          Images are decoded with the browser Image API, drawn onto an off-screen canvas,
+          and re-exported as a fresh PNG or JPEG — the Canvas API discards all metadata
+          automatically. Videos are decoded with the HTMLVideoElement, captured via
+          MediaStream, and re-encoded with MediaRecorder as WebM, which produces a clean
+          container with no embedded metadata. Everything happens in your browser tab.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How To Use</h2>
+        <ul>
+          <li>Drop or select up to 20 image and video files.</li>
+          <li>Choose output format for images (PNG lossless or JPEG).</li>
+          <li>Click <strong>Strip Metadata</strong> to process all files.</li>
+          <li>Review the before/after metadata comparison for each file.</li>
+          <li>Download cleaned files individually or all at once.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <dl class="tool-faq-list">
+          {faqItems.map((item) => (
+            <div class="tool-faq-item">
+              <dt>{item.q}</dt>
+              <dd>{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </article>
+      <ServiceCTA
+        service="security-compliance"
+        title="Need automated metadata sanitization in your workflow?"
+        description="HunterMussel designs security and compliance automation that strips sensitive metadata from media assets before they enter your delivery pipeline — eliminating manual review entirely."
+        linkLabel="Explore Security &amp; Compliance"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/exifr@7/dist/full.umd.js"></script>
+
+<style>
+  /* ── File chips ── */
+  .chip {
+    font-size: 0.78rem;
+    background: var(--primary-soft);
+    border: 1px solid hsl(145 80% 50% / 0.2);
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    color: var(--primary);
+    font-family: "JetBrains Mono", monospace;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── Results / preview grid ── */
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .results-title {
+    margin: 0;
+    font-size: 1rem;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-1);
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .result-card {
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--card);
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .result-card:hover {
+    border-color: hsl(145 80% 50% / 0.25);
+    box-shadow: 0 0 16px var(--glow);
+  }
+
+  .result-thumb {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+    background: var(--muted);
+  }
+
+  .result-info {
+    padding: 0.75rem;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .result-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-1);
+  }
+
+  .result-sizes,
+  .result-dims {
+    font-size: 0.78rem;
+    color: var(--text-2);
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  .result-actions {
+    padding: 0 0.75rem 0.75rem;
+  }
+
+  .error-card {
+    border-color: hsl(0 60% 30%);
+  }
+
+  .error-msg {
+    font-size: 0.78rem;
+    color: hsl(0 70% 60%);
+  }
+
+  /* ── Metadata comparison panels ── */
+  .meta-panel {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .meta-panel h4 {
+    margin: 0;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-1);
+  }
+
+  .meta-section {
+    margin-bottom: 0.5rem;
+  }
+
+  .meta-section-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--primary);
+    margin: 0 0 0.25rem;
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .meta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem 0.75rem;
+    font-size: 0.78rem;
+    padding: 0.15rem 0;
+  }
+
+  .meta-key {
+    color: var(--text-2);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    word-break: break-all;
+  }
+
+  .meta-val {
+    color: var(--text-1);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    word-break: break-all;
+    text-align: right;
+  }
+
+  .meta-val a {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+
+  .meta-empty {
+    font-size: 0.78rem;
+    color: hsl(145 60% 50%);
+    font-style: italic;
+  }
+
+  .meta-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    margin-bottom: 0.35rem;
+  }
+
+  .meta-badge--image {
+    background: hsl(220 60% 20%);
+    color: hsl(220 80% 70%);
+  }
+
+  .meta-badge--video {
+    background: hsl(280 60% 20%);
+    color: hsl(280 80% 70%);
+  }
+
+  /* ── Before/after comparison ── */
+  .meta-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 0.5rem 0;
+  }
+
+  .meta-comparison-col {
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 0.6rem;
+    background: var(--muted);
+  }
+
+  .meta-comparison-col h5 {
+    margin: 0 0 0.4rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .meta-comparison-col--before h5 {
+    color: hsl(30 80% 60%);
+  }
+
+  .meta-comparison-col--after h5 {
+    color: hsl(145 80% 50%);
+  }
+
+  /* ── Result card overrides ── */
+  .result-card .result-thumb {
+    height: 120px;
+  }
+
+  .result-card .result-info {
+    gap: 0.25rem;
+  }
+
+  .result-card .result-actions {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .result-card .result-actions button {
+    flex: 1;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.5rem;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 520px) {
+    .meta-comparison {
+      grid-template-columns: 1fr;
+    }
+
+    .meta-row {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+
+    .meta-val {
+      text-align: left;
+    }
+  }
+</style>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  const dropZone = $("dropZone");
+  const fileInput = $("fileInput");
+  const fileList = $("fileList");
+  const outputFormat = $("outputFormat");
+  const qualityWrap = $("qualityWrap");
+  const qualitySlider = $("qualitySlider");
+  const qualityValue = $("qualityValue");
+  const videoFormat = $("videoFormat");
+  const videoFormatHint = $("videoFormatHint");
+  const processBtn = $("processBtn");
+  const clearBtn = $("clearBtn");
+  const statusBox = $("statusBox");
+  const statusText = $("statusText");
+  const statusHint = $("statusHint");
+  const previewSection = $("previewSection");
+  const previewGrid = $("previewGrid");
+  const resultsSection = $("resultsSection");
+  const resultsGrid = $("resultsGrid");
+  const downloadAllBtn = $("downloadAllBtn");
+
+  let selectedFiles = [];
+  let processedResults = [];
+  const fileMetaCache = new Map();
+
+  // --- Quality slider ---
+  qualitySlider.addEventListener("input", () => {
+    qualityValue.textContent = qualitySlider.value;
+  });
+
+  // --- Format selector: show/hide quality slider ---
+  outputFormat.addEventListener("change", () => {
+    qualityWrap.style.display =
+      outputFormat.value === "image/jpeg" || outputFormat.value === "image/webp" ? "" : "none";
+  });
+  qualityWrap.style.display = "none"; // PNG is default
+
+  // --- Video output format: populate with codecs the browser can actually record ---
+  const VIDEO_OUTPUT_FORMATS = [
+    { mime: "video/webm;codecs=vp9,opus", ext: "webm", label: "WebM (VP9) — best quality" },
+    { mime: "video/webm;codecs=vp8,opus", ext: "webm", label: "WebM (VP8) — best compatibility" },
+    { mime: "video/webm", ext: "webm", label: "WebM (default codec)" },
+    { mime: "video/mp4;codecs=avc1", ext: "mp4", label: "MP4 (H.264)" },
+    { mime: "video/mp4", ext: "mp4", label: "MP4" },
+  ];
+
+  let supportedVideoFormats = [];
+
+  function populateVideoFormats() {
+    if (typeof MediaRecorder === "undefined") {
+      videoFormatHint.textContent = "Your browser does not support video re-encoding.";
+      videoFormat.disabled = true;
+      return;
+    }
+    supportedVideoFormats = VIDEO_OUTPUT_FORMATS.filter((f) => MediaRecorder.isTypeSupported(f.mime));
+    if (supportedVideoFormats.length === 0) {
+      videoFormatHint.textContent = "No supported video output codec found in this browser.";
+      videoFormat.disabled = true;
+      return;
+    }
+    videoFormat.innerHTML = "";
+    supportedVideoFormats.forEach((f) => {
+      const opt = document.createElement("option");
+      opt.value = f.mime;
+      opt.textContent = f.label;
+      videoFormat.appendChild(opt);
+    });
+    videoFormatHint.textContent = "Only formats supported by your browser are listed.";
+  }
+
+  populateVideoFormats();
+
+  // --- Drop zone interaction ---
+  dropZone.addEventListener("click", (e) => {
+    if (e.target.closest("button")) return;
+    fileInput.click();
+  });
+
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.classList.add("drag-over");
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("drag-over");
+  });
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropZone.classList.remove("drag-over");
+    addFiles([...e.dataTransfer.files]);
+  });
+
+  fileInput.addEventListener("change", () => {
+    addFiles([...fileInput.files]);
+    fileInput.value = "";
+  });
+
+  const IMAGE_TYPES = ["image/jpeg","image/png","image/gif","image/bmp","image/webp","image/tiff","image/avif"];
+  const VIDEO_TYPES = ["video/mp4","video/quicktime","video/webm","video/x-msvideo","video/x-matroska"];
+
+  function addFiles(newFiles) {
+    const valid = newFiles.filter((f) => IMAGE_TYPES.includes(f.type) || VIDEO_TYPES.includes(f.type));
+    selectedFiles = [...selectedFiles, ...valid].slice(0, 20);
+    renderFileChips();
+    renderPreview();
+  }
+
+  function renderFileChips() {
+    fileList.innerHTML = "";
+    selectedFiles.forEach((f) => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = f.name;
+      fileList.appendChild(chip);
+    });
+  }
+
+  // --- Format helpers ---
+  function formatSize(bytes) {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  }
+
+  function formatDuration(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  }
+
+  function isImage(file) {
+    return IMAGE_TYPES.includes(file.type);
+  }
+
+  function isVideo(file) {
+    return VIDEO_TYPES.includes(file.type);
+  }
+
+  function getTypeBadge(file) {
+    return isImage(file) ? "image" : "video";
+  }
+
+  function getCleanFileName(originalName, ext) {
+    const base = originalName.replace(/\.[^.]+$/, "");
+    return `${base}.${ext}`;
+  }
+
+  const IMAGE_EXT_BY_MIME = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+  };
+
+  // --- Metadata reading ---
+  async function readImageMetadata(file) {
+    if (typeof window === "undefined" || !window.exifr) return null;
+    try {
+      const data = await window.exifr.parse(file, {
+        tiff: true,
+        xmp: false,
+        icc: false,
+        iptc: true,
+        jfif: true,
+        gps: true,
+      });
+      if (!data) return {};
+      const meta = {};
+
+      // GPS
+      if (data.latitude != null || data.longitude != null) {
+        meta.gps = {
+          latitude: data.latitude,
+          longitude: data.longitude,
+        };
+        if (data.altitude != null) meta.gps.altitude = data.altitude;
+      }
+
+      // Camera
+      const camera = {};
+      if (data.Make) camera.make = data.Make;
+      if (data.Model) camera.model = data.Model;
+      if (data.LensModel) camera.lens = data.LensModel;
+      if (data.FocalLength) camera.focalLength = data.FocalLength;
+      if (data.FNumber) camera.aperture = data.FNumber;
+      if (data.ISOSpeedRatings) camera.iso = data.ISOSpeedRatings;
+      if (data.ExposureTime) camera.exposureTime = data.ExposureTime;
+      if (data.Flash != null) camera.flash = data.Flash;
+      if (Object.keys(camera).length) meta.camera = camera;
+
+      // Timestamps
+      const ts = {};
+      if (data.DateTimeOriginal) ts.dateTimeOriginal = data.DateTimeOriginal;
+      if (data.CreateDate) ts.createDate = data.CreateDate;
+      if (data.ModifyDate) ts.modifyDate = data.ModifyDate;
+      if (Object.keys(ts).length) meta.timestamps = ts;
+
+      // Software
+      const sw = {};
+      if (data.Software) sw.software = data.Software;
+      if (data.Artist) sw.artist = data.Artist;
+      if (data.Copyright) sw.copyright = data.Copyright;
+      if (Object.keys(sw).length) meta.software = sw;
+
+      // Other
+      const other = {};
+      if (data.Orientation != null) other.orientation = data.Orientation;
+      if (data.XResolution) other.xResolution = data.XResolution;
+      if (data.YResolution) other.yResolution = data.YResolution;
+      if (data.ColorSpace) other.colorSpace = data.ColorSpace;
+      if (data.FileSource) other.fileSource = data.FileSource;
+      if (data.SceneType) other.sceneType = data.SceneType;
+      if (Object.keys(other).length) meta.other = other;
+
+      return meta;
+    } catch {
+      return {};
+    }
+  }
+
+  function readVideoMetadata(file) {
+    return new Promise((resolve) => {
+      const video = document.createElement("video");
+      video.muted = true;
+      video.playsInline = true;
+      video.preload = "metadata";
+      // Some browsers won't reliably fire loadedmetadata on a detached element —
+      // keep it in the document, just invisible, so metadata loading isn't gambled on.
+      video.style.cssText = "position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none";
+      document.body.appendChild(video);
+      const srcUrl = URL.createObjectURL(file);
+      video.src = srcUrl;
+
+      let settled = false;
+      const timeoutId = setTimeout(
+        () => finish({ other: { note: "Could not read video info in time — metadata is still checked when you strip it." } }),
+        8000
+      );
+
+      function cleanup() {
+        clearTimeout(timeoutId);
+        URL.revokeObjectURL(srcUrl);
+        video.removeAttribute("src");
+        video.load();
+        video.remove();
+      }
+
+      function finish(meta) {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        resolve(meta);
+      }
+
+      video.onloadedmetadata = () => {
+        finish({
+          other: {
+            duration: formatDuration(video.duration || 0),
+            width: video.videoWidth,
+            height: video.videoHeight,
+            note: "Container metadata (creation date, GPS, device info) is checked when you strip it.",
+          },
+        });
+      };
+
+      video.onerror = () => finish({});
+    });
+  }
+
+  // Reads metadata once per file and caches the promise, so the preview and the
+  // strip step never disagree and a file is never read from disk twice.
+  function getFileMeta(file) {
+    if (!fileMetaCache.has(file)) {
+      const promise = isImage(file)
+        ? readImageMetadata(file)
+        : isVideo(file)
+        ? readVideoMetadata(file)
+        : Promise.resolve({});
+      fileMetaCache.set(file, promise);
+    }
+    return fileMetaCache.get(file);
+  }
+
+  // --- Preview: show metadata as soon as files are added, before stripping ---
+  function renderPreview() {
+    if (selectedFiles.length === 0) {
+      previewSection.style.display = "none";
+      previewGrid.innerHTML = "";
+      return;
+    }
+
+    previewSection.style.display = "";
+    previewGrid.innerHTML = "";
+
+    selectedFiles.forEach((file) => {
+      const card = document.createElement("div");
+      card.className = "result-card";
+
+      if (isImage(file)) {
+        const thumb = document.createElement("img");
+        thumb.className = "result-thumb";
+        thumb.src = URL.createObjectURL(file);
+        thumb.alt = file.name;
+        thumb.loading = "lazy";
+        thumb.onload = () => URL.revokeObjectURL(thumb.src);
+        card.appendChild(thumb);
+      }
+
+      const info = document.createElement("div");
+      info.className = "result-info";
+
+      const nameRow = document.createElement("div");
+      nameRow.className = "result-name";
+      nameRow.title = file.name;
+      nameRow.textContent = file.name;
+      info.appendChild(nameRow);
+
+      const badgeEl = document.createElement("span");
+      badgeEl.className = `meta-badge meta-badge--${getTypeBadge(file)}`;
+      badgeEl.textContent = getTypeBadge(file);
+      info.appendChild(badgeEl);
+
+      const panel = document.createElement("div");
+      panel.className = "meta-empty";
+      panel.textContent = "Reading metadata…";
+      info.appendChild(panel);
+
+      card.appendChild(info);
+      previewGrid.appendChild(card);
+
+      getFileMeta(file).then((meta) => {
+        renderMetaPanel(panel, meta, "before");
+      });
+    });
+  }
+
+  // --- Metadata stripping ---
+  function stripImageMetadata(file, mime, quality) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onerror = () => reject(new Error("Failed to read file"));
+
+      reader.onload = (e) => {
+        const img = new Image();
+
+        img.onerror = () => reject(new Error("Failed to decode image"));
+
+        img.onload = () => {
+          const w = img.naturalWidth;
+          const h = img.naturalHeight;
+
+          const canvas = document.createElement("canvas");
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+
+          const args = mime === "image/jpeg" ? [mime, quality / 100] : [mime];
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error("canvas.toBlob returned null"));
+                return;
+              }
+              const url = URL.createObjectURL(blob);
+              resolve({ blob, url, width: w, height: h });
+            },
+            ...args
+          );
+        };
+
+        img.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function stripVideoMetadata(file, mimeType) {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement("video");
+      video.muted = true;
+      video.playsInline = true;
+      video.crossOrigin = "anonymous";
+      // Attached but invisible: captureStream/playback can stall on some browsers
+      // for video elements that are never part of the document.
+      video.style.cssText = "position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none";
+      document.body.appendChild(video);
+
+      const srcUrl = URL.createObjectURL(file);
+      video.src = srcUrl;
+
+      video.onloadedmetadata = () => {
+        const duration = video.duration;
+        if (!duration || !isFinite(duration) || duration <= 0) {
+          cleanup();
+          reject(new Error("Could not determine video duration"));
+          return;
+        }
+
+        // Check for captureStream support
+        if (!video.captureStream) {
+          cleanup();
+          reject(new Error("Your browser does not support video re-encoding (captureStream not available)"));
+          return;
+        }
+
+        video.play().then(() => {
+          const stream = video.captureStream();
+          const recorder = new MediaRecorder(stream, {
+            mimeType,
+            videoBitsPerSecond: 5000000,
+          });
+
+          const chunks = [];
+          recorder.ondataavailable = (e) => {
+            if (e.data.size > 0) chunks.push(e.data);
+          };
+
+          recorder.onstop = () => {
+            const blob = new Blob(chunks, { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            cleanup();
+            resolve({
+              blob,
+              url,
+              width: video.videoWidth,
+              height: video.videoHeight,
+              duration,
+              metadata: {
+                duration,
+                width: video.videoWidth,
+                height: video.videoHeight,
+                note: "Container metadata present (creation date, device info, GPS, codec tags, etc.)",
+              },
+            });
+          };
+
+          recorder.onerror = () => {
+            cleanup();
+            reject(new Error("MediaRecorder error during re-encoding"));
+          };
+
+          recorder.start(1000);
+
+          // Stop recording after the video duration
+          setTimeout(() => {
+            if (recorder.state === "recording") {
+              recorder.stop();
+            }
+          }, Math.ceil(duration * 1000) + 500);
+        }).catch(() => {
+          cleanup();
+          reject(new Error("Could not play video for re-encoding"));
+        });
+      };
+
+      video.onerror = () => {
+        cleanup();
+        reject(new Error("Failed to load video"));
+      };
+
+      function cleanup() {
+        URL.revokeObjectURL(srcUrl);
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+        video.remove();
+      }
+    });
+  }
+
+  // --- Rendering ---
+  function renderMetaSection(container, title, fields) {
+    if (!fields || Object.keys(fields).length === 0) return;
+
+    const section = document.createElement("div");
+    section.className = "meta-section";
+
+    const heading = document.createElement("div");
+    heading.className = "meta-section-title";
+    heading.textContent = title;
+    section.appendChild(heading);
+
+    for (const [key, val] of Object.entries(fields)) {
+      const row = document.createElement("div");
+      row.className = "meta-row";
+
+      const keyEl = document.createElement("span");
+      keyEl.className = "meta-key";
+      keyEl.textContent = key;
+
+      const valEl = document.createElement("span");
+      valEl.className = "meta-val";
+
+      if (key === "latitude" && typeof val === "number") {
+        const a = document.createElement("a");
+        a.href = `https://www.google.com/maps?q=${fields.latitude},${fields.longitude}`;
+        a.target = "_blank";
+        a.textContent = val.toFixed(6);
+        valEl.appendChild(a);
+      } else if (key === "longitude" && typeof val === "number") {
+        valEl.textContent = val.toFixed(6);
+      } else if (typeof val === "number") {
+        valEl.textContent = Number.isInteger(val) ? val.toString() : val.toFixed(2);
+      } else if (val instanceof Date) {
+        valEl.textContent = val.toISOString();
+      } else {
+        valEl.textContent = String(val);
+      }
+
+      row.appendChild(keyEl);
+      row.appendChild(valEl);
+      section.appendChild(row);
+    }
+
+    container.appendChild(section);
+  }
+
+  function renderMetaPanel(container, meta, type) {
+    container.innerHTML = "";
+
+    if (!meta || Object.keys(meta).length === 0) {
+      const empty = document.createElement("div");
+      empty.className = "meta-empty";
+      empty.textContent = type === "after" ? "✓ All metadata stripped" : "No metadata found";
+      container.appendChild(empty);
+      return;
+    }
+
+    if (meta.gps) renderMetaSection(container, "📍 GPS", meta.gps);
+    if (meta.camera) renderMetaSection(container, "📷 Camera", meta.camera);
+    if (meta.timestamps) renderMetaSection(container, "🕐 Timestamps", meta.timestamps);
+    if (meta.software) renderMetaSection(container, "💻 Software", meta.software);
+    if (meta.other) renderMetaSection(container, "📋 Other", meta.other);
+  }
+
+  function renderResultCard(result) {
+    const { original, cleanedBlob, cleanedUrl, beforeMeta, type, width, height, duration, cleanExt } = result;
+    const cleanName = getCleanFileName(original.name, cleanExt);
+    const badge = type;
+
+    const card = document.createElement("div");
+    card.className = "result-card";
+
+    // Thumbnail
+    const thumb = document.createElement("img");
+    thumb.className = "result-thumb";
+    thumb.src = cleanedUrl;
+    thumb.alt = cleanName;
+    thumb.loading = "lazy";
+    card.appendChild(thumb);
+
+    // Info
+    const info = document.createElement("div");
+    info.className = "result-info";
+
+    const nameRow = document.createElement("div");
+    nameRow.className = "result-name";
+    nameRow.title = cleanName;
+    nameRow.textContent = cleanName;
+    info.appendChild(nameRow);
+
+    const badgeEl = document.createElement("span");
+    badgeEl.className = `meta-badge meta-badge--${badge}`;
+    badgeEl.textContent = badge;
+    info.appendChild(badgeEl);
+
+    const sizes = document.createElement("div");
+    sizes.className = "result-sizes";
+    sizes.textContent = `${formatSize(original.size)} → ${formatSize(result.cleanedBlob.size)}`;
+    info.appendChild(sizes);
+
+    if (width && height) {
+      const dims = document.createElement("div");
+      dims.className = "result-dims";
+      dims.textContent = type === "video" && duration
+        ? `${width} × ${height} · ${formatDuration(duration)}`
+        : `${width} × ${height} px`;
+      info.appendChild(dims);
+    }
+
+    // Metadata comparison
+    const comparison = document.createElement("div");
+    comparison.className = "meta-comparison";
+
+    const beforeCol = document.createElement("div");
+    beforeCol.className = "meta-comparison-col meta-comparison-col--before";
+    const beforeTitle = document.createElement("h5");
+    beforeTitle.textContent = "Before (metadata found)";
+    beforeCol.appendChild(beforeTitle);
+    const beforePanel = document.createElement("div");
+    beforeCol.appendChild(beforePanel);
+
+    const afterCol = document.createElement("div");
+    afterCol.className = "meta-comparison-col meta-comparison-col--after";
+    const afterTitle = document.createElement("h5");
+    afterTitle.textContent = "After (cleaned)";
+    afterCol.appendChild(afterTitle);
+    const afterPanel = document.createElement("div");
+    afterCol.appendChild(afterPanel);
+
+    renderMetaPanel(beforePanel, beforeMeta, "before");
+    renderMetaPanel(afterPanel, null, "after");
+
+    comparison.appendChild(beforeCol);
+    comparison.appendChild(afterCol);
+    info.appendChild(comparison);
+
+    card.appendChild(info);
+
+    // Actions
+    const actions = document.createElement("div");
+    actions.className = "result-actions";
+    const dlBtn = document.createElement("button");
+    dlBtn.type = "button";
+    dlBtn.textContent = "Download";
+    dlBtn.addEventListener("click", () => {
+      downloadBlob(cleanedBlob, cleanName);
+    });
+    actions.appendChild(dlBtn);
+    card.appendChild(actions);
+
+    resultsGrid.appendChild(card);
+  }
+
+  function renderErrorCard(file, message) {
+    const card = document.createElement("div");
+    card.className = "result-card error-card";
+    card.innerHTML = `
+      <div class="result-info">
+        <div class="result-name" title="${file.name}">${file.name}</div>
+        <div class="error-msg">Error: ${message}</div>
+      </div>
+    `;
+    resultsGrid.appendChild(card);
+  }
+
+  // --- Processing ---
+  function setStatus(text, hint, show = true) {
+    statusBox.style.display = show ? "" : "none";
+    statusText.textContent = text;
+    statusHint.textContent = hint;
+  }
+
+  processBtn.addEventListener("click", async () => {
+    if (selectedFiles.length === 0) {
+      setStatus("No files selected", "Drop or browse files first.");
+      return;
+    }
+
+    const mime = outputFormat.value;
+    const quality = parseInt(qualitySlider.value, 10);
+    const videoMime = videoFormat.disabled ? null : videoFormat.value;
+    const videoFmt = supportedVideoFormats.find((f) => f.mime === videoMime);
+
+    processBtn.disabled = true;
+    clearBtn.disabled = true;
+    setStatus("Processing…", `Stripping metadata from ${selectedFiles.length} file(s)`);
+    resultsSection.style.display = "none";
+    resultsGrid.innerHTML = "";
+
+    // Free previous object URLs
+    processedResults.forEach((r) => r.cleanedUrl && URL.revokeObjectURL(r.cleanedUrl));
+    processedResults = [];
+
+    const total = selectedFiles.length;
+    let done = 0;
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+      setStatus(`Processing ${i + 1}/${total}…`, file.name);
+
+      try {
+        let result;
+
+        if (isImage(file)) {
+          const beforeMeta = await getFileMeta(file);
+          const cleaned = await stripImageMetadata(file, mime, quality);
+          result = {
+            original: file,
+            cleanedBlob: cleaned.blob,
+            cleanedUrl: cleaned.url,
+            beforeMeta,
+            type: "image",
+            width: cleaned.width,
+            height: cleaned.height,
+            cleanExt: IMAGE_EXT_BY_MIME[mime] || "png",
+          };
+        } else if (isVideo(file)) {
+          if (!videoFmt) {
+            renderErrorCard(file, "No supported video output format available in this browser");
+            continue;
+          }
+          const cleaned = await stripVideoMetadata(file, videoFmt.mime);
+          const beforeMeta = {
+            other: {
+              duration: formatDuration(cleaned.metadata.duration),
+              width: cleaned.metadata.width,
+              height: cleaned.metadata.height,
+              note: cleaned.metadata.note,
+            },
+          };
+          result = {
+            original: file,
+            cleanedBlob: cleaned.blob,
+            cleanedUrl: cleaned.url,
+            beforeMeta,
+            type: "video",
+            width: cleaned.width,
+            height: cleaned.height,
+            cleanExt: videoFmt.ext,
+            duration: cleaned.duration,
+          };
+        } else {
+          renderErrorCard(file, "Unsupported file type");
+          continue;
+        }
+
+        processedResults.push(result);
+        renderResultCard(result);
+        done++;
+      } catch (err) {
+        renderErrorCard(file, err.message || "Unknown error");
+      }
+    }
+
+    const failed = total - done;
+    setStatus(
+      `Done — ${done}/${total} cleaned`,
+      failed ? `${failed} file(s) failed` : "All files cleaned successfully."
+    );
+    resultsSection.style.display = "";
+    processBtn.disabled = false;
+    clearBtn.disabled = false;
+  });
+
+  // --- Download ---
+  function downloadBlob(blob, filename) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }
+
+  downloadAllBtn.addEventListener("click", () => {
+    processedResults.forEach((result, i) => {
+      const name = getCleanFileName(result.original.name, result.cleanExt);
+      setTimeout(() => downloadBlob(result.cleanedBlob, name), i * 120);
+    });
+  });
+
+  // --- Clear ---
+  clearBtn.addEventListener("click", () => {
+    selectedFiles = [];
+    fileMetaCache.clear();
+    processedResults.forEach((r) => r.cleanedUrl && URL.revokeObjectURL(r.cleanedUrl));
+    processedResults = [];
+    fileList.innerHTML = "";
+    previewGrid.innerHTML = "";
+    previewSection.style.display = "none";
+    resultsGrid.innerHTML = "";
+    resultsSection.style.display = "none";
+    setStatus("", "", false);
+  });
+</script>
