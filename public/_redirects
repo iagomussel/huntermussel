@@ -4,3 +4,12 @@
 # Tool consolidations — SEO redirects
 /tools/json-formatter     /tools/online-linters 301
 /tools/json-formatter/    /tools/online-linters/ 301
+
+# Removed tool pages — redirect to tools index
+/tools/validators         /tools/ 301
+/tools/validators/        /tools/ 301
+
+# Removed tag pages — redirect to blog index
+/blog/tags/ai             /blog/ 301
+/blog/tags/ai/            /blog/ 301
+/blog/tags/*              /blog/ 301
