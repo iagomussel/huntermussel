@@ -1,6 +1,6 @@
 ---
 title: "DevOps for AI teams: the infrastructure nobody teaches"
-date: "2026-07-02"
+date: "2026-06-19"
 authors:
   - iago-mussel
 description: "AI teams don't fail because of bad models. They fail because the surrounding infrastructure — CI/CD, observability, cost controls, and data pipelines — wasn't built for non-deterministic workloads."

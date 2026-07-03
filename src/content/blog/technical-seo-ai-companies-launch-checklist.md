@@ -1,6 +1,6 @@
 ---
 title: "Technical SEO for AI companies: the checklist we use before launch"
-date: "2026-07-02"
+date: "2026-06-21"
 authors:
   - iago-mussel
 description: "AI companies obsess over the product and ignore search infrastructure. Here's the technical SEO checklist we run before any AI tool, SaaS, or company site goes live."

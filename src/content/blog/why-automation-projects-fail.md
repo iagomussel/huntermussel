@@ -1,9 +1,10 @@
 ---
 title: "Why most automation projects fail — and how to avoid the most common mistakes"
-date: "2026-03-13"
+date: "2026-05-17"
 authors:
   - iago-mussel
 description: "The patterns behind failed automation projects aren't technical. They're structural. Here's what goes wrong and what to do instead."
+image: "https://assets.huntermussel.com/images/blog/why-automation-projects-fail.webp"
 tags:
   - Automation
   - Project Management

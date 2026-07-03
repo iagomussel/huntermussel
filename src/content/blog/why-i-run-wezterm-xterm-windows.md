@@ -1,6 +1,6 @@
 ---
 title: "WezTerm + tmux on Windows: the terminal setup that actually works"
-date: "2026-07-02"
+date: "2026-06-24"
 authors:
   - iago-mussel
 description: "Windows Terminal and tmux fight each other. Here's why WezTerm paired with tmux fixes mouse, keys, colors, and session persistence on Windows and WSL."

@@ -1,9 +1,10 @@
 ---
 title: "What I look for in a startup's infra before I agree to work with them"
-date: "2026-03-13"
+date: "2026-05-15"
 authors:
   - iago-mussel
 description: "Before signing any retainer, I run a quick infra audit. Here's my checklist — and what the red flags tell me about a team."
+image: "https://assets.huntermussel.com/images/blog/what-i-look-for-in-startup-infra.webp"
 tags:
   - DevOps
   - Infrastructure

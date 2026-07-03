@@ -1,9 +1,10 @@
 ---
 title: "AI automation vs traditional RPA: when to use each one"
-date: "2026-03-13"
+date: "2026-03-25"
 authors:
   - iago-mussel
 description: "A practical decision framework for choosing between AI-based automation and traditional RPA — based on the nature of the process, not the hype cycle."
+image: "https://assets.huntermussel.com/images/blog/ai-automation-vs-rpa-when-to-use-each.webp"
 tags:
   - RPA
   - AI Automation

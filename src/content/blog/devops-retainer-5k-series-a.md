@@ -1,9 +1,10 @@
 ---
 title: "What $5,000/month in DevOps retainer actually buys a Series A startup"
-date: "2026-03-13"
+date: "2026-04-04"
 authors:
   - iago-mussel
 description: "Break down what a $5k/month DevOps retainer actually covers, why it's cheaper than a hire, and what to expect in return."
+image: "https://assets.huntermussel.com/images/blog/devops-retainer-5k-series-a.webp"
 tags:
   - DevOps
   - Retainer

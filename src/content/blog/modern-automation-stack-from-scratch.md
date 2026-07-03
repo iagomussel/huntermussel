@@ -1,9 +1,10 @@
 ---
 title: "How to build a modern automation stack from scratch — an opinionated guide"
-date: "2026-03-13"
+date: "2026-05-01"
 authors:
   - iago-mussel
 description: "An opinionated, experience-backed guide to the tools, patterns, and sequencing that make up a modern automation stack in 2026 — from first workflow to production-grade system."
+image: "https://assets.huntermussel.com/images/blog/modern-automation-stack-from-scratch.webp"
 tags:
   - Automation Stack
   - DevOps

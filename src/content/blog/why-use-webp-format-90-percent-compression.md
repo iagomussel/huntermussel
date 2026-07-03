@@ -1,6 +1,6 @@
 ---
 title: "Why Use WebP Format? The 90% Compression Advantage Explained"
-date: "2026-03-08"
+date: "2026-03-14"
 authors:
   - iago-mussel
 description: "WebP delivers up to 90% smaller file sizes than PNG and JPEG with no visible quality loss. Learn why it's the default image format for performance-first web projects in 2026."

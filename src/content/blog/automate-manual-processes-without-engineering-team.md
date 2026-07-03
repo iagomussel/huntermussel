@@ -1,9 +1,10 @@
 ---
 title: "How to automate repetitive manual processes without hiring a team of engineers"
-date: "2026-03-13"
+date: "2026-03-27"
 authors:
   - iago-mussel
 description: "A practical framework for identifying, prioritizing, and automating manual processes — even when you don't have a dedicated engineering team."
+image: "https://assets.huntermussel.com/images/blog/automate-manual-processes-without-engineering-team.webp"
 tags:
   - Automation
   - Process

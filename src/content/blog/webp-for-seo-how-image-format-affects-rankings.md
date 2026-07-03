@@ -1,6 +1,6 @@
 ---
 title: "WebP for SEO: How Your Image Format Directly Affects Google Rankings"
-date: "2026-03-08"
+date: "2026-03-11"
 authors:
   - iago-mussel
 description: "Most developers know WebP is smaller. Fewer understand the direct connection between image format, Core Web Vitals, and organic search rankings. Here's the full picture."

@@ -1,9 +1,10 @@
 ---
 title: "The problem with migrating from Jenkins to GitHub Actions in the middle of critical systems"
-date: "2026-03-13"
+date: "2026-04-29"
 authors:
   - iago-mussel
 description: "Migrating CI/CD for systems that can't afford downtime or broken deploys requires more than rewriting Jenkinsfiles. Here's the strategy that works."
+image: "https://assets.huntermussel.com/images/blog/migrating-jenkins-to-github-actions-critical-systems.webp"
 tags:
   - Jenkins
   - GitHub Actions

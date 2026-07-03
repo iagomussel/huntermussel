@@ -1,6 +1,6 @@
 ---
 title: "Scaling Logistics: How AI-Driven Route Optimization Saved 22% in Fuel Costs"
-date: "2026-02-22"
+date: "2026-02-28"
 authors:
   - iago-mussel
 description: "A deep dive into how HunterMussel built an AI-powered delivery system that transformed manual dispatching into a predictive, automated operation."

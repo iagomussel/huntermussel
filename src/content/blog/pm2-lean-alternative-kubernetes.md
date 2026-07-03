@@ -1,6 +1,6 @@
 ---
 title: "PM2: The Lean Alternative to Kubernetes for Scalable Production Apps"
-date: "2026-02-14"
+date: "2026-02-20"
 authors:
   - iago-mussel
 description: "PM2 is a lean, production-grade alternative to Kubernetes for many Node.js workloads, offering monitoring, clustering, zero-downtime reloads, and automatic recovery without orchestration overhead."

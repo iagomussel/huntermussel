@@ -1,7 +1,7 @@
 ---
 
 title: "In 2026, Code Is Cheap. Judgment Is Not."
-date: "2026-03-18"
+date: "2026-05-20"
 authors: 
  - "iago-mussel"
 description: "Why technical judgment, architecture, and human-led analysis have become the real premium in software development in 2026."

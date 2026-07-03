@@ -1,6 +1,6 @@
 ---
 title: "Your Coding Agent Doesn't Have an API Problem. It Has a Freshness Problem."
-date: "2026-04-01"
+date: "2026-06-02"
 authors:
   - iago-mussel
 description: "AI coding agents hallucinate deprecated endpoints because they're frozen in training time. Here's what actually breaks in real repos, how Google is pushing live docs over MCP, and how you'd test whether wiring that up is worth it."

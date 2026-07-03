@@ -1,6 +1,6 @@
 ---
 title: "Grok Just Locked Its Best Features Behind a Paywall — Here's What Changed"
-date: "2026-03-20"
+date: "2026-05-23"
 authors:
   - iago-mussel
 description: "xAI quietly ended free access to Grok's image and video generation tools while drastically cutting text chat limits. What happened, why it happened, and what to do next."

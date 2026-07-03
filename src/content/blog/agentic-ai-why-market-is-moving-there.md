@@ -1,6 +1,6 @@
 ---
 title: "What is agentic AI — and why the market is moving in this direction"
-date: "2026-03-13"
+date: "2026-03-19"
 authors:
   - iago-mussel
 description: "Agentic AI is the shift from AI that responds to AI that acts. Here's what it means, why it's happening now, and what it changes for teams building on top of it."

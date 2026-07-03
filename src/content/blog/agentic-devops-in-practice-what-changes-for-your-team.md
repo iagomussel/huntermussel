@@ -1,6 +1,6 @@
 ---
 title: "Agentic DevOps in 2026: what actually changes for engineering teams"
-date: "2026-03-21"
+date: "2026-05-25"
 authors:
   - iago-mussel
 description: "What Agentic DevOps really looks like in production pipelines, where AI agents help, where they break, and the guardrails you need before enabling them."

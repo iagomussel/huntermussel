@@ -1,9 +1,10 @@
 ---
 title: "How the Tech Lead role changes when AI enters the development process"
-date: "2026-03-13"
+date: "2026-05-12"
 authors:
   - iago-mussel
 description: "AI in the development process doesn't just change how code is written. It changes what a Tech Lead needs to focus on, where leverage is, and what the new failure modes look like."
+image: "https://assets.huntermussel.com/images/blog/tech-lead-role-when-ai-enters-development.webp"
 tags:
   - Tech Lead
   - AI

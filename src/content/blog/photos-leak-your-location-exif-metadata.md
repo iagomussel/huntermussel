@@ -1,6 +1,6 @@
 ---
 title: "Your Photos Are Leaking Your Home Address"
-date: "2026-07-01"
+date: "2026-06-08"
 authors:
   - iago-mussel
 description: "Every photo from your phone carries GPS coordinates, camera serial numbers, and timestamps you never see. Here's what's actually hiding in your files, and how to strip it before you post."

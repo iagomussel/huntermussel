@@ -1,9 +1,10 @@
 ---
 title: "The hidden DevOps cost of moving fast"
-date: "2026-03-13"
+date: "2026-04-15"
 authors:
   - iago-mussel
 description: "What seed-stage CTOs wish they'd done earlier — and why the debt compounds faster than your user growth."
+image: "https://assets.huntermussel.com/images/blog/hidden-devops-cost-moving-fast.webp"
 tags:
   - DevOps
   - Startup

@@ -1,6 +1,6 @@
 ---
 title: "Claude Fable 5 Will Quietly Downgrade Itself on These Topics"
-date: "2026-07-04"
+date: "2026-06-29"
 image: "https://assets.huntermussel.com/images/blog/claude-fable-5-safety-classifiers-downgrade.webp?v=2"
 authors:
   - iago-mussel

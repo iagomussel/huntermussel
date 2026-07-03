@@ -1,6 +1,6 @@
 ---
 title: "Claude Fable 5 Isn't the Model Everyone's Arguing About"
-date: "2026-07-01"
+date: "2026-06-05"
 image: "https://assets.huntermussel.com/images/blog/claude-fable-5-not-the-model-everyone-thinks.webp?v=2"
 authors:
   - iago-mussel

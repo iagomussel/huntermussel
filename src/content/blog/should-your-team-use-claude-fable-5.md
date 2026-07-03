@@ -1,6 +1,6 @@
 ---
 title: "Should Your Team Actually Use Claude Fable 5?"
-date: "2026-07-05"
+date: "2026-07-02"
 image: "https://assets.huntermussel.com/images/blog/should-your-team-use-claude-fable-5.webp?v=2"
 authors:
   - iago-mussel

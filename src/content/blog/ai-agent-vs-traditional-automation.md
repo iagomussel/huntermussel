@@ -1,9 +1,10 @@
 ---
 title: "What is an AI Agent — and how is it different from traditional automation?"
-date: "2026-03-13"
+date: "2026-03-22"
 authors:
   - iago-mussel
 description: "RPA, GenAI, and autonomous agents are not the same thing. Here's a clear breakdown of what each one actually does — and when to use which."
+image: "https://assets.huntermussel.com/images/blog/ai-agent-vs-traditional-automation.webp"
 tags:
   - AI Agents
   - Automation

@@ -1,9 +1,10 @@
 ---
 title: "GitHub Actions vs GitLab CI vs Azure DevOps — an honest comparison in 2026"
-date: "2026-03-13"
+date: "2026-04-12"
 authors:
   - iago-mussel
 description: "A practical, opinionated comparison of the three major CI/CD platforms in 2026 — strengths, weaknesses, and which one fits which context."
+image: "https://assets.huntermussel.com/images/blog/github-actions-vs-gitlab-ci-vs-azure-devops-2026.webp"
 tags:
   - GitHub Actions
   - GitLab CI

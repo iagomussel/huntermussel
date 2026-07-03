@@ -1,9 +1,10 @@
 ---
 title: "How a modern CI/CD pipeline works — and where AI actually fits"
-date: "2026-03-13"
+date: "2026-05-04"
 authors:
   - iago-mussel
 description: "A clear breakdown of modern CI/CD pipelines, what each stage does, and where AI is genuinely useful versus just hype."
+image: "https://assets.huntermussel.com/images/blog/modern-cicd-pipeline-where-ai-fits.webp"
 tags:
   - CI/CD
   - DevOps
