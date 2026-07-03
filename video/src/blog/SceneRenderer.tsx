@@ -14,13 +14,14 @@ import { resolveAsset } from "./utils";
 
 const WORDS_PER_CAPTION_LINE = 3;
 
-function splitCaption(text: string, wordsPerLine = WORDS_PER_CAPTION_LINE): string[] {
-  const words = text.split(/\s+/).filter(Boolean);
+function splitCaption(text: string | undefined, wordsPerLine = WORDS_PER_CAPTION_LINE): string[] {
+  const safe = text || "";
+  const words = safe.split(/\s+/).filter(Boolean);
   const lines: string[] = [];
   for (let i = 0; i < words.length; i += wordsPerLine) {
     lines.push(words.slice(i, i + wordsPerLine).join(" "));
   }
-  return lines.length ? lines : [text];
+  return lines.length ? lines : [safe || " "];
 }
 
 export const SceneRenderer: React.FC<{
@@ -96,9 +97,10 @@ export const SceneRenderer: React.FC<{
     </AbsoluteFill>
   );
 
+  const captionText = scene.text || (scene.type === "title" ? "" : " ");
   const captionLines = useMemo(
-    () => splitCaption(scene.text, isPortrait ? 4 : WORDS_PER_CAPTION_LINE),
-    [scene.text, isPortrait]
+    () => splitCaption(captionText, isPortrait ? 4 : WORDS_PER_CAPTION_LINE),
+    [captionText, isPortrait]
   );
 
   const CaptionBlock: React.FC<{ lines: string[]; small?: boolean }> = ({ lines, small }) => (
