@@ -3,6 +3,7 @@ import {
   AbsoluteFill,
   Audio,
   Img,
+  interpolate,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
@@ -12,6 +13,7 @@ import { slide } from "@remotion/transitions/slide";
 import type { BlogPromoProps, Scene } from "./types";
 import { SceneRenderer } from "./SceneRenderer";
 import { resolveAsset } from "./utils";
+import { TRANSITION_DURATION_FRAMES } from "./constants";
 
 const SceneWrapper: React.FC<{
   scene: Scene;
@@ -21,7 +23,9 @@ const SceneWrapper: React.FC<{
   fps: number;
   url: string;
   defaultImage?: string;
-}> = ({ scene, brand, isPortrait, isSquare, fps, url, defaultImage }) => {
+  durationFrames: number;
+  index: number;
+}> = ({ scene, brand, isPortrait, isSquare, fps, url, defaultImage, durationFrames, index }) => {
   const frame = useCurrentFrame();
   return (
     <SceneRenderer
@@ -33,6 +37,8 @@ const SceneWrapper: React.FC<{
       fps={fps}
       url={url}
       defaultImage={defaultImage}
+      durationFrames={durationFrames}
+      index={index}
     />
   );
 };
@@ -64,7 +70,7 @@ export const BlogPromo: React.FC<BlogPromoProps> = (props) => {
     return baseScenes;
   }, [props.scenes, props.title]);
 
-  const transitionDuration = 12;
+  const transitionDuration = TRANSITION_DURATION_FRAMES;
 
   return (
     <AbsoluteFill
@@ -80,11 +86,16 @@ export const BlogPromo: React.FC<BlogPromoProps> = (props) => {
         <Audio src={resolveAsset(props.audioFile) || ""} />
       ) : null}
 
-      {/* Background music bed */}
+      {/* Background music bed — fades in/out so it doesn't cut abruptly */}
       {props.musicFile && (
         <Audio
           src={resolveAsset(props.musicFile) || ""}
-          volume={0.12}
+          volume={(f) =>
+            interpolate(f, [0, 30, durationInFrames - 30, durationInFrames], [0, 0.12, 0.12, 0], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            })
+          }
           loop
           startFrom={0}
         />
@@ -191,6 +202,8 @@ linear-gradient(180deg, ${bg}, ${bg})`,
                   fps={30}
                   url={props.url}
                   defaultImage={props.imageFile}
+                  durationFrames={duration}
+                  index={i}
                 />
               </TransitionSeries.Sequence>
 

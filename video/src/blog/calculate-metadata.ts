@@ -1,15 +1,16 @@
 import type {CalculateMetadataFunction} from "remotion";
 import {staticFile} from "remotion";
-import {getAudioDurationInSeconds} from "@remotion/media-utils";
+import {getAudioDurationInSeconds, getVideoMetadata} from "@remotion/media-utils";
 import type {BlogPromoProps, Scene} from "./types";
 import {resolveAsset} from "./utils";
+import {TRANSITION_DURATION_FRAMES} from "./constants";
 
 const DEFAULT_SCENE_DURATION_IN_FRAMES = 120;
 const FPS = 30;
 
 export const calculateBlogPromoMetadata: CalculateMetadataFunction<BlogPromoProps> =
   async ({props}) => {
-    const transitionDuration = 15;
+    const transitionDuration = TRANSITION_DURATION_FRAMES;
     
     // Create the final scene list including the CTA
     const allScenes = props.scenes ? [...props.scenes] : [];
@@ -38,7 +39,18 @@ export const calculateBlogPromoMetadata: CalculateMetadataFunction<BlogPromoProp
         }
       }
       
-      scenesWithDuration.push({...scene, durationFrames});
+      let videoDurationFrames: number | undefined;
+      const videoPath = resolveAsset(scene.videoFile);
+      if (videoPath) {
+        try {
+          const meta = await getVideoMetadata(videoPath);
+          videoDurationFrames = Math.floor(meta.durationInSeconds * FPS);
+        } catch (e) {
+          console.warn(`Failed to get video metadata for ${scene.videoFile}`);
+        }
+      }
+
+      scenesWithDuration.push({...scene, durationFrames, videoDurationFrames});
       totalFrames += durationFrames;
       
       // Subtract transition overlap for all but the last scene

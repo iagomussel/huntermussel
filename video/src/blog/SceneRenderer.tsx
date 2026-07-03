@@ -3,11 +3,10 @@ import {
   AbsoluteFill,
   Audio,
   Img,
+  Loop,
   OffthreadVideo,
   interpolate,
   spring,
-  useCurrentFrame,
-  useVideoConfig,
 } from "remotion";
 import type { BlogPromoProps, Scene } from "./types";
 import { resolveAsset } from "./utils";
@@ -33,38 +32,59 @@ export const SceneRenderer: React.FC<{
   fps: number;
   url: string;
   defaultImage?: string;
-}> = ({ scene, brand, isPortrait, isSquare, frame, fps, url, defaultImage }) => {
+  durationFrames: number;
+  index: number;
+}> = ({ scene, brand, isPortrait, isSquare, frame, fps, url, defaultImage, durationFrames, index }) => {
   const primary = brand.primaryColor;
   const text = brand.textColor;
   const bg = brand.backgroundColor;
-  const { durationInFrames } = useVideoConfig();
 
   const springConfig = { damping: 14, mass: 0.6, stiffness: 90 };
   const entrance = spring({ fps, frame, config: springConfig });
   const exitProgress = interpolate(
     frame,
-    [Math.max(0, durationInFrames - 25), durationInFrames - 5],
+    [Math.max(0, durationFrames - 25), durationFrames - 5],
     [0, 1],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
+  // Alternate zoom direction and pan per scene so consecutive scenes don't
+  // all move the same way — this is what reads as "dynamic" vs a slideshow.
+  const kenBurnsScale: [number, number] = index % 2 === 0 ? [1, 1.16] : [1.16, 1];
+  const kenBurnsPanX: [number, number] =
+    index % 3 === 0 ? [0, -3] : index % 3 === 1 ? [0, 3] : [0, 0];
+  const kenBurnsProgress = interpolate(frame, [0, durationFrames], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const kenBurnsTransform = `scale(${interpolate(kenBurnsProgress, [0, 1], kenBurnsScale)}) translateX(${interpolate(
+    kenBurnsProgress,
+    [0, 1],
+    kenBurnsPanX
+  )}%)`;
+
   const resolvedImage = scene.imageFile || defaultImage || "blog/placeholder.jpg";
   const resolvedVideo = scene.videoFile ? resolveAsset(scene.videoFile) : undefined;
 
+  const videoStyle: React.CSSProperties = {
+    width: "120%",
+    height: "120%",
+    objectFit: "cover",
+    position: "absolute",
+    top: "-10%",
+    left: "-10%",
+    transform: kenBurnsTransform,
+  };
+
+  const rawVideo = <OffthreadVideo src={resolvedVideo || ""} muted style={videoStyle} />;
+
   const videoBackground = resolvedVideo ? (
     <AbsoluteFill style={{ opacity: 1 }}>
-      <OffthreadVideo
-        src={resolvedVideo}
-        muted
-        style={{
-          width: "120%",
-          height: "120%",
-          objectFit: "cover",
-          position: "absolute",
-          top: "-10%",
-          left: "-10%",
-        }}
-      />
+      {scene.videoDurationFrames && scene.videoDurationFrames < durationFrames ? (
+        <Loop durationInFrames={scene.videoDurationFrames}>{rawVideo}</Loop>
+      ) : (
+        rawVideo
+      )}
       <AbsoluteFill
         style={{
           background:
@@ -85,7 +105,7 @@ export const SceneRenderer: React.FC<{
           position: "absolute",
           top: "-10%",
           left: "-10%",
-          transform: `scale(${interpolate(frame, [0, durationInFrames], [1, 1.12])})`,
+          transform: kenBurnsTransform,
         }}
       />
       <AbsoluteFill
@@ -308,7 +328,7 @@ export const SceneRenderer: React.FC<{
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              transform: `scale(${interpolate(frame, [0, durationInFrames], [1, 1.08])})`,
+              transform: kenBurnsTransform,
             }}
           />
           <AbsoluteFill

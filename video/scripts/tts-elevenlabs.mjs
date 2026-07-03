@@ -112,6 +112,7 @@ RULES:
 6. Provide a Pexels search term for a background video/image for each scene (concise, English).
 7. Do NOT include "HunterMussel", "find more", or generic CTAs. The CTA scene is added separately.
 8. Scene types allowed: hook, title, point, proof, full-image, call-to-action.
+9. Pick ONE overall background-music mood for the whole video: "corporate" (neutral/professional, default), "upbeat" (positive/exciting news), "calm" (thoughtful/explainer), or "dramatic" (warning/cautionary/high-stakes).
 
 Blog Title: ${title}
 Blog Subtitle: ${subtitle}
@@ -160,6 +161,7 @@ async function generateStoryboardWithOllama({ title, subtitle, content, url, key
       full_narration: { type: "string" },
       optimized_title: { type: "string" },
       optimized_subtitle: { type: "string" },
+      music_mood: { type: "string", enum: ["corporate", "upbeat", "calm", "dramatic"] },
       scenes: {
         type: "array",
         items: {
@@ -320,24 +322,35 @@ const url = `https://huntermussel.com/blog/${args.slug}/`;
 const sanitizedContent = stripMarkdown(content);
 const keywords = data.keywords || data.tags || [];
 
+async function generateStoryboard(opts) {
+  const generator =
+    llmProvider === "ollama" || process.env.OLLAMA_HOST || process.env.OLLAMA_MODEL
+      ? generateStoryboardWithOllama
+      : generateStoryboardWithLlm;
+
+  let plan = await generator(opts);
+  if (!plan?.scenes?.length) {
+    process.stderr.write(`Storyboard generation returned no scenes, retrying once (${llmProvider})...\n`);
+    plan = await generator(opts);
+  }
+  return plan;
+}
+
 let llmPlan = null;
 if (args.useLlm) {
-  if (llmProvider === "ollama" || process.env.OLLAMA_HOST || process.env.OLLAMA_MODEL) {
-    llmPlan = await generateStoryboardWithOllama({
-      title,
-      subtitle,
-      content: sanitizedContent,
-      url,
-      keywords,
-    });
-  } else {
-    llmPlan = await generateStoryboardWithLlm({
-      title,
-      subtitle,
-      content: sanitizedContent,
-      url,
-      keywords,
-    });
+  llmPlan = await generateStoryboard({
+    title,
+    subtitle,
+    content: sanitizedContent,
+    url,
+    keywords,
+  });
+
+  if (!llmPlan?.scenes?.length) {
+    process.stderr.write(
+      `Storyboard generation failed twice for "${args.slug}" (llm: ${llmProvider}). Aborting instead of rendering a degraded single-card video.\n`
+    );
+    process.exit(1);
   }
 }
 

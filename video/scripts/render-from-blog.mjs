@@ -217,8 +217,18 @@ if (args.narration) {
   }
 }
 
-if (args.music && fs.existsSync(path.join(VIDEO_ROOT, "public", "static", "music.mp3"))) {
-  props.musicFile = "static/music.mp3";
+const MUSIC_MOODS = ["corporate", "upbeat", "calm", "dramatic"];
+if (args.music) {
+  const metaPath = path.join(VIDEO_ROOT, "out", `${args.slug}.voiceover.json`);
+  let mood = "corporate";
+  if (fs.existsSync(metaPath)) {
+    const meta = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
+    if (MUSIC_MOODS.includes(meta.music_mood)) mood = meta.music_mood;
+  }
+  const musicPath = path.join(VIDEO_ROOT, "public", "static", "music", `${mood}.mp3`);
+  if (fs.existsSync(musicPath)) {
+    props.musicFile = `static/music/${mood}.mp3`;
+  }
 }
 
 if (!args.captions) {

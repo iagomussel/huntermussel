@@ -16,6 +16,7 @@ export type Scene = {
   videoFile?: string;
   narration?: string; // Scene-specific narration
   durationFrames?: number; // Calculated or provided duration
+  videoDurationFrames?: number; // Native duration of videoFile, for looping short clips
   audioFile?: string; // Path to scene audio
 };
 
