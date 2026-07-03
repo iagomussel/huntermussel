@@ -1,9 +1,9 @@
 ---
-title: "Structured Data in React: From Markup to Google Rich Results"
+title: "Structured data for SaaS: from React markup to Google rich results"
 date: "2026-02-15"
 authors:
   - iago-mussel
-description: "Learn what structured data is, how to add JSON-LD to a React app, validate it with Google tools, and apply global schema with Docusaurus."
+description: "Structured data helps your SaaS product, blog, or tool qualify for rich results. Here's how to add JSON-LD to a React app, validate it with Google, and scale it across routes."
 tags:
   - SEO
   - Structured Data
@@ -15,10 +15,14 @@ tags:
 categories: "SEO"
 keywords:
   - structured data react
+  - structured data saas
   - json-ld tutorial
   - google rich results test
   - schema.org article
   - docusaurus headTags
+  - rich results saas
+  - schema markup tools
+  - technical seo checklist
 image: "https://assets.huntermussel.com/images/blog/rich-content-google-search.webp"
 subtitle: "A practical process for implementing and validating schema markup"
 status: "published"
@@ -153,6 +157,8 @@ This keeps your markup consistent, easier to audit, and less likely to drift as 
 ## Conclusion
 
 In 2026, structured data is less of an “SEO extra” and more of a baseline technical signal. In React, JSON-LD is quick to implement, easy to validate, and most effective when treated as part of your publishing workflow.
+
+If you're shipping tools or products that depend on search visibility, our [technical SEO work](/services/) covers structured data, Core Web Vitals, and the infrastructure that makes them actually matter.
 
 ---
 

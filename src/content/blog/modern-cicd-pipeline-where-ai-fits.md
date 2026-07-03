@@ -17,7 +17,7 @@ keywords:
   - devops pipeline stages
   - ai devops automation
 subtitle: "Most teams understand CI/CD. Few understand where AI changes it."
-status: "draft"
+status: "published"
 ---
 
 Most engineers can tell you what CI/CD is. Fewer can tell you where AI actually fits into it — beyond the vague "AI makes it smarter" pitch every vendor is running right now.

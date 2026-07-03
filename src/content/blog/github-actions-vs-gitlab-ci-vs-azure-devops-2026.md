@@ -17,7 +17,7 @@ keywords:
   - best cicd tool 2026
   - gitlab vs github actions
 subtitle: "Pick the one that fits your context, not the one that wins Twitter."
-status: "draft"
+status: "published"
 ---
 
 I've sat in enough platform selection meetings to know how these decisions usually go. Someone picked a favorite before the meeting started. The conversation is the justification, not the analysis.

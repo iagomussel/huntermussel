@@ -17,7 +17,7 @@ keywords:
   - fast growth infrastructure
   - devops cost
 subtitle: "What seed-stage CTOs wish they'd done earlier"
-status: "draft"
+status: "published"
 ---
 
 Speed is the only competitive advantage that matters at seed stage. You ship, you learn, you ship again. Infrastructure is tomorrow's problem.

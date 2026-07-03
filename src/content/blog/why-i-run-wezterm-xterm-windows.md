@@ -1,9 +1,9 @@
 ---
-title: "Why I Run WezTerm + tmux on Windows"
+title: "WezTerm + tmux on Windows: the terminal setup that actually works"
 date: "2026-07-02"
 authors:
   - iago-mussel
-description: "Windows terminal workflows fall apart because the emulator and multiplexer don't agree. WezTerm paired with tmux fixes both sides of the problem."
+description: "Windows Terminal and tmux fight each other. Here's why WezTerm paired with tmux fixes mouse, keys, colors, and session persistence on Windows and WSL."
 tags:
   - WezTerm
   - tmux
@@ -14,10 +14,12 @@ tags:
 keywords:
   - wezterm windows
   - wezterm tmux setup
+  - wezterm windows terminal setup
   - tmux on windows
   - wsl terminal setup
   - wezterm vs windows terminal
   - best terminal for windows
+  - best terminal multiplexer windows
 subtitle: "Stop letting your terminal and multiplexer fight each other"
 image: "https://assets.huntermussel.com/images/blog/why-i-run-wezterm-xterm-windows.webp"
 status: "published"

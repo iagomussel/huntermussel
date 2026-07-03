@@ -1,9 +1,9 @@
 ---
-title: "Agentic DevOps in practice: what actually changes for your team"
+title: "Agentic DevOps in 2026: what actually changes for engineering teams"
 date: "2026-03-21"
 authors:
   - iago-mussel
-description: "Most articles on Agentic DevOps are vendor hype. Here's where agents actually fit in real pipelines, where they still fail badly, and what a Tech Lead needs to do this week."
+description: "What Agentic DevOps really looks like in production pipelines, where AI agents help, where they break, and the guardrails you need before enabling them."
 tags:
   - DevOps
   - Agentic AI
@@ -12,8 +12,11 @@ tags:
   - Engineering
 keywords:
   - agentic devops
+  - agentic devops 2026
   - ai agents devops
   - ai agents cicd pipeline
+  - devops ai agents
+  - ai infrastructure automation
   - tech lead ai
   - devops automation ai 2026
   - autonomous agents devops
@@ -168,6 +171,8 @@ But most articles about it were written by people with a product to sell, not a 
 The operational reality: agents are asymmetric multipliers. They amplify productivity and risks in equal measure. Teams that adopt without governance will create exactly the kind of incident the hype promised agents would prevent.
 
 Start small. Govern well. Measure everything. And don't let any agent deploy to production unless someone on your team can explain exactly what it can and cannot do.
+
+If you're building the governance and pipeline changes for agentic infrastructure, our [DevOps engineering services](/services/devops/) are built around production reality, not demo videos.
 
 ---
 

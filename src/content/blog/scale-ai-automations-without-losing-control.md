@@ -17,7 +17,7 @@ keywords:
   - automation observability
   - ai workflow monitoring
 subtitle: "The first automation is easy. The tenth is where it breaks down."
-status: "draft"
+status: "published"
 ---
 
 The first AI automation is a proof of concept. The tenth is a dependency.

@@ -17,7 +17,7 @@ keywords:
   - ai project data requirements
   - garbage in garbage out ai
 subtitle: "The model is the last thing that fails. The data is the first."
-status: "draft"
+status: "published"
 ---
 
 Teams spend weeks evaluating AI models. Comparing benchmarks. Reading papers. Debating which LLM to use.

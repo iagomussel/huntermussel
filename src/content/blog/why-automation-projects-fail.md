@@ -17,7 +17,7 @@ keywords:
   - failed automation project
   - how to avoid automation failure
 subtitle: "The technology rarely fails. The approach usually does."
-status: "draft"
+status: "published"
 ---
 
 I've worked with enough teams on automation projects to know the failure pattern by heart. And here's what's uncomfortable about it: the technology almost never fails.

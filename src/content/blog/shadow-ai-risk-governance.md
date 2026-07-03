@@ -17,7 +17,7 @@ keywords:
   - ai compliance
   - enterprise ai risk
 subtitle: "The automations nobody is watching are the ones that will cost you."
-status: "draft"
+status: "published"
 ---
 
 In most companies I work with, AI is being deployed faster than governance policies can track.

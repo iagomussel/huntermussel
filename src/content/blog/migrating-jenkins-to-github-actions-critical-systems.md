@@ -17,7 +17,7 @@ keywords:
   - github actions migration
   - jenkins replacement
 subtitle: "The migration that looks simple in a demo is expensive in production."
-status: "draft"
+status: "published"
 ---
 
 Jenkins to GitHub Actions migrations look straightforward until you start one in earnest.

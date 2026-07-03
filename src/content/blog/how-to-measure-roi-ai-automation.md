@@ -17,7 +17,7 @@ keywords:
   - automation business case
   - automation metrics
 subtitle: "The number means nothing if you didn't measure before."
-status: "draft"
+status: "published"
 ---
 
 "Our AI automation improved efficiency by 40%."

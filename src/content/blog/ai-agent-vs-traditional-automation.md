@@ -17,7 +17,7 @@ keywords:
   - agentic ai explained
   - autonomous agents vs rpa
 subtitle: "The market is confusing three different things. Here's how to tell them apart."
-status: "draft"
+status: "published"
 ---
 
 There's a lot of noise in the market right now about RPA, GenAI, and AI agents. Vendors use all three terms like they mean the same thing. They don't.

@@ -17,7 +17,7 @@ keywords:
   - kubernetes deployment pipeline
   - github actions tutorial
 subtitle: "From first commit to automated production deploy."
-status: "draft"
+status: "published"
 ---
 
 Most CI/CD tutorials show you a happy path that works in isolation and breaks the moment you touch anything real.

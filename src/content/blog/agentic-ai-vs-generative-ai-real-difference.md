@@ -1,9 +1,9 @@
 ---
-title: "Agentic AI vs Generative AI: the real difference for teams that need to implement"
+title: "Agentic AI vs Generative AI: which one your team should build with"
 date: "2026-03-13"
 authors:
   - iago-mussel
-description: "Past the marketing language: what agentic AI and generative AI actually mean, how they work differently, and which one belongs in your implementation."
+description: "Agentic AI and generative AI solve different problems. Here's how they differ, when to use each, and the implementation mistakes that cost teams months."
 tags:
   - Agentic AI
   - Generative AI
@@ -16,6 +16,10 @@ keywords:
   - ai agent implementation
   - llm vs ai agent
   - generative ai limitations
+  - agentic ai use cases
+  - generative ai use cases
+  - when to use ai agents
+  - ai automation agency
 subtitle: "One responds. The other acts. The difference matters when you're building."
 status: "published"
 image: "https://assets.huntermussel.com/images/blog/agentic-ai-vs-generative-ai-real-difference.webp"
@@ -115,6 +119,8 @@ An agent is not an upgrade from a simple LLM call. It's a different system with 
 The second most common mistake: building a generative AI integration when the task actually requires multi-step execution — and then watching the system fail because it can't take actions or maintain context across steps.
 
 The architecture should match the task. Not the trend.
+
+If your team is deciding between generative AI features and a full agentic workflow, the question isn't which technology is newer — it's which shape fits the work. At [HunterMussel](/services/ai-automation/), we help teams map that decision to something they can actually ship.
 
 ---
 

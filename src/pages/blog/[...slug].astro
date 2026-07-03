@@ -7,6 +7,7 @@ import DisqusComments from '@/components/react/DisqusComments';
 import BlogShareSection from '@/components/react/BlogShareSection';
 import authors from '@/data/authors.json';
 import FAQSection from '@/components/react/FAQSection';
+import RelatedArticles from '@/components/RelatedArticles.astro';
 import { blogDevOpsFAQ, blogAIFAQ, blogCloudFAQ, blogGeneralFAQ } from '@/data/faq';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
 import AdUnit from '@/components/AdUnit.astro';
@@ -152,6 +153,8 @@ const blogSchema = [
           <AdUnit adSlot="XXXXXXXXXX" format="auto" class="blog-ad-mid" />
 
           <BlogShareSection client:load title={entry.data.title} url={url} />
+
+          <RelatedArticles currentId={entry.id} tags={entry.data.tags ?? []} />
 
           <FAQSection client:load items={faqItems} title="Frequently Asked Questions" />
 

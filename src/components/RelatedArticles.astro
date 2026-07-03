@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentId: string;
+  tags: string[];
+}
+
+const { currentId, tags = [] } = Astro.props;
+
+const allPosts = await getCollection(
+  "blog",
+  ({ data, id }) => data.status !== "draft" && id !== currentId,
+);
+
+const normalizedTags = tags.map((t) => t.toLowerCase());
+
+const scored = allPosts
+  .map((post) => {
+    const postTags = (post.data.tags ?? []).map((t) => t.toLowerCase());
+    const overlap = postTags.filter((t) => normalizedTags.includes(t)).length;
+    return { post, overlap };
+  })
+  .filter(({ overlap }) => overlap > 0)
+  .sort((a, b) => {
+    if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+    return (
+      new Date(b.post.data.date).getTime() - new Date(a.post.data.date).getTime()
+    );
+  })
+  .slice(0, 3);
+---
+
+{
+  scored.length > 0 && (
+    <section class="mt-12 border-t border-border pt-8" aria-labelledby="related-heading">
+      <h2 id="related-heading" class="font-heading text-xl font-bold mb-4">
+        Related articles
+      </h2>
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {scored.map(({ post }) => (
+          <li>
+            <a
+              href={`/blog/${post.id}/`}
+              class="group block rounded-lg border border-border bg-card/50 p-4 transition-colors hover:border-primary/40"
+            >
+              <p class="font-heading text-sm font-semibold leading-snug group-hover:text-primary">
+                {post.data.title}
+              </p>
+              <p class="mt-2 line-clamp-2 font-body text-xs text-muted-foreground">
+                {post.data.description}
+              </p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

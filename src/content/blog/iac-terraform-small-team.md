@@ -17,7 +17,7 @@ keywords:
   - iac startup
   - terraform what to automate first
 subtitle: "Start with the thing that costs you the most when it breaks."
-status: "draft"
+status: "published"
 ---
 
 Everyone agrees you should do Infrastructure as Code. Almost nobody does it well.

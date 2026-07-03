@@ -17,7 +17,7 @@ keywords:
   - jenkins or github actions
   - jenkins migration
 subtitle: "The answer depends on questions most people skip."
-status: "draft"
+status: "published"
 ---
 
 Jenkins is 18 years old. GitHub Actions launched in 2019. And if you've been in any engineering conversation lately, you already know what the default take is: Jenkins is legacy, GitHub Actions is the answer.

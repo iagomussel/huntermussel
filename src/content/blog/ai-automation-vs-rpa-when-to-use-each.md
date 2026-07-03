@@ -17,7 +17,7 @@ keywords:
   - robotic process automation vs ai
   - automation tool selection
 subtitle: "The right tool depends on what changes and what doesn't."
-status: "draft"
+status: "published"
 ---
 
 The vendor landscape has blurred the line between RPA and AI automation to the point where the terms are nearly interchangeable in sales decks.

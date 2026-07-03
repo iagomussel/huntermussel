@@ -17,7 +17,7 @@ keywords:
   - cicd security checks
   - devsecops practices
 subtitle: "Shift left doesn't mean shift slow."
-status: "draft"
+status: "published"
 ---
 
 "We'll add security later" is how you end up with a CVE in production, a compliance audit you failed, or a compromised dependency you didn't know existed.

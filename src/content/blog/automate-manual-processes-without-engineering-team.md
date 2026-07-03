@@ -17,7 +17,7 @@ keywords:
   - workflow automation small team
   - process automation framework
 subtitle: "The bottleneck isn't the technology. It's knowing where to start."
-status: "draft"
+status: "published"
 ---
 
 The most common question I get from operations teams isn't "how do we automate this?" It's "how do we know what to automate first?"

@@ -17,7 +17,7 @@ keywords:
   - engineering lead ai tools
   - tech lead responsibilities ai
 subtitle: "More leverage per engineer means different problems at the leadership level."
-status: "draft"
+status: "published"
 ---
 
 When AI coding tools started shipping in 2022–2023, the conversation was about individual productivity. Engineers shipping faster. Less time on boilerplate.

@@ -17,7 +17,7 @@ keywords:
   - future devops engineer
   - devops automation ai
 subtitle: "The role doesn't disappear. The toil does."
-status: "draft"
+status: "published"
 ---
 
 Every few years, someone announces that DevOps engineers are about to be replaced. By containers. By serverless. By platform engineering. By AI.

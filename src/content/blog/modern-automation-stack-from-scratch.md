@@ -17,7 +17,7 @@ keywords:
   - devops automation stack
   - workflow automation stack
 subtitle: "Opinions built from 16 years of watching stacks succeed and fail."
-status: "draft"
+status: "published"
 ---
 
 I've been building automation systems since before "automation" was a product category. From raw bash scripts and cron jobs to modern AI agent pipelines. I've watched stacks succeed and fail across every scale.
