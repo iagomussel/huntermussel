@@ -31,15 +31,18 @@ interface Props {
 const {
   title,
   description,
-  canonicalPath = "/tools/",
+  canonicalPath: canonicalPathProp,
   ogImage = `${ASSETS_BASE_URL}/images/blog/rich-content-google-search_16x9_high.webp`,
   keywords,
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
-  schemaType = canonicalPath === "/tools/" ? "WebPage" : "WebApplication",
+  schemaType: schemaTypeProp,
   pageData,
   breadcrumbName,
   faqItems,
 } = Astro.props;
+
+const canonicalPath = canonicalPathProp ?? (Astro.url.pathname.replace(/\/?$/, '/') || '/');
+const schemaType = schemaTypeProp ?? (canonicalPath === "/tools/" ? "WebPage" : "WebApplication");
 
 const resolvedPageData = pageData ?? {
   pageType: 'tool',

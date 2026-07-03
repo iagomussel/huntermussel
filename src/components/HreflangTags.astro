@@ -1,6 +1,6 @@
 ---
-// Hreflang tags for multi-language SEO targeting
-// Supported locales: English (en), Portuguese Brazil (pt-BR), Spanish (es)
+// Hreflang tags for the only page with actual translations: the homepage.
+// Supported locales: English (en), Portuguese Brazil (pt-BR).
 
 interface Props {
   currentPath?: string;
@@ -8,32 +8,26 @@ interface Props {
 
 const { currentPath = Astro.url.pathname } = Astro.props;
 
-// Base URLs for each locale
-const locales = {
-  'en': 'https://huntermussel.com',
-  'pt-BR': 'https://huntermussel.com/pt',
-  'es': 'https://huntermussel.com/es',
-};
-
-// Get the path without locale prefix for x-default
 const getPathWithoutLocale = (path: string): string => {
-  // Remove trailing slash except for root
   let cleanPath = path.replace(/\/$/, '') || '/';
-  
-  // Remove locale prefixes
-  if (cleanPath.startsWith('/pt') || cleanPath.startsWith('/es')) {
-    cleanPath = cleanPath.replace(/^\/(pt|es)/, '') || '/';
+  if (cleanPath.startsWith('/pt')) {
+    cleanPath = cleanPath.replace(/^\/pt/, '') || '/';
   }
-  
   return cleanPath;
 };
 
 const pathWithoutLocale = getPathWithoutLocale(currentPath);
+
+// Only the homepage has localized variants. On every other page, omit hreflang
+// tags so we don't point search engines to non-existent /pt/ or /es/ URLs.
+const hasTranslation = pathWithoutLocale === '/';
 ---
 
-<!-- Hreflang tags for international SEO -->
-<link rel="alternate" hreflang="en" href={`https://huntermussel.com${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
-<link rel="alternate" hreflang="en-US" href={`https://huntermussel.com${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
-<link rel="alternate" hreflang="pt-BR" href={`https://huntermussel.com/pt${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
-<link rel="alternate" hreflang="es" href={`https://huntermussel.com/es${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
-<link rel="alternate" hreflang="x-default" href={`https://huntermussel.com${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`} />
+{hasTranslation && (
+  <>
+    <link rel="alternate" hreflang="en" href="https://huntermussel.com/" />
+    <link rel="alternate" hreflang="en-US" href="https://huntermussel.com/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://huntermussel.com/pt/" />
+    <link rel="alternate" hreflang="x-default" href="https://huntermussel.com/" />
+  </>
+)}

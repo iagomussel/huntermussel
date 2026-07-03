@@ -23,7 +23,7 @@ const {
   title,
   description = "Automate and optimize your company's process management with Artificial Intelligence, intelligent automation, and DevOps.",
   image = `${ASSETS_BASE_URL}/images/blog/rich-content-google-search_16x9_high.webp`,
-  canonicalUrl = Astro.url.href,
+  canonicalUrl: canonicalUrlProp,
   type = "website",
   keywords,
   robots = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
@@ -31,6 +31,8 @@ const {
   pageData,
   htmlLang = "en",
 } = Astro.props;
+
+const canonicalUrl = canonicalUrlProp ?? new URL(Astro.url.pathname.replace(/\/?$/, '/'), Astro.site || 'https://huntermussel.com').href;
 
 const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
 const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
@@ -86,7 +88,7 @@ const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
     <!-- Google AdSense -->
     <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5924413044488831" crossorigin="anonymous"></script>
     <!-- End Google AdSense -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
     <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />
