@@ -120,6 +120,9 @@ async function fetchPexelsAsset({ query, type, destPath }) {
 const args = parseArgs(process.argv.slice(2));
 loadDotEnv(path.join(VIDEO_ROOT, ".env"));
 
+const llmProvider = process.env.LLM_PROVIDER || "gemini";
+const ttsProvider = process.env.TTS_PROVIDER || "elevenlabs";
+
 if (!args.slug) {
   process.stderr.write(
     "Usage: npm run render:blog -- --slug <post-slug> [--format vertical|square|horizontal] [--no-narration] [--no-music] [--no-captions] [--no-pexels] [--browser-executable <path>]\n"
@@ -154,7 +157,12 @@ if (args.dryRun) {
 }
 
 if (args.narration) {
-  const ttsArgs = [path.join("scripts", "tts-elevenlabs.mjs"), "--slug", args.slug];
+  const ttsArgs = [
+    path.join("scripts", "tts-elevenlabs.mjs"),
+    "--slug", args.slug,
+    "--llm-provider", llmProvider,
+    "--tts-provider", ttsProvider,
+  ];
   const ttsResult = spawnSync(process.platform === "win32" ? "node.exe" : "node", ttsArgs, {
     cwd: VIDEO_ROOT,
     stdio: "inherit",
@@ -170,11 +178,11 @@ if (args.narration) {
 
     if (meta.scenes?.length) {
       const scenes = meta.scenes.map((s, idx) => ({
-        text: s.text,
-        type: s.type || "point",
+        text: s.caption || s.text,
+        type: s.scene_type || s.type || "point",
         narration: s.narration,
         audioFile: s.audioFile,
-        search_asset: s.search_asset,
+        search_asset: s.pexels_search_term || s.search_asset,
       }));
 
       if (args.pexels) {

@@ -151,7 +151,7 @@ async function generateStoryboardWithLlm({ title, subtitle, content, url, keywor
 
 async function generateStoryboardWithOllama({ title, subtitle, content, url, keywords }) {
   const host = process.env.OLLAMA_HOST || "http://127.0.0.1:11434";
-  const modelName = process.env.OLLAMA_MODEL || "kimi-k2.7:cloud";
+  const modelName = process.env.OLLAMA_MODEL || "deepseek-v4-pro:cloud";
   const prompt = buildStoryboardPrompt({ title, subtitle, content, keywords });
 
   const schema = {
