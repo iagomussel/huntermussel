@@ -292,4 +292,5 @@ fs.writeFileSync(
   JSON.stringify({ slug: args.slug, ...llmPlan, provider: args.provider }, null, 2)
 );
 
-process.stdout.write(`Storyboard and audio generated for ${args.slug}\n`);
+const mode = llmPlan?.scenes?.length ? "LLM storyboard" : "fallback narration";
+process.stdout.write(`${mode} and audio generated for ${args.slug}\n`);

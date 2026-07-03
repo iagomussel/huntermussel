@@ -114,7 +114,7 @@ function copyLocalImage(srcPath, destPath) {
   }
 }
 
-function resolveCoverImage(slug, imageUrlFromFrontmatter) {
+async function resolveCoverImage(slug, imageUrlFromFrontmatter) {
   const destDir = path.join(VIDEO_ROOT, "public", "blog");
   safeMkdir(destDir);
 
@@ -124,9 +124,8 @@ function resolveCoverImage(slug, imageUrlFromFrontmatter) {
     const destName = `${slug}${ext}`;
     const destPath = path.join(destDir, destName);
     if (fs.existsSync(destPath)) return path.posix.join("blog", destName);
-    if (downloadImage(imageUrlFromFrontmatter, destPath)) {
-      return path.posix.join("blog", destName);
-    }
+    const ok = await downloadImage(imageUrlFromFrontmatter, destPath);
+    if (ok) return path.posix.join("blog", destName);
   }
 
   // 2. Local absolute path starting with /images/ or /blog/
@@ -152,7 +151,7 @@ function resolveCoverImage(slug, imageUrlFromFrontmatter) {
     }
   }
 
-  // 4. Fallback placeholder
+  console.warn(`No cover image found for ${slug}. Video will render without a background image.`);
   return undefined;
 }
 
