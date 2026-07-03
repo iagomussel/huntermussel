@@ -8,7 +8,9 @@
     "render": "remotion render src/index.ts BlogPromo out/blog-promo.mp4",
     "still": "remotion still src/index.ts BlogPromo out/blog-promo.png --frame=60",
     "render:blog": "node ./scripts/render-from-blog.mjs",
-    "render:blog:dry": "node ./scripts/render-from-blog.mjs --dry-run"
+    "render:blog:dry": "node ./scripts/render-from-blog.mjs --dry-run",
+    "upload:video": "node ./scripts/upload-video-to-r2.mjs",
+    "post:instagram": "node ./scripts/post-to-instagram.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",       
