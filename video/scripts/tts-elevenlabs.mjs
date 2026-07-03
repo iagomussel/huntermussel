@@ -20,7 +20,8 @@ function parseArgs(argv) {
     outFile: "",
     dryRun: false,
     useLlm: true,
-    provider: "elevenlabs",
+    llmProvider: "gemini",
+    ttsProvider: "elevenlabs",
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -30,7 +31,10 @@ function parseArgs(argv) {
     if (a === "--out") out.outFile = argv[++i] ?? "";
     if (a === "--dry-run") out.dryRun = true;
     if (a === "--no-llm") out.useLlm = false;
-    if (a === "--provider") out.provider = argv[++i] ?? "elevenlabs";
+    if (a === "--llm-provider") out.llmProvider = argv[++i] ?? "gemini";
+    if (a === "--tts-provider") out.ttsProvider = argv[++i] ?? "elevenlabs";
+    // Legacy aliases
+    if (a === "--provider") out.ttsProvider = argv[++i] ?? "elevenlabs";
   }
   return out;
 }
@@ -125,20 +129,7 @@ Keywords: ${keywords?.slice(0, 8).join(", ") || "AI, automation, DevOps"}
 Content:
 ${content.slice(0, 4000)}
 
-Output valid JSON only:
-{
-  "full_narration": "...",
-  "optimized_title": "...",
-  "optimized_subtitle": "...",
-  "scenes": [
-    {
-      "type": "hook",
-      "text": "...",
-      "narration": "...",
-      "search_asset": "..."
-    }
-  ]
-}`;
+Output valid JSON only.`;
 
   try {
     const result = await model.generateContent(prompt);
@@ -150,6 +141,67 @@ Output valid JSON only:
     return JSON.parse(clean);
   } catch (err) {
     process.stderr.write(`LLM generation failed: ${err.message}.\n`);
+    return undefined;
+  }
+}
+
+async function generateStoryboardWithOllama({ title, subtitle, content, url, keywords }) {
+  const host = process.env.OLLAMA_HOST || "http://127.0.0.1:11434";
+  const modelName = process.env.OLLAMA_MODEL || "kimi-k2.7:cloud";
+
+  const schema = {
+    type: "object",
+    properties: {
+      full_narration: { type: "string" },
+      optimized_title: { type: "string" },
+      optimized_subtitle: { type: "string" },
+      scenes: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            type: { type: "string" },
+            text: { type: "string" },
+            narration: { type: "string" },
+            search_asset: { type: "string" },
+          },
+          required: ["type", "text", "narration"],
+        },
+      },
+    },
+    required: ["full_narration", "optimized_title", "optimized_subtitle", "scenes"],
+  };
+
+  try {
+    const res = await fetch(`${host}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: modelName,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a senior social media producer for a B2B tech brand. Create short-form video storyboards. Output only the requested JSON.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        stream: false,
+        format: schema,
+      }),
+    });
+    if (!res.ok) {
+      throw new Error(`Ollama error ${res.status}: ${await res.text().catch(() => "")}`);
+    }
+    const data = await res.json();
+    const text = data.message?.content?.trim() || "";
+    const clean = text.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+    return JSON.parse(clean);
+  } catch (err) {
+    process.stderr.write(`Ollama generation failed: ${err.message}.\n`);
     return undefined;
   }
 }
@@ -188,6 +240,37 @@ async function elevenLabsTts({ apiKey, voiceId, modelId, text }) {
   return Buffer.from(await res.arrayBuffer());
 }
 
+async function voiceboxTts({ text, profileId, language, host }) {
+  const body = {
+    text,
+    language: language || "en",
+  };
+  if (profileId) {
+    body.profile_id = profileId;
+  }
+
+  const endpoints = [`${host}/generate`, `${host}/speak`];
+  let lastErr;
+  for (const endpoint of endpoints) {
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const msg = await res.text().catch(() => "");
+        lastErr = new Error(`Voicebox ${endpoint} error ${res.status}: ${msg || res.statusText}`);
+        continue;
+      }
+      return Buffer.from(await res.arrayBuffer());
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr || new Error("Voicebox TTS failed on all endpoints");
+}
+
 async function googleTtsFallback({ text }) {
   const results = googleTTS.getAllAudioUrls(text, {
     lang: "en",
@@ -208,7 +291,9 @@ const args = parseArgs(process.argv.slice(2));
 loadDotEnv(path.join(VIDEO_ROOT, ".env"));
 
 if (!args.slug) {
-  process.stderr.write("Usage: node scripts/tts-elevenlabs.mjs --slug <slug>\n");
+  process.stderr.write(
+    "Usage: node scripts/tts-elevenlabs.mjs --slug <slug> [--llm-provider gemini|ollama] [--tts-provider elevenlabs|voicebox|google]\n"
+  );
   process.exit(2);
 }
 
@@ -228,13 +313,23 @@ const keywords = data.keywords || data.tags || [];
 
 let llmPlan = null;
 if (args.useLlm) {
-  llmPlan = await generateStoryboardWithLlm({
-    title,
-    subtitle,
-    content: sanitizedContent,
-    url,
-    keywords,
-  });
+  if (args.llmProvider === "ollama") {
+    llmPlan = await generateStoryboardWithOllama({
+      title,
+      subtitle,
+      content: sanitizedContent,
+      url,
+      keywords,
+    });
+  } else {
+    llmPlan = await generateStoryboardWithLlm({
+      title,
+      subtitle,
+      content: sanitizedContent,
+      url,
+      keywords,
+    });
+  }
 }
 
 if (llmPlan?.scenes) {
@@ -256,14 +351,26 @@ if (llmPlan?.scenes) {
 
     let audioBuffer;
     try {
+      const provider = args.ttsProvider;
       const apiKey = process.env.ELEVENLABS_API_KEY;
       const voiceId = args.voiceId || process.env.ELEVENLABS_VOICE_ID || "21m00Tcm4TlvDq8ikWAM";
-      if (args.provider === "elevenlabs" && apiKey) {
+      const voiceboxHost = process.env.VOICEBOX_HOST || "http://127.0.0.1:17493";
+      const voiceboxProfile = process.env.VOICEBOX_PROFILE_ID;
+      const voiceboxLanguage = process.env.VOICEBOX_LANGUAGE || "en";
+
+      if (provider === "elevenlabs" && apiKey) {
         audioBuffer = await elevenLabsTts({
           apiKey,
           voiceId,
           modelId: args.modelId || process.env.ELEVENLABS_MODEL_ID || "eleven_multilingual_v2",
           text: sceneText,
+        });
+      } else if (provider === "voicebox") {
+        audioBuffer = await voiceboxTts({
+          text: sceneText,
+          profileId: voiceboxProfile,
+          language: voiceboxLanguage,
+          host: voiceboxHost,
         });
       } else {
         audioBuffer = await googleTtsFallback({ text: sceneText });
@@ -280,7 +387,26 @@ if (llmPlan?.scenes) {
   const outRel = path.posix.join("voiceover", `${args.slug}.mp3`);
   const outPath = path.join(VIDEO_ROOT, "public", outRel);
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  const audioBuffer = await googleTtsFallback({ text: narration });
+
+  let audioBuffer;
+  try {
+    const voiceboxHost = process.env.VOICEBOX_HOST || "http://127.0.0.1:17493";
+    const voiceboxProfile = process.env.VOICEBOX_PROFILE_ID;
+    const voiceboxLanguage = process.env.VOICEBOX_LANGUAGE || "en";
+    if (args.ttsProvider === "voicebox") {
+      audioBuffer = await voiceboxTts({
+        text: narration,
+        profileId: voiceboxProfile,
+        language: voiceboxLanguage,
+        host: voiceboxHost,
+      });
+    } else {
+      audioBuffer = await googleTtsFallback({ text: narration });
+    }
+  } catch (err) {
+    console.warn(`TTS failed for fallback narration, falling back to Google: ${err.message}`);
+    audioBuffer = await googleTtsFallback({ text: narration });
+  }
   fs.writeFileSync(outPath, audioBuffer);
   llmPlan = { narration, scenes: [], audioFile: outRel };
 }
@@ -289,8 +415,17 @@ const metaPath = path.join(VIDEO_ROOT, "out", `${args.slug}.voiceover.json`);
 fs.mkdirSync(path.dirname(metaPath), { recursive: true });
 fs.writeFileSync(
   metaPath,
-  JSON.stringify({ slug: args.slug, ...llmPlan, provider: args.provider }, null, 2)
+  JSON.stringify(
+    {
+      slug: args.slug,
+      ...llmPlan,
+      llmProvider: args.llmProvider,
+      ttsProvider: args.ttsProvider,
+    },
+    null,
+    2
+  )
 );
 
 const mode = llmPlan?.scenes?.length ? "LLM storyboard" : "fallback narration";
-process.stdout.write(`${mode} and audio generated for ${args.slug}\n`);
+process.stdout.write(`${mode} and audio generated for ${args.slug} (LLM: ${args.llmProvider}, TTS: ${args.ttsProvider})\n`);
