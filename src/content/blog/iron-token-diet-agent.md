@@ -1,6 +1,6 @@
 ---
 title: "IRon: A Token-Diet Agent That Treats Prompts Like Infrastructure (WIP)"
-date: "2026-02-23"
+date: "2026-03-06"
 authors:
   - iago-mussel
 description: "IRon is an experimental middleware-driven agent that compresses intent, enforces compact outputs, and expands locally—so you spend tokens on reasoning, not formatting."

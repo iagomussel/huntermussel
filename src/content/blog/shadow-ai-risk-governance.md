@@ -1,9 +1,10 @@
 ---
 title: "Shadow AI: the real risk of ungoverned automations in your company"
-date: "2026-03-13"
+date: "2026-05-09"
 authors:
   - iago-mussel
 description: "Shadow AI — automations running without governance, logging, or accountability — is an emerging risk that regulators are starting to notice. Here's what it looks like and how to address it."
+image: "https://assets.huntermussel.com/images/blog/shadow-ai-risk-governance.webp"
 tags:
   - Shadow AI
   - Governance

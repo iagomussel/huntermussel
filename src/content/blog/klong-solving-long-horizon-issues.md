@@ -1,6 +1,6 @@
 ---
 title: "KLong: Advancing AI Agents for Extremely Long-Horizon Tasks"
-date: "2026-02-19"
+date: "2026-02-26"
 authors:
   - iago-mussel
 description: "How KLong uses trajectory-splitting SFT and progressive RL to improve long-horizon performance in research and engineering tasks."

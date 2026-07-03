@@ -1,9 +1,10 @@
 ---
 title: "IaC with Terraform: what to automate first when your team is small"
-date: "2026-03-13"
+date: "2026-04-20"
 authors:
   - iago-mussel
 description: "Infrastructure as Code doesn't have to mean automating everything at once. Here's the sequencing that actually works for small engineering teams."
+image: "https://assets.huntermussel.com/images/blog/iac-terraform-small-team.webp"
 tags:
   - Terraform
   - IaC

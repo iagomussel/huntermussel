@@ -1,6 +1,6 @@
 ---
 title: "Fable 5's SWE-bench Pro Score Has an Asterisk on It"
-date: "2026-07-03"
+date: "2026-06-27"
 image: "https://assets.huntermussel.com/images/blog/swebench-pro-fable-5-benchmark-asterisk.webp"
 authors:
   - iago-mussel

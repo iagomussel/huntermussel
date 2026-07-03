@@ -1,6 +1,6 @@
 ---
 title: "AI agents in production: why most prototypes never ship"
-date: "2026-07-02"
+date: "2026-06-11"
 authors:
   - iago-mussel
 description: "AI agent prototypes impress in demos. Production is where they fall apart. Here's why — and the architecture, tooling, and governance that separate working prototypes from shipped agents."

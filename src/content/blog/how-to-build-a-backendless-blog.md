@@ -1,6 +1,6 @@
 ---
 title: "How to build a backendless Blog"
-date: "2026-02-09"
+date: "2026-02-18"
 authors:
   - iago-mussel
 status: "published"

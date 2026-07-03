@@ -1,9 +1,10 @@
 ---
 title: "Jenkins or GitHub Actions? How to choose the right CI/CD tool for your context"
-date: "2026-03-13"
+date: "2026-04-23"
 authors:
   - iago-mussel
 description: "An honest comparison of Jenkins and GitHub Actions — including when Jenkins is still the right answer and when it's technical debt you don't need."
+image: "https://assets.huntermussel.com/images/blog/jenkins-vs-github-actions-how-to-choose.webp"
 tags:
   - Jenkins
   - GitHub Actions

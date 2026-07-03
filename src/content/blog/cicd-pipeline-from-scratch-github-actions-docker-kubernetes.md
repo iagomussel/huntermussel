@@ -1,9 +1,10 @@
 ---
 title: "How to build a CI/CD pipeline from scratch with GitHub Actions, Docker, and Kubernetes"
-date: "2026-03-13"
+date: "2026-03-30"
 authors:
   - iago-mussel
 description: "A practical, step-by-step guide to building a production-grade CI/CD pipeline using GitHub Actions, Docker, and Kubernetes — from zero to working deploy."
+image: "https://assets.huntermussel.com/images/blog/cicd-pipeline-from-scratch-github-actions-docker-kubernetes.webp"
 tags:
   - CI/CD
   - GitHub Actions

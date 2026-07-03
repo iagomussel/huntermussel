@@ -1,9 +1,10 @@
 ---
 title: "How to scale AI automations without losing control and traceability"
-date: "2026-03-13"
+date: "2026-05-07"
 authors:
   - iago-mussel
 description: "The governance layer that keeps AI automations auditable, recoverable, and trustworthy as they grow from one workflow to dozens."
+image: "https://assets.huntermussel.com/images/blog/scale-ai-automations-without-losing-control.webp"
 tags:
   - AI Automation
   - Governance

@@ -1,9 +1,10 @@
 ---
 title: "DevOps + AI: what actually changes for engineers in 2026"
-date: "2026-03-13"
+date: "2026-04-02"
 authors:
   - iago-mussel
 description: "AI is changing the practice of DevOps — not by replacing engineers, but by shifting what they spend their time on. Here's what's actually different."
+image: "https://assets.huntermussel.com/images/blog/devops-ai-what-changes-for-engineers-2026.webp"
 tags:
   - DevOps
   - AI

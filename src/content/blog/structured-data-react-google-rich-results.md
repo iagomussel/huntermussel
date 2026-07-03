@@ -1,6 +1,6 @@
 ---
 title: "Structured data for SaaS: from React markup to Google rich results"
-date: "2026-02-15"
+date: "2026-02-23"
 authors:
   - iago-mussel
 description: "Structured data helps your SaaS product, blog, or tool qualify for rich results. Here's how to add JSON-LD to a React app, validate it with Google, and scale it across routes."

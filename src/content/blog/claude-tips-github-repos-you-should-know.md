@@ -1,6 +1,6 @@
 ---
 title: "Claude Code Is Half the Tool Without These 10 Repos"
-date: "2026-03-25"
+date: "2026-05-31"
 authors:
   - iago-mussel
 description: "Ten open-source repos that fix Claude Code's biggest gaps — persistent memory, smarter prompts, RAG on your own codebase, MCP integrations, and more."

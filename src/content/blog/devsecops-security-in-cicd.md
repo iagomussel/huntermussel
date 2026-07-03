@@ -1,9 +1,10 @@
 ---
 title: "How to integrate security into CI/CD without slowing your team down"
-date: "2026-03-13"
+date: "2026-04-07"
 authors:
   - iago-mussel
 description: "DevSecOps in practice: the security checks that belong in every pipeline, how to run them without adding friction, and where to draw the hard lines."
+image: "https://assets.huntermussel.com/images/blog/devsecops-security-in-cicd.webp"
 tags:
   - DevSecOps
   - CI/CD

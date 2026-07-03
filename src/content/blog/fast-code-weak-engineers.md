@@ -1,6 +1,6 @@
 ---
 title: "Fast Code, Weak Engineers"
-date: "2026-01-09"
+date: "2026-02-15"
 authors:
   - iago-mussel
 description: "The Risk of Becoming an AI-Dependent Developer"

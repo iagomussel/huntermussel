@@ -109,6 +109,7 @@
     "@aws-sdk/client-s3": "^3.1030.0",
     "@types/animejs": "^3.1.13",
     "@vitest/coverage-v8": "^4.1.4",
+    "sharp": "^0.35.3",
     "vitest": "^4.1.4"
   }
 }

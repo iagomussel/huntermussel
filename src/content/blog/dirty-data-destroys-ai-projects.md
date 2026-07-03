@@ -1,9 +1,10 @@
 ---
 title: "Why dirty data destroys AI projects — before the first deploy"
-date: "2026-03-13"
+date: "2026-04-10"
 authors:
   - iago-mussel
 description: "Data quality is the most common and least discussed reason AI projects fail. Here's how to assess what you have, what it costs you, and what to fix first."
+image: "https://assets.huntermussel.com/images/blog/dirty-data-destroys-ai-projects.webp"
 tags:
   - Data Quality
   - AI

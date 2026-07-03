@@ -1,9 +1,10 @@
 ---
 title: "What I learned implementing AI automations in real operations"
-date: "2026-03-13"
+date: "2026-04-26"
 authors:
   - iago-mussel
 description: "The lessons that don't show up in tutorials or vendor case studies — from real implementations of AI automation across logistics, sales, support, and development workflows."
+image: "https://assets.huntermussel.com/images/blog/lessons-from-ai-automation-in-real-operations.webp"
 tags:
   - AI Automation
   - Lessons Learned

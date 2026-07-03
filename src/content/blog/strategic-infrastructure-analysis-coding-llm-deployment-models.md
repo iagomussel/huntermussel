@@ -1,6 +1,6 @@
 ---
 title: "LLM deployment models in 2026: cloud, self-hosted, or hybrid?"
-date: "2026-02-22"
+date: "2026-03-03"
 authors:
   - iago-mussel
 status: "published"

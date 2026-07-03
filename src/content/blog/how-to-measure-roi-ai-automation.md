@@ -1,9 +1,10 @@
 ---
 title: "How to measure the ROI of an AI automation project"
-date: "2026-03-13"
+date: "2026-04-18"
 authors:
   - iago-mussel
 description: "Most implementations show 25–70% improvement in key metrics. Here's how to measure that honestly — before and after — so the numbers hold up to scrutiny."
+image: "https://assets.huntermussel.com/images/blog/how-to-measure-roi-ai-automation.webp"
 tags:
   - ROI
   - AI

@@ -1,6 +1,6 @@
 ---
 title: "Custom AI systems vs off-the-shelf tools: when to build your own"
-date: "2026-07-02"
+date: "2026-06-16"
 authors:
   - iago-mussel
 description: "Off-the-shelf AI tools ship fast. Custom AI systems fit your workflow. Here's how to decide which one makes sense — and how to avoid rebuilding what you could have bought."

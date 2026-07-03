@@ -1,6 +1,6 @@
 ---
 title: "Agentic AI vs Generative AI: which one your team should build with"
-date: "2026-03-13"
+date: "2026-03-17"
 authors:
   - iago-mussel
 description: "Agentic AI and generative AI solve different problems. Here's how they differ, when to use each, and the implementation mistakes that cost teams months."

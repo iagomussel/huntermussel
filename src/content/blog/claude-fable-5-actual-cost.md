@@ -1,6 +1,6 @@
 ---
 title: "What Claude Fable 5 Actually Costs to Run"
-date: "2026-07-02"
+date: "2026-06-13"
 image: "https://assets.huntermussel.com/images/blog/claude-fable-5-actual-cost.webp?v=2"
 authors:
   - iago-mussel
