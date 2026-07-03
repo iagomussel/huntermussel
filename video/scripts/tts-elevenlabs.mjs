@@ -20,8 +20,8 @@ function parseArgs(argv) {
     outFile: "",
     dryRun: false,
     useLlm: true,
-    llmProvider: "gemini",
-    ttsProvider: "elevenlabs",
+    llmProvider: "",
+    ttsProvider: "",
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -31,10 +31,10 @@ function parseArgs(argv) {
     if (a === "--out") out.outFile = argv[++i] ?? "";
     if (a === "--dry-run") out.dryRun = true;
     if (a === "--no-llm") out.useLlm = false;
-    if (a === "--llm-provider") out.llmProvider = argv[++i] ?? "gemini";
-    if (a === "--tts-provider") out.ttsProvider = argv[++i] ?? "elevenlabs";
+    if (a === "--llm-provider") out.llmProvider = argv[++i] ?? "";
+    if (a === "--tts-provider") out.ttsProvider = argv[++i] ?? "";
     // Legacy aliases
-    if (a === "--provider") out.ttsProvider = argv[++i] ?? "elevenlabs";
+    if (a === "--provider") out.ttsProvider = argv[++i] ?? "";
   }
   return out;
 }
@@ -100,17 +100,8 @@ function stripMarkdown(text) {
     .trim();
 }
 
-async function generateStoryboardWithLlm({ title, subtitle, content, url, keywords }) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return undefined;
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
-    generationConfig: { responseMimeType: "application/json" },
-  });
-
-  const prompt = `You are a senior social media producer for a B2B tech brand. Create a short-form video storyboard from the blog post below.
+function buildStoryboardPrompt({ title, subtitle, content, keywords }) {
+  return `You are a senior social media producer for a B2B tech brand. Create a short-form video storyboard from the blog post below.
 
 RULES:
 1. Total video length: 25-35 seconds (about 5 scenes of 5-7 seconds each).
@@ -130,6 +121,19 @@ Content:
 ${content.slice(0, 4000)}
 
 Output valid JSON only.`;
+}
+
+async function generateStoryboardWithLlm({ title, subtitle, content, url, keywords }) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return undefined;
+
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({
+    model: "gemini-2.0-flash",
+    generationConfig: { responseMimeType: "application/json" },
+  });
+
+  const prompt = buildStoryboardPrompt({ title, subtitle, content, keywords });
 
   try {
     const result = await model.generateContent(prompt);
@@ -148,6 +152,7 @@ Output valid JSON only.`;
 async function generateStoryboardWithOllama({ title, subtitle, content, url, keywords }) {
   const host = process.env.OLLAMA_HOST || "http://127.0.0.1:11434";
   const modelName = process.env.OLLAMA_MODEL || "kimi-k2.7:cloud";
+  const prompt = buildStoryboardPrompt({ title, subtitle, content, keywords });
 
   const schema = {
     type: "object",
@@ -290,6 +295,10 @@ async function googleTtsFallback({ text }) {
 const args = parseArgs(process.argv.slice(2));
 loadDotEnv(path.join(VIDEO_ROOT, ".env"));
 
+// Resolve providers: explicit CLI flag > env var > default.
+const llmProvider = args.llmProvider || process.env.LLM_PROVIDER || "gemini";
+const ttsProvider = args.ttsProvider || process.env.TTS_PROVIDER || "elevenlabs";
+
 if (!args.slug) {
   process.stderr.write(
     "Usage: node scripts/tts-elevenlabs.mjs --slug <slug> [--llm-provider gemini|ollama] [--tts-provider elevenlabs|voicebox|google]\n"
@@ -313,7 +322,7 @@ const keywords = data.keywords || data.tags || [];
 
 let llmPlan = null;
 if (args.useLlm) {
-  if (args.llmProvider === "ollama") {
+  if (llmProvider === "ollama" || process.env.OLLAMA_HOST || process.env.OLLAMA_MODEL) {
     llmPlan = await generateStoryboardWithOllama({
       title,
       subtitle,
@@ -351,7 +360,7 @@ if (llmPlan?.scenes) {
 
     let audioBuffer;
     try {
-      const provider = args.ttsProvider;
+      const provider = ttsProvider;
       const apiKey = process.env.ELEVENLABS_API_KEY;
       const voiceId = args.voiceId || process.env.ELEVENLABS_VOICE_ID || "21m00Tcm4TlvDq8ikWAM";
       const voiceboxHost = process.env.VOICEBOX_HOST || "http://127.0.0.1:17493";
@@ -393,7 +402,7 @@ if (llmPlan?.scenes) {
     const voiceboxHost = process.env.VOICEBOX_HOST || "http://127.0.0.1:17493";
     const voiceboxProfile = process.env.VOICEBOX_PROFILE_ID;
     const voiceboxLanguage = process.env.VOICEBOX_LANGUAGE || "en";
-    if (args.ttsProvider === "voicebox") {
+    if (ttsProvider === "voicebox") {
       audioBuffer = await voiceboxTts({
         text: narration,
         profileId: voiceboxProfile,
@@ -419,8 +428,8 @@ fs.writeFileSync(
     {
       slug: args.slug,
       ...llmPlan,
-      llmProvider: args.llmProvider,
-      ttsProvider: args.ttsProvider,
+      llmProvider,
+      ttsProvider,
     },
     null,
     2
@@ -428,4 +437,4 @@ fs.writeFileSync(
 );
 
 const mode = llmPlan?.scenes?.length ? "LLM storyboard" : "fallback narration";
-process.stdout.write(`${mode} and audio generated for ${args.slug} (LLM: ${args.llmProvider}, TTS: ${args.ttsProvider})\n`);
+process.stdout.write(`${mode} and audio generated for ${args.slug} (LLM: ${llmProvider}, TTS: ${ttsProvider})\n`);
