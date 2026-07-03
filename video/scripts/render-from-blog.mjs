@@ -47,6 +47,36 @@ function slugifySearch(term, fallback) {
   return slug || fallback;
 }
 
+function isValidMediaFile(filePath, expectedType) {
+  const ffprobe = spawnSync("ffprobe", [
+    "-v", "error",
+    "-show_entries", "stream=codec_type",
+    "-of", "default=noprint_wrappers=1",
+    filePath,
+  ], { encoding: "utf-8" });
+  if ((ffprobe.status ?? 1) !== 0) {
+    process.stderr.write(`Invalid media file, removing: ${filePath}\n`);
+    try { fs.unlinkSync(filePath); } catch {}
+    return false;
+  }
+  const types = ffprobe.stdout
+    .split("\n")
+    .filter((line) => line.startsWith("codec_type="))
+    .map((line) => line.replace("codec_type=", "").trim());
+  if (expectedType === "video" && !types.includes("video")) {
+    process.stderr.write(`Download is not a video, removing: ${filePath}\n`);
+    try { fs.unlinkSync(filePath); } catch {}
+    return false;
+  }
+  if (expectedType === "photo" && !types.includes("video")) {
+    // Still images report a video stream in ffprobe.
+    process.stderr.write(`Download is not an image, removing: ${filePath}\n`);
+    try { fs.unlinkSync(filePath); } catch {}
+    return false;
+  }
+  return true;
+}
+
 async function fetchPexelsAsset({ query, type, destPath }) {
   const pexelsKey = process.env.PEXELS_API_KEY;
   if (!pexelsKey) return undefined;
@@ -71,7 +101,7 @@ async function fetchPexelsAsset({ query, type, destPath }) {
       if (!videoRes.ok) return undefined;
       fs.mkdirSync(path.dirname(destPath), { recursive: true });
       fs.writeFileSync(destPath, Buffer.from(await videoRes.arrayBuffer()));
-      return destPath;
+      return isValidMediaFile(destPath, "video") ? destPath : undefined;
     } else {
       const photo = data.photos?.[0];
       if (!photo?.src?.large2x) return undefined;
@@ -79,7 +109,7 @@ async function fetchPexelsAsset({ query, type, destPath }) {
       if (!imgRes.ok) return undefined;
       fs.mkdirSync(path.dirname(destPath), { recursive: true });
       fs.writeFileSync(destPath, Buffer.from(await imgRes.arrayBuffer()));
-      return destPath;
+      return isValidMediaFile(destPath, "photo") ? destPath : undefined;
     }
   } catch (err) {
     process.stderr.write(`Pexels ${type} fetch failed: ${err.message}\n`);
@@ -156,14 +186,16 @@ if (args.narration) {
           const destVideo = path.join(VIDEO_ROOT, "public", "blog", `pexels-${args.slug}-${i}-${videoSlug}.mp4`);
           const destImage = path.join(VIDEO_ROOT, "public", "blog", `pexels-${args.slug}-${i}-${imageSlug}.jpg`);
 
-          if (!fs.existsSync(destVideo)) {
+          const hasCachedVideo = fs.existsSync(destVideo) && isValidMediaFile(destVideo, "video");
+          if (!hasCachedVideo) {
             const videoPath = await fetchPexelsAsset({ query: s.search_asset, type: "video", destPath: destVideo });
             if (videoPath) s.videoFile = path.posix.join("blog", path.basename(destVideo));
           } else {
             s.videoFile = path.posix.join("blog", path.basename(destVideo));
           }
 
-          if (!s.videoFile && !fs.existsSync(destImage)) {
+          const hasCachedImage = fs.existsSync(destImage) && isValidMediaFile(destImage, "photo");
+          if (!s.videoFile && !hasCachedImage) {
             const imagePath = await fetchPexelsAsset({ query: s.search_asset, type: "photo", destPath: destImage });
             if (imagePath) s.imageFile = path.posix.join("blog", path.basename(destImage));
           } else if (!s.videoFile) {
@@ -207,4 +239,27 @@ const result = spawnSync(process.platform === "win32" ? "npx.cmd" : "npx", rende
   cwd: VIDEO_ROOT,
   stdio: "inherit",
 });
-process.exit(result.status ?? 1);
+
+if ((result.status ?? 1) !== 0) {
+  process.exit(result.status ?? 1);
+}
+
+const outFullPath = path.isAbsolute(outFile) ? outFile : path.join(VIDEO_ROOT, outFile);
+if (fs.existsSync(outFullPath)) {
+  const valid = isValidMediaFile(outFullPath, "video");
+  if (!valid) {
+    process.stderr.write(`Rendered file failed validation: ${outFullPath}\n`);
+    process.exit(1);
+  }
+  const probe = spawnSync("ffprobe", [
+    "-v", "error",
+    "-show_entries", "format=duration",
+    "-of", "default=noprint_wrappers=1:nokey=1",
+    outFullPath,
+  ], { encoding: "utf-8" });
+  if ((probe.status ?? 1) === 0) {
+    console.log(`Validated output: ${outFullPath} (${parseFloat(probe.stdout.trim()).toFixed(2)}s)`);
+  }
+}
+
+process.exit(0);

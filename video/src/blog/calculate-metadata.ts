@@ -25,8 +25,10 @@ export const calculateBlogPromoMetadata: CalculateMetadataFunction<BlogPromoProp
     for (let i = 0; i < allScenes.length; i++) {
       const scene = allScenes[i];
       let durationFrames = DEFAULT_SCENE_DURATION_IN_FRAMES;
-      
-      const audioPath = resolveAsset(scene.audioFile);
+
+      // Fall back to the global audio track for scenes that don't have their own.
+      const sceneAudioFile = scene.audioFile || (i === 0 ? props.audioFile : undefined);
+      const audioPath = resolveAsset(sceneAudioFile);
       if (audioPath) {
         try {
           const seconds = await getAudioDurationInSeconds(audioPath);

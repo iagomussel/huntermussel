@@ -3,9 +3,9 @@ import {
   AbsoluteFill,
   Audio,
   Img,
+  OffthreadVideo,
   interpolate,
   spring,
-  Video,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
@@ -52,9 +52,8 @@ export const SceneRenderer: React.FC<{
 
   const videoBackground = resolvedVideo ? (
     <AbsoluteFill style={{ opacity: 1 }}>
-      <Video
+      <OffthreadVideo
         src={resolvedVideo}
-        loop
         muted
         style={{
           width: "120%",
