@@ -11,7 +11,7 @@ export type BrandConfig = {
 
 export type Scene = {
   text: string;
-  type: "title" | "bullet" | "image" | "video" | "quote" | "call-to-action" | "full-image" | "feature";
+  type: "hook" | "title" | "point" | "bullet" | "proof" | "image" | "video" | "quote" | "call-to-action" | "full-image" | "feature";
   imageFile?: string;
   videoFile?: string;
   narration?: string; // Scene-specific narration
@@ -26,6 +26,7 @@ export type BlogPromoProps = {
   url: string;
   imageFile?: string;
   audioFile?: string;
+  musicFile?: string;
   brand: BrandConfig;
   scenes?: Scene[];
 };

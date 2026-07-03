@@ -1,7 +1,7 @@
-import {Composition} from "remotion";
-import {BlogPromo} from "./blog/BlogPromo";
-import {calculateBlogPromoMetadata} from "./blog/calculate-metadata";
-import {defaultBlogPromoProps} from "./blog/default-props";
+import { Composition } from "remotion";
+import { BlogPromo } from "./blog/BlogPromo";
+import { calculateBlogPromoMetadata } from "./blog/calculate-metadata";
+import { defaultBlogPromoProps } from "./blog/default-props";
 
 export const RemotionRoot = () => {
   return (
@@ -17,12 +17,22 @@ export const RemotionRoot = () => {
         calculateMetadata={calculateBlogPromoMetadata}
       />
       <Composition
-        id="BlogPromoIG"
+        id="BlogPromoVertical"
         component={BlogPromo}
         durationInFrames={360}
         fps={30}
         width={1080}
         height={1920}
+        defaultProps={defaultBlogPromoProps}
+        calculateMetadata={calculateBlogPromoMetadata}
+      />
+      <Composition
+        id="BlogPromoSquare"
+        component={BlogPromo}
+        durationInFrames={360}
+        fps={30}
+        width={1080}
+        height={1080}
         defaultProps={defaultBlogPromoProps}
         calculateMetadata={calculateBlogPromoMetadata}
       />

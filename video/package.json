@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "render": "remotion render src/index.ts BlogPromo out/blog-promo.mp4 --browser-executable=/usr/bin/google-chrome",
-    "still": "remotion still src/index.ts BlogPromo out/blog-promo.png --frame=60 --browser-executable=/usr/bin/google-chrome",
-    "render:blog": "node ./scripts/render-from-blog.mjs"
+    "render": "remotion render src/index.ts BlogPromo out/blog-promo.mp4",
+    "still": "remotion still src/index.ts BlogPromo out/blog-promo.png --frame=60",
+    "render:blog": "node ./scripts/render-from-blog.mjs",
+    "render:blog:dry": "node ./scripts/render-from-blog.mjs --dry-run"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
+    "@google/generative-ai": "^0.24.1",       
     "@remotion/animation-utils": "4.0.441",
     "@remotion/enable-scss": "4.0.441",
     "@remotion/fonts": "4.0.441",

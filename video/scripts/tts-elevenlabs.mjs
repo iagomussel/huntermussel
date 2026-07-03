@@ -1,10 +1,11 @@
+#!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import {fileURLToPath} from "node:url";
-import {GoogleGenerativeAI} from "@google/generative-ai";
+import { fileURLToPath } from "node:url";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import * as googleTTS from "google-tts-api";
-import {loadDotEnv} from "./load-dotenv.mjs";
+import { loadDotEnv } from "./load-dotenv.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,7 +37,7 @@ function parseArgs(argv) {
 
 function parseFrontmatter(raw) {
   const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!match) return {data: {}, content: raw};
+  if (!match) return { data: {}, content: raw };
   const yamlBlock = match[1];
   const content = match[2];
   const data = {};
@@ -58,12 +59,15 @@ function parseFrontmatter(raw) {
     if (kvMatch) {
       currentKey = kvMatch[1];
       const value = kvMatch[2].trim();
-      if (value === "") { inArray = true; continue; }
+      if (value === "") {
+        inArray = true;
+        continue;
+      }
       data[currentKey] = value.replace(/^["']|["']$/g, "");
     }
   }
   if (inArray && arrayValues.length > 0) data[currentKey] = [...arrayValues];
-  return {data, content};
+  return { data, content };
 }
 
 function extractHeadings(markdown, max = 5) {
@@ -92,7 +96,7 @@ function stripMarkdown(text) {
     .trim();
 }
 
-async function generateStoryboardWithLlm({title, subtitle, content, url}) {
+async function generateStoryboardWithLlm({ title, subtitle, content, url, keywords }) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return undefined;
 
@@ -102,56 +106,55 @@ async function generateStoryboardWithLlm({title, subtitle, content, url}) {
     generationConfig: { responseMimeType: "application/json" },
   });
 
-  const writingRules = fs.existsSync(path.join(ROOT, "ArticleWritingRules.md"))
-    ? fs.readFileSync(path.join(ROOT, "ArticleWritingRules.md"), "utf-8")
-    : "";
+  const prompt = `You are a senior social media producer for a B2B tech brand. Create a short-form video storyboard from the blog post below.
 
-  const prompt = `
-You are a video producer. Based on the blog post below, generate a full storyboard and narration for a short promo video (25-30 seconds).
-
-IMPORTANT: 
-1. Generate a COHERENT full script first.
-2. Then split that script into 5 logical scenes 6 seconds each.
-3. Each scene must have its own 'narration' fragment that, when joined, forms the original full script perfectly.
+RULES:
+1. Total video length: 25-35 seconds (about 5 scenes of 5-7 seconds each).
+2. Write ONE coherent narration script first, then split it into scenes.
+3. Scene 1 MUST be a strong HOOK: a bold claim, surprising stat, or direct question that stops the scroll.
+4. Each scene needs a short on-screen text (caption) and its corresponding narration fragment.
+5. Captions should be punchy, under 12 words, designed for vertical/Reels video.
+6. Provide a Pexels search term for a background video/image for each scene (concise, English).
+7. Do NOT include "HunterMussel", "find more", or generic CTAs. The CTA scene is added separately.
+8. Scene types allowed: hook, title, point, proof, full-image, call-to-action.
 
 Blog Title: ${title}
 Blog Subtitle: ${subtitle}
+Keywords: ${keywords?.slice(0, 8).join(", ") || "AI, automation, DevOps"}
 
-Content (Sanitized):
+Content:
 ${content.slice(0, 4000)}
 
-Output format (JSON ONLY):
+Output valid JSON only:
 {
-  "full_narration": "The complete, coherent 24-30 second script.",
-  "optimized_title": "A punchy version of the title",
-  "optimized_subtitle": "A punchy version of the subtitle",
+  "full_narration": "...",
+  "optimized_title": "...",
+  "optimized_subtitle": "...",
   "scenes": [
     {
-      "text": "The text to show on screen for this scene.",
-      "narration": "The exact fragment of the 'full_narration' for this scene.",
-      "type": "video | title | bullet | image | full-image | quote | feature",
-      "search_asset": "A short, descriptive English keyword for a background video/image."
+      "type": "hook",
+      "text": "...",
+      "narration": "...",
+      "search_asset": "..."
     }
   ]
-}
-
-- Generate only the CONTENT of the video. The closing CTA is handled separately.
-- Do NOT include a "Find more" or "HunterMussel" scene.
-`;
+}`;
 
   try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    console.log("LLM response:", response.text());
+    const text = response.text().trim();
 
-    return JSON.parse(response.text().trim());
+    // Strip markdown code fences if present
+    const clean = text.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+    return JSON.parse(clean);
   } catch (err) {
     process.stderr.write(`LLM generation failed: ${err.message}.\n`);
     return undefined;
   }
 }
 
-function buildNarration({title, subtitle, headings, url}) {
+function buildNarration({ title, subtitle, headings, url }) {
   const top = headings.filter(Boolean).slice(0, 4);
   const lines = [`${title}.`];
   if (subtitle) lines.push(`${subtitle}.`);
@@ -164,7 +167,7 @@ function buildNarration({title, subtitle, headings, url}) {
   return lines.join(" ");
 }
 
-async function elevenLabsTts({apiKey, voiceId, modelId, text}) {
+async function elevenLabsTts({ apiKey, voiceId, modelId, text }) {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
     method: "POST",
     headers: {
@@ -185,12 +188,15 @@ async function elevenLabsTts({apiKey, voiceId, modelId, text}) {
   return Buffer.from(await res.arrayBuffer());
 }
 
-async function googleTtsFallback({text}) {
+async function googleTtsFallback({ text }) {
   const results = googleTTS.getAllAudioUrls(text, {
-    lang: "en", slow: false, host: "https://translate.google.com", splitPunct: ". ",
+    lang: "en",
+    slow: false,
+    host: "https://translate.google.com",
+    splitPunct: ". ",
   });
   const buffers = [];
-  for (const {url} of results) {
+  for (const { url } of results) {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Google TTS error: ${res.statusText}`);
     buffers.push(Buffer.from(await res.arrayBuffer()));
@@ -207,25 +213,34 @@ if (!args.slug) {
 }
 
 const mdPath = path.join(ROOT, "src", "content", "blog", `${args.slug}.md`);
-if (!fs.existsSync(mdPath)) { process.exit(2); }
+if (!fs.existsSync(mdPath)) {
+  process.exit(2);
+}
 
 const raw = fs.readFileSync(mdPath, "utf-8");
-const {data, content} = parseFrontmatter(raw);
+const { data, content } = parseFrontmatter(raw);
 const title = data.title || args.slug;
 const subtitle = data.subtitle || data.description || "";
 const headings = extractHeadings(content, 5);
 const url = `https://huntermussel.com/blog/${args.slug}/`;
 const sanitizedContent = stripMarkdown(content);
+const keywords = data.keywords || data.tags || [];
 
 let llmPlan = null;
 if (args.useLlm) {
-  llmPlan = await generateStoryboardWithLlm({title, subtitle, content: sanitizedContent, url});
+  llmPlan = await generateStoryboardWithLlm({
+    title,
+    subtitle,
+    content: sanitizedContent,
+    url,
+    keywords,
+  });
 }
 
 if (llmPlan?.scenes) {
   process.stdout.write(`Generating ${llmPlan.scenes.length} scene narrations...\n`);
   const voiceoverDir = path.join(VIDEO_ROOT, "public", "voiceover", args.slug);
-  fs.mkdirSync(voiceoverDir, {recursive: true});
+  fs.mkdirSync(voiceoverDir, { recursive: true });
 
   for (let i = 0; i < llmPlan.scenes.length; i++) {
     const scene = llmPlan.scenes[i];
@@ -233,33 +248,48 @@ if (llmPlan?.scenes) {
     const sceneOutRel = path.posix.join("voiceover", args.slug, `scene-${i}.mp3`);
     const sceneOutPath = path.join(VIDEO_ROOT, "public", sceneOutRel);
 
+    if (args.dryRun) {
+      console.log(`[dry-run] scene ${i}: ${sceneText.slice(0, 80)}...`);
+      scene.audioFile = sceneOutRel;
+      continue;
+    }
+
     let audioBuffer;
     try {
       const apiKey = process.env.ELEVENLABS_API_KEY;
       const voiceId = args.voiceId || process.env.ELEVENLABS_VOICE_ID || "21m00Tcm4TlvDq8ikWAM";
       if (args.provider === "elevenlabs" && apiKey) {
-        audioBuffer = await elevenLabsTts({apiKey, voiceId, modelId: "eleven_multilingual_v2", text: sceneText});
+        audioBuffer = await elevenLabsTts({
+          apiKey,
+          voiceId,
+          modelId: args.modelId || process.env.ELEVENLABS_MODEL_ID || "eleven_multilingual_v2",
+          text: sceneText,
+        });
       } else {
-        audioBuffer = await googleTtsFallback({text: sceneText});
+        audioBuffer = await googleTtsFallback({ text: sceneText });
       }
     } catch (err) {
-      audioBuffer = await googleTtsFallback({text: sceneText});
+      console.warn(`TTS failed for scene ${i}, falling back to Google: ${err.message}`);
+      audioBuffer = await googleTtsFallback({ text: sceneText });
     }
     fs.writeFileSync(sceneOutPath, audioBuffer);
     scene.audioFile = sceneOutRel;
   }
 } else {
-  const narration = buildNarration({title, subtitle, headings, url});
+  const narration = buildNarration({ title, subtitle, headings, url });
   const outRel = path.posix.join("voiceover", `${args.slug}.mp3`);
   const outPath = path.join(VIDEO_ROOT, "public", outRel);
-  fs.mkdirSync(path.dirname(outPath), {recursive: true});
-  const audioBuffer = await googleTtsFallback({text: narration});
+  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  const audioBuffer = await googleTtsFallback({ text: narration });
   fs.writeFileSync(outPath, audioBuffer);
   llmPlan = { narration, scenes: [], audioFile: outRel };
 }
 
 const metaPath = path.join(VIDEO_ROOT, "out", `${args.slug}.voiceover.json`);
-fs.mkdirSync(path.dirname(metaPath), {recursive: true});
-fs.writeFileSync(metaPath, JSON.stringify({slug: args.slug, ...llmPlan, provider: args.provider}, null, 2));
+fs.mkdirSync(path.dirname(metaPath), { recursive: true });
+fs.writeFileSync(
+  metaPath,
+  JSON.stringify({ slug: args.slug, ...llmPlan, provider: args.provider }, null, 2)
+);
 
 process.stdout.write(`Storyboard and audio generated for ${args.slug}\n`);
