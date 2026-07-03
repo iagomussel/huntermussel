@@ -2,127 +2,29 @@ import { useRef, useState } from "react";
 import { ArrowRight, Mail, MapPin, MessageCircle } from "lucide-react";
 import AnimeScrollSection from "@/components/react/AnimeScrollSection";
 import CalSchedulerEmbed from "@/components/react/CalSchedulerEmbed";
+import HubSpotForm from "@/components/react/HubSpotForm";
 import { useLang } from "@/context/LangContext";
 import { contactT } from "@/data/translations";
 import { trackEvent } from "@/lib/analytics";
+
+const HUBSPOT_PORTAL_ID = import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID || "";
+const HUBSPOT_FORM_ID = import.meta.env.PUBLIC_HUBSPOT_FORM_ID || "";
 
 const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   const lang = useLang();
   const T = contactT[lang];
   const surface = "contact";
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  const hasFormConfigured = Boolean(HUBSPOT_PORTAL_ID && HUBSPOT_FORM_ID);
   const hasStartedRef = useRef(false);
-
-  const getMessageLengthBucket = (value: string) => {
-    if (value.length >= 600) {
-      return "600_plus";
-    }
-    if (value.length >= 250) {
-      return "250_599";
-    }
-    if (value.length >= 100) {
-      return "100_249";
-    }
-    if (value.length >= 1) {
-      return "1_99";
-    }
-    return "empty";
-  };
+  const [showFallback, setShowFallback] = useState(false);
 
   const markStarted = () => {
-    if (hasStartedRef.current) {
-      return;
-    }
-
+    if (hasStartedRef.current) return;
     hasStartedRef.current = true;
     trackEvent("contact_form_started", {
       form_id: "contact",
       form_surface: surface,
     });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Contact form: Starting submission...");
-    markStarted();
-    trackEvent("contact_form_submit", {
-      form_id: "contact",
-      form_surface: surface,
-      has_phone: Boolean(phone.trim()),
-      message_length_bucket: getMessageLengthBucket(message.trim()),
-    });
-    setStatus("loading");
-    setErrorMsg("");
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, message }),
-      });
-
-      const contentType = res.headers.get("content-type");
-      let data;
-      if (contentType && contentType.includes("application/json")) {
-        data = await res.json();
-      } else {
-        const text = await res.text();
-        console.error("Contact form: Received non-JSON response:", text);
-        trackEvent("contact_form_error", {
-          form_id: "contact",
-          form_surface: surface,
-          error_type: "non_json_response",
-        });
-        setErrorMsg(T.errorMsg);
-        setStatus("error");
-        return;
-      }
-
-      if (!res.ok) {
-        console.error("Contact form: API Error:", data);
-        trackEvent("contact_form_error", {
-          form_id: "contact",
-          form_surface: surface,
-          error_type: "request_failed",
-        });
-        setErrorMsg(T.errorMsg);
-        setStatus("error");
-        return;
-      }
-      console.log("Contact form: Success!");
-      trackEvent("contact_form_success", {
-        form_id: "contact",
-        form_surface: surface,
-      });
-      trackEvent("generate_lead", {
-        lead_method: "contact_form",
-        form_surface: surface,
-      });
-      setStatus("success");
-      setName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      if (typeof window !== "undefined" && typeof (window as Window & { gtag?: (...args: unknown[]) => void }).gtag === "function") {
-        (window as Window & { gtag: (...args: unknown[]) => void }).gtag("event", "conversion", {
-          send_to: "AW-16916178576/contact_form_lead",
-        });
-      }
-    } catch (err) {
-      console.error("Contact form: Connection error:", err);
-      trackEvent("contact_form_error", {
-        form_id: "contact",
-        form_surface: surface,
-        error_type: "network_error",
-      });
-      setErrorMsg(T.errorMsg);
-      setStatus("error");
-    }
   };
 
   return (
@@ -149,7 +51,11 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
           )}
 
           <div className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start">
-            <div className="space-y-6 rounded-lg border border-border bg-card/50 p-8">
+            <div
+              className="space-y-6 rounded-lg border border-border bg-card/50 p-8"
+              onFocus={markStarted}
+              onClick={markStarted}
+            >
               <div className="space-y-3 text-left">
                 <p className="font-heading text-lg font-semibold text-foreground">
                   {T.preferWriting}
@@ -159,110 +65,49 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                 </p>
               </div>
 
-              <form
-                className="space-y-5 text-left"
-                onSubmit={handleSubmit}
-                onFocus={markStarted}
-                onChange={markStarted}
-              >
-                {status === "success" && (
-                  <p className="rounded-md border border-primary/30 bg-primary/10 px-4 py-2.5 font-body text-sm text-primary">
-                    {T.successMsg}
+              {hasFormConfigured ? (
+                <HubSpotForm portalId={HUBSPOT_PORTAL_ID} formId={HUBSPOT_FORM_ID} />
+              ) : showFallback ? (
+                <div className="space-y-4">
+                  <p className="font-body text-sm text-muted-foreground">
+                    The contact form is temporarily unavailable. Reach out directly and we'll respond within 24 hours.
                   </p>
-                )}
-                {status === "error" && errorMsg && (
-                  <p className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-2.5 font-body text-sm text-destructive">
-                    {errorMsg}
-                  </p>
-                )}
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <div className="sm:col-span-2">
-                    <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                      {T.labelName}
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      placeholder={T.placeholderName}
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      disabled={status === "loading"}
-                      autoComplete="name"
-                      data-lpignore="true"
-                      className="w-full rounded-md border border-border bg-muted/30 px-4 py-2.5 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 disabled:opacity-60"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                      {T.labelEmail}
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="your@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      disabled={status === "loading"}
-                      autoComplete="email"
-                      data-lpignore="true"
-                      className="w-full rounded-md border border-border bg-muted/30 px-4 py-2.5 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 disabled:opacity-60"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                      {T.labelPhone}
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      placeholder={T.placeholderPhone}
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      disabled={status === "loading"}
-                      autoComplete="tel"
-                      data-lpignore="true"
-                      className="w-full rounded-md border border-border bg-muted/30 px-4 py-2.5 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 disabled:opacity-60"
-                    />
+                  <div className="flex flex-wrap gap-4">
+                    <a
+                      href="mailto:contact@huntermussel.com"
+                      className="inline-flex items-center gap-2 rounded-md border border-border bg-muted/30 px-4 py-2 font-body text-sm transition-colors hover:border-primary/40"
+                    >
+                      <Mail size={16} className="text-primary" />
+                      contact@huntermussel.com
+                    </a>
+                    <a
+                      href="https://wa.me/5521995775689"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-md border border-border bg-muted/30 px-4 py-2 font-body text-sm transition-colors hover:border-primary/40"
+                    >
+                      <MessageCircle size={16} className="text-primary" />
+                      WhatsApp
+                    </a>
                   </div>
                 </div>
-                <div>
-                  <label className="mb-1.5 block font-heading text-xs text-muted-foreground">
-                    {T.labelMessage}
-                  </label>
-                  <textarea
-                    rows={4}
-                    id="message"
-                    name="message"
-                    placeholder={T.placeholderMessage}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    required
-                    disabled={status === "loading"}
-                    data-lpignore="true"
-                    className="w-full resize-none rounded-md border border-border bg-muted/30 px-4 py-2.5 font-body text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/30 disabled:opacity-60"
-                  />
+              ) : (
+                <div className="rounded-md border border-destructive/20 bg-destructive/10 px-4 py-3">
+                  <p className="font-body text-sm text-destructive">
+                    Contact form not configured. Add{" "}
+                    <code className="rounded bg-muted px-1 py-0.5 text-xs">PUBLIC_HUBSPOT_PORTAL_ID</code>{" "}
+                    and{" "}
+                    <code className="rounded bg-muted px-1 py-0.5 text-xs">PUBLIC_HUBSPOT_FORM_ID</code>{" "}
+                    to your environment.
+                  </p>
+                  <button
+                    onClick={() => setShowFallback(true)}
+                    className="mt-2 font-body text-sm text-primary underline"
+                  >
+                    Show direct contact options
+                  </button>
                 </div>
-                <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  data-analytics-event="lead_cta_click"
-                  data-analytics-label="contact_form_submit_button"
-                  data-analytics-location={surface}
-                  data-analytics-destination="/contact"
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 font-heading text-sm font-semibold text-primary-foreground transition-all hover:shadow-[0_0_30px_hsl(145_80%_50%/0.3)] disabled:pointer-events-none disabled:opacity-60"
-                >
-                  {status === "loading" ? T.btnSending : T.btnSend}
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform group-hover:translate-x-1"
-                  />
-                </button>
-              </form>
+              )}
 
               <div className="grid gap-4 border-t border-border pt-6 sm:grid-cols-3">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
