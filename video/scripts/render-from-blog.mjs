@@ -94,8 +94,11 @@ async function fetchPexelsAsset({ query, type, destPath }) {
     if (type === "video") {
       const video = data.videos?.[0];
       if (!video?.video_files?.length) return undefined;
-      const sorted = [...video.video_files].sort((a, b) => (a?.width ?? 9999) - (b?.width ?? 9999));
-      const candidate = sorted.find((f) => f.quality === "sd" || f.quality === "hd") || sorted[0];
+      // Prefer the highest resolution available, capped at 1920px wide so we
+      // don't pull down an unnecessary 4K file for a 1080x1920 composition.
+      const sorted = [...video.video_files].sort((a, b) => (b?.width ?? 0) - (a?.width ?? 0));
+      const candidate =
+        sorted.find((f) => (f.width ?? 0) > 0 && f.width <= 1920) || sorted[sorted.length - 1];
       if (!candidate?.link) return undefined;
       const videoRes = await fetch(candidate.link);
       if (!videoRes.ok) return undefined;
@@ -104,8 +107,8 @@ async function fetchPexelsAsset({ query, type, destPath }) {
       return isValidMediaFile(destPath, "video") ? destPath : undefined;
     } else {
       const photo = data.photos?.[0];
-      if (!photo?.src?.large2x) return undefined;
-      const imgRes = await fetch(photo.src.large2x);
+      if (!photo?.src?.original) return undefined;
+      const imgRes = await fetch(photo.src.original);
       if (!imgRes.ok) return undefined;
       fs.mkdirSync(path.dirname(destPath), { recursive: true });
       fs.writeFileSync(destPath, Buffer.from(await imgRes.arrayBuffer()));
@@ -177,12 +180,15 @@ if (args.narration) {
     if (meta.audioFile) props.audioFile = meta.audioFile;
 
     if (meta.scenes?.length) {
+      // The LLM's JSON key naming isn't perfectly consistent across runs
+      // (e.g. "text" vs "on_screen_text", "type" vs "scene_type"), so accept
+      // the common synonyms instead of silently dropping the field.
       const scenes = meta.scenes.map((s, idx) => ({
-        text: s.caption || s.text,
-        type: s.scene_type || s.type || "point",
+        text: s.text || s.caption || s.on_screen_text || s.onScreenText,
+        type: s.type || s.scene_type || s.sceneType || "point",
         narration: s.narration,
         audioFile: s.audioFile,
-        search_asset: s.pexels_search_term || s.search_asset,
+        search_asset: s.search_asset || s.pexels_search_term || s.pexelsSearchTerm,
       }));
 
       if (args.pexels) {
@@ -223,7 +229,8 @@ if (args.music) {
   let mood = "corporate";
   if (fs.existsSync(metaPath)) {
     const meta = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
-    if (MUSIC_MOODS.includes(meta.music_mood)) mood = meta.music_mood;
+    const rawMood = meta.music_mood || meta.background_music || meta.musicMood;
+    if (MUSIC_MOODS.includes(rawMood)) mood = rawMood;
   }
   const musicPath = path.join(VIDEO_ROOT, "public", "static", "music", `${mood}.mp3`);
   if (fs.existsSync(musicPath)) {

@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import {
   AbsoluteFill,
   Audio,
+  Easing,
   Img,
   Loop,
   OffthreadVideo,
@@ -50,17 +51,26 @@ export const SceneRenderer: React.FC<{
 
   // Alternate zoom direction and pan per scene so consecutive scenes don't
   // all move the same way — this is what reads as "dynamic" vs a slideshow.
-  const kenBurnsScale: [number, number] = index % 2 === 0 ? [1, 1.16] : [1.16, 1];
+  // Stock footage is often near-static (tripod B-roll), so the motion here
+  // has to be strong enough to read as movement on its own, not rely on the
+  // source clip. Eased (not linear) so it feels like a camera move, not a slide.
+  const kenBurnsScale: [number, number] = index % 2 === 0 ? [1, 1.35] : [1.35, 1];
   const kenBurnsPanX: [number, number] =
-    index % 3 === 0 ? [0, -3] : index % 3 === 1 ? [0, 3] : [0, 0];
+    index % 3 === 0 ? [0, -9] : index % 3 === 1 ? [0, 9] : [-7, 7];
+  const kenBurnsPanY: [number, number] = index % 2 === 0 ? [0, -6] : [-6, 0];
   const kenBurnsProgress = interpolate(frame, [0, durationFrames], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
+    easing: Easing.inOut(Easing.quad),
   });
-  const kenBurnsTransform = `scale(${interpolate(kenBurnsProgress, [0, 1], kenBurnsScale)}) translateX(${interpolate(
+  const kenBurnsTransform = `scale(${interpolate(
     kenBurnsProgress,
     [0, 1],
-    kenBurnsPanX
+    kenBurnsScale
+  )}) translate(${interpolate(kenBurnsProgress, [0, 1], kenBurnsPanX)}%, ${interpolate(
+    kenBurnsProgress,
+    [0, 1],
+    kenBurnsPanY
   )}%)`;
 
   const resolvedImage = scene.imageFile || defaultImage || "blog/placeholder.jpg";

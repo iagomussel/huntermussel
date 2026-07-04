@@ -144,29 +144,16 @@ linear-gradient(180deg, ${bg}, ${bg})`,
       <div
         style={{
           position: "absolute",
-          top: 28,
-          left: 28,
+          top: 24,
+          left: 24,
           zIndex: 1000,
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
           opacity: 0.92,
         }}
       >
         <Img
-          src={resolveAsset(props.brand.logoFile) || ""}
-          style={{ width: 36, height: 36, objectFit: "contain" }}
+          src={resolveAsset("logo-icon.svg") || ""}
+          style={{ width: isPortrait ? 72 : 60, height: isPortrait ? 72 : 60, objectFit: "contain" }}
         />
-        <span
-          style={{
-            color: props.brand.textColor,
-            fontSize: isPortrait ? 20 : 18,
-            fontWeight: 800,
-            letterSpacing: 0.5,
-          }}
-        >
-          {props.brand.name}
-        </span>
       </div>
 
       {/* Handle watermark — top right */}
