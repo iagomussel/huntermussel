@@ -1,0 +1,7 @@
+name = "huntermussel"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-12-01"
+
+[[kv_namespaces]]
+binding = "CONTACT_KV"
+id = "f0145602a4cf4e529c085a961d9eeefd"

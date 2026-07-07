@@ -258,6 +258,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.1030.0
         version: 3.1030.0
+      '@cloudflare/workers-types':
+        specifier: ^5.20260706.1
+        version: 5.20260706.1
       '@types/animejs':
         specifier: ^3.1.13
         version: 3.1.13
@@ -589,6 +592,9 @@ packages:
 
   '@clack/prompts@1.2.0':
     resolution: {integrity: sha512-4jmztR9fMqPMjz6H/UZXj0zEmE43ha1euENwkckKKel4XpSfokExPo5AiVStdHSAlHekz4d0CA/r45Ok1E4D3w==}
+
+  '@cloudflare/workers-types@5.20260706.1':
+    resolution: {integrity: sha512-PdGrKyJMmKjrZs6xPN/LYN2zpKo9bgn8Iq3JLYho1/76t0HEfUYnssgUljqFxQYPzH4SZ8wsIThaGHmW5GZkLg==}
 
   '@date-fns/tz@1.4.1':
     resolution: {integrity: sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA==}
@@ -5574,6 +5580,8 @@ snapshots:
       fast-string-width: 1.1.0
       fast-wrap-ansi: 0.1.6
       sisteransi: 1.0.5
+
+  '@cloudflare/workers-types@5.20260706.1': {}
 
   '@date-fns/tz@1.4.1': {}
 

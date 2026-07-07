@@ -1,22 +1,20 @@
 import { useRef, useState } from "react";
+import type { FormEvent } from "react";
 import { ArrowRight, Mail, MapPin, MessageCircle } from "lucide-react";
 import AnimeScrollSection from "@/components/react/AnimeScrollSection";
 import CalSchedulerEmbed from "@/components/react/CalSchedulerEmbed";
-import HubSpotForm from "@/components/react/HubSpotForm";
 import { useLang } from "@/context/LangContext";
 import { contactT } from "@/data/translations";
 import { trackEvent } from "@/lib/analytics";
 
-const HUBSPOT_PORTAL_ID = import.meta.env.PUBLIC_HUBSPOT_PORTAL_ID || "";
-const HUBSPOT_FORM_ID = import.meta.env.PUBLIC_HUBSPOT_FORM_ID || "";
+type SubmitState = "idle" | "sending" | "success" | "error";
 
 const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
   const lang = useLang();
   const T = contactT[lang];
   const surface = "contact";
-  const hasFormConfigured = Boolean(HUBSPOT_PORTAL_ID && HUBSPOT_FORM_ID);
   const hasStartedRef = useRef(false);
-  const [showFallback, setShowFallback] = useState(false);
+  const [status, setStatus] = useState<SubmitState>("idle");
 
   const markStarted = () => {
     if (hasStartedRef.current) return;
@@ -25,6 +23,37 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
       form_id: "contact",
       form_surface: surface,
     });
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    setStatus("sending");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          email: data.get("email"),
+          phone: data.get("phone"),
+          message: data.get("message"),
+        }),
+      });
+
+      if (!res.ok) throw new Error("request failed");
+
+      setStatus("success");
+      trackEvent("contact_form_submitted", {
+        form_id: "contact",
+        form_surface: surface,
+      });
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -65,48 +94,77 @@ const ContactSection = ({ hideHeader = false }: { hideHeader?: boolean }) => {
                 </p>
               </div>
 
-              {hasFormConfigured ? (
-                <HubSpotForm portalId={HUBSPOT_PORTAL_ID} formId={HUBSPOT_FORM_ID} />
-              ) : showFallback ? (
-                <div className="space-y-4">
-                  <p className="font-body text-sm text-muted-foreground">
-                    The contact form is temporarily unavailable. Reach out directly and we'll respond within 24 hours.
-                  </p>
-                  <div className="flex flex-wrap gap-4">
-                    <a
-                      href="mailto:contact@huntermussel.com"
-                      className="inline-flex items-center gap-2 rounded-md border border-border bg-muted/30 px-4 py-2 font-body text-sm transition-colors hover:border-primary/40"
-                    >
-                      <Mail size={16} className="text-primary" />
-                      contact@huntermussel.com
-                    </a>
-                    <a
-                      href="https://wa.me/5521995775689"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-md border border-border bg-muted/30 px-4 py-2 font-body text-sm transition-colors hover:border-primary/40"
-                    >
-                      <MessageCircle size={16} className="text-primary" />
-                      WhatsApp
-                    </a>
-                  </div>
-                </div>
+              {status === "success" ? (
+                <p className="font-body text-sm text-primary">{T.successMsg}</p>
               ) : (
-                <div className="rounded-md border border-destructive/20 bg-destructive/10 px-4 py-3">
-                  <p className="font-body text-sm text-destructive">
-                    Contact form not configured. Add{" "}
-                    <code className="rounded bg-muted px-1 py-0.5 text-xs">PUBLIC_HUBSPOT_PORTAL_ID</code>{" "}
-                    and{" "}
-                    <code className="rounded bg-muted px-1 py-0.5 text-xs">PUBLIC_HUBSPOT_FORM_ID</code>{" "}
-                    to your environment.
-                  </p>
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                  <div className="space-y-1.5">
+                    <label htmlFor="contact-name" className="font-body text-sm text-muted-foreground">
+                      {T.labelName}
+                    </label>
+                    <input
+                      id="contact-name"
+                      name="name"
+                      type="text"
+                      required
+                      maxLength={200}
+                      placeholder={T.placeholderName}
+                      className="w-full rounded-md border border-border bg-background px-3 py-2 font-body text-sm outline-none focus:border-primary/50"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label htmlFor="contact-email" className="font-body text-sm text-muted-foreground">
+                      {T.labelEmail}
+                    </label>
+                    <input
+                      id="contact-email"
+                      name="email"
+                      type="email"
+                      required
+                      maxLength={200}
+                      placeholder="you@company.com"
+                      className="w-full rounded-md border border-border bg-background px-3 py-2 font-body text-sm outline-none focus:border-primary/50"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label htmlFor="contact-phone" className="font-body text-sm text-muted-foreground">
+                      {T.labelPhone}
+                    </label>
+                    <input
+                      id="contact-phone"
+                      name="phone"
+                      type="tel"
+                      maxLength={50}
+                      placeholder={T.placeholderPhone}
+                      className="w-full rounded-md border border-border bg-background px-3 py-2 font-body text-sm outline-none focus:border-primary/50"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label htmlFor="contact-message" className="font-body text-sm text-muted-foreground">
+                      {T.labelMessage}
+                    </label>
+                    <textarea
+                      id="contact-message"
+                      name="message"
+                      required
+                      maxLength={5000}
+                      rows={4}
+                      placeholder={T.placeholderMessage}
+                      className="w-full rounded-md border border-border bg-background px-3 py-2 font-body text-sm outline-none focus:border-primary/50"
+                    />
+                  </div>
+                  {status === "error" && (
+                    <p className="font-body text-sm text-destructive">{T.errorMsg}</p>
+                  )}
                   <button
-                    onClick={() => setShowFallback(true)}
-                    className="mt-2 font-body text-sm text-primary underline"
+                    type="submit"
+                    disabled={status === "sending"}
+                    className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 font-body text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
                   >
-                    Show direct contact options
+                    {status === "sending" ? T.btnSending : T.btnSend}
+                    <ArrowRight size={14} />
                   </button>
-                </div>
+                </form>
               )}
 
               <div className="grid gap-4 border-t border-border pt-6 sm:grid-cols-3">
