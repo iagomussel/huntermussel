@@ -10,6 +10,7 @@ import FAQSection from '@/components/react/FAQSection';
 import RelatedArticles from '@/components/RelatedArticles.astro';
 import { blogDevOpsFAQ, blogAIFAQ, blogCloudFAQ, blogGeneralFAQ } from '@/data/faq';
 import { articleSchema, breadcrumbSchema } from '@/lib/schema';
+import AdUnit from '@/components/AdUnit.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => data.status !== "draft");
@@ -149,11 +150,15 @@ const blogSchema = [
              <Content />
           </div>
 
+          <AdUnit adSlot="1811956878" format="fluid" layout="in-article" class="blog-ad-mid" />
+
           <BlogShareSection client:load title={entry.data.title} url={url} />
 
           <RelatedArticles currentId={entry.id} tags={entry.data.tags ?? []} />
 
           <FAQSection client:load items={faqItems} title="Frequently Asked Questions" />
+
+          <AdUnit adSlot="1811956878" format="fluid" layout="in-article" class="blog-ad-bottom" />
 
           <DisqusComments client:only="react" title={entry.data.title} identifier={entry.id} url={url} />
        </article>

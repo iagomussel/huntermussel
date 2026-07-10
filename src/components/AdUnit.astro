@@ -1,10 +1,51 @@
 ---
 /**
- * AdUnit — Google AdSense slot (currently disabled).
+ * AdUnit — Google AdSense in-article ad slot.
  *
- * Slots are placeholder ("XXXXXXXXXX"). Re-enable only after real AdSense
- * slot IDs are configured, otherwise Google flags the page for invalid ads.
+ * Uses the real publisher ID and slot configured for the site.
  */
+interface Props {
+  adSlot?: string;
+  format?: "auto" | "horizontal" | "rectangle" | "vertical" | "fluid";
+  layout?: "in-article";
+  class?: string;
+}
+
+const {
+  adSlot = "1811956878",
+  format = "fluid",
+  layout = "in-article",
+  class: className = "",
+} = Astro.props;
+
+const publisherId = "ca-pub-5924413044488831";
 ---
 
-<!-- AdSense disabled until valid slots are configured -->
+<div class={`ad-unit ${className}`}>
+  <p class="ad-label">Advertisement · Publicidade</p>
+  <ins
+    class="adsbygoogle"
+    style="display:block; text-align:center;"
+    data-ad-layout={layout}
+    data-ad-format={format}
+    data-ad-client={publisherId}
+    data-ad-slot={adSlot}
+  ></ins>
+  <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<style>
+  .ad-unit {
+    width: 100%;
+    text-align: center;
+    margin: 2rem auto;
+  }
+  .ad-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: hsl(var(--muted-foreground) / 0.4);
+    margin: 0 0 0.25rem;
+    user-select: none;
+  }
+</style>
