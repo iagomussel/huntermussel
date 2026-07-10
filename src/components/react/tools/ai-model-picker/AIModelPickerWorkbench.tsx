@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
-import { RotateCcw, ExternalLink, ChevronRight } from "lucide-react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { RotateCcw, ExternalLink, ChevronRight, Check, Sparkles } from "lucide-react";
 
 // ─── Model database ───────────────────────────────────────────────────────────
 interface AIModel {
@@ -203,6 +203,8 @@ const EMPTY_ANSWER: Answer = {
   deployment: "",
 };
 
+const QUESTION_KEYS: (keyof Answer)[] = ["task", "budget", "context", "speed", "deployment"];
+
 // ─── Scoring ──────────────────────────────────────────────────────────────────
 function scoreModel(model: AIModel, answers: Answer): number {
   let score = 0;
@@ -273,30 +275,42 @@ function QuestionRow({
   options,
   value,
   onChange,
+  answered,
 }: {
   step: number;
   title: string;
   options: OptionBtn[];
   value: string;
   onChange: (v: string) => void;
+  answered: boolean;
 }) {
   return (
-    <section className="amp-section">
+    <section className="amp-section" data-answered={answered}>
       <h2 className="amp-section-title">
         <span className="amp-step-num">{step}</span>
-        {title}
+        <span className="amp-section-title-text">{title}</span>
+        {answered && (
+          <span className="amp-step-check" aria-hidden="true">
+            <Check size={12} />
+          </span>
+        )}
       </h2>
-      <div className="amp-options">
-        {options.map((opt) => (
-          <button
-            key={opt.value}
-            className={`amp-option${value === opt.value ? " amp-option-active" : ""}`}
-            onClick={() => onChange(value === opt.value ? "" : opt.value)}
-          >
-            <span className="amp-option-label">{opt.label}</span>
-            {opt.sub && <span className="amp-option-sub">{opt.sub}</span>}
-          </button>
-        ))}
+      <div className="amp-options" role="group" aria-label={title}>
+        {options.map((opt) => {
+          const isActive = value === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              className={`amp-option${isActive ? " amp-option-active" : ""}`}
+              onClick={() => onChange(isActive ? "" : opt.value)}
+              aria-pressed={isActive}
+            >
+              <span className="amp-option-label">{opt.label}</span>
+              {opt.sub && <span className="amp-option-sub">{opt.sub}</span>}
+            </button>
+          );
+        })}
       </div>
     </section>
   );
@@ -305,6 +319,7 @@ function QuestionRow({
 export default function AIModelPickerWorkbench() {
   const [answers, setAnswers] = useState<Answer>(EMPTY_ANSWER);
   const [showResults, setShowResults] = useState(false);
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   const update = useCallback(
     (key: keyof Answer, value: string) =>
@@ -312,21 +327,34 @@ export default function AIModelPickerWorkbench() {
     []
   );
 
-  const allAnswered = Object.values(answers).every(Boolean);
+  const answeredCount = QUESTION_KEYS.filter((k) => answers[k]).length;
+  const allAnswered = answeredCount === QUESTION_KEYS.length;
   const recommendations = showResults ? getRecommendations(answers) : [];
 
   const handleFind = useCallback(() => {
-    if (allAnswered) setShowResults(true);
+    if (allAnswered) {
+      setShowResults(true);
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
   }, [allAnswered]);
 
   const handleReset = useCallback(() => {
     setAnswers(EMPTY_ANSWER);
     setShowResults(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   // Auto-show when all answered
   useEffect(() => {
-    if (allAnswered) setShowResults(true);
+    if (allAnswered) {
+      setShowResults(true);
+      const timer = setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
   }, [allAnswered]);
 
   return (
@@ -334,6 +362,7 @@ export default function AIModelPickerWorkbench() {
       <QuestionRow
         step={1}
         title="What's your primary use case?"
+        answered={!!answers.task}
         value={answers.task}
         onChange={(v) => update("task", v)}
         options={[
@@ -351,6 +380,7 @@ export default function AIModelPickerWorkbench() {
       <QuestionRow
         step={2}
         title="What's your budget priority?"
+        answered={!!answers.budget}
         value={answers.budget}
         onChange={(v) => update("budget", v)}
         options={[
@@ -363,6 +393,7 @@ export default function AIModelPickerWorkbench() {
       <QuestionRow
         step={3}
         title="How much context window do you need?"
+        answered={!!answers.context}
         value={answers.context}
         onChange={(v) => update("context", v)}
         options={[
@@ -375,6 +406,7 @@ export default function AIModelPickerWorkbench() {
       <QuestionRow
         step={4}
         title="What speed do you need?"
+        answered={!!answers.speed}
         value={answers.speed}
         onChange={(v) => update("speed", v)}
         options={[
@@ -387,6 +419,7 @@ export default function AIModelPickerWorkbench() {
       <QuestionRow
         step={5}
         title="Where will you deploy?"
+        answered={!!answers.deployment}
         value={answers.deployment}
         onChange={(v) => update("deployment", v)}
         options={[
@@ -396,90 +429,118 @@ export default function AIModelPickerWorkbench() {
       />
 
       {/* ── Results ── */}
-      {showResults && recommendations.length > 0 && (
-        <section className="amp-results">
-          <h2 className="amp-results-title">
-            Top {recommendations.length} recommended models
-          </h2>
-          <div className="amp-cards">
-            {recommendations.map((model, i) => (
-              <div key={model.id} className={`amp-card${i === 0 ? " amp-card-top" : ""}`}>
-                <div className="amp-card-header">
-                  <div>
-                    {i === 0 && <span className="amp-badge-top">Best match</span>}
-                    <h3 className="amp-model-name">{model.name}</h3>
-                    <span
-                      className="amp-provider"
-                      style={{ color: model.providerColor }}
+      <div ref={resultsRef}>
+        {showResults && recommendations.length > 0 && (
+          <section className="amp-results">
+            <h2 className="amp-results-title">
+              <Sparkles size={16} />
+              Top {recommendations.length} recommended models
+            </h2>
+            <div className="amp-cards">
+              {recommendations.map((model, i) => (
+                <div key={model.id} className={`amp-card${i === 0 ? " amp-card-top" : ""}`}>
+                  <div className="amp-card-header">
+                    <div>
+                      {i === 0 && <span className="amp-badge-top">Best match</span>}
+                      <h3 className="amp-model-name">{model.name}</h3>
+                      <span
+                        className="amp-provider"
+                        style={{ color: model.providerColor }}
+                      >
+                        {model.provider}
+                      </span>
+                    </div>
+                    <a
+                      href={model.docsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="amp-docs-link"
                     >
-                      {model.provider}
+                      Docs <ExternalLink size={11} />
+                    </a>
+                  </div>
+
+                  <div className="amp-meta-row">
+                    <span className="amp-meta-pill">
+                      Context: {model.contextWindow}
                     </span>
+                    <span className="amp-meta-pill">
+                      {model.inputPriceLabel}
+                    </span>
+                    <span className={`amp-meta-pill amp-tier-${model.tier}`}>
+                      {model.tier}
+                    </span>
+                    {model.vision && <span className="amp-meta-pill">Vision ✓</span>}
+                    {model.local && <span className="amp-meta-pill">Self-hostable ✓</span>}
                   </div>
-                  <a
-                    href={model.docsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="amp-docs-link"
-                  >
-                    Docs <ExternalLink size={11} />
-                  </a>
-                </div>
 
-                <div className="amp-meta-row">
-                  <span className="amp-meta-pill">
-                    Context: {model.contextWindow}
-                  </span>
-                  <span className="amp-meta-pill">
-                    {model.inputPriceLabel}
-                  </span>
-                  <span className={`amp-meta-pill amp-tier-${model.tier}`}>
-                    {model.tier}
-                  </span>
-                  {model.vision && <span className="amp-meta-pill">Vision ✓</span>}
-                  {model.local && <span className="amp-meta-pill">Self-hostable ✓</span>}
+                  <div className="amp-pros-cons">
+                    <div className="amp-pros">
+                      <span className="amp-pros-label">Strengths</span>
+                      <ul>
+                        {model.strengths.map((s) => (
+                          <li key={s}>{s}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="amp-cons">
+                      <span className="amp-cons-label">Trade-offs</span>
+                      <ul>
+                        {model.weaknesses.map((w) => (
+                          <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
+              ))}
+            </div>
+          </section>
+        )}
 
-                <div className="amp-pros-cons">
-                  <div className="amp-pros">
-                    <span className="amp-pros-label">Strengths</span>
-                    <ul>
-                      {model.strengths.map((s) => (
-                        <li key={s}>{s}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="amp-cons">
-                    <span className="amp-cons-label">Trade-offs</span>
-                    <ul>
-                      {model.weaknesses.map((w) => (
-                        <li key={w}>{w}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            ))}
+        {showResults && recommendations.length === 0 && (
+          <div className="amp-no-results">
+            No models matched your requirements. Try adjusting your answers — especially the deployment preference.
           </div>
-        </section>
-      )}
-
-      {showResults && recommendations.length === 0 && (
-        <div className="amp-no-results">
-          No models matched your requirements. Try adjusting your answers — especially the deployment preference.
-        </div>
-      )}
+        )}
+      </div>
 
       {/* ── Actions ── */}
       <div className="amp-actions">
-        {!allAnswered && (
-          <p className="amp-progress-hint">
-            <ChevronRight size={13} />
-            {5 - Object.values(answers).filter(Boolean).length} question(s) remaining…
-          </p>
-        )}
-        <button className="amp-btn-reset" onClick={handleReset}>
-          <RotateCcw size={13} /> Start over
-        </button>
+        <div className="amp-progress">
+          {!allAnswered && (
+            <p className="amp-progress-hint">
+              <ChevronRight size={13} />
+              {QUESTION_KEYS.length - answeredCount} question(s) remaining…
+            </p>
+          )}
+          {allAnswered && !showResults && (
+            <p className="amp-progress-hint amp-progress-hint--ready">
+              <Check size={13} />
+              All answered — ready to recommend
+            </p>
+          )}
+          {allAnswered && showResults && (
+            <p className="amp-progress-hint amp-progress-hint--ready">
+              <Check size={13} />
+              Showing top {recommendations.length} matches
+            </p>
+          )}
+        </div>
+        <div className="amp-action-buttons">
+          <button
+            type="button"
+            className="amp-btn-primary"
+            onClick={handleFind}
+            disabled={!allAnswered}
+            aria-disabled={!allAnswered}
+          >
+            Show recommendations
+          </button>
+          <button type="button" className="amp-btn-reset" onClick={handleReset}>
+            <RotateCcw size={13} /> Start over
+          </button>
+        </div>
       </div>
 
       <style>{`
@@ -506,6 +567,9 @@ export default function AIModelPickerWorkbench() {
           color: hsl(var(--foreground));
           margin: 0;
         }
+        .amp-section-title-text {
+          flex: 1;
+        }
         .amp-step-num {
           display: inline-flex;
           align-items: center;
@@ -518,6 +582,22 @@ export default function AIModelPickerWorkbench() {
           font-size: 0.68rem;
           font-weight: 700;
           flex-shrink: 0;
+          transition: background 0.2s, color 0.2s;
+        }
+        .amp-step-check {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.2rem;
+          height: 1.2rem;
+          border-radius: 999px;
+          background: hsl(145 70% 45%);
+          color: hsl(var(--primary-foreground));
+          flex-shrink: 0;
+        }
+        .amp-section[data-answered="true"] .amp-step-num {
+          background: hsl(145 70% 45%);
+          color: hsl(var(--primary-foreground));
         }
 
         /* Options */
@@ -535,23 +615,34 @@ export default function AIModelPickerWorkbench() {
           border-radius: 0.4rem;
           background: hsl(var(--card) / 0.5);
           cursor: pointer;
-          transition: border-color 0.15s, background 0.15s;
+          transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.1s;
           min-width: 10rem;
           text-align: left;
+          font: inherit;
+          color: inherit;
         }
         .amp-option:hover {
-          border-color: hsl(var(--primary) / 0.4);
-          background: hsl(var(--primary) / 0.05);
+          border-color: hsl(var(--primary) / 0.6);
+          background: hsl(var(--primary) / 0.08);
+          box-shadow: 0 0 0 1px hsl(var(--primary) / 0.1);
+        }
+        .amp-option:active {
+          transform: translateY(1px);
         }
         .amp-option-active {
           border-color: hsl(var(--primary));
-          background: hsl(var(--primary) / 0.1);
+          background: hsl(var(--primary) / 0.12);
+          box-shadow: 0 0 0 1px hsl(var(--primary) / 0.25), 0 0 12px hsl(var(--primary) / 0.12);
+        }
+        .amp-option-active .amp-option-label {
+          color: hsl(var(--primary));
         }
         .amp-option-label {
           font-size: 0.82rem;
           font-weight: 600;
           color: hsl(var(--foreground));
           font-family: var(--font-heading, monospace);
+          transition: color 0.15s;
         }
         .amp-option-sub {
           font-size: 0.67rem;
@@ -563,8 +654,12 @@ export default function AIModelPickerWorkbench() {
         .amp-results {
           border-top: 1px solid hsl(var(--border));
           padding-top: 1.5rem;
+          scroll-margin-top: 1.5rem;
         }
         .amp-results-title {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
           font-size: 0.9rem;
           font-weight: 700;
           font-family: var(--font-heading, monospace);
@@ -583,8 +678,9 @@ export default function AIModelPickerWorkbench() {
           background: hsl(var(--card) / 0.5);
         }
         .amp-card-top {
-          border-color: hsl(var(--primary) / 0.4);
-          background: hsl(var(--primary) / 0.04);
+          border-color: hsl(var(--primary) / 0.5);
+          background: hsl(var(--primary) / 0.06);
+          box-shadow: 0 0 18px hsl(var(--primary) / 0.08);
         }
         .amp-card-header {
           display: flex;
@@ -727,6 +823,9 @@ export default function AIModelPickerWorkbench() {
           padding-top: 0.5rem;
           border-top: 1px solid hsl(var(--border));
         }
+        .amp-progress {
+          min-width: 12rem;
+        }
         .amp-progress-hint {
           display: flex;
           align-items: center;
@@ -736,11 +835,49 @@ export default function AIModelPickerWorkbench() {
           font-family: var(--font-heading, monospace);
           margin: 0;
         }
+        .amp-progress-hint--ready {
+          color: hsl(145 70% 45%);
+        }
+        .amp-action-buttons {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+        .amp-btn-primary {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          padding: 0.5rem 1rem;
+          border-radius: 0.4rem;
+          border: 1px solid hsl(var(--primary));
+          background: hsl(var(--primary));
+          color: hsl(var(--primary-foreground));
+          font-size: 0.78rem;
+          font-weight: 700;
+          font-family: var(--font-heading, monospace);
+          cursor: pointer;
+          transition: opacity 0.15s, box-shadow 0.15s, transform 0.1s;
+        }
+        .amp-btn-primary:hover:not(:disabled) {
+          opacity: 0.92;
+          box-shadow: 0 0 18px hsl(var(--primary) / 0.35);
+        }
+        .amp-btn-primary:active:not(:disabled) {
+          transform: translateY(1px);
+        }
+        .amp-btn-primary:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+          background: hsl(var(--muted));
+          border-color: hsl(var(--border));
+          color: hsl(var(--muted-foreground));
+        }
         .amp-btn-reset {
           display: inline-flex;
           align-items: center;
           gap: 0.4rem;
-          padding: 0.4rem 0.85rem;
+          padding: 0.5rem 0.85rem;
           border-radius: 0.4rem;
           border: 1px solid hsl(var(--border));
           background: transparent;
@@ -753,6 +890,20 @@ export default function AIModelPickerWorkbench() {
         .amp-btn-reset:hover {
           color: hsl(var(--foreground));
           border-color: hsl(var(--foreground) / 0.3);
+        }
+
+        @media (max-width: 520px) {
+          .amp-actions {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .amp-action-buttons {
+            justify-content: stretch;
+          }
+          .amp-btn-primary, .amp-btn-reset {
+            flex: 1;
+            justify-content: center;
+          }
         }
       `}</style>
     </div>
