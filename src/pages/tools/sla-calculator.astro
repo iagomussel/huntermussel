@@ -68,6 +68,29 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
 
     <section class="article">
       <article class="card">
+        <h2>Why This Calculator Exists</h2>
+        <p>
+          "We guarantee 99.99% uptime" sounds harmless in a sales call. It means four and a
+          half minutes of total downtime per month — less than one bad deploy. Plenty of teams
+          sign SLAs without ever converting the percentage into actual minutes, and the gap
+          between what the contract says and what the architecture can deliver only shows up
+          when a customer asks for service credits. This tool does the conversion before you
+          sign, not after.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to Use It</h2>
+        <p>
+          Type any uptime percentage into the input — it takes up to four decimal places, so
+          99.95 or 99.9999 both work. The allowed downtime per day, week, month, and year
+          updates as you type. If your number matches one of the standard "nines", that row
+          lights up in the comparison table below so you can see how your commitment stacks
+          against the usual tiers. <strong>Copy as Markdown</strong> puts the whole table on
+          your clipboard, formatted and ready to paste into an RFC, a runbook, or an
+          architecture doc.
+        </p>
+      </article>
+      <article class="card">
         <h2>How It's Calculated</h2>
         <p>
           <code>downtime = (1 − uptime%) × period_in_minutes</code><br />
@@ -83,6 +106,33 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li><strong>99.99%</strong> — "four nines" — ~4.4 min/month. High-availability target.</li>
           <li><strong>99.999%</strong> — "five nines" — ~26 sec/month. Carrier-grade.</li>
         </ul>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Why is a month 43,800 minutes?</h3>
+        <p>
+          That's the average month: 365.25 days divided by 12, or 30.4375 days. Some SLAs
+          measure against the actual calendar month instead, which shifts the numbers slightly
+          — a 28-day February is more forgiving than a 31-day July at the same percentage.
+        </p>
+        <h3>Does this account for planned maintenance?</h3>
+        <p>
+          No. Most SLA contracts exclude scheduled maintenance windows from the downtime
+          budget, but not all of them do. The calculator gives you the raw math; the contract
+          language decides what counts against it.
+        </p>
+        <h3>What's a realistic uptime to commit to?</h3>
+        <p>
+          A single-region deployment with a solid on-call rotation can usually hold 99.9%.
+          Beyond that, each extra nine tends to demand structural changes — redundancy,
+          automated failover, multi-region — not just more careful operations. Committing to
+          four nines with a single database is a promise your architecture can't keep.
+        </p>
+        <h3>Is downtime measured per incident or in total?</h3>
+        <p>
+          In total, across the measurement period. Three ten-minute outages in a month blow
+          through a 99.95% budget just as thoroughly as one thirty-minute outage does.
+        </p>
       </article>
       <ServiceCTA
         service="cloud-infrastructure-ai"

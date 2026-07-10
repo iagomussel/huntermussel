@@ -67,6 +67,48 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         </div>
       </div>
 
+      <article class="card">
+        <h2>How to Use It</h2>
+        <p>
+          Paste text into the box — or use the upload button to load a file — and the counts update
+          as you type: tokens, characters, words, and lines. Below that, the cost table estimates what
+          the text would cost as an API call across the listed models. The <strong>assumed output ratio</strong>
+          selector is worth understanding: it models how long the response will be relative to your input.
+          A yes/no classifier is close to 1×; asking a model to expand bullet points into prose is more
+          like 5–10×. Since output tokens usually cost several times more than input, that ratio moves
+          the estimate more than anything else on the page.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>When You'd Actually Use This</h2>
+        <p>
+          <strong>Before a batch run.</strong> Paste one representative document, multiply by your document
+          count, and know the bill before you write the loop.
+        </p>
+        <p>
+          <strong>Trimming a system prompt.</strong> That prompt gets sent with every single request, so
+          every token you cut is cut thousands of times. Paste it, see the real count, and find out whether
+          your "brief" instructions are quietly costing 800 tokens per call.
+        </p>
+        <p>
+          <strong>Fitting a context window.</strong> Wondering whether your document plus instructions fits
+          in a model's context limit? Count first, chunk later — or don't chunk at all if you don't need to.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Does my text get sent anywhere?</h3>
+        <p>No. The counting is a local approximation that runs entirely in your browser — no API calls, no logging. Safe for contracts, medical text, or anything else you can't paste into a random website that phones home.</p>
+        <h3>How accurate is the count?</h3>
+        <p>Typically within 5–10% of the real tokenizer, since this uses a regex approximation of cl100k_base rather than the full encoding tables. Fine for budgeting and prompt trimming; use the provider's official tokenizer when an exact number matters.</p>
+        <h3>Do all models tokenize text the same way?</h3>
+        <p>No — each model family has its own tokenizer, so the same text yields somewhat different counts on GPT, Claude, and Gemini. The differences are usually small enough that one approximation works for cost planning across all of them.</p>
+        <h3>How do I compare more models than the ones shown here?</h3>
+        <p>Take your token counts to the <a href="/tools/llm-cost-estimator/">LLM Cost Estimator</a>, which pulls live pricing for hundreds of models from OpenRouter and lets you sort by total cost.</p>
+      </article>
+
       <ServiceCTA
         service="ai-automation"
         title="Building something with LLMs and need help with cost optimization?"

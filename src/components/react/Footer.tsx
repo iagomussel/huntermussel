@@ -20,6 +20,7 @@ const Footer = () => {
             <a href="/blog/" className="transition-colors hover:text-primary">Blog</a>
             <a href="/tools/" className="transition-colors hover:text-primary">Tools</a>
             <a href="/contact/" className="transition-colors hover:text-primary">Contact</a>
+            <a href="/privacy/" className="transition-colors hover:text-primary">Privacy</a>
           </nav>
         </div>
         <span className="text-center font-body text-xs text-muted-foreground sm:text-left">

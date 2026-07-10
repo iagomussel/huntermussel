@@ -32,13 +32,21 @@ Anthropic has been upfront that this will misfire. Their own writeup states they
 
 Reports circulating since launch back that up. One user says the word "cancer" alone was enough to flag a session and switch it to Opus. Another reports the model refusing to explain what the heart does. These read like keyword-matching gone wrong, and Anthropic's own language suggests that's roughly what's happening: a cautious first pass that will get narrowed down after launch, not a finished system.
 
+The under-5% figure deserves a second look too. That's an average across everyone using the model, including the enormous majority of sessions that never go near a flagged topic. If you build health tech, security tooling, or anything bio-adjacent, your sessions aren't average. The categories the classifier watches are the categories you work in all day, so your effective rate is whatever the classifier decides about your specific vocabulary, not the comfortable number in the announcement.
+
 It's not purely keyword-based, though. A request to build a cancer awareness landing page didn't trigger the same switch as a request to explain the mechanism behind a specific mutation. That suggests the classifier is weighing something closer to intent or technical depth than just flagged words, which makes its behavior harder to predict than a simple blocklist would be. That unpredictability is its own problem: you can't test one prompt, get a green light, and assume a similar prompt next week will behave the same way.
+
+This is a meaningful difference from every content filter developers have learned to live with. A blocklist is annoying but learnable: you find the trigger words, you route around them, done. A classifier weighing intent can't be mapped that way. You can't write a test suite that proves your prompts are safe, because the thing being evaluated isn't a string you control, it's an interpretation. And interpretations get retuned. Anthropic has already said the current calibration is stricter than it should be, which means it will change, which means behavior you validate today has an expiry date you can't see.
 
 ## Why the LLM-development carve-out is different
 
 The biology and security handoffs are visible. You see the model switch, and Anthropic frames that as a feature. The frontier-LLM-development restriction isn't. Per Anthropic's own stated reasoning, using Claude to develop competing models already violates their terms of service, and they've chosen to enforce that through silent throttling rather than a visible block, specifically to avoid tipping off the actors most willing to break the rule anyway.
 
 The effect for you: if your work sits anywhere near ML infrastructure, even legitimately (you're not building a competing frontier model, you're building tooling that talks about pretraining or accelerator design), you may get a worse answer with no indication that a worse answer is what you got. That's a materially different risk than a visible fallback to Opus. A quiet quality drop is much harder to catch in a code review or a client deliverable.
+
+Think about what silent throttling means mechanically. The response still arrives. It's formatted normally, it sounds confident, and it carries no marker that anything intervened. A refusal at least tells you to go get the answer somewhere else. A degraded answer that looks like a real answer is worse than a refusal, because the failure is invisible at exactly the moment you're least likely to double-check.
+
+The only realistic defense is comparative. If an answer in these categories actually matters, run the same question past another model, or past a differently framed session, and see whether the depth matches. That's an absurd tax on a tool you're paying premium rates for. It's also the honest response to a system that's documented to degrade without telling you.
 
 ## What this means if you're building near these categories
 

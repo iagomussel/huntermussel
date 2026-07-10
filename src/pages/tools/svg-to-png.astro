@@ -130,6 +130,25 @@ const faqItems = [
         </ul>
       </article>
       <article class="card">
+        <h2>Picking the right width</h2>
+        <p>
+          The vector has no fixed size, so the width you type is the quality decision. Rendering at the exact display
+          size looks soft on high-DPI screens — export at double the CSS size instead (a 128 px icon becomes a 256 px
+          PNG). Since PNG is lossless, the only cost of going bigger is file size. The tool caps output at 8192 px,
+          and height follows the SVG's own aspect ratio, so you never have to compute it.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Where this comes up</h2>
+        <p>
+          Favicons and app store icons are the usual suspects: you've got the logo as SVG, and the upload form wants
+          a PNG at a specific size. Email clients are another — most strip or mangle SVG, so newsletter logos ship as
+          bitmaps. Slack emoji, GitHub social preview images, and older CMS media libraries all have the same
+          restriction. The dark background option exists for exactly this checking step: render once on white and once
+          on dark to catch a logo that disappears against one of them before you publish it.
+        </p>
+      </article>
+      <article class="card">
         <h2>Frequently asked questions</h2>
         <dl class="tool-faq-list">
           {faqItems.map((item) => (

@@ -143,6 +143,35 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Click <strong>Apply</strong> to preview, then <strong>Download PNG</strong>.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>Getting Clean Edges</h2>
+        <p>
+          Start with tolerance around 30 and hit Apply. Halo left around the subject? Raise tolerance
+          in small steps. Losing parts of the subject that happen to sit close to the background
+          color? Lower it. Edge smoothing adds a soft alpha falloff just outside the tolerance range
+          — 1 or 2&nbsp;px usually kills jagged edges without eating into the subject. Flip between
+          the Original and Result tabs to compare, and use the checkerboard behind the preview to see
+          exactly which pixels went transparent.
+        </p>
+      </article>
+      <article class="card">
+        <h2>What It Won't Do</h2>
+        <p>
+          This is a color-key tool, not an AI cutout. It matches pixels against one color, so it
+          shines on solid backgrounds — green screens, white product shots, sprite sheets — and
+          struggles on busy photos where the background is many colors. If your background is a
+          beach, you need a segmentation model, not a chroma key.
+        </p>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Why is the output always PNG?</h3>
+        <p>PNG is the format with a real alpha channel that works everywhere. JPEG can't store transparency at all, so exporting to it would throw away the whole point of the tool.</p>
+        <h3>Does clicking the image sample the original or the result?</h3>
+        <p>Always the original, even when the Result tab is showing. That means you can re-sample a slightly different shade and re-apply without reloading the file.</p>
+        <h3>Is my image uploaded?</h3>
+        <p>No. The image is decoded, processed pixel by pixel, and re-encoded entirely in your browser. Nothing hits a server, which makes it safe for client assets and unreleased artwork.</p>
+      </article>
       <ServiceCTA
         service="workflows-bpm"
         title="Need automated background removal at scale?"

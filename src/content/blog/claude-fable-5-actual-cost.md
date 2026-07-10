@@ -34,11 +34,23 @@ Reports from early testers describe it less like a chat assistant and more like 
 
 That's the shape of task this model is priced for. It's built to justify its cost on jobs where the alternative is weeks of engineering time, not on jobs where the alternative is a slightly slower response from a cheaper model.
 
+## A real cost comparison
+
+Say you have a Rails 6 to Rails 7 migration that your team estimates at two weeks. At a blended $80 per engineering hour, that's about $6,400 in salary alone. If Fable 5 runs it in a day and costs $200 in tokens, the math is obvious. But if the same team uses Fable 5 for thirty smaller tasks that Sonnet could have handled in five minutes each, those thirty sessions might burn a combined $300 in tokens for work that would've cost $20 on a cheaper model. The migration saved money; the habit leaked it away.
+
+That's the trap. Fable 5 can be both a bargain and a budget disaster depending on which tasks it touches.
+
 ## Where the token hunger actually bites
 
 The problem is that "point it at something huge" and "use it for regular work" look identical from inside your terminal. Nothing stops you from asking Fable 5 to fix a typo, and nothing in the interface warns you that the same request would've cost a fraction as much on Opus or Sonnet.
 
 If your team adopts Fable 5 without a policy on when it's appropriate, you'll end up with people reaching for it out of habit, not necessity, because it's simply the best model available to them. That's how a tool priced for two-month migrations quietly becomes your default coding assistant, and your bill scales with it.
+
+## Track it like a cloud budget
+
+You wouldn't let engineers spin up GPU instances without a cost tag. Treat Fable 5 the same way. If your team is experimenting with it, set a weekly spend cap and review the first month's invoices against the tasks that produced them. Most teams will find that 80% of the spend came from 20% of the sessions — usually the ones that weren't actually migration-sized.
+
+The simplest guardrail is a shared rule: Fable 5 is the default for anything estimated above four engineering hours, and the exception for anything below one hour. Exceptions require a reason. That single rule catches most of the accidental overspend without slowing anyone down.
 
 ## The access window is part of the cost calculation too
 
@@ -51,3 +63,5 @@ Don't build a workflow, an internal tool, or a client deliverable that assumes F
 Pick one task that's genuinely large and genuinely expensive in human hours: the migration nobody wants to do manually, the backlog that's been sitting for a quarter. Run it through Fable 5, track the token spend, and compare that number against what the equivalent engineering time would've cost.
 
 If the math works on that one task, you've found the actual use case. If it doesn't, you've spent one session's worth of tokens finding out it's not a fit for you, instead of finding out after your team has quietly made it the default.
+
+Set the policy before you set the budget. Otherwise the budget will set itself, one expensive session at a time.

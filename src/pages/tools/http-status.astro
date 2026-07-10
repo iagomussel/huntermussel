@@ -47,6 +47,54 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     <p id="emptyMsg" class="hs-empty" style="display:none">No status codes match your search.</p>
 
     <section class="article">
+      <article class="card">
+        <h2>What's In This Reference</h2>
+        <p>
+          The official HTTP registry lists over 60 status codes. You'll never use most of them. This reference
+          covers the ones that actually show up in real APIs — and for each, it doesn't just define the code,
+          it tells you when to return it from your own endpoints. That second part is what the RFC won't give
+          you: 401 vs. 403, 400 vs. 422, when 202 beats 200. Those distinctions are where API design goes wrong.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to Use It</h2>
+        <p>
+          Type into the search box and cards filter as you type. It matches against everything — the number,
+          the name, the description, and the REST guidance — so searching "rate limit" finds 429 even though
+          neither word is in its name, and "retry" surfaces 429, 503, and every other code that mentions a
+          Retry-After header. Matches are highlighted so you can see why a card appeared. The family pills
+          (2xx, 3xx, 4xx, 5xx) narrow the grid when you know roughly what you're looking for.
+        </p>
+      </article>
+      <article class="card">
+        <h2>The Ones Everyone Mixes Up</h2>
+        <p>
+          <strong>401 vs. 403.</strong> 401 means "I don't know who you are" — the request lacks valid credentials.
+          403 means "I know exactly who you are, and the answer is no." Returning 401 to an authenticated user who
+          lacks permission sends their client into a pointless re-login loop.
+        </p>
+        <p>
+          <strong>400 vs. 422.</strong> 400 is for requests the server can't even parse — malformed JSON, missing
+          required fields. 422 is for requests that parse fine but fail your business rules, like an end date
+          before a start date. Syntax vs. semantics.
+        </p>
+        <p>
+          <strong>302 vs. 307.</strong> A 302 lets clients change POST to GET on redirect, which silently drops
+          your request body. 307 (and 308 for permanent moves) forces the method to stay put. If your redirected
+          POST "loses" its payload, this is why.
+        </p>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Why isn't every registered status code listed?</h3>
+        <p>Deliberate choice. Codes like 402, 418, or 511 are trivia, not tools. Keeping the list to codes you'd actually return makes the search results useful instead of noisy.</p>
+        <h3>Should my API ever return 500 on purpose?</h3>
+        <p>No — 500 is what happens when you didn't handle something. If you can name the failure, there's almost always a more specific code: 502 for a broken upstream, 503 for overload, 504 for a timeout.</p>
+        <h3>What should the body of an error response contain?</h3>
+        <p>Enough for the client to act: a stable machine-readable error code, a human-readable message, and for validation errors, which field failed. Never a stack trace.</p>
+        <h3>Does this page work offline?</h3>
+        <p>Once loaded, yes. The whole code list ships with the page and filtering runs in your browser — no lookups hit a server.</p>
+      </article>
       <ServiceCTA
         service="intelligent-automation"
         title="Building or integrating REST APIs at scale?"

@@ -69,6 +69,47 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         </div>
       </div>
 
+      <article class="card">
+        <h2>Why compare before you build</h2>
+        <p>
+          Model pricing spans roughly three orders of magnitude. The same 2,000-token prompt that costs
+          a fraction of a cent on a small open-weights model can cost 100× more on a frontier model —
+          and for plenty of jobs (classification, extraction, routing, summarizing short text) the cheap
+          one is good enough. Most teams pick a model once, hardcode it, and never look at the bill until
+          it hurts. Five minutes here before you commit is the cheapest optimization you'll ever do.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Three ways people actually use this</h2>
+        <p>
+          <strong>Budgeting a batch job.</strong> You've got 50,000 documents to summarize. Multiply your
+          per-call total by 50,000 and you know whether the job costs lunch money or a month's cloud budget —
+          before you run it.
+        </p>
+        <p>
+          <strong>Sanity-checking a model switch.</strong> Someone on the team wants to upgrade to the newest
+          flagship model. Type in your real traffic numbers and see what the upgrade actually costs per call,
+          not what the marketing page implies.
+        </p>
+        <p>
+          <strong>Finding the floor.</strong> Sort the Total column ascending and work upward. Start evaluating
+          quality from the cheapest model that plausibly handles your task, not from the most famous one.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Do I need an OpenRouter account or API key?</h3>
+        <p>No. The pricing endpoint is public. The page fetches the model list anonymously when it loads — nothing about you is sent anywhere.</p>
+        <h3>How current are the prices?</h3>
+        <p>They're whatever OpenRouter reports at the moment you load the page. Refresh to re-fetch. Prices are OpenRouter's rates, which usually track the provider's direct pricing closely but aren't guaranteed identical.</p>
+        <h3>Why don't my input and output costs match my provider invoice exactly?</h3>
+        <p>Two reasons: your real token counts probably differ from your estimate, and features like prompt caching, batch discounts, or tiered pricing aren't modeled here. Treat the numbers as a comparison tool, not an invoice predictor.</p>
+        <h3>Output tokens cost more — how much more?</h3>
+        <p>Typically 2–5× the input rate, and it varies by model. That's why the calculator asks for both numbers separately: a chatty model with long responses can cost more than a pricier model that answers tersely.</p>
+      </article>
+
       <ServiceCTA
         service="ai-automation"
         title="Need to optimize your LLM spend in production?"

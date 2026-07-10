@@ -153,6 +153,50 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Verify the signature server-side using the issuer's public key or secret.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>How to Use It</h2>
+        <p>
+          Paste a token into the box — it parses as you type, no button needed. The
+          <strong>Token Timing</strong> card shows issued-at, not-before, and expiry with
+          a live countdown, so you can tell at a glance whether the "authentication failed"
+          bug you're chasing is really just an expired token (it usually is). The three
+          panels below show the decoded header, the payload with every claim explained in
+          plain English, and the raw signature. If anything looks off — <code>alg: none</code>,
+          a missing expiry, a lifetime over a year — a security warning appears above the
+          panels. No token handy? <strong>Load Sample</strong> fills in a realistic
+          (expired) example to explore.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Is it safe to paste a token here?</h3>
+        <p>
+          The decoding happens entirely in your browser — nothing is sent to any server,
+          and nothing is stored. That said, a live access token is a credential, so the
+          sensible habit is to inspect expired tokens or ones from a dev environment when
+          you can. Never paste a signing secret anywhere, including here.
+        </p>
+        <h3>Why can't it verify the signature?</h3>
+        <p>
+          Verification requires the secret key (for HMAC algorithms) or the issuer's key
+          material — and a browser tool that asked you to paste your secret would be
+          teaching you a terrible habit. This inspector decodes and explains; verification
+          belongs on your server.
+        </p>
+        <h3>Aren't JWTs encrypted?</h3>
+        <p>
+          The common kind (JWS) isn't — the header and payload are just Base64URL-encoded,
+          which is why this tool can read them without any key. That's worth internalizing:
+          anything you put in a JWT payload is readable by anyone who holds the token.
+          Don't put secrets in claims.
+        </p>
+        <h3>What do the timestamps in the payload mean?</h3>
+        <p>
+          <code>exp</code>, <code>iat</code>, and <code>nbf</code> are Unix timestamps —
+          seconds since 1970. The claims table converts them to your local time next to the
+          raw value, so you don't have to paste numbers into an epoch converter.
+        </p>
+      </article>
       <ServiceCTA
         service="security-compliance"
         title="Need a security review of your authentication system?"

@@ -67,6 +67,15 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
       <article class="card">
         <h2>UUID v4</h2>
         <p>Version 4 UUIDs are randomly generated. With 122 bits of randomness, the probability of a collision across a trillion UUIDs is negligible. Use them for database primary keys, idempotency keys, file names, and test fixtures.</p>
+        <p>This page calls <code>crypto.randomUUID()</code>, the Web Crypto API built into every modern browser. That matters: the randomness comes from a cryptographically secure source, not <code>Math.random()</code>. Plenty of copy-paste UUID snippets on the internet get this wrong, and a weakly-seeded UUID is exactly the kind of bug you never notice until two of them collide in production.</p>
+      </article>
+      <article class="card">
+        <h2>How to Use It</h2>
+        <p>One UUID is generated the moment the page loads — most of the time you can just click it and go. Need more? Drag the count slider up to 100 and hit <strong>Generate</strong>. The two checkboxes reformat what's already on screen: <strong>No hyphens</strong> collapses each ID to 32 hex characters (handy for systems that reject the dashed format), and <strong>Uppercase</strong> does what it says. <strong>Copy all</strong> puts the whole list on your clipboard, one per line, and <strong>Download .txt</strong> saves it as a file.</p>
+      </article>
+      <article class="card">
+        <h2>Where They Show Up in Real Work</h2>
+        <p>Seeding a test database is the classic case: generate 50 UUIDs, download the file, and paste them into your fixtures so test runs are reproducible. They're also the standard answer for idempotency keys — Stripe and most payment APIs expect a unique key per request so retries don't double-charge anyone. And if you're naming uploaded files, a UUID prefix kills filename collisions without a round-trip to the database.</p>
       </article>
       <article class="card">
         <h2>Keyboard Shortcut</h2>
@@ -75,6 +84,17 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
       <article class="card">
         <h2>Click to Copy</h2>
         <p>Click any UUID in the list to copy it to the clipboard individually. The copied value flashes green as confirmation.</p>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Are these UUIDs sent to a server?</h3>
+        <p>No. Everything runs in your browser using the Web Crypto API. There's no network request, no logging, and nothing to intercept — the IDs exist only on your machine.</p>
+        <h3>Can two generated UUIDs ever collide?</h3>
+        <p>Practically, no. You'd need to generate about 2.7 quintillion UUIDs to reach a 50% chance of a single collision. Your database will fail for a hundred other reasons first.</p>
+        <h3>UUID or GUID — is there a difference?</h3>
+        <p>Same thing. GUID is Microsoft's name for it. If a Windows or .NET tool asks for a GUID, paste a UUID from here and it'll work.</p>
+        <h3>Why v4 and not v7?</h3>
+        <p>UUID v7 embeds a timestamp, which makes it sortable — nice for database indexes. But <code>crypto.randomUUID()</code> only produces v4, and for most jobs (keys, tokens, file names) pure randomness is exactly what you want.</p>
       </article>
       <ServiceCTA
         service="intelligent-automation"

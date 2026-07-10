@@ -182,6 +182,61 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     </details>
 
     <section class="article">
+      <article class="card">
+        <h2>Why You'd Want This</h2>
+        <p>
+          Cron syntax is one of those things everyone half-remembers. Five fields, asterisks
+          everywhere, and a nagging suspicion that <code>0 0 * * 1</code> might mean Monday
+          or might mean the 1st. Getting it wrong is cheap to type and expensive to discover
+          — a backup job that runs every minute instead of every midnight, or a report that
+          silently never fires. This parser translates any expression into a plain-English
+          sentence and, more importantly, shows you the next ten actual run times. If the
+          list doesn't look like what you intended, you've caught the bug before deploying it.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to Use It</h2>
+        <p>
+          Type or paste an expression into the input — everything updates as you type. The
+          five boxes below break the expression into its fields (minute, hour, day, month,
+          weekday) and highlight the ones that are constrained. The green banner gives you
+          the human-readable description, and the run-time list shows the next ten
+          executions with relative times like "in 12 min". Not sure where to start? Click a
+          preset like <strong>Weekdays at 9am</strong> and edit from there. Shorthand
+          aliases work too: <code>@daily</code>, <code>@hourly</code>, <code>@weekly</code>,
+          <code>@monthly</code>, and <code>@yearly</code> all expand to their five-field
+          equivalents. The timezone selector controls how the run times are displayed, which
+          helps when your server runs in UTC and your brain runs in local time.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Is Sunday 0 or 7?</h3>
+        <p>
+          Here, Sunday is 0 and Saturday is 6. Some cron implementations also accept 7 for
+          Sunday, but 0 works everywhere, so that's what this tool validates against.
+        </p>
+        <h3>What happens if I set both day-of-month and weekday?</h3>
+        <p>
+          They combine with OR, matching classic cron behavior. <code>0 0 1 * 1</code> runs
+          at midnight on the 1st of the month <em>and</em> on every Monday — not only when
+          the 1st happens to be a Monday. This trips up almost everyone at least once, and
+          the run-time preview is the quickest way to see it in action.
+        </p>
+        <h3>Why did I get a non-standard notation warning?</h3>
+        <p>
+          The <code>N/S</code> start/step form (like <code>5/10</code> for "every 10 minutes
+          starting at minute 5") isn't part of POSIX cron. It works in Quartz, AWS
+          EventBridge, and Spring, but a plain Linux crontab may reject it. The warning
+          appears so you don't paste a Quartz expression into a crontab and wonder why
+          nothing runs.
+        </p>
+        <h3>Does my expression leave the browser?</h3>
+        <p>
+          No. Parsing, description, and run-time calculation all happen client-side. There's
+          no server involved at all.
+        </p>
+      </article>
       <ServiceCTA
         service="ci-cd-devops"
         title="Managing complex scheduled jobs in production?"

@@ -164,6 +164,41 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Click <strong>Resize Images</strong> and download individually or all at once.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>When You'd Reach For This</h2>
+        <p>
+          Most image resizing happens at the worst possible moment: a form rejects your 8&nbsp;MB photo,
+          a CMS wants exactly 1200×630, or an email bounces because the attachments are too heavy.
+          Opening a full editor for that is overkill. Drop the files here, set a target, and you're
+          done in seconds — no account, no watermark, no upload queue.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Real-World Uses</h2>
+        <ul>
+          <li><strong>Web performance:</strong> your camera exports 6000px-wide photos but your blog renders them at 800px. Use Fit box with a sensible max width and WebP output — each result card shows the old file size next to the new one, so the savings are visible immediately.</li>
+          <li><strong>Batch thumbnails:</strong> drop 20 product shots, pick Scale % at 25, hit Download all. One pass, no clicking through files one by one.</li>
+          <li><strong>Exact-size specs:</strong> Open Graph images, ad creatives, avatar uploads — Exact mode gives you the precise pixels a spec demands, and with aspect lock off it'll stretch to fit if that's what the spec wants.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Your Images Stay On Your Machine</h2>
+        <p>
+          Everything runs on an HTML canvas inside your browser. Files are read locally, resized
+          locally, and downloaded locally — nothing is uploaded anywhere. That matters when you're
+          resizing unreleased product shots, client work under NDA, or personal photos you'd rather
+          not hand to a random image site.
+        </p>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Does upscaling work?</h3>
+        <p>Yes — Scale % goes up to 400 and Exact mode accepts any dimensions. But upscaling can't invent detail: a 200px icon blown up to 2000px will look soft. Fine for backgrounds, not for print.</p>
+        <h3>Which output format should I pick?</h3>
+        <p>WebP for the web (smallest files, keeps transparency), PNG when you need lossless output, JPEG for photos headed to older systems. The quality slider disappears for PNG because PNG is lossless.</p>
+        <h3>Is there a limit?</h3>
+        <p>20 files per batch. Individual file size is bounded only by your browser's memory — huge images process, they just take a moment.</p>
+      </article>
       <ServiceCTA
         service="workflows-bpm"
         title="Need automated image resizing at scale?"

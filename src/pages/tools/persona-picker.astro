@@ -67,6 +67,35 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         </div>
       </div>
 
+      <article class="card">
+        <h2>Why bother with a persona at all?</h2>
+        <p>
+          "Act as a senior engineer" gets you a vague impression of one. A good persona prompt is
+          specific: it names the role, the tone, what to prioritize, and what to push back on.
+          That's the difference between an assistant that pads every answer with disclaimers and
+          one that reviews your code like a colleague who's seen your stack before. The 20 personas
+          here are written that way — pick one, paste it, and skip the ten minutes of prompt
+          fiddling you'd otherwise repeat every session.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Where these fit in real work</h2>
+        <ul>
+          <li><strong>Code review:</strong> load the Code Reviewer persona into a fresh chat before dropping in a diff — you get findings, not compliments.</li>
+          <li><strong>Docs and writing:</strong> the Technical Writer persona keeps output structured and jargon-checked instead of generically enthusiastic.</li>
+          <li><strong>Consistency with yourself:</strong> once you've tuned a prompt that works, save it as a custom persona so tomorrow-you starts from the same instructions as today-you.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Do these work with any model?</h3>
+        <p>Yes. A system prompt is plain text — paste it into Claude, ChatGPT, Gemini, or a local model, anywhere that accepts a system or custom-instructions field.</p>
+        <h3>Where are my custom personas stored?</h3>
+        <p>In your browser's localStorage. They persist between visits on that device, never sync anywhere, and disappear if you clear site data — so keep a copy of prompts you care about.</p>
+        <h3>Can I edit a built-in persona?</h3>
+        <p>Copy its prompt, tweak the text, and save the result with <strong>Add custom</strong>. The built-ins stay untouched, and your variant sits alongside them.</p>
+      </article>
+
       <ServiceCTA
         service="ai-automation"
         title="Need to build a custom AI assistant with a specific persona for your product?"

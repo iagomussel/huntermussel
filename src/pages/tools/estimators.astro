@@ -232,6 +232,61 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     </section>
 
     <section class="article">
+      <article class="card">
+        <h2>What This Estimator Is For</h2>
+        <p>
+          Cloud pricing pages are useless for planning. They tell you what a gigabyte costs,
+          not what <em>your app</em> will cost — and the honest answer depends on traffic
+          shape, data transfer, and how much operational work you're willing to take on.
+          This estimator works from the three inputs that actually drive the bill: what
+          you're building, how many people use it, and what you're optimizing for. In
+          return you get an architecture recommendation, a realistic all-in monthly range,
+          and a list of the specific things most likely to blow the budget.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to Read the Result</h2>
+        <p>
+          The number to trust is the range, not a single figure — that's why the result
+          shows one. The <strong>cost drivers</strong> list tells you where the money goes,
+          which matters more than the total: if data transfer dominates, a CDN changes your
+          bill; if compute dominates, it won't. <strong>Risk flags</strong> call out the
+          assumptions most likely to bite you, and the scenario comparison puts two or
+          three architectures side by side so you're choosing between real options instead
+          of anchoring on the first one. Want to stress-test it? Hit the
+          <strong>Conservative</strong>, <strong>Realistic</strong>, and
+          <strong>Aggressive</strong> presets and watch how much the range moves.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>How accurate is the estimate?</h3>
+        <p>
+          It's a planning range, not a quote. The defaults are deliberately realistic
+          rather than optimistic, and the total is all-in — it includes monitoring, CI/CD,
+          baseline storage, and domain/secrets costs that most calculators quietly leave
+          out. Expect it to tell you whether you're in $30 territory or $3,000 territory,
+          not to predict your invoice to the dollar.
+        </p>
+        <h3>What if my numbers don't match the defaults?</h3>
+        <p>
+          Open <strong>Edit assumptions</strong>. Requests per user, cache hit ratio,
+          storage growth, deploys per month, and logging level are all adjustable, and the
+          result panel recalculates as you change them. If you know your cache hit ratio
+          is 90%, say so — it moves the estimate meaningfully.
+        </p>
+        <h3>Why does "peak usage concentration" matter so much?</h3>
+        <p>
+          Because you provision for the worst moment, not the average. An app with the
+          same monthly users but 10x spikes during campaigns needs different architecture
+          — and different money — than one with flat traffic all day.
+        </p>
+        <h3>Is anything sent to a server?</h3>
+        <p>
+          No. The whole calculation runs in your browser. Your traffic numbers and product
+          plans stay on your machine.
+        </p>
+      </article>
       <ServiceCTA
         service="cloud-infrastructure-ai"
         title="Ready to move from cost estimate to production-grade infrastructure?"

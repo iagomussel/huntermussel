@@ -59,6 +59,31 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Real-time markers will show errors and warnings. You can also manually trigger a format or specific linter checks.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>Where It Saves You</h2>
+        <ul>
+          <li><strong>CI configs:</strong> a bad indent in a GitHub Actions or Kubernetes YAML file fails the pipeline ten minutes after you push. Paste it here first and the error shows up instantly, with the exact line marked.</li>
+          <li><strong>API payloads:</strong> that JSON response which "should work" often hides a trailing comma or an unescaped quote. The editor points at it instead of leaving you to eyeball 300 lines.</li>
+          <li><strong>Quick edits:</strong> tweak a JavaScript snippet or a Markdown README section without opening a project — Monaco is the same editor engine VS Code uses, so the highlighting and error squiggles feel familiar.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Your Code Stays In The Browser</h2>
+        <p>
+          The editor, the parsers, and the lint rules all run client-side. Nothing you paste is sent
+          to a server — which matters when the config you're debugging contains internal hostnames
+          or code you can't share. Still, don't paste live secrets anywhere. Including here.
+        </p>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Which languages are supported?</h3>
+        <p>JSON, YAML, JavaScript, and Markdown. Pick one from the toolbar and the editor switches its highlighting and checks to match.</p>
+        <h3>Is this the same as my project's linter?</h3>
+        <p>No — it catches syntax errors and common quality issues, but it doesn't read your project's config files. Treat it as a fast pre-check, not a replacement for the linters in your CI.</p>
+        <h3>Can it format my code?</h3>
+        <p>Yes. Hit the <strong>Format</strong> button in the toolbar and the editor reformats the current document in place.</p>
+      </article>
       <ServiceCTA
         service="ci-cd-devops"
         title="Want code quality gates enforced automatically in your CI pipeline?"

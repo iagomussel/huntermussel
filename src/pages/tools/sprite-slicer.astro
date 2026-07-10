@@ -133,6 +133,28 @@ const faqItems = [
         </ul>
       </article>
       <article class="card">
+        <h2>Where it fits in a real pipeline</h2>
+        <p>
+          The classic case: you bought or downloaded a tileset packed as one big PNG, but your engine or level editor
+          wants individual files. Point the slicer at it, set the tile size the pack documents (16, 32, and 48&nbsp;px
+          are the usual suspects), and you're done in one click instead of thirty crop-exports in an image editor.
+        </p>
+        <p>
+          It also earns its keep on character animation strips — a run cycle laid out as one row of frames slices
+          cleanly with <strong>1 row × N columns</strong>. And if you're migrating a web project away from CSS sprite
+          sheets to individual assets, this turns the old sheet back into source files.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Output naming</h2>
+        <p>
+          Each tile downloads as <code>name_r0_c0.png</code>, <code>name_r0_c1.png</code>, and so on — the original
+          filename plus row and column, counted from the top-left. The predictable pattern means a build script or
+          engine importer can pick the files up without renaming anything. A 4×4 grid gives you 16 files; the status
+          line confirms the count when the export finishes.
+        </p>
+      </article>
+      <article class="card">
         <h2>Frequently asked questions</h2>
         <dl class="tool-faq-list">
           {faqItems.map((item) => (

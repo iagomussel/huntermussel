@@ -1,64 +1,148 @@
 ---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ServiceCTA from "@/components/ServiceCTA.astro";
 import { WordEditor } from "@/components/playground/examples/word-example/word-editor";
 import { ASSETS_BASE_URL } from "@/lib/assets";
 import "@/styles/word-example.css";
 
 const title = "Rich Text & Markdown Editor | HunterMussel Tools";
-const description = "A fully featured rich text editor with Markdown support — write, format, and export documents directly in your browser.";
-const canonicalUrl = "https://huntermussel.com/tools/markdown-editor/";
-const keywords = "markdown editor online, rich text editor browser, markdown live preview, online markdown tool, free markdown editor, wysiwyg markdown editor, document editor online, markdown formatter";
-const defaultOgImage = `${ASSETS_BASE_URL}/images/blog/rich-content-google-search_16x9_high.webp`;
+const description =
+  "A free browser-based rich text and Markdown editor. Write, format, preview, and export documents or Markdown — entirely client-side, no uploads.";
+const canonicalPath = "/tools/markdown-editor/";
+const ogImage = `${ASSETS_BASE_URL}/images/blog/rich-content-google-search_16x9_high.webp`;
+
+const faqItems = [
+  {
+    q: "What can I use this rich text editor for?",
+    a: "Use it for drafting blog posts, writing documentation, formatting meeting notes, preparing email copy, or prototyping any document that needs headings, lists, links, and basic styling before you paste it into your CMS or docs tool.",
+  },
+  {
+    q: "Is my content sent to a server?",
+    a: "No. The editor runs entirely in your browser. Your text, drafts, and exports never leave your device unless you copy or download them yourself.",
+  },
+  {
+    q: "Can I export to Markdown?",
+    a: "Yes. The editor supports rich text editing and Markdown-oriented output, so you can write visually and copy the result as clean Markdown-ready content for static site generators, GitHub, or documentation platforms.",
+  },
+  {
+    q: "Does it work offline?",
+    a: "Once the page is loaded, the editor keeps working without an internet connection because all editing logic runs client-side.",
+  },
+  {
+    q: "How is this different from Google Docs or Notion?",
+    a: "It is intentionally lightweight. There is no account, no cloud sync, and no collaboration overhead — just a fast place to write and format text when you do not want another tab tracking your work.",
+  },
+];
 ---
 
-<!doctype html>
-<html lang="en" class="dark">
-  <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-K8THDL4C');</script>
-    <!-- End Google Tag Manager -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <meta name="keywords" content={keywords} />
-    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-    <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta
-      property="og:image"
-      content={defaultOgImage}
-    />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta
-      name="twitter:image"
-      content={defaultOgImage}
-    />
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="sitemap" type="application/xml" href="https://huntermussel.com/sitemap-index.xml" />
-    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
-    <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />
-    <title>{title}</title>
-  </head>
-  <body class="dark">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K8THDL4C"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <div style="position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:1rem;padding:0.5rem 1rem;background:rgba(10,12,18,0.85);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.07);">
-      <a href="/tools/" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;color:hsl(145,80%,50%);text-decoration:none;letter-spacing:0.05em;">← tools</a>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.3);">|</span>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:rgba(255,255,255,0.5);">Markdown Editor</span>
-    </div>
-    <div style="padding-top:40px;">
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath={canonicalPath}
+  ogImage={ogImage}
+  keywords={[
+    "markdown editor online",
+    "rich text editor browser",
+    "markdown live preview",
+    "online markdown tool",
+    "free markdown editor",
+    "wysiwyg markdown editor",
+    "document editor online",
+    "markdown formatter",
+    "browser text editor",
+    "client side document editor",
+  ]}
+  schemaType="WebApplication"
+  faqItems={faqItems}
+  pageData={{ pageType: 'tool', pageTitle: title, pageUrl: `https://huntermussel.com${canonicalPath}` }}
+>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">tool / writing</p>
+      <h1>Rich Text & Markdown Editor</h1>
+      <p class="lead">
+        Draft and format documents in your browser with a lightweight rich text editor.
+        No account, no cloud sync, no server — your words stay on your machine until you
+        copy or download them.
+      </p>
+      <a class="back-link" href="/tools/">← Back to tools</a>
+    </section>
+
+    <div class="card editor-card">
       <WordEditor client:load />
     </div>
-  </body>
-</html>
+
+    <section class="article">
+      <article class="card">
+        <h2>When This Editor Beats a Full Docs Suite</h2>
+        <p>
+          Most writing tools want you to sign in, sync everything, and build a workspace.
+          Sometimes you just need a clean page to format a paragraph, fix a list, or draft
+          a section before pasting it into Slack, a CMS, or a GitHub issue. This editor is
+          built for that gap — one document, one browser tab, zero overhead.
+        </p>
+      </article>
+      <article class="card">
+        <h2>What You Can Do</h2>
+        <ul>
+          <li><strong>Write visually:</strong> headings, paragraphs, lists, links, bold, italic, and code-style text.</li>
+          <li><strong>Format quickly:</strong> use the toolbar or slash commands to change structure without memorizing syntax.</li>
+          <li><strong>Copy clean output:</strong> take the formatted result into any Markdown-friendly platform.</li>
+          <li><strong>Draft privately:</strong> nothing is saved to the cloud, so unreleased copy and sensitive notes stay local.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>How to Use It</h2>
+        <ul>
+          <li>Start typing in the editor area above.</li>
+          <li>Use the toolbar or type <code>/</code> for slash commands to insert headings, lists, and other blocks.</li>
+          <li>Format text with the usual shortcuts — bold, italic, and links.</li>
+          <li>Copy the result when you are ready and paste it into your final destination.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Privacy by Design</h2>
+        <p>
+          Because the editor runs entirely in your browser, there is no database of drafts,
+          no analytics on what you write, and no risk of a third party scanning your content.
+          If you close the tab without copying, the text is gone — which is exactly the point
+          for quick, disposable drafting.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Limits to Keep in Mind</h2>
+        <p>
+          This is a lightweight editor, not a replacement for collaborative tools like Notion
+          or Google Docs. It does not save versions, share documents, or support real-time
+          collaboration. Use it for single-user drafting and quick formatting jobs.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        {
+          faqItems.map((item) => (
+            <>
+              <h3>{item.q}</h3>
+              <p>{item.a}</p>
+            </>
+          ))
+        }
+      </article>
+      <ServiceCTA
+        service="ai-process-management"
+        title="Need documents that feed into automated workflows?"
+        description="HunterMussel builds AI-powered content pipelines — from drafting assistants to automation that turns structured text into CMS posts, reports, and internal docs."
+        linkLabel="Explore AI Process Management"
+      />
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .editor-card {
+    padding: 0;
+    overflow: hidden;
+    margin-bottom: 1.4rem;
+    min-height: 420px;
+  }
+</style>

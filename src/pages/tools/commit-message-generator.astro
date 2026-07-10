@@ -68,6 +68,42 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         </div>
       </div>
 
+      <article class="card">
+        <h2>Why commit messages are worth the extra minute</h2>
+        <p>
+          Every repo eventually has the "what did this commit even do" moment — usually at 2am, usually during an
+          incident. A history full of "fix stuff" and "wip" is useless right when you need it most. Conventional
+          Commits fix that with a small amount of structure: a type, an optional scope, and a description you can
+          grep. Once your history follows the format, tooling like commitlint and semantic-release can enforce it
+          and turn it into changelogs and version bumps for free.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How the builder works</h2>
+        <p>
+          It walks you through the parts of a commit in order. Pick one of eleven types — <code>feat</code>,
+          <code>fix</code>, <code>docs</code>, <code>style</code>, <code>refactor</code>, <code>perf</code>,
+          <code>test</code>, <code>build</code>, <code>ci</code>, <code>chore</code>, or <code>revert</code> —
+          then add a scope for the area of the codebase you touched, write a short description, and optionally
+          add a body explaining why the change exists. Flag it as a breaking change and the tool adds the
+          <code>!</code> marker and the <code>BREAKING CHANGE:</code> footer for you. Issue references land in
+          the footer too, so GitHub and Jira can link the commit automatically. You also get a matching branch
+          name suggestion, which keeps <code>feat/user-auth</code> style naming consistent across the team
+          without anyone writing a naming policy doc.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently asked questions</h2>
+        <h3>Does this use AI to write the message?</h3>
+        <p>No. It's a structured builder — you supply the words, it assembles them into the correct Conventional Commits format. Nothing is generated, so nothing is hallucinated.</p>
+        <h3>Is my commit text sent to a server?</h3>
+        <p>No. Everything happens in your browser. You can draft commits for private code without worrying where the text goes.</p>
+        <h3>When should I use feat versus chore?</h3>
+        <p>If a user or another developer can observe the change in behavior, it's <code>feat</code> (or <code>fix</code>). If it only changes tooling, dependencies, or housekeeping with no visible effect, it's <code>chore</code> or <code>build</code>.</p>
+        <h3>Do I need the body?</h3>
+        <p>Not always. Skip it for obvious one-liners. Write it whenever the reason for the change isn't clear from the diff — the body is where "why" lives, and "why" is the part git can't reconstruct for you later.</p>
+      </article>
+
       <ServiceCTA
         service="ci-cd-devops"
         title="Want to enforce commit conventions and automate releases in your pipeline?"

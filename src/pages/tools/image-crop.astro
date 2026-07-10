@@ -129,6 +129,41 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Use <strong>Reset crop</strong> to select the full image again.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>When You'd Use It</h2>
+        <p>
+          Cropping is the edit you need most often and the one that least deserves a full editor.
+          A screenshot with a stray browser tab in it, a photo that has to be square for an avatar,
+          a banner that must be 16:9 — all thirty-second jobs. This page handles them without
+          installing anything, and without your image touching a server.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Real-World Uses</h2>
+        <ul>
+          <li><strong>Profile pictures:</strong> lock 1:1, drag the box over the subject, download. Done.</li>
+          <li><strong>Video thumbnails:</strong> 16:9 matches YouTube; 9:16 Portrait matches Shorts, Reels, and TikTok covers.</li>
+          <li><strong>Screenshot cleanup for docs and bug reports:</strong> type exact X, Y, Width, and Height values to cut out one UI element at pixel precision — the crop dimensions readout confirms what you'll get before you export.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Nothing Leaves Your Browser</h2>
+        <p>
+          The image is decoded onto a canvas in your browser and the cropped region is exported the
+          same way. There's no upload, no processing queue, no server copy — which is exactly what
+          you want when the screenshot you're cropping shows an internal dashboard or a client's
+          unreleased design.
+        </p>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>What format is the result?</h3>
+        <p>Always PNG — lossless, and it keeps transparency if the source had it. Need JPEG or WebP instead? Run the result through the <a href="/tools/image-format-converter/">Image Format Converter</a> afterwards.</p>
+        <h3>Can I crop to exact pixel dimensions?</h3>
+        <p>Yes. The coordinate inputs accept exact values and clamp to the image bounds, so you can't type a crop that runs off the edge. Drag for speed, type for precision.</p>
+        <h3>Why does the crop box snap shape when I drag a corner?</h3>
+        <p>An aspect ratio is locked. Set the dropdown back to <strong>Free</strong> and each edge resizes independently again.</p>
+      </article>
       <ServiceCTA
         service="workflows-bpm"
         title="Need automated image cropping in your content pipeline?"

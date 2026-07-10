@@ -121,6 +121,31 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
 
     <section class="article">
       <article class="card">
+        <h2>Three Notations, One Permission</h2>
+        <p>
+          Unix permissions have three ways of saying the same thing, and the
+          error message you're staring at rarely uses the one you think in.
+          <code>ls -l</code> shows <code>rwxr-xr-x</code>, the fix you found on
+          Stack Overflow says <code>chmod 755</code>, and your head works in
+          "owner can write, everyone can read". This calculator keeps all three
+          in sync: tick a checkbox and the octal and symbolic fields update,
+          type <code>640</code> into the octal field and the grid follows. Once
+          it looks right, the <code>chmod</code> command at the bottom is ready
+          to copy — just swap <code>&lt;file&gt;</code> for your actual path.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Reading the Numbers</h2>
+        <p>
+          Each digit is a sum: read is 4, write is 2, execute is 1. So 7 means
+          all three, 6 means read plus write, 5 means read plus execute. The
+          three digits apply to the file's owner, its group, and everyone else,
+          in that order. That's the whole system — the reference table on the
+          right lists all eight combinations, and the presets cover the values
+          you'll actually type in practice.
+        </p>
+      </article>
+      <article class="card">
         <h2>Common Permissions</h2>
         <ul>
           <li><code>644</code> — files: readable by all, writable by owner only.</li>
@@ -136,6 +161,17 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li><strong>666</strong> lets anyone write to the file without needing execute permission.</li>
           <li>SSH private keys must be <code>600</code> or SSH will refuse to use them.</li>
         </ul>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Why does SSH complain about my key permissions?</h3>
+        <p>SSH refuses private keys that other users could read. Set the key to <code>600</code> (the preset is right there) and the "permissions are too open" error goes away.</p>
+        <h3>Why can't I cd into a directory I can read?</h3>
+        <p>For directories, execute means "enter". Read lets you list the names inside, but without execute you can't cd in or open anything. That's why directories usually get <code>755</code> where files get <code>644</code>.</p>
+        <h3>Does this cover setuid, setgid, and the sticky bit?</h3>
+        <p>No — this calculator handles the standard three-digit form. Those special bits add a fourth leading digit (like <code>chmod 4755</code>) and deserve care; if you're reaching for them, read up first.</p>
+        <h3>What's the difference between chmod and chown?</h3>
+        <p><code>chmod</code> changes what the owner, group, and others may do. <code>chown</code> changes who the owner and group actually are. When chmod doesn't fix a "permission denied", check ownership next — it's often the real culprit.</p>
       </article>
       <ServiceCTA
         service="ci-cd-devops"

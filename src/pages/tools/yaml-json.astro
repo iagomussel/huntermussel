@@ -78,12 +78,31 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         <p>Edit either panel and the other updates in real time. If the source is invalid, the destination panel keeps its last valid content while the error is shown inline.</p>
       </article>
       <article class="card">
+        <h2>How to Use It</h2>
+        <p>Paste into whichever panel matches what you have — the direction badge in the toolbar shows which way the conversion is flowing. The <strong>JSON indent</strong> selector switches output between 2 and 4 spaces to match whatever your formatter enforces. Each panel has its own <strong>Copy</strong> button, and <strong>Clear all</strong> resets both sides when you're switching to a new file.</p>
+      </article>
+      <article class="card">
         <h2>Common Uses</h2>
         <ul>
           <li>Convert Kubernetes / Docker Compose YAML to JSON for API calls.</li>
           <li>Turn GitHub Actions workflow YAML into JSON for linting.</li>
           <li>Inspect Terraform variable files in JSON format.</li>
         </ul>
+      </article>
+      <article class="card">
+        <h2>The Debugging Trick: See What YAML Actually Parsed</h2>
+        <p>YAML's convenience is also its trap. Unquoted values get type-guessed: <code>version: 1.20</code> becomes the number <code>1.2</code>, silently dropping the trailing zero, and an unquoted <code>null</code> or <code>true</code> stops being a string entirely. When a config "looks right" but a tool rejects it, paste the YAML here and read the JSON side — JSON has no ambiguity, so you see the exact types and structure the parser produced. Strings are quoted, numbers aren't, and the mystery usually solves itself. This is the fastest way to settle "is this a string or a number?" arguments with your CI pipeline.</p>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Why did my YAML comments disappear?</h3>
+        <p>Conversion parses YAML into data, and comments aren't data. Round-tripping YAML → JSON → YAML gives you equivalent values with comments and original formatting stripped. Keep the source file if the comments matter.</p>
+        <h3>What does the inline error actually tell me?</h3>
+        <p>The parser's own message, including the line where it gave up. For YAML that's usually an indentation problem a line or two above the reported spot; for JSON it's most often a trailing comma or a missing quote.</p>
+        <h3>Why does one panel keep old content when the other has an error?</h3>
+        <p>That's intentional. While your edit is invalid, the destination holds the last successful conversion instead of flashing blank, so you don't lose your reference while fixing a typo.</p>
+        <h3>Can I convert multi-document YAML (--- separators)?</h3>
+        <p>No — the converter handles one document at a time. Split multi-doc files (common in Kubernetes manifests) and convert each section separately.</p>
       </article>
       <article class="card">
         <h2>Privacy</h2>

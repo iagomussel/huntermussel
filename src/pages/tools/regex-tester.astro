@@ -104,6 +104,35 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Use Quick buttons to load common patterns instantly.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>Why Test Before You Ship</h2>
+        <p>
+          Regex fails quietly. A pattern that works on your three test strings misses the fourth
+          format in production — or worse, backtracks catastrophically and pins a CPU. This tester
+          runs your pattern live as you type and cuts off any run that exceeds 400&nbsp;ms, flagging
+          it as possible catastrophic backtracking. Better to find that out here than in an incident
+          channel.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Real-World Uses</h2>
+        <ul>
+          <li><strong>Log mining:</strong> paste a chunk of server logs, hit the IPv4 quick button, and every address lights up with its exact character position in the match list.</li>
+          <li><strong>Validation rules:</strong> build the email or phone check for a form here and throw ugly edge cases at it before it starts rejecting real users.</li>
+          <li><strong>Extraction patterns:</strong> capture groups pull the pieces out — the colour coding shows exactly what each set of parentheses grabbed, so <code>(\w+)@([\w.]+)</code> visibly splits an address into user and domain.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>Which regex flavor is this?</h3>
+        <p>JavaScript's, exactly as your browser implements it. Patterns behave the same as they will in Node or frontend code. PCRE-only syntax like possessive quantifiers won't work here — and wouldn't work in your JS either.</p>
+        <h3>Does my test text go anywhere?</h3>
+        <p>No. Matching runs entirely in your browser with zero network requests, so you can paste logs or customer data without worrying about it.</p>
+        <h3>Why did my pattern get cut off?</h3>
+        <p>Runs longer than 400&nbsp;ms are stopped and flagged. Nested quantifiers like <code>(a+)+</code> are the usual culprit — rewrite the pattern to remove the ambiguity.</p>
+        <h3>What about more than four capture groups?</h3>
+        <p>Groups five and up reuse the fourth colour in the highlight view, but the match list below still labels every group by its number.</p>
+      </article>
       <ServiceCTA
         service="intelligent-automation"
         title="Need to automate data extraction and pattern matching at scale?"

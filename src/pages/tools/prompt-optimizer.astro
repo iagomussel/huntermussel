@@ -280,6 +280,48 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li><strong>Generic:</strong> Natural language structure that works across any model.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>How to use the wizard</h2>
+        <p>
+          Five steps, most of them one click. Pick your platform, then the task type (code,
+          content, analysis, Q&amp;A, summarization, extraction, or brainstorming), then how
+          you want the output formatted, then how long it should be. The last step is the
+          only one that takes real thought: describe your task in the text box, and use the
+          optional constraints field for rules like tone, language, or things the model must
+          avoid. Hit <strong>Generate Prompt</strong> and you get the assembled prompt plus
+          a checklist of every optimization that was applied to it. Copy it, or hit
+          <strong>Edit constraints</strong> to tweak the description without redoing the
+          earlier steps.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently asked questions</h2>
+        <h3>Does this send my task description anywhere?</h3>
+        <p>
+          No. The prompt is assembled with plain JavaScript in your browser. Nothing is
+          logged, stored, or sent to an API — which also means you can safely describe
+          internal or confidential work in the task box.
+        </p>
+        <h3>Will the generated prompt work if I paste it into a different model?</h3>
+        <p>
+          Mostly, yes. The structure differs per platform (XML tags for Claude, system/user
+          headers for GPT), but the substance — role, guidelines, task, constraints — is the
+          same. If you switch models often, pick <strong>Generic</strong> and you'll get a
+          structure that works everywhere.
+        </p>
+        <h3>Why does the output include a role like "You are an expert software engineer"?</h3>
+        <p>
+          Because it works. Assigning a role narrows the model's response style and raises
+          the default quality bar. It's the single cheapest improvement you can make to a
+          prompt, which is why the wizard always includes one based on your task type.
+        </p>
+        <h3>Can I skip the constraints field?</h3>
+        <p>
+          Yes, it's optional. But if you've ever gotten a response in the wrong language,
+          the wrong tone, or with a recommendation you can't use, that's exactly what the
+          constraints block prevents. Two sentences there save a whole retry.
+        </p>
+      </article>
       <ServiceCTA
         service="ai-process-management"
         title="Need AI automation beyond prompting?"

@@ -142,6 +142,47 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Download individual sprites or all at once.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>When You'd Reach For This</h2>
+        <p>
+          The classic case: you've got a character sheet from an asset pack or an old game
+          and your engine wants one file per frame. Cutting sprites out by hand in an image
+          editor is tedious and error-prone — one crop off by a pixel and the animation
+          jitters. It's also handy for pulling individual icons out of a UI atlas, splitting
+          a downloaded emoji or icon strip into separate files, and rescuing assets from
+          retro-style sheets where everything sits on a magenta or lime-green background.
+          Because detection follows the actual pixels instead of a fixed grid, it works even
+          when sprites are different sizes or unevenly spaced.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>It found way too many sprites. What now?</h3>
+        <p>
+          Usually that means one visual sprite is made of disconnected parts — a character
+          and its detached shadow count as two regions. Raise the <strong>min asset size</strong>
+          to drop stray specks, or increase <strong>padding</strong> so nearby fragments
+          merge into one crop. In color-key mode, bumping the tolerance also helps when
+          anti-aliased edges are being read as foreground.
+        </p>
+        <h3>Which detection mode should I pick?</h3>
+        <p>
+          If your sheet is a PNG with a transparent background, use alpha — it's the most
+          reliable. Color key is for sheets with a solid background fill. Don't guess the
+          hex value: switch to color-key mode and click the background in the preview to
+          sample it directly.
+        </p>
+        <h3>Why does the output look grid-checkered?</h3>
+        <p>
+          That checkerboard is just the preview showing transparency. The downloaded PNGs
+          have a real transparent background, ready to drop into an engine or editor.
+        </p>
+        <h3>Is my sprite sheet uploaded anywhere?</h3>
+        <p>
+          No. The pixel scanning, cropping, and PNG encoding all run in your browser tab.
+          Unreleased game art never touches a server.
+        </p>
+      </article>
       <ServiceCTA
         service="workflows-bpm"
         title="Need automated sprite processing in your game pipeline?"

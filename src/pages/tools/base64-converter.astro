@@ -151,6 +151,47 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Copy to clipboard or download the result.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>Where You'll Actually Use This</h2>
+        <p>
+          Base64 shows up in more places than most developers expect. You're debugging an
+          API response and there's an opaque blob in a JSON field — paste it here and find
+          out if it's an image, a PDF, or garbled text. You need a small icon inlined as a
+          <code>data:</code> URI in CSS — drop the file in and encode it. A webhook payload
+          arrives with a URL-safe token and your language's decoder chokes on the missing
+          padding — this tool normalizes URL-safe characters and re-pads automatically, so
+          it decodes strings that a strict <code>atob()</code> call would reject. If you
+          paste a full data URI, the <code>data:image/png;base64,</code> prefix is stripped
+          for you.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Is my data sent to a server?</h3>
+        <p>
+          No. Encoding and decoding both happen entirely in your browser. That matters here
+          more than on most tools, because Base64 payloads often contain credentials,
+          tokens, or private files.
+        </p>
+        <h3>Why did my decoded output show as an image?</h3>
+        <p>
+          The tool checks the decoded bytes for known file signatures — JPEG, PNG, GIF,
+          WebP, and PDF. If it finds an image, it renders a preview instead of dumping
+          binary noise into the text area, and the Download button saves the actual file.
+        </p>
+        <h3>What's the charset dropdown for?</h3>
+        <p>
+          Base64 encodes bytes, not characters, so decoding needs to know how those bytes
+          map back to text. UTF-8 is right almost every time. Reach for Windows-1252 or
+          ISO-8859-1 when you're decoding output from older systems and accented characters
+          come out mangled.
+        </p>
+        <h3>Does Base64 compress data?</h3>
+        <p>
+          The opposite — it inflates it by roughly a third, which the stats panel shows you
+          as the encode ratio. It's an encoding for safe transport, not a compression format.
+        </p>
+      </article>
       <ServiceCTA
         service="intelligent-automation"
         title="Need to automate data encoding across your pipelines?"

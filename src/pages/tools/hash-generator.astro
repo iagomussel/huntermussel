@@ -92,6 +92,43 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Optional: provide expected hash to instantly verify match/mismatch.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>Which Algorithm Should You Pick?</h2>
+        <p>
+          SHA-256 is the safe default, which is why it's preselected. MD5 and
+          SHA-1 are both broken for security purposes — collisions can be
+          manufactured — so treat them as checksums for spotting accidental
+          corruption, not as proof nobody tampered with anything. They're still
+          in the list because plenty of legacy systems, package registries, and
+          old APIs hand you an MD5 or SHA-1 to compare against, and you can't
+          verify what you can't reproduce. SHA-384 and SHA-512 are there for
+          systems that demand longer digests.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Real-World Uses</h2>
+        <p>
+          The verify field is the underrated part. Paste the SHA-256 from a
+          release page into "Expected hash", paste the payload, and the status
+          flips to Match or Mismatch — no squinting at 64 hex characters trying
+          to eyeball a difference. The same trick works for checking whether a
+          config file is byte-identical across two environments: hash both,
+          compare the digests. It's also handy when you're debugging an
+          integration that signs or fingerprints payloads and you need to
+          confirm what hash your exact input <em>should</em> produce.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Does my text leave the browser?</h3>
+        <p>No. SHA hashes come from the Web Crypto API built into your browser, and MD5 runs from a bundled library. Nothing is sent to a server, so you can hash sensitive payloads without a second thought.</p>
+        <h3>Why doesn't my hash match the expected one?</h3>
+        <p>Almost always whitespace. A trailing newline, a tab-versus-spaces difference, or Windows line endings (CRLF vs LF) produce a completely different digest. Hashes are exact — one byte off and the output shares nothing with the original.</p>
+        <h3>Can I hash a file with this?</h3>
+        <p>Not directly — this tool takes text input. For small text files, paste the contents. For binaries, use <code>sha256sum</code> or <code>shasum -a 256</code> on the command line.</p>
+        <h3>Is a hash the same as encryption?</h3>
+        <p>No. Encryption is reversible with a key; a hash is a one-way fingerprint. You can't recover the input from the digest, which is exactly what makes it useful for integrity checks.</p>
+      </article>
       <ServiceCTA
         service="security-compliance"
         title="Need a security audit for your data integrity systems?"

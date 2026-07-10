@@ -112,6 +112,14 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
 
     <section class="article">
       <article class="card">
+        <h2>How to Use It</h2>
+        <p>Paste any timestamp into the left panel and the conversion happens as you type — no button to press. You get the ISO 8601 string in UTC, your browser's local time, the time in whichever timezone you pick from the dropdown, and a relative reading like "3 hours ago" that answers the question you were really asking. The <strong>Now</strong> button drops in the current time, which doubles as a quick way to grab the current epoch value for a script or a test fixture. Going the other direction, set a date and time in the right panel and read off the timestamp in seconds and milliseconds.</p>
+      </article>
+      <article class="card">
+        <h2>Where This Comes Up</h2>
+        <p>The usual trigger is a log line or a database row with a bare number where a date should be. Decode it, check the relative time, and you know instantly whether that event happened during last night's incident or three months ago. JWT debugging is the other big one: decode a token, paste the <code>exp</code> claim here, and find out if "invalid token" actually means "expired twenty minutes ago". And when you need a cutoff value for a query — "everything after March 1st" — the right panel gives you the number to paste into your WHERE clause.</p>
+      </article>
+      <article class="card">
         <h2>Seconds vs. Milliseconds</h2>
         <p>10-digit numbers are treated as seconds; 13-digit as milliseconds. Both representations are always shown in the output so you can copy whichever you need.</p>
       </article>
@@ -123,6 +131,17 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li><strong>Unix <code>date +%s</code></strong> — seconds</li>
           <li><strong>Most API responses</strong> — check the docs; usually seconds</li>
         </ul>
+      </article>
+      <article class="card">
+        <h2>FAQ</h2>
+        <h3>What timezone is a Unix timestamp in?</h3>
+        <p>None — that's the point. A timestamp counts seconds since 1970-01-01 00:00:00 UTC, so the same number means the same instant everywhere on Earth. Timezones only enter the picture when you format it for humans, which is what the timezone dropdown here is for.</p>
+        <h3>Why does my timestamp convert to a date in 1970?</h3>
+        <p>You probably pasted milliseconds where seconds were expected somewhere upstream, or the value is just small. A tiny number of seconds lands you days after the epoch. Check the digit count: real current timestamps are 10 digits in seconds, 13 in milliseconds.</p>
+        <h3>What's the year 2038 problem?</h3>
+        <p>Systems that store timestamps as signed 32-bit integers overflow on January 19, 2038. Modern 64-bit systems and this converter are unaffected, but if you maintain old embedded code or legacy databases, it's a real deadline.</p>
+        <h3>Is anything I paste sent to a server?</h3>
+        <p>No. Conversion runs entirely in your browser with the built-in Date and Intl APIs. Timestamps from production logs stay on your machine.</p>
       </article>
       <ServiceCTA
         service="cloud-infrastructure-ai"

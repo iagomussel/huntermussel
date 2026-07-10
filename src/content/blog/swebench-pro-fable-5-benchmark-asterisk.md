@@ -38,8 +38,22 @@ A newer benchmark called DeepSWE launched a couple of weeks before Fable 5 and a
 
 The catch: as of now, there's no Fable 5 or Opus 4.8 score on DeepSWE to compare against. The current leader is GPT-5.5 at its highest reasoning setting, which is notable on its own, since most other benchmarks put Claude models ahead until Fable 5 shipped. Until Anthropic's newest models get a DeepSWE score, you're comparing Fable 5's real capability against a benchmark it hasn't actually been tested on.
 
-## What this means for how you evaluate the next model too
+## Why this matters beyond a leaderboard argument
+
+Most engineering leaders do not care about benchmarks as a sport. They care because someone on their team will paste a screenshot into a Slack thread and ask, "Should we switch our whole codebase to Fable 5?" The honest answer right now is: maybe, but not because of this number.
+
+Benchmarks shape procurement decisions. A vendor with a glowing SWE-bench Pro score can speed up legal approval, loosen budget constraints, and nudge a team off a model that was actually working fine. If the score is contaminated, that decision is being made on marketing, not evidence. The cost shows up three months later, when the same team realizes Fable 5 burns tokens at a different rate, needs different prompting patterns, and still requires human review on anything that touches production.
+
+## What to do while DeepSWE is still sparse
+
+You don't need to ignore Fable 5. You need to test it on your own code before you bet on it. Pick one real task from your backlog that is representative but not catastrophic if it goes wrong: a refactor, a dependency bump, or a repetitive boilerplate sweep. Run it through Fable 5, run the same task through your current model, and compare the outputs on three things: correctness, how much cleanup each requires, and what the token bill looks like.
+
+Do this on a private repository, not on a public one the model might have memorized. That's the only way to approximate the DeepSWE condition in your own environment. If Fable 5 wins cleanly on your code, your internal benchmark is worth more than any public leaderboard.
+
+## The question to ask before the next model too
 
 The lesson here isn't specific to Fable 5. It's that a single benchmark number, no matter how good the marketing slide looks, isn't a substitute for checking who wrote the test and whether the model could have seen the answer.
 
 Before you greenlight a model for a real migration or a production coding pipeline based on a benchmark screenshot, ask three questions: how were the tasks sourced, has anyone audited the grader, and has this specific model been checked for the kind of shortcut-finding behavior that's already been documented on this exact test. If you can't answer those, the number is a marketing claim wearing a benchmark's clothes.
+
+Start with your own repository. That's where the only benchmark that actually matters gets built.

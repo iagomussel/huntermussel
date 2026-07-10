@@ -85,6 +85,41 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Click <strong>Analyze logs</strong> to see summary and matched lines.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>Where It Fits</h2>
+        <p>
+          Not every log question deserves a Datadog query. You've got a chunk of
+          output from <code>kubectl logs</code>, a failed CI job, or a
+          <code>docker logs</code> dump, and all you want to know is how many
+          errors are in there and what they say. Paste, filter by ERROR, done.
+          It's the middle ground between scrolling a terminal buffer by hand and
+          waiting for logs to land in your observability platform — which they
+          never will if the output came from a laptop or a one-off script.
+        </p>
+      </article>
+      <article class="card">
+        <h2>How Level Detection Works</h2>
+        <p>
+          Each line is scanned for a severity token — INFO, WARN, ERROR, DEBUG,
+          or TRACE, case-insensitive — anywhere in the line. That means it
+          doesn't care about your timestamp format or field order; plain text,
+          logfmt, and JSON lines all work as long as the level appears somewhere
+          in the text. Lines with no recognizable level get counted as UNKNOWN
+          instead of being dropped, so the summary totals always add up to what
+          you pasted.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Are my logs uploaded anywhere?</h3>
+        <p>No. Parsing, counting, and filtering all happen in your browser. That matters with logs, because they love to contain things they shouldn't — user emails, tokens, internal hostnames.</p>
+        <h3>Can I combine the level and text filters?</h3>
+        <p>Yes, they stack. Pick ERROR and type <code>timeout</code> to see only error lines mentioning timeouts. The text filter is case-insensitive and matches anywhere in the line.</p>
+        <h3>Why are all my lines UNKNOWN?</h3>
+        <p>Your logs probably don't spell out a level word — some formats use single letters (<code>E</code>, <code>W</code>) or numeric severities. The keyword filter still works fine; only the per-level counts need a recognizable token.</p>
+        <h3>Does it handle multi-line entries like stack traces?</h3>
+        <p>Each line is treated independently, so a stack trace shows up as one ERROR line followed by UNKNOWN continuation lines. To read the full trace, keep the level filter on ALL and use a keyword instead.</p>
+      </article>
       <ServiceCTA
         service="cloud-infrastructure-ai"
         title="Drowning in production logs?"

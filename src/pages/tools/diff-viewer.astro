@@ -34,6 +34,47 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
     <DiffWorkbench client:only="react" />
 
     <section class="article">
+      <article class="card">
+        <h2>When you'd reach for this</h2>
+        <p>
+          Git shows you diffs for files it tracks. Everything else is on you: the config dump from staging versus
+          production, two versions of an API response, the SQL a migration generated last week versus today.
+          Paste both versions here and you get the same colored, line-by-line comparison you'd get in a code review,
+          with added and removed line counts up top so you know instantly whether the texts differ at all —
+          the badge flips between "Identical" and "Changes detected".
+        </p>
+      </article>
+      <article class="card">
+        <h2>How to use it</h2>
+        <ul>
+          <li>Paste text into the Original and Modified panes, or use <strong>Load original</strong> and <strong>Load modified</strong> to pull in files. <strong>Sample</strong> fills both sides with demo content if you just want to poke around.</li>
+          <li>Toggle between <strong>Split</strong> (side by side) and <strong>Unified</strong> (single column) view.</li>
+          <li>Set <strong>Granularity</strong> to Line, Word, or Char depending on how fine you want the highlighting.</li>
+          <li>Check <strong>Ignore whitespace</strong> to skip indentation-only noise, or <strong>Show diff only</strong> to hide unchanged regions. The <strong>Context</strong> field controls how many surrounding lines stay visible.</li>
+          <li><strong>Swap</strong> flips the two sides. <strong>Copy patch</strong> and <strong>Download</strong> give you a unified patch you can apply or attach to a ticket.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2>Real-world uses</h2>
+        <p>
+          Config drift is the classic one: paste the nginx or Kubernetes config from two environments and see exactly
+          which lines diverged. It's also handy for checking what a formatter or codemod actually changed before you
+          commit it, and for comparing two versions of a prompt, an email template, or a legal paragraph where Word's
+          track changes isn't an option. The <strong>Share link</strong> button encodes the whole diff into the URL,
+          so you can drop a reproducible comparison straight into Slack.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently asked questions</h2>
+        <h3>Does my text get uploaded anywhere?</h3>
+        <p>No. The diff is computed in your browser and nothing is sent to a server. One caveat: a share link puts the text into the URL itself, so only share it with people who should see the content.</p>
+        <h3>Can I compare files instead of pasted text?</h3>
+        <p>Yes — load a file into each side. You can also rename each side in the Original and Modified fields, and those names end up in the exported patch headers.</p>
+        <h3>What happens with huge inputs?</h3>
+        <p>Large diffs switch on safeguards: the granularity and show-diff-only controls are disabled and the summary stats get capped, so the page stays responsive instead of freezing on a massive comparison. You'll see a "large diff safeguards on" note in the summary bar when that kicks in.</p>
+        <h3>What's the difference between Word and Char granularity?</h3>
+        <p>Word highlights changed words inside a line; Char highlights individual characters. Char is the one you want when you're hunting a single-character typo in a long token or URL.</p>
+      </article>
       <ServiceCTA
         service="ci-cd-devops"
         title="Tired of manual code review bottlenecks slowing down deployments?"

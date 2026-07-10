@@ -147,6 +147,46 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
           <li>Click <strong>Convert to WebP</strong> and download individually or all at once.</li>
         </ul>
       </article>
+      <article class="card">
+        <h2>Where It Pays Off</h2>
+        <p>
+          The obvious case is a slow website. Images are usually the heaviest thing on a
+          page, and a 3&nbsp;MB hero photo exported straight from a phone camera is doing
+          real damage to your load time. Run it through here at quality 80 with a max width
+          of 1920 and you'll typically ship a fraction of the bytes with no visible
+          difference. The same goes for product galleries before a bulk upload, screenshots
+          for documentation, and email attachments that keep bouncing off size limits. The
+          savings badge on each result card tells you exactly how much you gained — and if
+          a file somehow got bigger (it happens with already-optimized images), the badge
+          shows that too instead of hiding it.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently Asked Questions</h2>
+        <h3>Are my images uploaded anywhere?</h3>
+        <p>
+          No. The whole conversion runs in your browser tab using the File API and canvas.
+          Your files never leave your machine, which also means the tool works the same on
+          a confidential design mockup as on a vacation photo.
+        </p>
+        <h3>What quality setting should I use?</h3>
+        <p>
+          Start at 80. For photos, most people can't tell 80 from 100, but the file size
+          difference is dramatic. Drop to 60–70 for thumbnails; push higher only if you're
+          seeing artifacts in flat color areas or text.
+        </p>
+        <h3>Does resizing distort the image?</h3>
+        <p>
+          No. Max width and max height are caps, not exact targets — the aspect ratio is
+          always preserved, and images already smaller than your limits are left at their
+          original dimensions.
+        </p>
+        <h3>Can it convert WebP to WebP?</h3>
+        <p>
+          Yes, and it's a legitimate use: re-encoding an existing WebP at a lower quality
+          or smaller dimensions is a quick way to shrink a file that's still too heavy.
+        </p>
+      </article>
       <ServiceCTA
         service="workflows-bpm"
         title="Need automated image processing in your content workflow?"

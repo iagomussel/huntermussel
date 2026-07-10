@@ -67,6 +67,39 @@ import ServiceCTA from "@/components/ServiceCTA.astro";
         </div>
       </div>
 
+      <article class="card">
+        <h2>Why a questionnaire instead of a benchmark table?</h2>
+        <p>
+          Benchmark tables answer the wrong question. They tell you which model tops MMLU, not which one fits a
+          support chatbot with a $200 monthly budget. This tool works the other way around: you describe the job,
+          it ranks the candidates. Five questions cover the things that actually decide the choice — what the model
+          does all day (code generation, chat, document analysis, vision, function calling, streaming, long documents,
+          or embeddings), how much you'll spend, how much context you need, how fast responses have to come back,
+          and whether the model can live in a cloud API or has to run on your own hardware.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Where this saves real time</h2>
+        <p>
+          A team building an internal document Q&A bot lands on a different answer than a solo dev shipping a
+          coding assistant, and both land on a different answer than a company that can't send data to a third-party
+          API at all. The on-premise question alone eliminates most of the field — if your compliance team says data
+          stays in-house, the ranking narrows to models like Llama 3.1 70B and Phi-3 Mini that you can self-host.
+          The picker makes those eliminations explicit instead of leaving them buried in ten pricing pages.
+        </p>
+      </article>
+      <article class="card">
+        <h2>Frequently asked questions</h2>
+        <h3>Does this tool call an AI to make recommendations?</h3>
+        <p>No. The scoring is a fixed rule set that runs in your browser. Same answers in, same three models out, every time. That's deliberate — a recommendation you can't reproduce isn't one you can defend to your team.</p>
+        <h3>Are my answers sent anywhere?</h3>
+        <p>No. Everything runs client-side. Nothing about your use case, budget, or deployment constraints leaves the page.</p>
+        <h3>Why isn't the newest model from provider X listed?</h3>
+        <p>The tool covers nine models across five providers (see "Models covered" above). New models ship constantly, so treat the result as a shortlist to verify, not a final decision.</p>
+        <h3>Should I trust the pricing numbers?</h3>
+        <p>Use them for relative comparison, not billing math. They're approximations from public pricing pages as of early 2026, and providers change prices without warning.</p>
+      </article>
+
       <ServiceCTA
         service="ai-automation"
         title="Need help choosing and integrating the right AI model for your product?"

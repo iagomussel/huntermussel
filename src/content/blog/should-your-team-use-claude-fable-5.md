@@ -33,14 +33,38 @@ Every credible account of using Fable 5 for real work lands on the same conclusi
 
 Where it earns its cost is the opposite kind of task: something you'd normally hand to a team for weeks, that has a clear definition of done, and where getting it right in one long unattended run beats iterating quickly. A full codebase migration. Clearing an entire stale bug backlog. Standing up a working prototype from a single spec instead of a sprint's worth of back-and-forth.
 
+It helps to be honest about why the demos don't transfer. A one-shot game clone is greenfield work: no legacy code, no style guide, no teammates with opinions, and a definition of done that fits in one sentence. Your codebase has none of those luxuries. The demos show what the model does when nothing is in its way. Real work always has something in its way, which is exactly why the useful question is about task shape, not raw capability.
+
+## What a good candidate task looks like, specifically
+
+"Large, well-defined, expensive in human-hours" sounds like a checklist you can nod along to. Each of those three words is doing real work, though, so unpack them before you pick your task.
+
+Large matters because of the model's appetite. If it's going to chew through hundreds of thousands of tokens regardless, you want that many tokens of actual work in front of it. Pointing it at a small task doesn't make the task cheaper. It makes the tokens wasted.
+
+Well-defined matters because a long unattended run can't ask you clarifying questions at hour three. In an iterative workflow, ambiguity is cheap: the model guesses, you correct it, you move on. In a one-long-run workflow, ambiguity compounds. Every fuzzy requirement becomes a decision the model made without you, repeated across an entire codebase. "Migrate this codebase from X to Y" survives that. "Clean up our API" doesn't.
+
+Expensive in human-hours matters because that's the only honest denominator. The bill for a Fable 5 run only makes sense compared against what the task costs in engineer time. If the manual version is an afternoon, there's no math that makes the rocket launcher pay for itself.
+
+A task missing one of the three should make you suspicious. Large and expensive but fuzzy? You'll get a confident, enormous pile of the wrong thing. Well-defined but small? A cheaper model handles it iteratively for a fraction of the cost.
+
 ## The costs aren't just the price tag
 
 Before you greenlight it, weigh three things beyond the sticker price. It's roughly twice the per-token cost of Opus, and reportedly hungry enough to make that multiplier bite hard on the wrong task. Reported access through standard subscription plans is temporary, with usage falling back to credit billing after a matter of weeks, so don't design a permanent workflow around subscription-tier pricing. And if any part of the task touches biology, cybersecurity, or ML infrastructure, expect inconsistent behavior: some requests get silently rerouted to a different model, others get quietly throttled with no indication that happened.
 
-None of these rule Fable 5 out. They rule out treating it like a drop-in upgrade you flip on and forget about.
+None of these rule Fable 5 out. They rule out treating it like a drop-in upgrade you flip on and forget about. Each one changes how you should operate, though, so take them one at a time.
+
+The price multiplier plus the token appetite means per-task cost is genuinely hard to predict before you run it. Treat a Fable 5 run the way you'd treat a big batch compute job: something with an owner, an expected cost range, and a quick review after the fact. Not something anyone on the team kicks off casually because it's the shiniest option in the dropdown.
+
+The temporary subscription access has a sneakier effect. Whatever you run during the window will feel cheap, and cheap trials anchor decisions. Do your evaluation math at the rates you'd actually pay later, not at what the trial costs today, or you'll approve a workflow that the real bill kills a month in.
+
+And the classifier behavior means that if your work sits near biology, security, or ML infrastructure, you can't fully certify a Fable 5 workflow in advance. Two prompts that look identical to you may not look identical to the classifier, so a pipeline that behaved yesterday can quietly behave differently today. For client-facing work in those areas, that variance is the real cost, not the tokens.
 
 ## A simple test before you commit
 
 Use it if you have a task that's genuinely large, genuinely tedious, and genuinely expensive in engineer-hours to do manually, and where one long correct run beats five fast iterative ones. Skip it if you need predictable per-request cost, if you're doing routine day-to-day coding, or if your domain sits close enough to biology, security, or model training that inconsistent responses are a real problem for what you're shipping.
 
-Don't decide based on the demo reel. Pick one task that's actually been sitting in your backlog because nobody wants to do it by hand, point Fable 5 at it, and measure the outcome against the engineering time it would've taken otherwise. That single test will tell you more than every viral clip combined.
+Don't decide based on the demo reel. Pick one task that's actually been sitting in your backlog because nobody wants to do it by hand, point Fable 5 at it, and measure the outcome against the engineering time it would've taken otherwise.
+
+Run that pilot properly, though. Write the definition of done before you start, not after you see the output; it's the only way to know whether the run succeeded or merely finished. Assign a reviewer, because a long unattended run produces a long diff, and unreviewed output isn't done work no matter who or what produced it. And track the token spend, because that number, sitting next to the engineer-hours saved, is the entire business case in two figures.
+
+That single test will tell you more than every viral clip combined.
