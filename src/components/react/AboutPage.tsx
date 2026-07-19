@@ -104,7 +104,7 @@ const AboutPage = () => {
           </motion.p>
 
           <motion.div {...fadeUp(0.25)} className="flex flex-wrap gap-2 mb-8">
-            {["16+ Years", "Multi-cloud", "AI Engineering", "Tech Lead", "GMT-3"].map(
+            {["17+ Years", "Multi-cloud", "AI Engineering", "Tech Lead", "GMT-3"].map(
               (tag) => (
                 <span
                   key={tag}
@@ -357,7 +357,7 @@ const AboutPage = () => {
                 first."
               </p>
               <footer className="mt-3 font-body text-sm text-muted-foreground">
-                — The through line of sixteen years.
+                — The through line of seventeen years.
               </footer>
             </motion.blockquote>
           </div>
