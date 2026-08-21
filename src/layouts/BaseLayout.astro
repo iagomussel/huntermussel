@@ -4,6 +4,7 @@ import Footer from "@/components/react/Footer";
 import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
 import AdUnit from "@/components/AdUnit.astro";
 import HreflangTags from "@/components/HreflangTags.astro";
+import ThemeScript from "@/components/ThemeScript.astro";
 import { ASSETS_BASE_URL } from "@/lib/assets";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
@@ -109,8 +110,9 @@ const pageSchema =
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
+    <ThemeScript />
     <script is:inline define:vars={{ resolvedPageData }}>window.dataLayer=window.dataLayer||[];window.dataLayer.push(resolvedPageData);</script>
     <!-- Google Tag Manager -->
     <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

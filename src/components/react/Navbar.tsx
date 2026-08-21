@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { assetUrl } from "@/lib/assets";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   { label: "Services", href: "/services/" },
@@ -10,6 +11,7 @@ const navItems = [
   { label: "Technologies", href: "/#technologies" },
   { label: "Blog", href: "/blog/" },
   { label: "Tools", href: "/tools/" },
+  { label: "Guide", href: "/devops-guide-2026/" },
   { label: "Contact", href: "/contact/" },
 ];
 
@@ -48,6 +50,7 @@ const Navbar = () => {
               {item.label}
             </a>
           ))}
+          <ThemeToggle />
           <a
             href="/contact/"
             data-analytics-event="lead_cta_click"
@@ -61,12 +64,15 @@ const Navbar = () => {
         </div>
 
         {/* Mobile toggle */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-foreground md:hidden"
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-foreground"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

@@ -58,6 +58,44 @@
 
 @layer base {
   :root {
+    --background: 0 0% 100%;
+    --foreground: 220 20% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 8%;
+
+    --primary: 145 70% 32%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 95%;
+    --secondary-foreground: 220 20% 8%;
+
+    --muted: 220 14% 95%;
+    --muted-foreground: 220 10% 40%;
+
+    --accent: 145 70% 32%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 88%;
+    --input: 220 14% 88%;
+    --ring: 145 70% 32%;
+
+    --radius: 0.5rem;
+
+    --glow-primary: 145 70% 32%;
+    --glow-secondary: 180 70% 32%;
+
+    --font-heading: 'JetBrains Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  .dark {
     --background: 220 20% 4%;
     --foreground: 210 40% 98.0392%;
 
@@ -86,13 +124,8 @@
     --input: 220 14% 14%;
     --ring: 145 80% 50%;
 
-    --radius: 0.5rem;
-
     --glow-primary: 145 80% 50%;
     --glow-secondary: 180 80% 45%;
-
-    --font-heading: 'JetBrains Mono', monospace;
-    --font-body: 'Inter', sans-serif;
   }
 
   * {

@@ -1,0 +1,56 @@
+---
+---
+
+<div id="giscus-comments" class="mt-12"></div>
+<script>
+  (function () {
+    // TODO: fill these in from https://giscus.app after enabling GitHub Discussions
+    // on the iagomussel/huntermussel repo and installing the giscus app.
+    const REPO = "iagomussel/huntermussel";
+    const REPO_ID = "REPLACE_WITH_REPO_ID";
+    const CATEGORY = "Blog Comments";
+    const CATEGORY_ID = "REPLACE_WITH_CATEGORY_ID";
+
+    function currentGiscusTheme() {
+      return document.documentElement.classList.contains("dark") ? "dark" : "light";
+    }
+
+    function loadGiscus() {
+      const container = document.getElementById("giscus-comments");
+      if (!container || container.querySelector("script")) return;
+
+      const script = document.createElement("script");
+      script.src = "https://giscus.app/client.js";
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.setAttribute("data-repo", REPO);
+      script.setAttribute("data-repo-id", REPO_ID);
+      script.setAttribute("data-category", CATEGORY);
+      script.setAttribute("data-category-id", CATEGORY_ID);
+      script.setAttribute("data-mapping", "pathname");
+      script.setAttribute("data-strict", "0");
+      script.setAttribute("data-reactions-enabled", "1");
+      script.setAttribute("data-emit-metadata", "0");
+      script.setAttribute("data-input-position", "top");
+      script.setAttribute("data-theme", currentGiscusTheme());
+      script.setAttribute("data-lang", "en");
+      container.appendChild(script);
+    }
+
+    function syncGiscusTheme() {
+      const iframe = document.querySelector("iframe.giscus-frame");
+      if (!iframe || !iframe.contentWindow) return;
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: currentGiscusTheme() } } },
+        "https://giscus.app",
+      );
+    }
+
+    loadGiscus();
+
+    new MutationObserver(syncGiscusTheme).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  })();
+</script>

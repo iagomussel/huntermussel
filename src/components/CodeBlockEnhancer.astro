@@ -1,0 +1,49 @@
+---
+interface Props {
+  containerSelector?: string;
+}
+
+const { containerSelector = "article" } = Astro.props;
+---
+
+<script define:vars={{ containerSelector }}>
+  (function () {
+    function enhance() {
+      const container = document.querySelector(containerSelector);
+      if (!container) return;
+
+      container.querySelectorAll("pre").forEach((pre) => {
+        if (pre.querySelector("[data-code-copy-btn]")) return;
+
+        pre.classList.add("relative", "group");
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.dataset.codeCopyBtn = "true";
+        button.setAttribute("aria-label", "Copy code to clipboard");
+        button.textContent = "Copy";
+        button.className =
+          "absolute top-2 right-2 rounded-md border border-border bg-background/80 px-2 py-1 font-heading text-[10px] uppercase tracking-wider text-muted-foreground opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 hover:border-primary hover:text-primary";
+
+        button.addEventListener("click", () => {
+          const code = pre.querySelector("code");
+          const text = code ? code.textContent : pre.textContent;
+          navigator.clipboard.writeText(text || "").then(() => {
+            button.textContent = "Copied!";
+            setTimeout(() => {
+              button.textContent = "Copy";
+            }, 2000);
+          });
+        });
+
+        pre.appendChild(button);
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", enhance);
+    } else {
+      enhance();
+    }
+  })();
+</script>

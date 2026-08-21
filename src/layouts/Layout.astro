@@ -3,6 +3,7 @@ import Navbar from "../components/react/Navbar";
 import Footer from "../components/react/Footer";
 import AnalyticsBootstrap from "../components/AnalyticsBootstrap.astro";
 import HreflangTags from "../components/HreflangTags.astro";
+import ThemeScript from "../components/ThemeScript.astro";
 import { ASSETS_BASE_URL } from "../lib/assets";
 import "../styles/globals.css";
 
@@ -38,8 +39,9 @@ const keywordsString = Array.isArray(keywords) ? keywords.join(", ") : keywords;
 const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
 ---
 
-<html lang={htmlLang} class="dark">
+<html lang={htmlLang}>
   <head>
+    <ThemeScript />
     {pageData && <script is:inline define:vars={{ pageData }}>window.dataLayer=window.dataLayer||[];window.dataLayer.push(pageData);</script>}
     <!-- Google Tag Manager -->
     <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

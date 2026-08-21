@@ -2,8 +2,10 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import MermaidRenderer from '@/components/MermaidRenderer.astro';
+import ReadingProgress from '@/components/ReadingProgress.astro';
+import CodeBlockEnhancer from '@/components/CodeBlockEnhancer.astro';
+import Comments from '@/components/Comments.astro';
 import { ArrowLeft } from 'lucide-react';
-import DisqusComments from '@/components/react/DisqusComments';
 import BlogShareSection from '@/components/react/BlogShareSection';
 import authors from '@/data/authors.json';
 import FAQSection from '@/components/react/FAQSection';
@@ -93,6 +95,7 @@ const blogSchema = [
     publishDate: entry.data.date?.toISOString() ?? null,
   }}
 >
+  <ReadingProgress />
   <div class="min-h-screen bg-background">
      <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
 
@@ -160,9 +163,10 @@ const blogSchema = [
 
           <AdUnit adSlot="1811956878" format="fluid" layout="in-article" class="blog-ad-bottom" />
 
-          <DisqusComments client:only="react" title={entry.data.title} identifier={entry.id} url={url} />
+          <Comments />
        </article>
      </main>
   </div>
   <MermaidRenderer />
+  <CodeBlockEnhancer />
 </Layout>

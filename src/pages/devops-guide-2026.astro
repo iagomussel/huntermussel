@@ -1,0 +1,131 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import PillarPage from "@/components/PillarPage.astro";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const posts = await getCollection("blog", ({ data }) => data.status !== "draft");
+const byId = new Map(posts.map((post) => [post.id, post]));
+
+const SECTION_DEFS = [
+  {
+    id: "cicd",
+    title: "CI/CD Pipelines & Tooling",
+    description: "Building and choosing the right pipeline for your team, from scratch or migrating between tools.",
+    slugs: [
+      "cicd-pipeline-from-scratch-github-actions-docker-kubernetes",
+      "github-actions-vs-gitlab-ci-vs-azure-devops-2026",
+      "jenkins-vs-github-actions-how-to-choose",
+      "migrating-jenkins-to-github-actions-critical-systems",
+      "modern-cicd-pipeline-where-ai-fits",
+      "devsecops-security-in-cicd",
+    ],
+  },
+  {
+    id: "infrastructure",
+    title: "Infrastructure & Automation",
+    description: "Infrastructure as code, deployment tooling, and building an automation stack without overengineering it.",
+    slugs: [
+      "iac-terraform-small-team",
+      "pm2-lean-alternative-kubernetes",
+      "modern-automation-stack-from-scratch",
+    ],
+  },
+  {
+    id: "ai-devops",
+    title: "DevOps + AI",
+    description: "How agentic AI and coding agents are changing DevOps workflows and team responsibilities.",
+    slugs: [
+      "agentic-devops-in-practice-what-changes-for-your-team",
+      "devops-ai-what-changes-for-engineers-2026",
+      "devops-for-ai-teams-infrastructure-nobody-teaches",
+    ],
+  },
+  {
+    id: "strategy",
+    title: "Strategy & Cost",
+    description: "What DevOps actually costs, what to prioritize early, and what to look for before hiring or investing.",
+    slugs: [
+      "devops-retainer-5k-series-a",
+      "hidden-devops-cost-moving-fast",
+      "what-i-look-for-in-startup-infra",
+    ],
+  },
+];
+
+const sections = SECTION_DEFS.map((section) => ({
+  id: section.id,
+  title: section.title,
+  description: section.description,
+  posts: section.slugs
+    .map((slug) => byId.get(slug))
+    .filter((post) => post !== undefined)
+    .map((post) => ({
+      title: post.data.title,
+      description: post.data.description,
+      href: `/blog/${post.id}/`,
+      date: post.data.date
+        ? post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+        : undefined,
+      tag: post.data.tags?.[0],
+    })),
+}));
+
+const pageUrl = "https://huntermussel.com/devops-guide-2026/";
+const allSlugs = SECTION_DEFS.flatMap((section) => section.slugs);
+
+const pageSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "The DevOps Guide 2026",
+    url: pageUrl,
+    description:
+      "A hub for HunterMussel's DevOps articles: CI/CD, infrastructure as code, AI-driven DevOps, and infrastructure strategy.",
+  },
+  breadcrumbSchema([
+    { name: "Home", item: "https://huntermussel.com/" },
+    { name: "DevOps Guide 2026", item: pageUrl },
+  ]),
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "DevOps Guide 2026 Articles",
+    url: pageUrl,
+    numberOfItems: allSlugs.length,
+    itemListElement: allSlugs
+      .map((slug) => byId.get(slug))
+      .filter((post) => post !== undefined)
+      .map((post, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `https://huntermussel.com/blog/${post.id}/`,
+        name: post.data.title,
+      })),
+  },
+];
+---
+
+<Layout
+  title="The DevOps Guide 2026: CI/CD, IaC, and AI-Driven Infrastructure"
+  description="A practical hub for DevOps in 2026: CI/CD pipelines, infrastructure as code, how AI is changing DevOps workflows, and what infrastructure actually costs."
+  canonicalUrl={pageUrl}
+  keywords={[
+    "devops guide 2026",
+    "ci/cd pipeline guide",
+    "infrastructure as code",
+    "devops best practices",
+    "agentic devops",
+    "devops cost",
+  ]}
+  schema={pageSchema}
+  pageData={{ pageType: "pillar_page", pageTitle: "The DevOps Guide 2026" }}
+>
+  <PillarPage
+    eyebrow="// guide"
+    title="The DevOps Guide"
+    highlight="2026"
+    description="CI/CD, infrastructure as code, AI-driven workflows, and what it actually costs to run DevOps well. Everything HunterMussel has written on the subject, organized in one place."
+    sections={sections}
+  />
+</Layout>
