@@ -9,8 +9,10 @@ import authors from '@/data/authors.json';
 import FAQSection from '@/components/react/FAQSection';
 import RelatedArticles from '@/components/RelatedArticles.astro';
 import { blogDevOpsFAQ, blogAIFAQ, blogCloudFAQ, blogGeneralFAQ } from '@/data/faq';
-import { articleSchema, breadcrumbSchema } from '@/lib/schema';
+import { articleSchema, breadcrumbSchema, howToSchema } from '@/lib/schema';
 import AdUnit from '@/components/AdUnit.astro';
+import { getReadingTime } from '@/lib/reading-time';
+import TableOfContents from '@/components/TableOfContents.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => data.status !== "draft");
@@ -21,7 +23,8 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const readingTime = getReadingTime(entry.body ?? '');
 
 const formattedDate = entry.data.date ? new Date(entry.data.date).toLocaleDateString("en-US", {
   day: "2-digit",
@@ -73,7 +76,14 @@ const blogSchema = [
       acceptedAnswer: { "@type": "Answer", text: item.answer },
     })),
   },
-];
+  howToSchema({
+    name: entry.data.title,
+    description: entry.data.description,
+    url,
+    image: entry.data.image,
+    headings,
+  }),
+].filter((item) => item !== null);
 ---
 
 <Layout
@@ -97,7 +107,8 @@ const blogSchema = [
      <div class="absolute inset-0 grid-bg opacity-10 pointer-events-none" />
 
      <main class="container relative z-10 px-6 pt-32 pb-24">
-       <article class="mx-auto max-w-3xl">
+       <div class="mx-auto max-w-5xl lg:grid lg:grid-cols-[1fr_240px] lg:gap-10 lg:items-start">
+       <article class="max-w-3xl lg:max-w-none">
           <a
             href="/blog/"
             class="mb-8 inline-flex items-center gap-2 font-body text-sm text-muted-foreground transition-colors hover:text-primary"
@@ -106,9 +117,11 @@ const blogSchema = [
             Back to blog
           </a>
 
-          {formattedDate && (
-             <time class="block font-body text-sm text-muted-foreground">{formattedDate}</time>
-          )}
+          <div class="flex items-center gap-3 font-body text-sm text-muted-foreground">
+            {formattedDate && <time>{formattedDate}</time>}
+            {formattedDate && <span aria-hidden="true">&middot;</span>}
+            <span>{readingTime.text}</span>
+          </div>
 
           <h1 class="mt-2 font-heading text-3xl font-bold tracking-tight md:text-4xl">
             {entry.data.title}
@@ -146,6 +159,8 @@ const blogSchema = [
              </div>
           )}
 
+          <TableOfContents headings={headings} variant="mobile" class="mt-8" />
+
           <div class="prose prose-invert prose-headings:font-heading prose-p:font-body prose-a:text-primary prose-strong:text-foreground mt-10 max-w-none">
              <Content />
           </div>
@@ -162,6 +177,8 @@ const blogSchema = [
 
           <DisqusComments client:only="react" title={entry.data.title} identifier={entry.id} url={url} />
        </article>
+       <TableOfContents headings={headings} variant="sidebar" />
+       </div>
      </main>
   </div>
   <MermaidRenderer />

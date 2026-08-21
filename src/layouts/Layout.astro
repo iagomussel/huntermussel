@@ -4,6 +4,8 @@ import Footer from "../components/react/Footer";
 import AnalyticsBootstrap from "../components/AnalyticsBootstrap.astro";
 import HreflangTags from "../components/HreflangTags.astro";
 import { ASSETS_BASE_URL } from "../lib/assets";
+import SchemaOrg from "../components/SchemaOrg.astro";
+import Newsletter from "../components/Newsletter.astro";
 import "../styles/globals.css";
 
 interface Props {
@@ -93,9 +95,7 @@ const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
     <link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt" />
     <link rel="alternate" type="text/plain" href="/SKILL.txt" title="SKILL.txt" />
     <AnalyticsBootstrap />
-    {schemaItems.map((item) => (
-      <script type="application/ld+json" set:html={JSON.stringify(item)} />
-    ))}
+    <SchemaOrg schemas={schemaItems} />
   </head>
   <body class="bg-background text-foreground min-h-screen flex flex-col font-sans antialiased selection:bg-primary/20 selection:text-primary">
     <!-- Google Tag Manager (noscript) -->
@@ -107,6 +107,7 @@ const schemaItems = Array.isArray(schema) ? schema : schema ? [schema] : [];
       <slot />
     </main>
     <Footer />
+    <Newsletter />
     <script src="/chat-widget.js" defer></script>
   </body>
 </html>

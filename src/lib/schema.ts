@@ -118,4 +118,42 @@ export function articleSchema(input: ArticleSchemaInput) {
   };
 }
 
+const STEP_HEADING_PATTERN = /^step\s*\d+\s*[:.\-]?\s*/i;
+
+interface HeadingLike {
+  depth: number;
+  text: string;
+}
+
+/** Builds a HowTo schema from H2 headings named "Step N: ...". Returns null when fewer than 2 steps are found. */
+export function howToSchema(input: {
+  name: string;
+  description: string;
+  url: string;
+  image?: string;
+  headings: HeadingLike[];
+}) {
+  const steps = input.headings
+    .filter((h) => h.depth === 2 && STEP_HEADING_PATTERN.test(h.text))
+    .map((h) => ({
+      "@type": "HowToStep",
+      name: h.text.replace(STEP_HEADING_PATTERN, "") || h.text,
+    }));
+
+  if (steps.length < 2) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: input.name,
+    description: input.description,
+    image: input.image ? schemaArticleImage(input.image) : undefined,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": input.url,
+    },
+    step: steps,
+  };
+}
+
 export { LOGO_URL, ORGANIZATION_ID, ORGANIZATION_NAME, SITE_URL, WEBSITE_ID };

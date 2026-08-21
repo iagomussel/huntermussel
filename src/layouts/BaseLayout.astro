@@ -4,6 +4,8 @@ import Footer from "@/components/react/Footer";
 import AnalyticsBootstrap from "@/components/AnalyticsBootstrap.astro";
 import AdUnit from "@/components/AdUnit.astro";
 import HreflangTags from "@/components/HreflangTags.astro";
+import SchemaOrg from "@/components/SchemaOrg.astro";
+import Newsletter from "@/components/Newsletter.astro";
 import { ASSETS_BASE_URL } from "@/lib/assets";
 import "@/styles/globals.css";
 import "@/styles/tools.css";
@@ -157,9 +159,7 @@ const pageSchema =
       gtag("config", "G-NENC1CBCTS");
       gtag("config", "AW-16916178576");
     </script>
-    <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
-    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
-    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+    <SchemaOrg schemas={[pageSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])]} />
     <!-- Google AdSense -->
     <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5924413044488831" crossorigin="anonymous"></script>
     <!-- End Google AdSense -->
@@ -177,6 +177,7 @@ const pageSchema =
       </div>
     </main>
     <Footer />
+    <Newsletter />
     <script src="/chat-widget.js" defer></script>
   </body>
 </html>

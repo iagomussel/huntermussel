@@ -1,0 +1,23 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SearchPage from "@/components/react/SearchPage";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const searchUrl = "https://huntermussel.com/search/";
+
+const schema = [
+  breadcrumbSchema([
+    { name: "Home", item: "https://huntermussel.com/" },
+    { name: "Search", item: searchUrl },
+  ]),
+];
+---
+
+<Layout
+  title="Search | HunterMussel"
+  description="Search articles, tools, and case studies on HunterMussel."
+  canonicalPath="/search/"
+  schema={schema}
+>
+  <SearchPage client:load />
+</Layout>

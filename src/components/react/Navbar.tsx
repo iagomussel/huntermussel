@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { assetUrl } from "@/lib/assets";
 
 const navItems = [
@@ -11,6 +11,7 @@ const navItems = [
   { label: "Blog", href: "/blog/" },
   { label: "Tools", href: "/tools/" },
   { label: "Contact", href: "/contact/" },
+  { label: "Search", href: "/search/" },
 ];
 
 const Navbar = () => {
@@ -48,6 +49,13 @@ const Navbar = () => {
               {item.label}
             </a>
           ))}
+          <a
+            href="/search/"
+            aria-label="Search"
+            className="text-muted-foreground transition-colors hover:text-primary"
+          >
+            <Search size={18} />
+          </a>
           <a
             href="/contact/"
             data-analytics-event="lead_cta_click"

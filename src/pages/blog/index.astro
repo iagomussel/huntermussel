@@ -3,10 +3,12 @@ import { getCollection } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import { ArrowRight } from 'lucide-react';
 import { breadcrumbSchema } from '@/lib/schema';
+import { getReadingTime } from '@/lib/reading-time';
 
 const posts = (await getCollection("blog"))
   .filter((post) => post.data.status !== "draft")
-  .sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
+  .sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0))
+  .map((post) => ({ ...post, readingTime: getReadingTime(post.body ?? '') }));
 
 const blogUrl = 'https://huntermussel.com/blog/';
 const blogSchema = [
@@ -99,6 +101,7 @@ const blogSchema = [
                   </span>
                 )}
               </div>
+              <p class="mb-2 text-xs text-muted-foreground">{post.readingTime.text}</p>
               <h2 class="mb-3 font-heading text-xl font-bold leading-tight group-hover:text-primary transition-colors">
                 <a href={`/blog/${post.id}/`} class="block">
                   {post.data.title}

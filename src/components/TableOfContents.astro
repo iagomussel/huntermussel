@@ -1,0 +1,97 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+  variant: "mobile" | "sidebar";
+  class?: string;
+}
+
+const { headings, variant, class: className } = Astro.props;
+
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length >= 3 && variant === "mobile" && (
+    <details class:list={["toc mb-6 rounded-lg border border-border bg-card/50 p-4 lg:hidden", className]}>
+      <summary class="cursor-pointer font-heading text-sm font-semibold">
+        Table of contents
+      </summary>
+      <ul class="mt-3 space-y-2 font-body text-sm">
+        {items.map((h) => (
+          <li class={h.depth === 3 ? "pl-4" : ""}>
+            <a href={`#${h.slug}`} data-toc-link={h.slug} class="text-muted-foreground transition-colors hover:text-primary">
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  )
+}
+
+{
+  items.length >= 3 && variant === "sidebar" && (
+    <nav aria-label="Table of contents" class:list={["toc hidden lg:sticky lg:top-28 lg:block", className]}>
+      <p class="mb-3 font-heading text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        On this page
+      </p>
+      <ul class="space-y-2 border-l border-border font-body text-sm">
+        {items.map((h) => (
+          <li class={h.depth === 3 ? "pl-8" : "pl-4"}>
+            <a
+              href={`#${h.slug}`}
+              data-toc-link={h.slug}
+              class="block -ml-px border-l-2 border-transparent pl-4 text-muted-foreground transition-colors hover:text-primary data-[active=true]:border-primary data-[active=true]:text-primary"
+            >
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<script>
+  function initToc() {
+    const links = Array.from(document.querySelectorAll<HTMLAnchorElement>(".toc [data-toc-link]"));
+    if (links.length === 0) return;
+
+    const setActive = (slug: string | null) => {
+      for (const link of links) {
+        if (link.dataset.tocLink === slug) {
+          link.setAttribute("data-active", "true");
+        } else {
+          link.removeAttribute("data-active");
+        }
+      }
+    };
+
+    const slugs = new Set(links.map((link) => link.dataset.tocLink));
+    const headingEls = Array.from(slugs)
+      .map((slug) => (slug ? document.getElementById(slug) : null))
+      .filter((el): el is HTMLElement => el !== null);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length > 0) {
+          setActive(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-96px 0px -70% 0px", threshold: 0 }
+    );
+
+    headingEls.forEach((el) => observer.observe(el));
+  }
+
+  document.addEventListener("astro:page-load", initToc);
+</script>
