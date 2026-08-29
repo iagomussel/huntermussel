@@ -54,6 +54,11 @@
     0%, 100% { opacity: 0.4; }
     50% { opacity: 1; }
   }
+  @keyframes scan {
+    0%, 100% { transform: translateY(0); opacity: 0; }
+    8%, 92% { opacity: 1; }
+    50% { transform: translateY(310px); }
+  }
 }
 
 @layer base {
